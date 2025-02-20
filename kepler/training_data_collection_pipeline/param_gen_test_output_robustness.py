@@ -1,0 +1,1372 @@
+import collections
+import csv
+import random
+import subprocess
+import collections
+import json
+import logging
+import os
+from itertools import product
+import numpy as np
+import psycopg2
+from sklearn.model_selection import train_test_split
+from utility import modify_query, get_count
+
+from absl import app
+from absl import flags
+
+from kepler.training_data_collection_pipeline import query_utils
+import re
+
+
+# Define general flags
+_SELECTION = flags.DEFINE_string("selection", None, "Cardinality, kepler, or csv.")
+flags.mark_flag_as_required("selection")
+_RANDOM_SEED = flags.DEFINE_integer(
+    "random_seed", 2024,
+    "random seed setting")
+_OUTPUT_DIR = flags.DEFINE_string(
+    "output_dir", None,
+    "Directory to store parameter values per query.")
+_ROBUSTNESS = flags.DEFINE_string("robustness", None, "sliding, random, or category.")
+
+# query related
+_TEMPLATE_FILE = flags.DEFINE_string("template_file", None, "Parameterized query template file.")
+flags.mark_flag_as_required("template_file")
+flags.mark_flag_as_required("output_dir")
+_QUERY_ID = flags.DEFINE_string("query_id", None, "Name of query to train on")
+flags.mark_flag_as_required("query_id")
+# csv related flags - required for csv
+_METADATA_FILE = flags.DEFINE_string("metadata_file", None, "Template's metadata: params with frequency.")
+
+# training & testing related
+_COUNT = flags.DEFINE_integer(
+    "count", 2200, "The max number of parameters to generate per query.")
+_TEST_SIZE = flags.DEFINE_integer(
+    "test_size", 200, "Number of test queries.")
+
+EXTRA_TABLE = ['it_miidx', 'it_mi', 'it_pi']
+
+INT_TABLE_DICT = {
+    "t": {
+        "production_year": {
+            "min": 1880,
+            "max": 2019
+        },
+        "episode_nr": {
+            "min": 1,
+            "max": 91821
+        }
+    }
+}
+
+available_it_for_mi = ['genres'] * 13 + ['budget'] * 2 + ['release dates'] * 20 + ['countries'] * 10
+available_it_for_pi = ['mini biography'] * 3 + ['trivia'] * 2 + ['height'] * 1
+available_it_for_miidx = ['top 250 rank'] * 2 + ['bottom 10 rank'] * 2 + ['rating'] * 16 + ['votes'] * 11
+
+cct_for_cc_subject_id = ["IN ('cast', 'crew')"] * 4 + ["= 'cast'"] * 12 + ["!= 'complete+verified'"] * 2 
+cct_for_cc_status_id = ["= 'complete'"] * 3 + ["LIKE '%complete%'"] * 7 + [" = 'complete+verified'"] * 9
+
+
+
+# helper methods
+def check_required_values(metadata_file):
+    """
+    Check if the required variables have values. If any of them is missing, raise an error.
+
+    Args:
+    metadata_file: Path to the metadata file.
+
+    Raises:
+    ValueError: If any of the required variables is missing.
+    """
+    
+    if not metadata_file:
+        raise ValueError("Metadata file (_METADATA_FILE) is missing or not provided.")
+    
+    print("All required values are provided.")
+
+def escape_single_quotes(param):
+    # If param is a string and contains single quotes, replace them with two single quotes
+    if isinstance(param, str):
+        return param.replace("'", "''")
+    return param
+
+def save_metadata_to_csv(output_dir, metadata, query_id):
+    """
+    Saves the metadata to a CSV file in the output directory.
+    
+    Args:
+    - output_dir: The directory where the metadata.csv will be saved.
+    - metadata: A dictionary containing the metadata information to save.
+    """
+    metadata_file = os.path.join(output_dir, f"{query_id}.csv")
+    
+    # Write the metadata to CSV
+    with open(metadata_file, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        # Write headers
+        writer.writerow(["Key", "Value"])
+        
+        # Write metadata
+        for key, value in metadata.items():
+            writer.writerow([key, value])
+
+    print(f"Metadata saved to {metadata_file}")
+
+###################
+# Cardinality related
+# MARK: add tokenizer
+def get_param_and_cardinality(single_select_column, select_column, table, not_null_column, join_condition, value_type="count"):
+    
+    db_config = query_utils.DatabaseConfiguration(
+      dbname="imdbloadbase", user="kepler", password="kepler", host="localhost"
+    )
+    query_manager = query_utils.QueryManager(db_config)
+
+    # original query
+    query = f"""SELECT {select_column}, COUNT(*) as count_all FROM {table}
+            WHERE {not_null_column}
+            {join_condition}
+            GROUP BY {select_column} """
+    addition_query = "ORDER BY COUNT(*) DESC"
+    print(f"---- query: {query} {addition_query}")
+    
+    try:
+        full_query = query + addition_query
+        result = query_manager.execute(full_query)
+    except Exception as e:
+        error_type = type(e).__name__
+        logging.error(f"{error_type}: {e}")
+        result = []
+    
+    # if original query has any error, execute simple version without multiple group conditions
+    if len(result) == 0:
+        query = f"""SELECT {single_select_column}, COUNT(*) as count_all FROM {table}
+            WHERE {not_null_column}
+            {join_condition}
+            GROUP BY {single_select_column} """
+        print(f"---- query: {query} {addition_query}")
+        
+        try:
+            full_query = query + addition_query
+            result = query_manager.execute(full_query)
+        except Exception as e:
+            error_type = type(e).__name__
+            logging.error(f"{error_type}: {e}")
+            return []
+
+    # get result
+    print(f"---- Most popular sample: {result[0]}")
+    
+    def tokenizer(value):
+        return re.split(r'[!@#$%^&*()_\-|\?<>,.:;"\'{}\[\]~`/\s]+', value)
+    
+    if value_type == "count":
+        return [(value[0], value[-1]) for value in result]
+    elif value_type == "tokenizer":
+        tokenized_result = []
+        total_length = len(result)
+        print(f"result length: {total_length}")
+        
+        # TODO: if the result is too large - 100 million - avoid kill/oom error
+        if total_length > 10000000:
+            # re-execute, get percentiles
+            quartile_results = query_manager.execute(f"""
+                WITH counts AS (
+                    {query}
+                )
+                SELECT percentile_cont(0.1) WITHIN GROUP (ORDER BY count_all) as q1,
+                    percentile_cont(0.2) WITHIN GROUP (ORDER BY count_all) as q2,
+                    percentile_cont(0.3) WITHIN GROUP (ORDER BY count_all) as q3,
+                    percentile_cont(0.4) WITHIN GROUP (ORDER BY count_all) as q4,
+                    percentile_cont(0.5) WITHIN GROUP (ORDER BY count_all) as q5,
+                    percentile_cont(0.6) WITHIN GROUP (ORDER BY count_all) as q6,
+                    percentile_cont(0.7) WITHIN GROUP (ORDER BY count_all) as q7,
+                    percentile_cont(0.8) WITHIN GROUP (ORDER BY count_all) as q8,
+                    percentile_cont(0.9) WITHIN GROUP (ORDER BY count_all) as q9
+                FROM counts;
+            """)
+            
+            if len(quartile_results) == 1:
+                q1, q2, q3, q4, q5, q6, q7, q8, q9 = quartile_results[0]
+            else:
+                raise ValueError("Expected exactly one row of quartile results")
+                
+            # TODO: stratified sampling - avoid kill/oom error
+            stratified_query = f"""
+                WITH counts AS (
+                    {query}
+                ),
+                stratified AS (
+                    SELECT *,
+                        CASE 
+                            WHEN count_all <= {q1} THEN 1
+                            WHEN count_all <= {q2} THEN 2
+                            WHEN count_all <= {q3} THEN 3
+                            WHEN count_all <= {q4} THEN 4
+                            WHEN count_all <= {q5} THEN 5
+                            WHEN count_all <= {q6} THEN 6
+                            WHEN count_all <= {q7} THEN 7
+                            WHEN count_all <= {q8} THEN 8
+                            WHEN count_all <= {q9} THEN 9
+                            ELSE 10
+                        END as stratum,
+                        random() as rand
+                    FROM counts
+                )
+                SELECT *
+                FROM stratified
+                WHERE random() <= 0.1  -- 10% sampling rate
+                ORDER BY stratum, rand
+            """
+            print(stratified_query)
+            result = query_manager.execute(stratified_query)
+            print(f"modified result length - after stratified sampling: {len(result)}")
+            
+            # remove stratum & rand (last two columns)
+            result = [columns[:-2] for columns in result]
+        
+        for value in result:
+            tokens = tokenizer(str(value[0]))  # param tokenizer
+            tokens = [token for token in tokens if token] # remove empty token
+            # print(f"current token length: {len(tokens)}")
+            
+            # TODO: If length of tokens is 1, split the token into individual characters
+            if len(tokens) == 1:
+                tokens = [random.choice(tokens[0])] # randomly choose one of the character
+            
+            tokens = [f"%{token}%" for token in tokens] # add wildcards
+            for token in tokens:
+                tokenized_result.append((token, value[-1]))
+
+        return tokenized_result
+
+# MARK: add CDF implementation
+def get_range_param_and_cardinality(data, operator):
+    """
+    Generate param and cumulative cardinality adjustments based on the operator.
+    
+    Args:
+    - data: The input list of tuples (param, cardinality).
+    - operator: The operator type ('>', '>=', '<', '<=', '=').
+    
+    Returns:
+    - A list of tuples (param, cardinality), where `param` is the value,
+      and `cardinality` is the cumulative count based on the operator.
+      
+    Example 1:
+    - Input: 
+        - data = [(1, 10), (2, 20), (3, 30), (4, 40)]
+        - operator = "<" -> "< param"
+    - Output:
+        - data = [(1, 0), (2, 10), (3, 30), (4, 60)]  # Cumulative without including the current
+    
+    Example 2:
+    - Input: 
+        - data = [(1, 10), (2, 20), (3, 30), (4, 40)]
+        - operator = ">=" -> ">= param"
+    - Output:
+        - data = [(1, 100), (2, 90), (3, 70), (4, 40)]
+    
+    """
+    # Sort the data by the param value
+    data_sorted = sorted(data, key=lambda x: x[0])  # Sort by param (first element of tuple)
+    
+    # Prepare the param_cardinality list
+    param_cardinality = []
+    
+    # Calculate cumulative cardinality based on the operator
+    if operator == '>':
+        cumulative = 0
+        for param, cardinality in reversed(data_sorted):  # Start from the largest value and go downwards
+            param_cardinality.append((param, cumulative))  # Append the cumulative before adding current cardinality
+            cumulative += cardinality
+        param_cardinality.reverse()  # Reverse back to maintain increasing order by value
+    
+    elif operator == '>=':
+        cumulative = 0
+        for param, cardinality in reversed(data_sorted):
+            cumulative += cardinality
+            param_cardinality.append((param, cumulative))
+        param_cardinality.reverse()
+    
+    elif operator == '<':
+        cumulative = 0
+        for param, cardinality in data_sorted:  # Start from the smallest value and go upwards
+            param_cardinality.append((param, cumulative))  # Append the cumulative before adding current cardinality
+            cumulative += cardinality
+    
+    elif operator == '<=':
+        cumulative = 0
+        for param, cardinality in data_sorted:
+            cumulative += cardinality
+            param_cardinality.append((param, cumulative))
+    
+    elif operator == '=':
+        param_cardinality = [(param, cardinality) for param, cardinality in data_sorted]
+
+    return param_cardinality
+
+
+def create_buckets(data, num_buckets):
+    # Extract the second values from the pairs
+    second_values = [d[-1] for d in data]
+    
+    # Find the minimum and maximum of the second values
+    min_value = min(second_values)
+    max_value = max(second_values)
+    print(f"!!! Cardinality range of current column [{min_value}, {max_value}]")
+    
+    # Calculate the interval width
+    interval_width = (max_value - min_value) / num_buckets
+    
+    # Initialize the buckets
+    buckets = [[] for _ in range(num_buckets)]
+    
+    if interval_width == 0:
+        # TODO: changed by yang - When all values are the same, distribute items evenly across buckets
+        for i, item in enumerate(data):
+            buckets[i % num_buckets].append(item)
+    else:
+        # Assign each item to the appropriate bucket based on interval width
+        for item in data:
+            _, value = item
+            bucket_index = min(int((value - min_value) / interval_width), num_buckets - 1)
+            buckets[bucket_index].append(item)
+    
+    return buckets
+
+
+
+def sample_from_buckets(buckets, total_samples): # Changed by haibo - now sample with replacement    
+    # Sample based on non-empty bucket
+    non_empty_buckets = [bucket for bucket in buckets if bucket]
+    num_non_empty_buckets = len(non_empty_buckets)
+    samples_per_bucket = total_samples // num_non_empty_buckets
+    remainder_samples = total_samples % num_non_empty_buckets
+    
+    sampled_data = []
+    
+    # Sample from each bucket
+    for i, bucket in enumerate(buckets):
+        if not bucket:
+            continue  # Skip empty bucket
+        
+        num_samples = samples_per_bucket + (1 if i < remainder_samples else 0)
+        
+        # with place back - change: use random.choices instead of choice
+        sampled_data.extend(random.choices(bucket, k=num_samples))
+        
+        # if len(bucket) > num_samples:
+        #     sampled_data.extend(random.sample(bucket, num_samples))
+        # else:
+        #     sampled_data.extend(bucket)  # If fewer than num_samples, take all
+    
+    # Check if we have enough samples; if not, sample randomly from all buckets
+    # if len(sampled_data) < total_samples:
+    #     remaining_samples = total_samples - len(sampled_data)
+    #     all_items = [item for bucket in buckets for item in bucket]
+    #     additional_samples = random.sample(all_items, remaining_samples)
+    #     sampled_data.extend(additional_samples)
+    
+    # Ensure the result is exactly total_samples in case of rounding issues
+    return sampled_data[:total_samples]
+
+
+def sample_in_operator(buckets, total_samples, num_samples_per_bucket=5): # Changed by yang  
+    # Sample based on non-empty bucket
+    non_empty_buckets = [bucket for bucket in buckets if bucket]
+    num_non_empty_buckets = len(non_empty_buckets)
+    
+    # Sample rounds
+    num_rounds = total_samples // num_non_empty_buckets
+    remainder_rounds = total_samples % num_non_empty_buckets
+
+    sampled_data = []
+    
+    # Sample from each bucket for num_rounds times, each with num_samples_per_bucket data
+    for i, bucket in enumerate(buckets):        
+        if not bucket:
+            continue  # Skip empty bucket
+        
+        num_combination = num_rounds + (1 if i < remainder_rounds else 0)
+        seed = _RANDOM_SEED.value
+        
+        for _ in range(num_combination):
+            current_in_tuple = []
+            local_random = random.Random(seed)
+            seed += 1
+            
+            current_in_tuple.extend(
+                [item[0] for item in local_random.choices(bucket, k=num_samples_per_bucket)]
+            )
+            sampled_data.append(current_in_tuple)
+
+    random.shuffle(sampled_data)
+    return sampled_data[:total_samples]
+
+
+
+def format_in_clause_data(in_clause_data):
+    """
+    Processes each nested list in in_clause_data, formats it as 'a', 'b', 'c',
+    and returns the list of formatted strings ready for SQL IN clause.
+    
+    Args:
+    - in_clause_data: A nested list of lists containing strings to be formatted.
+    
+    Returns:
+    - A list of formatted strings, where each string corresponds to a formatted group.
+    """
+    formatted_list = []
+
+    # Iterate over each list in in_clause_data
+    for literal in in_clause_data:
+        # Format each group as a single string with elements separated by ', '
+        
+        formatted_group = ', '.join([f"'{escape_single_quotes(str(item))}'" for item in literal])
+        
+        # Remove the head and tail single quotes
+        formatted_group = formatted_group[1:-1]
+        
+        formatted_list.append(f"{formatted_group}")
+    
+    # print(formatted_list[:5])
+    return formatted_list
+
+
+def gen_param_by_cardinality(template_file, N = 10, K = 50, debug=True):
+    """
+    Input:
+    N: number of buckets to split the cardinality range, default is 10
+    K: number of total samples
+    
+    Output:
+    A list of param list: [[@param1_1, @param1_2, ..., @param1_N], [@param2_1, ..., @param2_N]]
+    """
+    with open(template_file) as f:
+        all_param_lists = []
+        templates = json.load(f)
+        for query_id, template in templates.items():
+            for predicate in template['predicates']:
+                # enumerate all neighbor tables joining with the current one 
+                # and finally mix all params together
+                temp_params_list_mix = []
+                for i in range(len(predicate['join_tables_alias'])):
+                    # add alias to avoid ambiguity
+                    select_table_alias = predicate['alias']
+                    join_table_alias = predicate['join_tables_alias'][i]
+                    
+                    # conditions
+                    left_or_right = predicate['left_or_right'][i]
+                    join_condition = predicate['join_conditions'][i]
+                    from_table = predicate['table'] + " AS " + select_table_alias + ", " + predicate['join_tables'][i] + " AS " + predicate['join_tables_alias'][i]
+                    select_operator = predicate['operator']
+                    select_data_type = predicate['data_type']
+                    
+                    
+                    # we don't have left_or_right == "r"
+                    # Since based on the setup, no matter what join_conditions, we always take the predicate as input
+                    # which means always l or both
+                    if left_or_right == 'both':
+                        select_column = f"{select_table_alias}.{predicate['column']}"
+                        not_null_column = f"{select_table_alias}.{predicate['column']} IS NOT NULL AND "
+                        # it's possible that the joining table has multiple selections on multiple columns
+                        for column_ in predicate['join_tables_column'][i]:
+                            select_column += f", {join_table_alias}.{column_}"
+                            not_null_column += f"{join_table_alias}.{column_} IS NOT NULL AND "
+                            
+                    elif left_or_right == 'l':
+                        select_column = f"{select_table_alias}.{predicate['column']}"
+                        not_null_column = f"{select_table_alias}.{predicate['column']}" + ' IS NOT NULL AND '
+                    
+                    single_select_column = f"{select_table_alias}.{predicate['column']}"
+                    
+                    # Get cardinality regarding operator type
+                    if select_operator in ["LIKE", "NOT LIKE"]:
+                        value_type = "tokenizer" # For now, all the others ("=", "IN", <, >, etc) belong to "count"
+                    else:
+                        value_type = "count"
+                        
+                    print(f"current value_type is {value_type}")
+
+                    # TODO: 'it' is a special joining table that requires specific predicates
+                    if select_table_alias == 'it' and join_table_alias in ['mi', 'miidx', 'pi'] and select_operator == '=':
+                        print("special table it")
+                        if join_table_alias == 'pi':
+                            for _ in range(K):
+                                temp_params_list_mix.append(random.choice(available_it_for_pi))
+                        elif join_table_alias == 'mi':
+                            for _ in range(K):
+                                temp_params_list_mix.append(random.choice(available_it_for_mi))
+                        elif join_table_alias == 'miidx':
+                            for _ in range(K):
+                                temp_params_list_mix.append(random.choice(available_it_for_miidx))
+                    else:
+                        # Step 1: Create buckets and sample from them
+                        ranking_result = get_param_and_cardinality(single_select_column, select_column, from_table, not_null_column, join_condition, value_type)
+
+                        # TODO: range CDF - currently only accept int
+                        if select_operator in [">", ">=", "<", "<=", "="] and select_data_type == "int":
+                            # print(f"Before range-based: {ranking_result}")
+                            with open('pg_test.json', 'w') as f:
+                                ranking_result = sorted(ranking_result)
+                                json.dump(ranking_result, f)
+                            ranking_result = get_range_param_and_cardinality(ranking_result, select_operator)
+                            # print(f"After range-based: {ranking_result}")
+                            with open('pg_test_output.json', 'w') as f:
+                                ranking_result = sorted(ranking_result)
+                                json.dump(ranking_result, f)
+                        
+                        # Create bucket                        
+                        buckets = create_buckets(ranking_result, N)
+                        
+                        # TODO: Step 2: If IN operator, sample K // bucket_num for each bucket, each with 5 params
+                        # else sample from bucket
+                        if select_operator == "IN":
+                            sampled_data = sample_in_operator(buckets, K)
+                            # print(f"before escaping single quote - in clause data: {sampled_data[:5]}")
+                            sampled_data = format_in_clause_data(sampled_data)
+                            # print(f"after escaping single quote - in clause data: {sampled_data[:5]}")
+                            print("get sampled", len(sampled_data))
+                            temp_params_list = sampled_data
+                        else:
+                            sampled_data = sample_from_buckets(buckets, K)
+                            temp_params_list = [i[0] for i in sampled_data]
+                            random.shuffle(temp_params_list)
+                            temp_params_list = [escape_single_quotes(param) for param in temp_params_list]
+                        
+                        # Debug output - show ranges of each bucket and the first 10 item
+                        for i, bucket in enumerate(buckets):
+                            if debug: 
+                                if len(bucket) > 10:
+                                    print(f"Bucket {i + 1}: {bucket[-10:]}")
+                                    second_values = [value for _, value in bucket]
+                                    print(f"  === Cardinality range of bucket {i+1}: [{min(second_values)}, {max(second_values)}]")
+                                else:
+                                    if bucket:
+                                        second_values = [value for _, value in bucket]
+                                        print(f"  === Cardinality range of bucket {i+1}: [{min(second_values)}, {max(second_values)}]")
+
+                        # Mix param lists sampled by each join (pair of table)
+                        temp_params_list_mix = temp_params_list_mix + temp_params_list
+                        
+                random.shuffle(temp_params_list_mix)
+                all_param_lists.append(temp_params_list_mix[:K])
+
+        # if debug:
+        #     for i, final_params_list in enumerate(all_param_lists):
+        #         print(f"params {i}: {final_params_list}\n")
+        return all_param_lists
+
+# Kepler related
+def run_kepler_pipeline(output_dir, template_file, count):
+    counts_output_file = os.path.join(output_dir, "output_counts.json")
+    parameters_output_dir = output_dir
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    command = [
+        "python3", "-m", "kepler.training_data_collection_pipeline.parameter_generator_main",
+        "--database", "imdbloadbase",
+        "--user", "kepler",
+        "--password", "kepler",
+        "--host=localhost",
+        "--template_file", template_file,
+        "--counts_output_file", counts_output_file,
+        "--parameters_output_dir", parameters_output_dir,
+        "--count", str(count),
+        "--robustness_flag", "True"
+    ]
+
+    try:
+        subprocess.run(command, check=True)
+        print("Kepler pipeline executed successfully.")
+        return output_dir
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing pipeline: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+
+
+# CSV related
+# Step 0: find specific matching element (table.column operator with params) within the predicate_template_metadata
+def get_matching_elements(metadata, template_predicates):
+    matching_elements = []
+    
+    for predicate in template_predicates:
+        alias = predicate["alias"]
+        column = predicate["column"]
+        operator = predicate["operator"].lower()
+        data_type = predicate["data_type"]
+        
+        # TODO: Check if alias is "it"
+        if alias == "it":
+            if "it" in metadata:
+                # Use metadata["it"] if available
+                current_metadata = metadata["it"]
+            else:
+                # Otherwise, use join_tables_alias if available
+                join_tables_alias = predicate.get("join_tables_alias")
+                if join_tables_alias:
+                    join_table = join_tables_alias[0].replace("_", "")
+                    alias_with_join = f"{alias}_{join_table}" # TODO: fix here, extra table list for it (e.g. it_pi, it_miidx, etc)
+                    current_metadata = metadata.get(alias_with_join, [])
+                else:
+                    current_metadata = []
+        else:
+            # For other aliases, use the original alias
+            current_metadata = metadata.get(alias, [])
+        
+        # print(f"current_metadata is {current_metadata}")
+        matching_element = next(
+            (item for item in current_metadata if item["column"] == column and 
+                                             item["operator"].lower() == operator and
+                                             item["data_type"] == data_type),
+            None
+        )
+        matching_elements.append(matching_element)
+    
+    return matching_elements
+
+ 
+# Step 1: generate param list by frequency
+def gen_sql_by_template(params_list, frequencies_list, K):
+    sampled_literals = []
+
+    for params, frequencies in zip(params_list, frequencies_list):
+        total_frequency = sum(frequencies)
+        probabilities = [freq / total_frequency for freq in frequencies]
+        sampled_literals.append(np.random.choice(params, p=probabilities, size=K*2))
+
+    sampled_literals = np.transpose(sampled_literals).tolist()
+    sampled_literals = [i for i in sampled_literals if len(set(i)) == len(i)][:K] 
+
+
+    return sampled_literals 
+
+
+# Step 2: save param & frequency
+def get_literal_frequencies(literals):
+    """
+    calculate param with frequency
+    """
+    frequency_dict = collections.defaultdict(int)
+    
+    for literal in literals:
+        frequency_dict[json.dumps(literal)] += 1
+    
+    return frequency_dict
+
+
+def split_literals_and_store_with_frequency(query_id, sampled_literals, seed_value, output_dir, train_size_list=[50, 400], test_size=200):
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # split train & test
+    sampled_literals = list(sampled_literals)
+    random.shuffle(sampled_literals) 
+    test_literals = sampled_literals[:test_size]
+    train_literals = sampled_literals[test_size:]
+    
+    # get distinct train & test literals
+    distinct_train_literals = list(set(map(tuple, train_literals)))
+    distinct_train_literals = [list(item) for item in distinct_train_literals]
+    
+    distinct_test_literals = list(set(map(tuple, test_literals)))
+    distinct_test_literals = [list(item) for item in distinct_test_literals]
+    
+    # calculate frequency
+    train_literal_frequencies = get_literal_frequencies(train_literals)
+    test_literal_frequencies = get_literal_frequencies(test_literals)
+    
+    # Store all train_dicts in a dictionary, keyed by train_size
+    train_dict_dict = {}
+    full_train_dict = {json.dumps(literal): train_literal_frequencies[json.dumps(literal)] for literal in distinct_train_literals}
+    train_dict_dict[len(train_literals)] = full_train_dict
+    test_dict = {json.dumps(literal): test_literal_frequencies[json.dumps(literal)] for literal in distinct_test_literals}
+    
+    for train_size in train_size_list:
+        # Get the subset of train_literals based on the current train_size
+        train_subset = train_literals[:train_size]
+        new_train_literal_freq = get_literal_frequencies(train_subset)
+
+        # Get distinct train literals for this subset
+        distinct_train_subset = list(set(map(tuple, train_subset)))
+        distinct_train_subset = [list(item) for item in distinct_train_subset]
+        
+        # Create a frequency dictionary for this subset
+        train_dict = {json.dumps(literal): new_train_literal_freq[json.dumps(literal)] for literal in distinct_train_subset}
+        
+        # Add the current train size dictionary to the list of dictionaries
+        train_dict_dict[train_size] = train_dict
+    
+    
+    # Ensure the directory exists
+    base_dir = "frequency"
+    output_dir_path = os.path.join(output_dir, base_dir)
+    os.makedirs(output_dir_path, exist_ok=True)
+
+    # Save each train literal dict with frequency based on train_size_list, including full size
+    for train_size, train_dict in train_dict_dict.items():
+        train_output_file = os.path.join(output_dir_path, f"{query_id}_train_{train_size}_freq.json")
+        with open(train_output_file, 'w') as train_file:
+            json.dump(train_dict, train_file, indent=4)
+
+    # Save test literals with frequency
+    test_output_file = os.path.join(output_dir_path, f"{query_id}_test_freq.json")
+    with open(test_output_file, 'w') as test_file:
+        json.dump(test_dict, test_file, indent=4)
+    
+    
+    return train_dict_dict, test_dict
+
+
+###################
+# PQO input related
+def save_pqo_files(query_id, data, output_dir, description): # description = {train_size}_training / testing
+    os.makedirs(output_dir, exist_ok=True)
+    output_json = {}
+
+    new_sql_template = data[query_id]["query"]
+    literals = data[query_id]["params"]
+
+    for index, combination in enumerate(literals):
+        query_str = new_sql_template
+        for i, param in enumerate(combination):
+            param = str(param).strip()
+            pattern = re.compile(rf"@param{i}\b")
+            query_str = pattern.sub(param, query_str)
+            # query_str = query_str.replace(f"@param{i}", str(param))
+        
+        key = f"{query_id}_{description}_{index}"
+        output_json[key] = query_str
+
+    # PQO query file naming
+    file_name = f'{query_id}_{description}.json'
+    output_file = os.path.join(output_dir, file_name)
+    if os.path.exists(output_file):
+        print(f"{file_name} already exists, skipping save.")
+        return
+    
+    with open(output_file, 'w', encoding='utf-8') as json_file:
+        json.dump(output_json, json_file, indent=4)
+
+
+def save_pqo_predicates(query_id, training_data, testing_data, output_dir, train_size):
+    os.makedirs(output_dir, exist_ok=True)
+
+    def save_combinations(data, file_name):
+        output_file = os.path.join(output_dir, file_name)
+        if os.path.exists(output_file):
+            print(f"{file_name} already exists, skipping save.")
+            return
+        
+        with open(output_file, 'w', encoding='utf-8') as file:
+            for i, combination in enumerate(data["params"]):
+                formatted_items = []
+                for j, item in enumerate(combination):
+                    predicate = data["predicates"][j]
+                    table = predicate["alias"]
+                    column = predicate["column"]
+                    operator = predicate["operator"]
+                    data_type = predicate["data_type"]
+                    
+                    # Format the param based on its data type
+                    if data_type == "text":
+                        formatted_param = f"'{item}'"
+                    else:
+                        formatted_param = item
+                    
+                    # Format the param if the operator is "in"
+                    if operator.lower() == "in":
+                        formatted_param = f"({formatted_param})"
+                    
+                    # Create the formatted string as table.column operator param
+                    formatted_items.append(f"{table}.{column} {operator} {formatted_param}")
+                
+                # Create the combination string
+                combination_str = '["' + '", "'.join(formatted_items) + '"]'
+                
+                # Write to the file
+                if i < len(data["params"]) - 1:
+                    file.write(combination_str + ',\n')
+                else:
+                    file.write(combination_str + '\n')
+
+
+    # Save training combinations
+    save_combinations(training_data[query_id], f'{query_id}_{train_size}_training.txt')
+
+    # Save testing combinations
+    save_combinations(testing_data[query_id], f'{query_id}_testing.txt')
+
+
+# Save outputs
+def prepare_directories(output_dir):
+    """
+    Prepares the directory structure for storing the templates and PQO files.
+
+    Args:
+    output_dir (str): The base directory for saving files.
+
+    Returns:
+    dict: A dictionary with the paths to various directories.
+    """
+    dirs = {
+        'training': os.path.join(output_dir, 'training'),
+        'testing': os.path.join(output_dir, 'testing'),
+        'PQO_query': os.path.join(output_dir, 'PQO', 'query'),
+        'PQO_predicates': os.path.join(output_dir, 'PQO', 'predicates'),
+        'metadata': os.path.join(output_dir, 'metadata')
+    }
+
+    # Create the directories if they don't exist
+    for dir_path in dirs.values():
+        os.makedirs(dir_path, exist_ok=True)
+
+    return dirs
+   
+    
+def load_template(template_file, query_id):
+    """
+    Load the query and predicates from a JSON template file.
+    
+    Args:
+    template_file (str): Path to the JSON file containing the query templates.
+    
+    Returns:
+    tuple: query_id, query, and predicates from the first template.
+    """
+    # Load the JSON template file
+    with open(template_file, 'r') as file:
+        templates = json.load(file)
+    
+    # Extract the corresponding query template
+    template = templates[query_id]
+    query = template['query']
+    predicates = template['predicates']
+    
+    # Check if 'params' exists in the template, if not set it to None
+    original_param_list = template.get('params', None)
+    
+    return query, predicates, original_param_list
+
+
+def save_templates_and_pqo(query_id, query, predicates, training_params, testing_params, dirs, train_size, mode="original"):
+    """
+    Save the full, training, and testing templates, and corresponding PQO files.
+
+    Args:
+    query_id (str): The ID of the query.
+    query (str): The query string.
+    predicates (list): List of predicates.
+    training_params (list): List of training parameters.
+    testing_params (list): List of testing parameters.
+    dirs (dict): A dictionary containing the paths to the directories for saving the files.
+    """
+    # Create training, and testing template dictionaries
+    training_template = {
+        query_id: {
+            "query": query,
+            "predicates": predicates,
+            "params": training_params
+        }
+    }
+
+    testing_template = {
+        query_id: {
+            "query": query,
+            "predicates": predicates,
+            "params": testing_params
+        }
+    }
+
+    # Save training template
+    training_output_file = os.path.join(dirs['training'], f"{query_id}_training_{mode}_{train_size}.json")
+    with open(training_output_file, 'w') as out_file:
+        json.dump(training_template, out_file, indent=4)
+
+    # Save testing template
+    testing_output_file = os.path.join(dirs['testing'], f"{query_id}_testing_{mode}.json")
+    if os.path.exists(testing_output_file):
+        print(f"{query_id}_testing_{mode}.json already exists, skipping save.")
+    else:
+        with open(testing_output_file, 'w') as out_file:
+            json.dump(testing_template, out_file, indent=4)
+
+    if mode == "original":
+        # PQO directories for predicates and queries
+        pqo_query_dir = os.path.join(dirs['PQO_query'])
+        pqo_predicates_dir = os.path.join(dirs['PQO_predicates'])
+        
+        # Save PQO files
+        save_pqo_files(query_id, training_template, pqo_query_dir, f'training_{train_size}')
+        save_pqo_files(query_id, testing_template, pqo_query_dir, f'testing')
+        save_pqo_predicates(query_id, training_template, testing_template, pqo_predicates_dir, train_size)
+
+    
+# generate training & testing set
+def generate_param_list_from_dict(data_dict, mode):
+    param_list = []
+    if mode == 'distinct':
+        # In 'distinct' mode, use keys (unique literals) only once
+        param_list = [eval(key) for key in data_dict.keys()]
+    elif mode == 'original':
+        # In 'original' mode, replicate keys by their frequencies
+        for key, freq in data_dict.items():
+            param_list.extend([eval(key)] * freq)
+    random.shuffle(param_list)
+    return param_list
+
+
+# TODO: filter the param list
+def filter_invalid_combinations(param_list, predicates):
+    """
+    Filters out invalid parameter combinations where the same column in the same table 
+    has conflicting parameter values, ensuring proper relationships between
+    <, >, <=, and >= operators, and that all parameter values for the same column
+    (even with different operators like LIKE and NOT LIKE) are distinct.
+    
+    Args:
+    - param_list: List of parameter combinations.
+    - predicates: List of predicates containing column, table, and operator information.
+    
+    Returns:
+    - A filtered list of valid parameter combinations.
+    """
+    filtered_params = []
+    
+    # Group operators by type
+    like_group = ['LIKE', 'NOT LIKE']
+    equals_group = ['=', '!=']
+    comparison_group = ['<', '>', '<=', '>=']
+
+    for params in param_list:
+        valid = True
+        table_column_map = {}  # Store the values for each table+column combination by group
+
+        # Iterate through predicates and associated params
+        for i, predicate in enumerate(predicates):
+            table = predicate['table']
+            column = predicate['column']
+            operator = predicate['operator']
+            value = params[i]
+            
+            table_column_key = f"{table}.{column}"  # Combine table and column for uniqueness
+            
+            # Initialize the map if this column hasn't been encountered before
+            if table_column_key not in table_column_map:
+                table_column_map[table_column_key] = {'like_group': [], 'equals_group': [], 'comparison_group': []}
+            
+            # Place the value into the correct group based on the operator
+            if operator in like_group:
+                group = 'like_group'
+            elif operator in equals_group:
+                group = 'equals_group'
+            elif operator in comparison_group:
+                group = 'comparison_group'
+            else:
+                continue  # Skip unknown operators for now
+
+            # Ensure all values in the group are distinct
+            if value in table_column_map[table_column_key][group]:
+                valid = False
+                break
+            else:
+                # Store (operator, value) in comparison group if it's comparison-related
+                if group == 'comparison_group':
+                    table_column_map[table_column_key][group].append((operator, value))
+                else:
+                    table_column_map[table_column_key][group].append(value)
+
+        # After collecting all params for this row, check the comparison conditions
+        if valid:
+            comparison_map = table_column_map[table_column_key]['comparison_group']
+            
+            # Iterate through all comparison operators to check their relationships
+            for op1, val1 in comparison_map:
+                for op2, val2 in comparison_map:
+                    # Check conflicting comparisons between <, >, <=, >=
+                    if op1 == '>' and op2 == '<' and val1 >= val2:
+                        valid = False
+                    if op1 == '>=' and op2 == '<=' and val1 > val2:
+                        valid = False
+                    if op1 == '>' and op2 == '<=' and val1 >= val2:
+                        valid = False
+                    if op1 == '>=' and op2 == '<' and val1 > val2:
+                        valid = False
+
+        # Add valid parameter combinations to the filtered list
+        if valid:
+            filtered_params.append(params)
+    
+    return filtered_params
+
+def execute_query(cursor, query):
+    try:
+        # TODO: change by yang - just to make sure it return result
+        query = query.strip()
+        if query.endswith(";"):
+            query = query[:-1]
+        query += " LIMIT 5;"
+
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        return rows
+    except psycopg2.OperationalError as e:
+        logging.error(f"OperationalError: {e}")
+        return []
+    
+    except psycopg2.DatabaseError as e:
+        logging.error(f"DatabaseError: {e}")
+        return []
+    
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        return []
+    
+
+def test_query_returns(query, param_list, db_config, query_id, robustness, db_instance, method="cardinality", count=251):
+    # connect to db
+    conn = psycopg2.connect(
+        dbname=db_config['dbname'],
+        user=db_config['user'],
+        password=db_config['password'],
+        host=db_config['host'],
+        port=db_config['port']
+    )
+
+    cursor = conn.cursor()
+    
+    # cursor.execute(f"SET statement_timeout = 3000")
+    
+    # initialize
+    counter = 0
+    clean_param_list = []
+    
+    param_counter = 0
+
+    # test query if it returns value
+    for params in param_list:
+        # Add break condition for param_counter
+        if param_counter >= 10000 and counter < 10:
+            print(f"Breaking due to param_counter limit: {param_counter} params checked with only {counter} matches")
+            break
+        
+        # get full query instance
+        print(f'{param_counter}. {counter} - {params}')
+        test_query = query
+        
+        for i, param in enumerate(params):
+            param = str(param).strip()
+            # Attempt to create and use the regex pattern
+            try:
+                pattern = re.compile(rf"@param{i}\b")  # Compile regex
+                test_query = pattern.sub(param, test_query)  # Perform substitution
+            except re.error as e:
+                print(f"Skipping param {param} due to regex error: {e}")
+                continue  # Skip this param and move to the next one
+        
+        rows = execute_query(cursor, test_query)
+        cursor.execute('COMMIT')  # commit after each execution to clear any locks
+        
+        if len(rows) > 0:
+            counter += 1
+            clean_param_list.append(params)
+        
+        if counter % 100 == 0 and counter != 0:
+            print(counter)
+        # if counter != 0:
+        #     print(counter)
+            
+        if counter == count:
+            break
+        
+        param_counter += 1
+
+    # close db
+    cursor.close()
+    conn.close()
+
+    if not os.path.exists('0_sample_analysis'):
+        os.makedirs('0_sample_analysis')
+    
+    # Prepare the file path
+    file_path = f'0_sample_analysis/sample_workload_count_{count}.csv'
+    
+    # Prepare the new row data
+    new_row = [query_id, robustness, method, db_instance, param_counter]
+    
+    # Check if file exists
+    if os.path.exists(file_path):
+        # Append to existing file
+        with open(file_path, 'a', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(new_row)
+    else:
+        # Create new file with header and first row
+        with open(file_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['query_id', 'robustness_pipeline', 'method', 'db_instance', 'param_counter'])  # Write header
+            writer.writerow(new_row)  # Write data
+    
+    return clean_param_list
+
+
+# generation based on selection
+def process_train_and_test_data(output_dir, query_id, query, predicates, train_dict_dict, test_dict):
+    # Initialize a metadata dictionary to store relevant information
+    metadata = {}
+
+    # Generate params for training and testing
+    for mode in ["original", "distinct"]:
+        for train_size in sorted(train_dict_dict.keys()):  # train_size_list + full size
+            training_params = generate_param_list_from_dict(train_dict_dict[train_size], mode)
+            testing_params = generate_param_list_from_dict(test_dict, mode)
+            print(f"{mode} (train size: {train_size}): training {len(training_params)}, testing {len(testing_params)}")
+
+            # Save metadata for each mode
+            metadata[f"{mode}_testing_params"] = len(testing_params)
+            metadata[f"{mode}_{train_size}_training_params"] = len(training_params)
+
+            # Save templates and PQO for each train size
+            save_templates_and_pqo(query_id, query, predicates, training_params, testing_params, output_dir, train_size, mode)
+
+    # Save metadata
+    save_metadata_to_csv(output_dir['metadata'], metadata, query_id)
+    
+
+###################
+# generation based on selection
+def gen_full_cardinality(db_config, output_dir, template_file, query_id, robustness, db_instance, param_choice_list, seed_value, count, train_size_list=[50, 400], test_size=200, method="cardinality"):
+    # preparation
+    dirs = prepare_directories(output_dir)
+    query, predicates, _ = load_template(template_file, query_id)
+    
+    # Ensure param_choice_list contains lists of parameters
+    if not all(isinstance(param, list) for param in param_choice_list):
+        raise ValueError("param_choice_list should contain lists of parameters.")
+    
+    # One-on-One
+    param_list = list(zip(*param_choice_list))
+    param_list = [list(params) for params in param_list] # Convert tuples to lists
+    # param_list = filter_invalid_combinations(param_list, predicates)
+    print('filter_out card', len(param_list))
+    
+    # TODO: execute
+    param_list = test_query_returns(query, param_list, db_config, query_id, robustness, db_instance, method=method)
+    
+    # TODO: Escape single quotes
+    # param_list = [[escape_single_quotes(param) for param in params] for params in param_list]
+    random.shuffle(param_list)
+    # print(len(param_list))
+    
+    # Process train and testing files
+    train_dict_dict, test_dict = split_literals_and_store_with_frequency(query_id, param_list, seed_value, output_dir, train_size_list, test_size)
+    process_train_and_test_data(dirs, query_id, query, predicates, train_dict_dict, test_dict)
+
+
+
+def gen_full_csv(output_dir, template_file, query_id, train_dict_dict, test_dict):
+    # preparation
+    dirs = prepare_directories(output_dir)
+    query, predicates, _ = load_template(template_file, query_id)
+    # print(test_dict)
+
+    # Generate params for training and testing
+    process_train_and_test_data(dirs, query_id, query, predicates, train_dict_dict, test_dict)
+
+
+
+def gen_full_kepler(output_dir, original_file, query_id, robustness, db_instance, seed_value, db_config, train_size_list=[50, 400], test_size=200):
+    # preparation
+    dirs = prepare_directories(output_dir)
+    query, predicates, original_param_list = load_template(original_file, query_id)
+        
+    # TODO: match param_generator _get_numeric_operator_adjustment
+    def adjust_predicates(predicates):
+        for predicate in predicates:
+            if predicate.get("data_type") == "int":
+                if "min" in predicate:
+                    predicate["min"] -= 1  # round -> min -= 1
+                if "max" in predicate:
+                    predicate["max"] += 1  # round -> max += 1
+
+        return predicates
+    predicates = adjust_predicates(predicates)
+    
+    # TODO: find in operator indices, no need for escape_single_quotes for that specific param
+    def find_in_operator_indices(predicates):
+        """Find indices of predicates where operator is 'in'."""
+        return [index for index, predicate in enumerate(predicates) 
+                if predicate.get('operator', '').lower() == 'in']
+    in_operator_indices = find_in_operator_indices(predicates)
+    
+    # Escape single quotes
+    param_list = [
+        [
+            param if i in in_operator_indices else escape_single_quotes(param)
+            for i, param in enumerate(params)
+        ]
+        for params in original_param_list
+    ]
+    param_list = test_query_returns(query, param_list, db_config, query_id, robustness, db_instance, method="kepler")
+    
+    # Process train and testing files
+    train_dict_dict, test_dict = split_literals_and_store_with_frequency(query_id, param_list, seed_value, output_dir, train_size_list, test_size)
+    process_train_and_test_data(dirs, query_id, query, predicates, train_dict_dict, test_dict)
+
+    
+###################
+# TODO: Create new template file for each db instance
+def load_and_save_template(template_file, output_dir, query_id, robustness="sliding", instance_num=0):
+    # Step 1: Load template file
+    with open(template_file, 'r') as file:
+        templates = json.load(file)
+    
+    # Get current template data
+    template = templates[query_id]
+    query = template['query']
+    predicates = template['predicates']
+    
+    # Modify based on robustness type
+    prefix = ""
+    if robustness == "sliding":
+        prefix = "sampled_"
+    elif robustness == "random":
+        prefix = "random_"
+    elif robustness == "category":
+        prefix = "cat_"
+    
+    suffix = f"_{instance_num}"
+    
+    # Modify query
+    query = modify_query(prefix, suffix, query)
+    
+    # Modify templates
+    for predicate in predicates:
+        predicate["table"] = f"{prefix}{predicate['table']}{suffix}"
+        predicate["join_tables"] = [f"{prefix}{table}{suffix}" for table in predicate["join_tables"]]
+    
+    # Step 2: Save the modified content
+    updated_templates = {
+        query_id: {
+            "query": query,
+            "predicates": predicates
+        }
+    }
+    
+    # Save as the new db_instance template file
+    new_template_file = os.path.join(output_dir, f"{query_id}.json")
+    with open(new_template_file, 'w') as file:
+        json.dump(updated_templates, file, indent=4)
+    
+    return new_template_file
+
+
+def main(unused_argv):
+    # metadata related args
+    selection = _SELECTION.value
+    seed_value = _RANDOM_SEED.value
+    output_dir = _OUTPUT_DIR.value
+    robustness = _ROBUSTNESS.value
+    
+    # specific query related args
+    query_id = _QUERY_ID.value
+    template_file = _TEMPLATE_FILE.value
+    metadata_file = _METADATA_FILE.value
+    
+    # training & testing related args
+    count = _COUNT.value
+    test_size = _TEST_SIZE.value
+    
+    random.seed(seed_value)
+    np.random.seed(seed_value)
+    
+    db_config = {
+        'dbname': 'imdbloadbase',
+        'user': 'kepler',
+        'password': 'kepler',
+        'host': 'localhost',
+        'port': '5431'
+    }
+    
+    # create new instance_dir TODO: change here for testing more instances, e.g. range(9)
+    for i in [1, 4]:
+        if robustness == "category" and i in [0, 5, 8]: # TODO: only 1, 2, 3, 4, 6, 7 has valid kind_type name
+            continue
+        instance_dir = os.path.join(output_dir, robustness, f"db_instance_{i}")
+        os.makedirs(instance_dir, exist_ok=True)
+
+        current_template_file = load_and_save_template(template_file, instance_dir, query_id, robustness, instance_num=i)
+        # print(instance_dir, current_template_file)
+
+        # save input files
+        if selection == "cardinality":
+            base_dir = "cardinality/inputs"
+            full_output_dir = os.path.join(instance_dir, base_dir)
+            param_choice_list = gen_param_by_cardinality(current_template_file, N = 10, K = count) # K change from 50 to count
+            print(len(param_choice_list), len(param_choice_list[0]), [param_choice_list[i][0] for i in range(len(param_choice_list))])
+            gen_full_cardinality(db_config, full_output_dir, current_template_file, query_id, robustness, i, param_choice_list, seed_value, count, train_size_list=[50, 400], test_size=test_size)
+        # elif selection == "cardinality_full":
+        #     base_dir = "cardinality_full/inputs"
+        #     full_output_dir = os.path.join(instance_dir, base_dir)
+        #     param_choice_list = gen_param_by_cardinality_full(current_template_file, N = 10, K = count) # K change from 50 to count
+        #     print(len(param_choice_list), len(param_choice_list[0]), [param_choice_list[i][0] for i in range(len(param_choice_list))])
+        #     gen_full_cardinality(db_config, full_output_dir, current_template_file, query_id, robustness, i, param_choice_list, seed_value, count, train_size_list=[50, 400], test_size=test_size, method="cardinality_full")
+        elif selection == "csv":
+            # save input files
+            base_dir = "csv/inputs"
+            full_output_dir = os.path.join(instance_dir, base_dir)
+            
+            # Check if all required values are provided
+            check_required_values(metadata_file)
+                    
+            # Step 0: find corresponding params & frequencies
+            with open(_METADATA_FILE.value) as f:
+                metadata = json.load(f)
+            with open(current_template_file) as f:
+                template_file_content = json.load(f)
+            
+            template_predicates = template_file_content[query_id]["predicates"]
+                
+            matching_elements = get_matching_elements(metadata, template_predicates)
+            # print(f'csv matching elements:\n {matching_elements}')
+            params, frequencies = [], []
+            for element in matching_elements:
+                if element:
+                    params.append(element["params"])
+                    frequencies.append(element["frequencies"])
+            print('template', len(template_predicates), '- generate param', len(params))
+                    
+            # Step 1: generate param list based on the frequency
+            sampled_literals = gen_sql_by_template(params, frequencies, count)
+            sampled_literals = np.array(sampled_literals)
+            np.random.shuffle(sampled_literals)
+            sampled_literals = sampled_literals.tolist()
+            # sampled_literals = filter_invalid_combinations(sampled_literals, template_predicates)
+            print(len(sampled_literals), len(sampled_literals[0]))
+            
+            # TODO: execute
+            query, _, _ = load_template(current_template_file, query_id)
+            sampled_literals = test_query_returns(query, sampled_literals, db_config, query_id, robustness, i, method="csv")
+                    
+            # Step 2: get the train & test frequency
+            train_dict_dict, test_dict = split_literals_and_store_with_frequency(query_id, sampled_literals, seed_value, full_output_dir, train_size_list=[50, 400], test_size=test_size)
+            
+            # Step 3: generate kepler & PQO input format
+            gen_full_csv(full_output_dir, current_template_file, query_id, train_dict_dict, test_dict)
+        elif selection == "kepler":
+            base_dir = "kepler/inputs"
+            temp_dir = os.path.join(instance_dir, base_dir)
+            full_output_dir = run_kepler_pipeline(temp_dir, current_template_file, count)
+            new_template = os.path.join(temp_dir, f"{query_id}-{count}.json")
+            print(new_template)
+            gen_full_kepler(full_output_dir, new_template, query_id, robustness, i, seed_value, db_config, train_size_list=[50, 400], test_size=200)
+    
+        
+
+
+if __name__ == "__main__":
+    app.run(main)
