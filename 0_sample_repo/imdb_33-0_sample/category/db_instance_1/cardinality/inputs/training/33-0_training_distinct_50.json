@@ -1,0 +1,743 @@
+{
+  "33-0": {
+    "query": "SELECT MIN(cn1.name) AS first_company, MIN(cn2.name) AS second_company, MIN(mi_idx1.info) AS first_rating, MIN(mi_idx2.info) AS second_rating, MIN(t1.title) AS first_movie, MIN(t2.title) AS second_movie\n FROM cat_company_name_1 AS cn1,\n cat_company_name_1 AS cn2,\n cat_info_type_1 AS it1,\n cat_info_type_1 AS it2,\n cat_kind_type_1 AS kt1,\n cat_kind_type_1 AS kt2,\n cat_movie_companies_1 AS mc1,\n cat_movie_companies_1 AS mc2,\n cat_movie_info_idx_1 AS mi_idx1,\n cat_movie_info_idx_1 AS mi_idx2,\n cat_title_1 AS t1,\n cat_title_1 AS t2\n WHERE it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id \nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND mi_idx2.info < '@param5'\nAND t2.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "original_alias": "cn1",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_name_1",
+        "join_tables": [
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_1",
+        "join_tables": [
+          "cat_movie_info_idx_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_1",
+        "join_tables": [
+          "cat_movie_info_idx_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt1",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_kind_type_1",
+        "join_tables": [
+          "cat_title_1"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt2",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_kind_type_1",
+        "join_tables": [
+          "cat_title_1"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ]
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "original_alias": "mi_idx2",
+        "column": "info",
+        "operator": "<",
+        "data_type": "text",
+        "table": "cat_movie_info_idx_1",
+        "join_tables": [
+          "cat_info_type_1",
+          "cat_title_1",
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "it",
+          "t",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "production_year"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id",
+          "t.id = mi_idx.movie_id",
+          "mi_idx.movie_id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "cat_title_1",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "cat_movie_info_idx_1",
+          "cat_kind_type_1",
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "cat_title_1",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "cat_movie_info_idx_1",
+          "cat_kind_type_1",
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[fr]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "9",
+        1975,
+        2010
+      ],
+      [
+        "[us]",
+        "bottom 10 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5",
+        1997,
+        2002
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.5",
+        1941,
+        2010
+      ],
+      [
+        "[de]",
+        "top 250 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.4",
+        2006,
+        2009
+      ],
+      [
+        "[mz]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5",
+        2007,
+        2010
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "9",
+        1995,
+        2001
+      ],
+      [
+        "[cd]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "10",
+        1984,
+        2006
+      ],
+      [
+        "[gb]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "4.6",
+        1963,
+        2006
+      ],
+      [
+        "[fr]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6",
+        1992,
+        2003
+      ],
+      [
+        "[bs]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.2",
+        1920,
+        1956
+      ],
+      [
+        "[fr]",
+        "top 250 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6",
+        2009,
+        2014
+      ],
+      [
+        "[gb]",
+        "bottom 10 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.8",
+        1968,
+        2004
+      ],
+      [
+        "[gb]",
+        "bottom 10 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6",
+        1990,
+        2011
+      ],
+      [
+        "[gb]",
+        "bottom 10 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "16",
+        2002,
+        2005
+      ],
+      [
+        "[mu]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.4",
+        1978,
+        1983
+      ],
+      [
+        "[gb]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5",
+        1990,
+        2002
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "3.0......5",
+        2008,
+        2011
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6",
+        1918,
+        2006
+      ],
+      [
+        "[fr]",
+        "top 250 rank",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5",
+        2013,
+        2016
+      ],
+      [
+        "[yucs]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "8",
+        1958,
+        2008
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7.3",
+        1961,
+        1969
+      ],
+      [
+        "[fr]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "36",
+        1999,
+        2009
+      ],
+      [
+        "[cl]",
+        "top 250 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6",
+        1932,
+        1985
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7.4",
+        1927,
+        1986
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "30",
+        1995,
+        1998
+      ],
+      [
+        "[ar]",
+        "top 250 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6",
+        1971,
+        1975
+      ],
+      [
+        "[fr]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "11011110.0",
+        1954,
+        1974
+      ],
+      [
+        "[cshh]",
+        "top 250 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7.7",
+        1917,
+        1987
+      ],
+      [
+        "[fr]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "33",
+        1978,
+        2010
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.7",
+        1895,
+        1941
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "3.7",
+        1917,
+        1977
+      ],
+      [
+        "[de]",
+        "top 250 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "11",
+        1980,
+        2003
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.6",
+        1971,
+        1975
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "9",
+        1904,
+        1921
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7",
+        1950,
+        2000
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "14",
+        1992,
+        2017
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "8",
+        1955,
+        1972
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.3",
+        1959,
+        2019
+      ],
+      [
+        "[id]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.8",
+        1971,
+        1993
+      ],
+      [
+        "[fr]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5",
+        1982,
+        2010
+      ],
+      [
+        "[hk]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.7",
+        1892,
+        2012
+      ],
+      [
+        "[cg]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "3.8",
+        1956,
+        1958
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.0",
+        1977,
+        2010
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "4.9",
+        1969,
+        2001
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.6",
+        1987,
+        1990
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "4.7",
+        1968,
+        2007
+      ],
+      [
+        "[cm]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7.2",
+        1918,
+        2005
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "8",
+        1969,
+        2002
+      ],
+      [
+        "[gb]",
+        "bottom 10 rank",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "2.....1.32",
+        2007,
+        2011
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.5",
+        1961,
+        2012
+      ]
+    ]
+  }
+}

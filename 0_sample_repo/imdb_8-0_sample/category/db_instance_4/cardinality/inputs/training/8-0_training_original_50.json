@@ -1,0 +1,685 @@
+{
+    "8-0": {
+        "query": "SELECT MIN(an.name) AS actress_pseudonym, MIN(t.title) AS japanese_movie_dubbed\nFROM cat_aka_name_4 AS an,\n cat_cast_info_4 AS ci,\n cat_company_name_4 AS cn,\n cat_movie_companies_4 AS mc,\n cat_name_4 AS n,\n cat_role_type_4 AS rt,\n cat_title_4 AS t\nWHERE an.person_id = n.id\n AND n.id = ci.person_id\n AND ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND an.person_id = ci.person_id\n AND ci.movie_id = mc.movie_id\nAND ci.note = '@param0'\nAND cn.country_code = '@param1'\nAND mc.note LIKE '@param2'\nAND mc.note NOT LIKE '@param3'\nAND n.name LIKE '@param4'\nAND n.name NOT LIKE '@param5'\nAND rt.role = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_cast_info_4",
+                "join_tables_alias": [
+                    "n",
+                    "t",
+                    "rt",
+                    "an",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_name_4",
+                    "cat_title_4",
+                    "cat_role_type_4",
+                    "cat_aka_name_4",
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "ci.movie_id = t.id",
+                    "ci.role_id = rt.id",
+                    "an.person_id = ci.person_id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "name"
+                    ],
+                    [],
+                    [
+                        "role"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_company_name_4",
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_company_name_4",
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_aka_name_4",
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_aka_name_4",
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_role_type_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "ci.role_id = rt.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(producer)",
+                "[us]",
+                "%USA%",
+                "%2009%",
+                "%Mark%",
+                "%Esiri%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%USA%",
+                "%worldwide%",
+                "%Eric%",
+                "%D%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%worldwide%",
+                "%USA%",
+                "%Steve%",
+                "%Laurent%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%p%",
+                "%DVD%",
+                "%Shane%",
+                "%Shaun%",
+                "actor"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%DVD%",
+                "%worldwide%",
+                "%Alex%",
+                "%Jeff%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%USA%",
+                "%2002%",
+                "%l%",
+                "%Herv\u00c3\u00a9%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%USA%",
+                "%2003%",
+                "%Franco%",
+                "%Dennis%",
+                "producer"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%DVD%",
+                "%worldwide%",
+                "%Corey%",
+                "%Giordano%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%DVD%",
+                "%all%",
+                "%John%",
+                "%Dane%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%worldwide%",
+                "%USA%",
+                "%s%",
+                "%Dupuis%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%DVD%",
+                "%2007%",
+                "%Joe%",
+                "%Laurent%",
+                "producer"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%2005%",
+                "%2008%",
+                "%Brad%",
+                "%Franco%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%DVD%",
+                "%Germany%",
+                "%Joe%",
+                "%D%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%USA%",
+                "%war%",
+                "%Shaun%",
+                "%Jeff%",
+                "actor"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%media%",
+                "%2009%",
+                "%Peter%",
+                "%Bob%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%2009%",
+                "%USA%",
+                "%D%",
+                "%Hefner%",
+                "producer"
+            ],
+            [
+                "(associate producer)",
+                "[us]",
+                "%DVD%",
+                "%2003%",
+                "%D%",
+                "%Graf%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%2010%",
+                "%worldwide%",
+                "%George%",
+                "%Burke%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%with%",
+                "%DVD%",
+                "%David%",
+                "%Dobson%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%DVD%",
+                "%2010%",
+                "%Costello%",
+                "%Roger%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%2008%",
+                "%s%",
+                "%Steve%",
+                "%Knight%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%p%",
+                "%2007%",
+                "%i%",
+                "%Esiri%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%DVD%",
+                "%USA%",
+                "%Lee%",
+                "%Alec%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%USA%",
+                "%DVD%",
+                "%Ed%",
+                "%Michael%",
+                "actor"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%DVD%",
+                "%USA%",
+                "%G%",
+                "%Kirkpatrick%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%DVD%",
+                "%Australia%",
+                "%Eric%",
+                "%Crest%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%2003%",
+                "%worldwide%",
+                "%George%",
+                "%Gabor%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%2004%",
+                "%2006%",
+                "%P%",
+                "%D%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%2009%",
+                "%DVD%",
+                "%L%",
+                "%Flynt%",
+                "producer"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%DVD%",
+                "%2006%",
+                "%B%",
+                "%Patrick%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%DVD%",
+                "%s%",
+                "%Shaun%",
+                "%Joachim%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%USA%",
+                "%2009%",
+                "%Pau%",
+                "%Steve%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%DVD%",
+                "%worldwide%",
+                "%Michael%",
+                "%Heenan%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%USA%",
+                "%s%",
+                "%Steve%",
+                "%Brugger%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%DVD%",
+                "%o%",
+                "%Ferrara%",
+                "%Jack%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%2006%",
+                "%2009%",
+                "%Joe%",
+                "%George%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%DVD%",
+                "%USA%",
+                "%Bush%",
+                "%Gary%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%USA%",
+                "%2007%",
+                "%Michael%",
+                "%D%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%2006%",
+                "%all%",
+                "%Roger%",
+                "%Crest%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%t%",
+                "%2008%",
+                "%Lee%",
+                "%Kidd%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%USA%",
+                "%s%",
+                "%Ford%",
+                "%Paquet%",
+                "actor"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%DVD%",
+                "%USA%",
+                "%Shylar%",
+                "%Blanc%",
+                "producer"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%2008%",
+                "%worldwide%",
+                "%D%",
+                "%Costello%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%A%",
+                "%2008%",
+                "%Steve%",
+                "%Richard%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%DVD%",
+                "%worldwide%",
+                "%Francois%",
+                "%Dennis%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%DVD%",
+                "%2010%",
+                "%Franco%",
+                "%Alec%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%DVD%",
+                "%2009%",
+                "%Jes\u00c3\u00bas%",
+                "%Forker%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%s%",
+                "%worldwide%",
+                "%Steve%",
+                "%Maurice%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%USA%",
+                "%DVD%",
+                "%D%",
+                "%Jes\u00c3\u00bas%",
+                "producer"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%2006%",
+                "%2009%",
+                "%D%",
+                "%Max%",
+                "producer"
+            ]
+        ]
+    }
+}

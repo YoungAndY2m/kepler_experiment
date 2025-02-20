@@ -1,0 +1,2105 @@
+{
+  "12-0": {
+    "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS drama_horror_movie\nFROM sampled_company_name_4 AS cn,\n sampled_company_type_4 AS ct,\n sampled_info_type_4 AS it1,\n sampled_info_type_4 AS it2,\n sampled_movie_companies_4 AS mc,\n sampled_movie_info_4 AS mi,\n sampled_movie_info_idx_4 AS mi_idx,\n sampled_title_4 AS t\nWHERE t.id = mi.movie_id\n AND t.id = mi_idx.movie_id\n AND mi.info_type_id = it1.id\n AND mi_idx.info_type_id = it2.id\n AND t.id = mc.movie_id\n AND ct.id = mc.company_type_id\n AND cn.id = mc.company_id\n AND mc.movie_id = mi.movie_id\n AND mc.movie_id = mi_idx.movie_id\n AND mi.movie_id = mi_idx.movie_id\nAND cn.country_code = '@param0'\nAND ct.kind = '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info > '@param5'\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_type_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ct.id = mc.company_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4"
+        ],
+        "join_conditions": [
+          "mi.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables": [
+          "sampled_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "mi_idx.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi_idx"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_info_type_4",
+          "sampled_movie_companies_4",
+          "sampled_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mi.info_type_id = it.id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "column": "info",
+        "operator": ">",
+        "data_type": "text",
+        "table": "sampled_movie_info_idx_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_info_type_4",
+          "sampled_movie_companies_4",
+          "sampled_movie_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "mi_idx.info_type_id = it.id",
+          "mc.movie_id = mi_idx.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4",
+          "sampled_movie_info_idx_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4",
+          "sampled_movie_info_idx_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "top 250 rank",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "7.0",
+        "1990",
+        "2008"
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[ru]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "2.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[nl]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "9.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Bulgaria",
+        "7.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "2.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'America",
+        "6.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "5.0",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "production companies",
+        "genres",
+        "votes",
+        "Drama', 'Horror",
+        "8.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Thriller",
+        "2.0",
+        "2005",
+        "2014"
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "6.0",
+        "1950",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "9.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "2.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "top 250 rank",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "2.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[ru]",
+        "distributors",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "5.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "8.0",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "1990",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German",
+        "6.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "8.0",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Thriller",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German",
+        "6.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "countries",
+        "votes",
+        "Germany', 'German",
+        "8.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "7.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "6.5",
+        "1990",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "9.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "bottom 10 rank",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Germany', 'German', 'USA', 'American",
+        "6.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror', 'Western', 'Family",
+        "6.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "6.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror', 'Western', 'Family",
+        "9.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "6.0",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "9.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[ru]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Thriller",
+        "2.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'America",
+        "2.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[ru]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "6.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "5.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "6.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "5.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "2.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[ru]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror",
+        "8.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "7.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "9.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[nl]",
+        "distributors",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "5.0",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German",
+        "8.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "2.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Drama', 'Horror",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "6.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Bulgaria",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "9.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "7.0",
+        "1990",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "8.0",
+        "1990",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "9.0",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Germany', 'German",
+        "6.0",
+        "1950",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "6.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Bulgaria",
+        "7.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Thriller",
+        "6.0",
+        "1990",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror', 'Western', 'Family",
+        "7.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "1950",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "7.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "7.0",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "1950",
+        "2007"
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "8.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "9.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror', 'Western', 'Family",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "2.0",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'America",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "7.0",
+        "2005",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "2.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "5.0",
+        "1950",
+        "2008"
+      ],
+      [
+        "[de]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "7.0",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "9.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "9.0",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German",
+        "9.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "5.0",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "7.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "6.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "7.0",
+        "1990",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror', 'Western', 'Family",
+        "2.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "9.0",
+        "1950",
+        "2005"
+      ],
+      [
+        "[nl]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "2.0",
+        "1950",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Thriller",
+        "2.0",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Drama', 'Horror', 'Western', 'Family",
+        "5.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "top 250 rank",
+        "Horror', 'Thriller",
+        "6.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror', 'Western', 'Family",
+        "8.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'America",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "8.0",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "5.0",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "2.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "9.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "2.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[de]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "2.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "6.5",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'America",
+        "8.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Thriller",
+        "8.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "5.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "bottom 10 rank",
+        "USA', 'America",
+        "7.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "7.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Bulgaria",
+        "6.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "7.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "2.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'America",
+        "8.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.0",
+        "1990",
+        "2014"
+      ],
+      [
+        "[nl]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Horror', 'Western', 'Family",
+        "2.0",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "2.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "9.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.5",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "top 250 rank",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German",
+        "5.0",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "8.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "9.0",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Bulgaria",
+        "6.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "9.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "5.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "1990",
+        "2014"
+      ],
+      [
+        "[nl]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Drama', 'Horror",
+        "9.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "8.0",
+        "1950",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "2.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+        "7.0",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "2.0",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "1990",
+        "2015"
+      ],
+      [
+        "[ru]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "6.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "6.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Germany', 'Swedish', 'German",
+        "6.5",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "6.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "production companies",
+        "genres",
+        "votes",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "8.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+        "6.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "5.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Germany', 'German', 'USA', 'American",
+        "8.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "6.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "1950",
+        "2008"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "8.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Thriller",
+        "8.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "7.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+        "6.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+        "8.0",
+        "2000",
+        "2015"
+      ]
+    ]
+  }
+}

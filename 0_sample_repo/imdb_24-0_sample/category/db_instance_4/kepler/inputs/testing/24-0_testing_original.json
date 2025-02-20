@@ -1,0 +1,2764 @@
+{
+    "24-0": {
+        "query": "SELECT MIN(chn.name) AS voiced_char_name, MIN(n.name) AS voicing_actress_name, MIN(t.title) AS voiced_action_movie_jap_eng\nFROM cat_aka_name_4 AS an,\n   cat_char_name_4 AS chn,\n   cat_cast_info_4 AS ci,\n   cat_company_name_4 AS cn,\n   cat_info_type_4 AS it,\n   cat_keyword_4 AS k,\n   cat_movie_companies_4 AS mc,\n   cat_movie_info_4 AS mi,\n   cat_movie_keyword_4 AS mk,\n   cat_name_4 AS n,\n   cat_role_type_4 AS rt,\n   cat_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mc.movie_id = mk.movie_id\nAND mi.movie_id = ci.movie_id\nAND mi.movie_id = mk.movie_id\nAND ci.movie_id = mk.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param4' OR mi.info LIKE '@param5')\nAND n.gender = '@param6'\nAND n.name LIKE '@param7'\nAND rt.role = '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "mi",
+                    "mk",
+                    "n",
+                    "rt",
+                    "an",
+                    "chn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_movie_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_name_4",
+                    "cat_role_type_4",
+                    "cat_aka_name_4",
+                    "cat_char_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "mc.movie_id = ci.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id",
+                    "rt.id = ci.role_id",
+                    "ci.person_id = an.person_id",
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4",
+                    "cat_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4",
+                    "cat_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_role_type_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "rt.id = ci.role_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_4",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "mi",
+                    "mc",
+                    "ci",
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mc.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(as Spike Dauner)', '(as Naeveh Givens)', '(as Jerrica Fox)', '(as Roy LeRoi)', '(as Ben Schmitt)",
+                "[us]",
+                "goofs",
+                "antivenin', 'exploding-ball', 'herbs', 'tv', 'mysterious-death",
+                "%w%",
+                "%o%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(design stylist)', '(as Joe Damato)', '(as Talen)', '(as Ladislav J.)",
+                "[us]",
+                "release dates",
+                "pubic-hair', 'american-navy', 'original-story', 'cap', 'qi-gong",
+                "%O%",
+                "%r%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Bianca)', '(nude cooking)', '(as Charles Knox)', '(as Bamb\u00c3\u00b9)",
+                "[ar]",
+                "goofs",
+                "pubic-hair', 'fishing-line', 'nightlife', 'armpit', 'passing",
+                "%g%",
+                "%h%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Brian Tuley)', '(as Cassie Lane)', '(video \"Whoa!\")', '(as Bhaskar)",
+                "[ar]",
+                "release dates",
+                "atlantic-city-new-jersey', 'coverup-plot', 'trance-state', 'latin-lover', 'secret-codes",
+                "%:%",
+                "%O%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(segment \"Sucker\")', '(as Ca See)', '(music video)', '(operator: IQ)",
+                "[de]",
+                "countries",
+                "period-in-title', 'overalls', 'urinating-on-ground', 'do-nothing-farming', 'taunt-police",
+                "%S%",
+                "%A%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Paul Igwe)', '(as Jamiee Cooley)', '(as Maria Belucci)', '(as Corry Everson)",
+                "[us]",
+                "certificates",
+                "news-report', 'music-business', 'absurdism', 'cattle-rustling', 'financing",
+                "%a%",
+                "%A%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Damn Davies)', '(as Viktori)', '(as Elexis)', '(as Ines Reber)",
+                "[ca]",
+                "goofs",
+                "blonde', 'year-2006', 'bond-girl', 'throwing-paper-ball', 'no-wave",
+                "%n%",
+                "%d%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Eva Cristaldi)', '(as Brandon Irons)', '(as David Green)', '(as Itzik Aloni)",
+                "[de]",
+                "certificates",
+                "second-part', 'risk-taking', 'hand-maiden', 'dung', 'lafayette-louisiana",
+                "%1%",
+                "%U%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Zenobia Rose)', '(as Raven Mc Call)', '(as R. Bender)', '(as Daniela Tinti)",
+                "[de]",
+                "goofs",
+                "announcer', 'fluffer', 'chibi', 'air-force-base', 'mortal-kombat",
+                "%h%",
+                "%a%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Torrid)', '(as Pat Oseni)', '(as Dixie)', '(as Bik Lawless)",
+                "[us]",
+                "copyright holder",
+                "python', 'yo-yo', 'blood-sucking', 'mini-mart', 'volcanic-eruption",
+                "%r%",
+                "%z%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Poison Ivy)', '(as Franck Gun)', '(as Karin Jonsson)', '(as Stephen Heller)",
+                "[de]",
+                "plot",
+                "reference-to-jeff-goldblum', 'wrestling-promoter', 'creepy-neighbor', 'cotton-swab', 'wrong-choices",
+                "%o%",
+                "%s%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(segment: Rabbit)', '(as Rawling Curtis)', '(as Mallicia)', '(head of promotion)",
+                "[us]",
+                "certificates",
+                "hunt', 'falling-apple', 'masked-killer', 'bandaged-leg', 'news-satire",
+                "%1%",
+                "%U%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ken Calman)', '(as Spanky)', '(facility manager)', '(as Lonnie Colon)",
+                "[de]",
+                "color info",
+                "hunt', 'military-career', 'hand-in-mouth', 'imitating-someone', 'police-commissioner",
+                "%r%",
+                "%o%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Koko B. Ware)', '(designed by)', '(Between Floors)', '(as Mack Thomas)",
+                "[ar]",
+                "release dates",
+                "subway', 'banjo', 'surf-film', 'presentation', 'romantic-obsession",
+                "%h%",
+                "%I%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as D-Shay)', '(as Rick Pons)', '(as Tume Uusitalo)', '(as Bob Ayers)",
+                "[ca]",
+                "goofs",
+                "abbreviation-in-title', 'infantilism', 'bivouac', 'edison', 'pedicure",
+                "%e%",
+                "%s%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Lexxi)', '(as Niky Bellucci)', '(as Rachel Roxxx)', '(as Vikki Vogue)",
+                "[ca]",
+                "genres",
+                "thong-swimsuit', 'pump', 'beheading', 'delivery-woman', 'space-alien",
+                "%c%",
+                "%c%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kristal Summer)', '(as Kam Koushan)', '(as Kristy Redford)', '(as F.J. Lincoln)",
+                "[ar]",
+                "goofs",
+                "pubic-hair', 'skater', 'traffic-jam', 'forced-abortion', 'pakistan",
+                "%v%",
+                "%o%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Anders Stemno)', '(video segments)', '(camera)', '(website producer)",
+                "[ar]",
+                "tech info",
+                "military', 'korean', 'extramarital-affair', 'eternal-life', 'buddha",
+                "%5%",
+                "%:%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Zarena Zapico)', '(as Mayara)', '(as Sporty Spice)', '(as Layla Hill)",
+                "[us]",
+                "goofs",
+                "punched-in-the-face', 'pro-wrestling', 'u.s.-marine', 'military-training', 't-square",
+                "%,%",
+                "%m%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Amanda Winn)', '(as Corey Taylor)', '(as Katja Love)', '(as Rick Shawn)",
+                "[ar]",
+                "genres",
+                "philadelphia-pennsylvania', 'jensen-interceptor', 'mac', 'belly-dancer', 'human-autopsy",
+                "%i%",
+                "%o%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Lira Rose)', '(runner: segments)', '(as Bobbie Barron)', '(drums))",
+                "[us]",
+                "certificates",
+                "reference-to-jeff-goldblum', 'hipster', 'bicycle-race', 'body-mutilation', 'bagpipes",
+                "%1%",
+                "%K%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Debbie Ross)', '(guitar & keyboard)', '(as Vivei)', '(as Mauve)",
+                "[us]",
+                "taglines",
+                "flame-thrower', 'conservatism', 'armed-robbery', 'caesarean-birth', 'hyperspace",
+                "%a%",
+                "%i%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Luc von B)', '(as Bill Hinzman)', '(background score)', '(live tour footage)",
+                "[ca]",
+                "release dates",
+                "betting', 'cardiac-arrest', 'dream-lover', 'rifle', 'conference-table",
+                "%r%",
+                "%n%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(singing coach)', '(voice effects)', '(as Tommie)', '(as Rico Lowry)",
+                "[ar]",
+                "release dates",
+                "thong-swimsuit', 'centaur', '3d-in-title', 'national-hero', 'queer-cinema",
+                "%5%",
+                "%l%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as William B. Jackson)', '(as Zoly Mirlos)', '(as Don Davis)', '(as Timon Kyle)', '(as Martin)",
+                "[us]",
+                "languages",
+                "place-name-in-title', 'adventure-hero', 'red-state', 'gunfight', 'sonar",
+                "%s%",
+                "%s%",
+                "m",
+                "%J%",
+                "actor",
+                1991
+            ],
+            [
+                "(as Spike Dauner)', '(as Saidi Balogun)', '(as Amy Easton)', '(as Leo Rocco)', '(as Crissy M.)",
+                "[de]",
+                "certificates",
+                "reference-to-jeff-goldblum', 'grandparent', 'literary-adaptation', 'foxtrot', 'hangover",
+                "%S%",
+                "%S%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Cornellia)', '(as Donald O''Brian)', '(as S.G. Tarjoto)', '(as Tonee Bell)",
+                "[ca]",
+                "goofs",
+                "snake', 'physical-abuse', 'hourglass', 'female-protagonist', 'reference-to-ac-dc",
+                "%,%",
+                "%a%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Mickey Danson)', '(as Rich McHugh)', '(as Timothy Griepp)', '(as Stan Lubrick)",
+                "[ar]",
+                "release dates",
+                "blood', 'wyatt-earp', 'rune', 'toilet-plunger', 'cover-song",
+                "%e%",
+                "%2%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Nyeema Knoxxx)', '(as Gina Gultier)', '(as Tae)', '(as Nadia Moore)",
+                "[ar]",
+                "goofs",
+                "spectator', 'worry', '1610s', 'capital-punishment', 'armenia",
+                "%y%",
+                "%i%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Luda)', '(as Mickey Lynn)', '(as Odisea)', '(as Mana\u00c3\u00afs)",
+                "[ar]",
+                "release dates",
+                "abbreviation-in-title', 'head-coach', 'over-budget', 'hallway', 'sex-drive",
+                "%2%",
+                "%7%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Angeliqu\u00c3\u00a9)', '(as Lawrence David)', '(as Inmas Mach)', '(as Misty Mc Kayn)",
+                "[ca]",
+                "languages",
+                "animal-in-title', 'emo', 'english-teacher', 'green-beans', 'classic-bareback",
+                "%E%",
+                "%i%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kelsey Landry)', '(as Alicia Allure)', '(as Shelby Mine)', '(as Mark Moore)",
+                "[ca]",
+                "genres",
+                "punched-in-the-face', 'cake-in-the-face', 'scout', 'kicked-in-the-back', 'noah''s-ark",
+                "%r%",
+                "%r%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Mike Manley)', '(tour agent)', '(as Michael Eshaq)', '(as Zolt\u00c3\u00a1n Hess)",
+                "[ar]",
+                "certificates",
+                "dancing', 'open-window', 'little-league', 'great-dane', 'gay-athlete",
+                "%A%",
+                "%S%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Lily)', '(as Elliot Gould)', '(as St. Rev. Jen)', '(as Nikki Allison)",
+                "[ca]",
+                "goofs",
+                "flame-thrower', 'disneyworld', 'totem', 'women''s-basketball', 'skipping",
+                "%e%",
+                "%w%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(dvd extra)', '(as DJ Dope D-Shay)', '(as June Bower)', '(as J. Beazy)",
+                "[us]",
+                "release dates",
+                "explosion', 'click', 'fighting-women', 'world-record', 'running-gag",
+                "%p%",
+                "%H%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Regan Star)', '(as Sharon Darling)', '(as Gabriel Lantos)', '(as Z Catal)",
+                "[us]",
+                "certificates",
+                "python', 'dog-on-bed', 'flower-in-title', 'rapper', 'army-brat",
+                "%5%",
+                "%w%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(segment \"Painted\")', '(as Tony Erickson)', '(visas)', '(fire marshal)",
+                "[us]",
+                "sound mix",
+                "punched-in-the-face', 'deep-purple', 'archaeology', 'blame', 'un-scripted",
+                "%y%",
+                "%o%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Nick Parsons)', '(as Tyron Pinkham)', '(as H. Rustan)', '(as Senza Raggi)",
+                "[ca]",
+                "genres",
+                "subway', 'quarter', 'bahamas', 'trapped-in-space', 'czechploitation",
+                "%c%",
+                "%o%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Nick Stoppani)', '(as Rusty Smith)', '(as Long Chainy)', '(as Emma Redd)",
+                "[ca]",
+                "goofs",
+                "second-part', 'talking-clock', 'founder', 'intentional-goof', 'original-songwriter",
+                "%e%",
+                "%r%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(mythology)', '(as Farshad Kholgi)', '(as Karly Sweet)', '(as Paphwie)",
+                "[ar]",
+                "sound mix",
+                "corpse', 'deleted-scene', 'pavese', 'tin-can', 'fake-accident",
+                "%D%",
+                "%l%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Rita Aruma)', '(as Joseph Tennent)', '(as Eduarda)', '(as Ariane Giselle)",
+                "[de]",
+                "certificates",
+                "shot-in-the-chest', 'freddie-mercury', 'songwriter', 'shrunken-head', 'aboriginal-tribe",
+                "%5%",
+                "%U%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Bridgette)', '(extra) (as Ezra)', '(safety director)', '(as Tim Webber)",
+                "[us]",
+                "goofs",
+                "reptile', 'father-thomas', 'diabetes', 'sarcasm', 'eternal-life",
+                "%o%",
+                "%A%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Linzi Fogarty)', '(as Dick Richards)', '(as Africa Sexx)', '(as Y\u00c3\u00bbdai Kat\u00c3\u00b4)",
+                "[ar]",
+                "goofs",
+                "betting', 'valet', 'eyepatch', 'hare', 'sking-fall",
+                "%s%",
+                "%n%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ry\u00c3\u00b4 Takanishi)', '(as Kohei Yamamoto)', '(as Rich Correll)', '(as Stella Del Mar)",
+                "[us]",
+                "release dates",
+                "reptile', 'death-of-reporter', 'scottish-stereotype', 'electro-shock', 'womens-rights",
+                "%n%",
+                "%c%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Aza)', '(as Reka)', '(as Skye Ransome)', '(as Candice Von)",
+                "[ca]",
+                "certificates",
+                "news-report', 'corporate-warfare', 'designated-driver', 'ncaa', 'hanged-child",
+                "%1%",
+                "%m%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as David Makin)', '(as Pat Moran)', '(as Andy Robinson)', '(animation)",
+                "[us]",
+                "goofs",
+                "military', 'stabbed', 'neon-light', 'extortionist', 'machete-in-the-head",
+                "%u%",
+                "%b%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Julio Alonzo)', '(as Sandra Romaine)', '(as Jazmine LLeigh)', '(as Gregory Webb)",
+                "[ca]",
+                "release dates",
+                "shot-to-death', 'peace-movement', 'priest-with-a-gun', 'cartwheel', 'uncensored",
+                "%a%",
+                "%b%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Pandora)', '(as Nathalie)', '(as Mike Bacon)', '(as Jennifer S.)",
+                "[ca]",
+                "certificates",
+                "atlantic-city-new-jersey', 'gay-panic', 'woman-hits-a-man', 'anti-heroine', 'alien-planet",
+                "%n%",
+                "%1%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Chris Williams)', '(as Tajia Rae)', '(as Sweet Treesa)', '(as Ariel Day)",
+                "[de]",
+                "goofs",
+                "investigation', 'back-massage', 'punk-rocker', 'nuclear-test', 'under-sea",
+                "%s%",
+                "%e%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Jay Ash)', '(location trainee)', '(as David)', '(as Lacy Tom)",
+                "[de]",
+                "color info",
+                "antivenin', 'trident', 'barefoot', 'django', 'ecw",
+                "%r%",
+                "%l%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Isabelle Snow)', '(as Michael Howard)', '(as Mercedez Lynn)', '(as Elen Diesel)",
+                "[ca]",
+                "goofs",
+                "corpse', 'social-rejection', 'gun-duel', 'triple-crown', 'call-of-the-wild",
+                "%e%",
+                "%e%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(script reader)', '(as Lacey Clark)', '(scenic p.a.)', '(as Tony Toscani)",
+                "[ca]",
+                "goofs",
+                "blonde', 'sex-education', 'running-gag', 'comedy-of-errors', 'media-coverage",
+                "%h%",
+                "%t%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(road manager)', '(as Randy Potes)', '(as Michal Berky)', '(as D.J. Morgan)",
+                "[ca]",
+                "goofs",
+                "announcer', 'black-mass', 'snowboarding', 'television-station', 'sex-in-a-gym",
+                "%s%",
+                "%h%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(mastering)', '(as Carla)', '(as Kamila)', '(accounts)",
+                "[us]",
+                "copyright holder",
+                "buttocks', 'german-occupation', 'siblings', 'part-stop-motion', 'hand-to-hand-combat",
+                "%l%",
+                "%C%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Yugomir Lonich)', '(as Marcie)', '(as Jim Jarosz)', '(as Takuya Sato)",
+                "[ar]",
+                "goofs",
+                "spectator', 'turncoat', 'ammunition-belt', 'locker-room', 'sponsorship",
+                "%q%",
+                "%r%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as D.O.)', '(as Tysen D''Eston)', '(video \"Bedshaped\")', '(as Edwige)",
+                "[us]",
+                "runtimes",
+                "announcer', 'plane-crash-victim', 'seductress', 'bible-college', 'snowboard",
+                "%A%",
+                "%2%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(segment \"Touch\")', '(as Suzanne Tegman)', '(as Danica Grey)', '(as Daytona)",
+                "[ar]",
+                "sound mix",
+                "punched-in-the-face', 'jungle-book', 'captain-crunch', 'humorous', 'ftm",
+                "%g%",
+                "%t%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Emanuelle)', '(as Luca Spyder)', '(as Paco Pasquel)', '(as Shelia Stone)",
+                "[de]",
+                "taglines",
+                "explosion', 'carp', 'life-insurance', 'female-dj', 'religious-sacrifice",
+                "%u%",
+                "%d%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Rod Hopkins)', '(series producer)', '(as Jewel De'' Nyle)', '(as Neo)",
+                "[us]",
+                "goofs",
+                "philadelphia-pennsylvania', 'rubber-duckie', 'footman', 'duke', 'white-shirt",
+                "%y%",
+                "%n%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Colleen Guest)', '(as Dominica Dolce)', '(as Gary Cohen)', '(as Jake Gutman)",
+                "[ar]",
+                "certificates",
+                "snake', 'moderization', 'stitching-a-wound', 'statuette', 'warlord",
+                "%6%",
+                "%:%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Thomas Rosales)', '(as Asia Blondie)', '(as Dinos Lyras)', '(as Phoenix Rae)",
+                "[de]",
+                "goofs",
+                "airport', 'smut', 'party-planner', 'brain-cut-in-half', 'ceremony",
+                "%:%",
+                "%h%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Mr. 2Nite)', '(as Naoya \u00c3\u0094shima)', '(as Lorenz Popkov)', '(as Dr. Earl Grant)",
+                "[ar]",
+                "goofs",
+                "shot-in-the-chest', 'revue', 'choral-music', 'big-tobacco', 'anti-communism",
+                "%f%",
+                "%a%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Gina Giannetti)', '(as Kelli Richards)', '(as Giselle)', '(Leprechaun)",
+                "[de]",
+                "release dates",
+                "airport', 'arms-tied-overhead', 'gay-bashing', 'creator', 'luggage",
+                "%y%",
+                "%y%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Redd)', '(as Melissa Petro)', '(as Tim Nabong)', '(as Johan Schwartz)",
+                "[ar]",
+                "goofs",
+                "dancing', 'anecdotal-evidence', 'sicilian', 'community-college', 'government-agency",
+                "%y%",
+                "%s%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Rob Cook)', '(as Deacon Batista)', '(as Leos Hrzal)', '(video \"Cocoon\")",
+                "[ar]",
+                "goofs",
+                "shot-to-death', 'eating-intestines', 'abu-ghraib', 'frankenstein-baby', 'voice-changer",
+                "%e%",
+                "%l%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sir Tim Rice)', '(as Eva Mendez)', '(as Robert New)', '(pitcher)",
+                "[de]",
+                "goofs",
+                "thong-swimsuit', 'death-threat', 'car-chase-on-ice', 'infidelity', 'jumping-jacks",
+                "%g%",
+                "%k%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sera Bastian)', '(plays)', '(as Frank)', '(as Yomi Fash)",
+                "[ca]",
+                "countries",
+                "corpse', 'respect', 'eye-tumor', 'splash', 'explanation",
+                "%u%",
+                "%u%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Steve Waddy)', '(as Kira Lynn)', '(as Ric Plaine)', '(as Joey Carolan)",
+                "[ca]",
+                "release dates",
+                "scientist', 'computer-cracker', 'grave-site', 'sex-with-ex-wife', 'shuffle",
+                "%2%",
+                "%4%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Bigbubs)', '(as Jim Hundhausen)', '(as Chris Cardona)', '(as Gene Whitham)",
+                "[us]",
+                "sound mix",
+                "subway', 'ethnographic-film', 'vampire-staked', 'crayon-drawing', 'fat-joke",
+                "%l%",
+                "%b%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Karlo Puente)', '(as Mr. Jack)', '(as Jean P. Armand)', '(as Mikayla Mendez)",
+                "[ar]",
+                "countries",
+                "philadelphia-pennsylvania', 'escort-girl', 'commandos', 'columbia-station', 'nose",
+                "%A%",
+                "%S%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Leading Comedian)', '(as Horace Hogan)', '(as Jakob Kolb)', '(as Hardkore Inc..)",
+                "[us]",
+                "certificates",
+                "animal-in-title', 'infernal', 'caf\u00c3\u00a9', 'lonely-man', 'diving",
+                "%r%",
+                "%3%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Miss Daniels)', '(US)/Ferdinand (US)', '(as Jeikobu Kotoku)', '(as Dave Workman)",
+                "[us]",
+                "release dates",
+                "flame-thrower', 'big-city', 'columbia-university', 'avante-garde-artist', 'pale-faced",
+                "%:%",
+                "%1%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sybel)', '(as Mark Shy)', '(as Matt Walker)', '(as Capri Cavali)",
+                "[de]",
+                "locations",
+                "punched-in-the-face', 'crack-smoking', 'dc-comics', 'lunch-in-the-park', 'snow",
+                "%,%",
+                "%g%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Rita Kosoko)', '(as Mike Steel)', '(as Cumisha Amato)', '(Kimberly)",
+                "[ca]",
+                "goofs",
+                "shot-to-death', 'inflatable-doll', 'ohio-state', 'sorority-sister', 'police-chief",
+                "%h%",
+                "%b%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Paul Nevitt)', '(watchdog)', '(as The Zombies)', '(as Nissa)",
+                "[ca]",
+                "release dates",
+                "announcer', 'body-in-a-dumpster', 'inter-cultural', 'fur-coat', 'south",
+                "%g%",
+                "%2%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as George Madaraz)', '(as Renee Tyffany)', '(as James Gaynes)', '(as Ron E. Yoshida)",
+                "[us]",
+                "color info",
+                "punched-in-the-face', 'playgirl-magazine', 'slasher-homage', 'dead-body', 'cheat",
+                "%r%",
+                "%C%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Lauren Vaughn)', '(as Fred Amugi)', '(segment \"Touched\")', '(as Maurizio Hogan)",
+                "[de]",
+                "release dates",
+                "investigation', 'chicon', 'tango-dancing', 'ski-bunny', 'robert-oppenheimer",
+                "%r%",
+                "%a%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as L. Lewis Stout)', '(as Scrunter)', '(as Aaliyah Jollie)', '(as Richard Duran)",
+                "[de]",
+                "goofs",
+                "airport', 'masked-wrestling', 'observation', 'splice-graft', 'barricade-the-door",
+                "%t%",
+                "%!%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Merone DaNola)', '(Childhood)', '(parking)', '(A2)",
+                "[de]",
+                "goofs",
+                "period-in-title', 'grape-juice', 'shrinking', 'zorro', 'albania",
+                "%l%",
+                "%a%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Kacey)', '(German)', '(as Jimmy Gestapo)', '(as Roberto Aponte)",
+                "[us]",
+                "plot",
+                "abbreviation-in-title', 'third-in-tetralogy', 'female-rapist', 'sexual-sadism', 'rugby",
+                "%t%",
+                "%s%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kristi)', '(as Vinay Fort)', '(the Cat)', '(as Hero)",
+                "[us]",
+                "goofs",
+                "pubic-hair', 'kangaroo', 'pump', 'holidays', 'extreme-sport",
+                "%a%",
+                "%h%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Lil'' X)', '(as Vally)', '(as BLUSH)', '(as Monique Perry)",
+                "[ca]",
+                "countries",
+                "snake', 'iraq', 'female-villain', 'excavator', 'open-hydrant",
+                "%A%",
+                "%A%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Elinor)', '(as Dru Barry)', '(as Kina Tai)', '(as Szabina)",
+                "[de]",
+                "runtimes",
+                "dancing', 'mountain-climbing', 'year-1492', 'radio-program', 'capture-the-flag",
+                "%:%",
+                "%U%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Mia Smiles)', '(as Veronica Lee)', '(as Patrick Tubach)', '(as Drica Brascuik)",
+                "[de]",
+                "certificates",
+                "thong-swimsuit', 'sweaty-sheriff', 'pine-barrens', 'fdny', 'mcf",
+                "%:%",
+                "%U%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sazzy Calhoun)', '(as Charlie Chase)', '(music clearances)', '(as Sam West)",
+                "[de]",
+                "goofs",
+                "explosion', 'napoleonic', 'horseriding-naked', 'outcast', 'numbers-racket",
+                "%n%",
+                "%e%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Ring Announcer)', '(as Nikky Randal)', '(written by)', '(book)",
+                "[us]",
+                "release dates",
+                "punched-in-the-face', 'pumpkin', 'repressed-memory', 'daruma-doll', 'saline-injection",
+                "%2%",
+                "%:%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as William Weaver)', '(as Valy Verdy)', '(as Bob Cunniff)', '(as Akos G.)",
+                "[ar]",
+                "goofs",
+                "betting', 'barcelona-spain', 'greenie', 'virtue', 'michael-bubl\u00c3\u00a9",
+                "%i%",
+                "%e%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Noro)', '(as Richard Ault)', '(as Mikey Butders)', '(as Sean Doherty)",
+                "[ar]",
+                "release dates",
+                "third-part', 'long-title', 'vocalist', 'penguin', 'op-art",
+                "%S%",
+                "%4%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as V.C. Dupree)', '(as Lauren)', '(as Brian Wade)', '(as Booty Licious)",
+                "[de]",
+                "certificates",
+                "hunt', 'morbid-angel', 'drop-in-center', 'crime-writer', 'uxoricide",
+                "%S%",
+                "%:%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Philippines)', '(as Nikki Sixx)', '(as Drea)', '(as Lisa Crosato)",
+                "[de]",
+                "certificates",
+                "betting', 'mein-kampf', 'grimm''s-fairy-tales', 'drug-abuser', 'dead-prostitute",
+                "%n%",
+                "%e%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Erica Rhodes)', '(as Diamond 4Ever)', '(as Jim W. Barhett)', '(Bareback Rider)",
+                "[us]",
+                "budget",
+                "punched-in-the-face', 'pack-of-dogs', 'atitlan', 'sense-of-taste', 'barrricaded-door",
+                "%$%",
+                "%0%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sake)', '(as Nicole Elane)', '(Queen guitarist)', '(as Heather Leer)",
+                "[ca]",
+                "goofs",
+                "investigation', 'robot-woman', 'ghoul', 'olympic-medal', 'ten-commandments",
+                "%g%",
+                "%n%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Ororo Munroe)', '(as Swedlana)', '(as Arnau Valls)', '(as Nick Hurwitch)",
+                "[us]",
+                "release dates",
+                "period-in-title', 'sex-degenerate', 'political-primary', 'girl-with-glasses', 'american-eagle",
+                "%r%",
+                "%m%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sandra Stern)', '(as Haley Gilbert)', '(as August Warwick)', '(set medic)",
+                "[ca]",
+                "certificates",
+                "blonde', 'streaking', 'harvard-university', 'suitcase', 'throat-ripping",
+                "%p%",
+                "%M%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Olga Mattei)', '(as Eric Reinholdt)', '(as Carlee)', '(as Tom Friedman)",
+                "[us]",
+                "goofs",
+                "accidental-killing', 'mercilessness', 'fig-leaf', 'murder-of-husband', 'amateur-pornography",
+                "%c%",
+                "%i%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ida Ivanovic)', '(as Chad E. Rook)', '(as Lillian Tiger)', '(Poison)",
+                "[ca]",
+                "certificates",
+                "military', 'blowing-kiss', 'wrecking-ball', 'cooking-oil', 'fried-chicken",
+                "%1%",
+                "%A%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Dennis Irwin)', '(as PH Debies)', '(as Pat Moran)', '(as Mai Lynn)",
+                "[ca]",
+                "goofs",
+                "third-part', 'ghostly-sound', 'absent-father', 'washed-up-star', 'tied-in-a-bathtub",
+                "%t%",
+                "%i%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Joe Taurus)', '(as Mily Jay)', '(video \"Loreen\")', '(as Maxx Blacque)",
+                "[us]",
+                "goofs",
+                "explosion', 'indoctrination', 'bleeding-mouth', 'videodance', 'lunar-lander",
+                "%s%",
+                "%l%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(16mm)', '(as Suzanna April)', '(as Anna Nass)', '(as Nautica Thorne)",
+                "[de]",
+                "languages",
+                "period-in-title', 'monster', 'fireplace', 'gig', 'futurama",
+                "%h%",
+                "%h%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as David Siegel)', '(as Selene)', '(as Haileey James)', '(quotes)",
+                "[de]",
+                "color info",
+                "python', 'keyhole', 'captain', 'tenor', 'never",
+                "%C%",
+                "%o%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(content manager)', '(as Leigh Slawner)', '(as Gabor Nagy)', '(as Kimber Winters)",
+                "[us]",
+                "goofs",
+                "investigation', 'sketch-comedy', 'tabloid', 'slave-boy', 'comedy-troupe",
+                "%r%",
+                "%r%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Bruno)', '(as Sylvie Sinner)', '(as Brooke Parker)', '(as Richard Largin)",
+                "[ca]",
+                "tech info",
+                "disco', 'vallone', 'underage-girl', 'fight-with-self', 'altar",
+                "%c%",
+                "%c%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(\"Ashes to Ashes\")', '(as Bob LaGrange)', '(as Andreas Hof)', '(as Sony Forbes)",
+                "[ca]",
+                "tech info",
+                "snake', 'indiana-university', 'conundrum', 'georges-melies', 'poison-apple",
+                "%m%",
+                "%3%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Daisey McClane)', '(as Lauren Knust)', '(as Lianna)', '(as Leda Parish)",
+                "[de]",
+                "goofs",
+                "flame-thrower', 'walking-cane', 'hysterical-female', 'car-run-over', 'laser-cannon",
+                "%,%",
+                "%i%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Marcy Goldberg)', '(office caterer)', '(as Dann T. Mann)', '(as John Lloyd)",
+                "[ca]",
+                "genres",
+                "soldier', 'joseph-campbell', '11-year-old', 'creepshow', 'windmill",
+                "%H%",
+                "%o%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Dr. Feelgood)', '(as Vienna)', '(as Sabine)', '(as Chuck Zane)",
+                "[ar]",
+                "goofs",
+                "period-in-title', 'tarantula', 'drone-crash', 'hand', 'nipples",
+                "%b%",
+                "%t%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tony Cordiero)', '(as Angie)', '(as Bobby Dazzler)', '(as Ronald Gates)",
+                "[ca]",
+                "goofs",
+                "punched-in-the-face', 'arrogance', 'mortuary', 'tough-cop', 'male-sexuality",
+                "%t%",
+                "%a%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sean Fenton)', '(as Hope Carlton)', '(as Ben Stephens)', '(as Nicki Randall)",
+                "[us]",
+                "release dates",
+                "soldier', 'children''s-favorite', 'hong-kong', 'gun-safety', 'beach-life",
+                "%4%",
+                "%4%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(with Hull)', '(as Brian Spence)', '(film transfer)', '(as Matt Johnson)",
+                "[ar]",
+                "genres",
+                "pubic-hair', 'apollo-13', 'murder-of-lover', 'paralytic', 'animated-nudity",
+                "%t%",
+                "%A%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(chat)', '(as Amy Damkroger)', '(as Bakey)', '(as Lenny Walsh)",
+                "[de]",
+                "genres",
+                "flame-thrower', 'northern-ireland', 'pet-owner', 'dead-woman', 'cameos",
+                "%c%",
+                "%S%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Werner)', '(episode 1 and 3)', '(as Mo Flam)', '(security head)",
+                "[us]",
+                "runtimes",
+                "disco', 'movie-clip', 'incest-joke', 'pigtails', 'yokohama-japan",
+                "%A%",
+                "%U%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kristin Bryant)', '(as Brooke Taylor)', '(manager: it)', '(as Zoli)",
+                "[de]",
+                "release dates",
+                "announcer', 'scotland-yard', 'bowie-knife', 'gay-70s', 'car-racing",
+                "%t%",
+                "%e%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Miss May 1996)', '(as Nick Livesey)', '(as Eugene Osment)', '(as Ashley Morgan)",
+                "[ar]",
+                "tech info",
+                "third-part', 'rape-fantasy', 'witness-to-a-crime', 'live-bait', 'food-fight",
+                "%5%",
+                "%A%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Kajsa''s brother)', '(source cues)', '(as Kate Maloney)', '(as Oshun)",
+                "[de]",
+                "copyright holder",
+                "blonde', 'self-empowerment', 'lindsay-lohan', 'self-narration', 'japanese-food",
+                "%4%",
+                "%0%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kahfee)', '(as Rafael Sanchez)', '(as Wade Hardmen)', '(as Kira Black)",
+                "[ar]",
+                "certificates",
+                "train-station', 'cartoon-company', 'santa', 'saliva', 'visual-comedy",
+                "%:%",
+                "%1%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Hong Wah)', '(Vista)', '(as Ebony Ayres)', '(voice and hand)",
+                "[us]",
+                "plot",
+                "blood', 'dog-bite', 'post-nuclear', 'pyramid-scheme', 'twitter",
+                "%e%",
+                "%t%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(vision control)', '(as Lukas Vostry)', '(as Jorge Reyna)', '(as Scott Irsh)",
+                "[de]",
+                "release dates",
+                "disco', 'girl-covered-in-cum', 'anthropology', 'humor', 'episodic-structure",
+                "%a%",
+                "%r%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Jazmin Ryder)', '(as Messy)', '(as Raitis)', '(as Lynn Rae)",
+                "[ar]",
+                "goofs",
+                "dancing', 'mitsubishi-eclipse', 'formula-1', 'plastic-wrap', 'report",
+                "%e%",
+                "%s%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Eva Nera)', '(as Klaus)', '(segment \"Abadon\")', '(as The Messiah)",
+                "[ca]",
+                "release dates",
+                "third-part', 'egg', 'mighty', 'printing-press', 'shipwrecked",
+                "%0%",
+                "%h%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Mike Wood)', '(as Lawrence Unger)', '(as Run-DMC)', '(as D. Cimarosa)",
+                "[us]",
+                "certificates",
+                "investigation', 'drug-money', 'armor', 'chicken-pox', '26th-century",
+                "%S%",
+                "%e%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Trixie Love)', '(girl in cafe)', '(segment 7)', '(D vision)",
+                "[ar]",
+                "goofs",
+                "animal-in-title', 'sandwich', 'lusitania', 'buckskin-dress', 'dionysus",
+                "%b%",
+                "%s%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Nelly)', '(as Ciara Griffin)', '(as Finn Hageman)', '(as Robert Fotrer)",
+                "[ar]",
+                "certificates",
+                "antivenin', 'cocktail-waitress', 'judgment-day', 'troublemaker', 'online",
+                "%S%",
+                "%a%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Nadache Rose)', '(as Tess A)', '(as Candy Adams)', '(manager: band)",
+                "[ca]",
+                "goofs",
+                "punched-in-the-face', 'tv-mini-series', 'harem-costume', 'humility', 'newcastle-england",
+                "%e%",
+                "%I%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Maikel)', '(as Adam Redmond)', '(as Paul Cagney)', '(as Mike Quasar)",
+                "[de]",
+                "tech info",
+                "python', 'utah-festival-opera', 'orleans-france', 'maryland', 'golden-shower",
+                "%8%",
+                "%1%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(overall designer)', '(as Harris Rehana)', '(as Dano Janda)', '(as Rick Bowe)",
+                "[ca]",
+                "release dates",
+                "military', 'williamsburg', 'israeli', 'invasion', 'unfaithfulness",
+                "%p%",
+                "%e%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(ballet)', '(as Jayson Vades)', '(as Georgia)', '(as The Big Show)",
+                "[de]",
+                "locations",
+                "spectator', 'late-night', 'caucasus', 'mysterious-stranger', 'hard-rock",
+                "%a%",
+                "%a%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Francesca Sin)', '(as Jonnie Black)', '(as Shelbree Starr)', '(sex tour guide)",
+                "[ar]",
+                "goofs",
+                "abbreviation-in-title', 'submissive-woman', 'carny', 'epitaph', 'cooking",
+                "%i%",
+                "%n%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Samira Kiss)', '(Kelsey)', '(as Jon Kinyon)', '(background paint)",
+                "[ca]",
+                "certificates",
+                "blonde', 'greenhouse', 'tumult', 'rating', 'newcastle-united",
+                "%n%",
+                "%n%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(producer)', '(Shinesman Sepia)', '(as Gavril Patru)', '(as Mimi Fallace)",
+                "[de]",
+                "goofs",
+                "betting', 'king', 'voice-training', 'machu-picchu', 'hostage-situation",
+                "%t%",
+                "%e%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Miss October 1986)', '(as Tequila)', '(as Franco 30lance)', '(as Heather Gagnon)",
+                "[us]",
+                "goofs",
+                "philadelphia-pennsylvania', 'magical-realism', 'disease', 'triceratops', 'child-care",
+                "%t%",
+                "%o%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(segment \"Mud\")', '(as Kofi Adjololo)', '(Miss January 1994)', '(insterstitals)",
+                "[ar]",
+                "genres",
+                "third-part', 'olympian', 'environmental-crime', 'anti-social', 'giallo",
+                "%c%",
+                "%o%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(lyrics)', '(as Dom Casier)', '(as Ferrara)', '(head mechanic)",
+                "[us]",
+                "goofs",
+                "airport', 'macguffin', 'sexual-encounter', 'condensation', 'donation",
+                "%t%",
+                "%n%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Anastasia Vega)', '(Manga UK dub)', '(Bridgette)', '(as Desiree Fox)",
+                "[de]",
+                "goofs",
+                "accidental-killing', 'scrap-metal', 'gospel-music', 'series-in-series', 'olympic-athlete",
+                "%h%",
+                "%e%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(dog trainer)', '(as Marc Ashley)', '(as Timbaland)', '(trombonist)",
+                "[ca]",
+                "goofs",
+                "accidental-killing', 'quince', 'school-festival', 'misspelled-word', 'brood",
+                "%n%",
+                "%p%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kamasu)', '(as Godiva)', '(as London Keys)', '(as Hilary Dusome)",
+                "[ar]",
+                "certificates",
+                "scientist', 'suicidal-guy', 'rite-of-passage', 'gold-fever', 'bugs",
+                "%3%",
+                "%3%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tanya Tucker)', '(as Richie Bray)', '(story manager)', '(as Jessica Koks)",
+                "[ca]",
+                "locations",
+                "atlantic-city-new-jersey', 'trivial-pursuit', 'infanticide', 'flamboyance', 'blurred-nudity",
+                "%o%",
+                "%i%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Jane Davil)', '(satan)', '(as Amy)', '(as Alisha Jordean)",
+                "[us]",
+                "goofs",
+                "pubic-hair', 'wicca', 'open-ended', 'lew-wallace', 'air-traffic-control",
+                "%s%",
+                "%h%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Jim Hawkinson)', '(as Rich Masters)', '(as Gen Padove)', '(as Curtis Grann)",
+                "[ca]",
+                "certificates",
+                "abbreviation-in-title', 'record-company', '1940s', 'socks', 'mafia-don",
+                "%i%",
+                "%g%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Joel)', '(as Nick Miller)', '(as Jeff Duran)', '(The Ax)",
+                "[ca]",
+                "certificates",
+                "scientist', 'jester', 'caught-shoplifting', 'animal-penis', 'number-as-title",
+                "%A%",
+                "%U%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(digital effects)', '(as Sabrina Blue)', '(as Jordon)', '(as Cara Johnson)",
+                "[de]",
+                "goofs",
+                "explosion', 'athlete', 'racial-antipathy', 'jungle-explorer', 'android",
+                "%i%",
+                "%p%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Christi Lane)', '(segment \"Scream\")', '(as Cassie Pelan)', '(as Milo)",
+                "[ca]",
+                "plot",
+                "pubic-hair', 'ex-porn-star', 'oval-office', 'eternal-love', 'hook",
+                "%a%",
+                "%B%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Merrill Jenson)', '(as Halli)', '(as Travis)', '(as Dave Rusell)",
+                "[us]",
+                "tech info",
+                "announcer', 'disciple', 'kendo', 'underwater-escape', 'altered-states",
+                "%R%",
+                "%:%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Becca Bratt)', '(jefe de staff)', '(as Kark Dumber)', '(as Taylir)",
+                "[ca]",
+                "goofs",
+                "atlantic-city-new-jersey', 'graft', 'sink', 'grandmother', 'cut-on-face",
+                "%r%",
+                "%g%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ariel Carmine)', '(as June Bower)', '(as Nikki Dee)', '(as Mark Wiszowaty)",
+                "[ar]",
+                "goofs",
+                "accidental-killing', 'loser', 'bouncing-breasts', 'aqueduct', 'friendly-fire",
+                "%s%",
+                "%s%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ngozi Ike)', '(as Dr. Paul Gooch)', '(as Rend)', '(as Porsha Ride)",
+                "[ca]",
+                "certificates",
+                "announcer', 'alien-as-woman', 'transubstantiation', 'chiropractor', 'swarm-of-bats",
+                "%l%",
+                "%d%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Said Legue)', '(as Susan Froemke)', '(as Mike Anthony)', '(on-set masseuse)",
+                "[ar]",
+                "countries",
+                "news-report', 'non-fiction', 'walking-cane', 'tattoo', 'eight-word-title",
+                "%U%",
+                "%U%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Cherie Gavuer)', '(vice president)', '(as Mark Mathews)', '(as Chanel Staxxx)",
+                "[ca]",
+                "release dates",
+                "corpse', 'sundae', 'reference-to-plato', 'turkey-the-bird', 'quo",
+                "%S%",
+                "%p%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Boo D. Licious)', '(as Joackim Kessef)', '(as Richard Marin)', '(chief director)",
+                "[ar]",
+                "release dates",
+                "disco', 'lasciviousness', 'trapped-in-tv', 'female-politician', 'lawn-jockey",
+                "%m%",
+                "%0%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Miles Zakheim)', '(as Sap\u00c3\u00a3o)', '(as Titpig Hurley)', '(as Agnes Faludi)",
+                "[de]",
+                "taglines",
+                "investigation', 'big-city', 'survivor-guilt', 'applause', 'darcie",
+                "%e%",
+                "%o%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Daren James)', '(as Sandra Stuart)', '(as Marky Mark)', '(as Elodie)",
+                "[de]",
+                "goofs",
+                "blonde', 'rockumentary', 'tied-to-a-table', 'balloon', 'fake-relative",
+                "%e%",
+                "%n%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kayia Lynn)', '(talent relations)', '(Brandi Lyons)', '(as Desire Dupre'')",
+                "[de]",
+                "sound mix",
+                "dancing', 'mountain-cabin', 'mc5', 'burn', 'film-series",
+                "%t%",
+                "%a%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Akros Matyas)', '(as Rich Raines)', '(as Bella Feega)', '(as Brad Gregford)",
+                "[ca]",
+                "copyright holder",
+                "punched-in-the-face', 'apollo-14', 'belief-in-god', 'pulling-tooth', 'spaceflight-test",
+                "%i%",
+                "%e%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sheena Horn)', '(as Yukihide Benii)', '(as Amie Austin)', '(as Julia Silver)",
+                "[ca]",
+                "goofs",
+                "train-station', 'brain-out-of-head', 'alumni', 'cinema-history', 'name-calling",
+                "%r%",
+                "%e%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Samson)', '(as Haylee)', '(as Bill Fergeson)', '(tour security)",
+                "[us]",
+                "goofs",
+                "airport', 'photogrammetry', 'eating-human-flesh', 'winner', 'nixon",
+                "%r%",
+                "%b%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sandor)', '(as Jeffrey Hunt)', '(as John J. Karyus)', '(as Phil Dunbridge)",
+                "[de]",
+                "taglines",
+                "soldier', '17th-century', 'computer-genius', 'fingerprints', 'departure",
+                "%u%",
+                "%a%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Manuel Ferrera)', '(as Bob Lydecker)', '(as Janet Reddix)', '(as Shennin)",
+                "[ar]",
+                "goofs",
+                "subway', 'mexican-border', 'decorative-painting', 'traitor', 'ginger",
+                "%e%",
+                "%h%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Big Lez)', '(cast security)', '(as Dixie)', '(as Tatianna Varga)",
+                "[us]",
+                "certificates",
+                "abbreviation-in-title', 'carnival', 'nude-talking', 'counting', 'camera-shot-of-feet",
+                "%M%",
+                "%l%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kim Katane)', '(as Ari Green)', '(as Kate Hinton)', '(chief)",
+                "[ar]",
+                "certificates",
+                "pubic-hair', 'woman-in-jeopardy', 'goalie', 'rugby', 'tv-show-in-film",
+                "%a%",
+                "%A%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Katie Lewis)', '(as Syd Michief)', '(as Stephen Grimes)', '(as Betsie)",
+                "[ca]",
+                "goofs",
+                "dancing', 'one-liner', 'lily-pad', 'adult-filmmaker', 'cartoon-spider",
+                "%h%",
+                "%g%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Jamie Freitag)', '(as Olivea Del Rio)', '(as Brita)', '(as Ron L. Coons)",
+                "[ar]",
+                "countries",
+                "reptile', 'glenn-strange', 'mysterious-death', 'cannabis-use', 'pluto-the-character",
+                "%r%",
+                "%a%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Mandingo)', '(as Salina)', '(as Tim Sexton)', '(as Amaya Summer)",
+                "[ar]",
+                "goofs",
+                "news-report', 'social-documentary', 'robbery-victim', 'domino''s-pizza', 'miracle",
+                "%l%",
+                "%n%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Rob Paller)', '(as Tommie)', '(as Sussan Obi)', '(as Art Barnes)",
+                "[us]",
+                "release dates",
+                "blood', 'senator', 'spritual-film', 'run-over-by-a-car', 'kickflip",
+                "%0%",
+                "%0%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Wenston Love)', '(as Rocco Siffredy)', '(as Billy Boy)', '(as Mrs. T. Clark)",
+                "[ca]",
+                "release dates",
+                "period-in-title', 'sex-with-a-coworker', 'hide-out', 'mugger', 'documentary-footage",
+                "%O%",
+                "%2%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Guest Keyboardist)', '(as Ola Mckenzie)', '(Ireland segment)', '(Spectre)",
+                "[us]",
+                "goofs",
+                "soldier', 'dark-hero', 'pet-dog', 'bank', 'bad-wig",
+                "%u%",
+                "%u%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Pat Allegiance)', '(as Thom Fendley)', '(as Stella Queen)', '(film provided by)",
+                "[us]",
+                "goofs",
+                "snake', 'future-time-travel', 'woman-losing-pants', 'chastity', 'condom",
+                "%r%",
+                "%n%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Behtany Lott)', '(as Tracy Scott)', '(as Natasha)', '(lead checker)",
+                "[us]",
+                "certificates",
+                "reptile', 'bentwaters', 'ivory', 'stenciling', 'lost-father",
+                "%6%",
+                "%y%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sylvie Sun)', '(as Barry Mel Rose)', '(as Paul Nevitt)', '(as Des Saunders)",
+                "[de]",
+                "certificates",
+                "airport', 'scissoring', 'toy-store', 'hung-upside-down', 'preview",
+                "%a%",
+                "%l%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Teddy Bearit)', '(as Judyth)', '(as John Shadrach)', '(as Leo DeSilver)",
+                "[ar]",
+                "goofs",
+                "train-station', 'sun-tzu', 'femdom', 'dna-testing', 'fortune-teller",
+                "%b%",
+                "%n%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tee Real)', '(as VixXxen)', '(as Slim Williams)', '(as Brian Wade)",
+                "[de]",
+                "budget",
+                "antivenin', 'pinball', 'trust-fund', 'misconception', 'funeral-home",
+                "%$%",
+                "%0%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(video \"Confusion\")', '(as Steve Pelican)', '(as Eddie Ting)', '(as Rebeca White)",
+                "[us]",
+                "goofs",
+                "second-part', 'national-security', 'hand-camera', 'faithful-dog', 'bachelor-party",
+                "%e%",
+                "%k%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tony De Sergio)', '(as Steliana)', '(as Irina)', '(as Molly Stroud)",
+                "[ca]",
+                "budget",
+                "reptile', 'opera', 'tickle', 'bono-look-alike', 'spinach",
+                "%0%",
+                "%0%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Nicki Blond)', '(as Laszlo F.)', '(as Ondra)', '(as Vladka Kopal)",
+                "[us]",
+                "mpaa",
+                "airport', 'diabolical-laugh', 'reverse-motion', 'breakfast-in-bed', 'cutting",
+                "%i%",
+                "%u%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Jef Hickey)', '(as Venoly)', '(as Desiree Russo)', '(as Asiadreams)",
+                "[ar]",
+                "goofs",
+                "third-part', 'woman-professor', 'silver-bullet', 'valley-girl', 'devotional",
+                "%k%",
+                "%i%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Rico Lowry)', '(as Wanessa)', '(as Tamara Apted)', '(as Bryan Dakota)",
+                "[de]",
+                "certificates",
+                "buttocks', 'armenian-american', 'rock-guitar', 'lying-on-a-couch', 'yuppie",
+                "%n%",
+                "%d%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(segment \"Retreat\")', '(as Natali Brown)', '(as C. Ray Nagin)', '(as MaxiMaxx)",
+                "[ar]",
+                "goofs",
+                "abbreviation-in-title', 'belly-dancing', 'leg-fetish', 'prison-escape', 'high-school-girl",
+                "%i%",
+                "%u%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Drew)', '(as Lala)', '(life guard)', '(score by)",
+                "[ar]",
+                "filming dates",
+                "hunt', '1700s', 'peace-activist', 'deforestation', 'petition",
+                "%0%",
+                "%0%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(producer: HDNet)', '(as Victoria Rosse)', '(as Fay DeBois)', '(as Kitty Saviec)",
+                "[us]",
+                "certificates",
+                "announcer', 'big-sister', 'garden-shears', 'tv-film', 'blown-cover",
+                "%e%",
+                "%a%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Toni De Sergio)', '(as Fabyana Kanavo)', '(as J.D. Lopez)', '(as Andrew Hodges)",
+                "[us]",
+                "goofs",
+                "animal-in-title', 'pick-axe', 'avalanche', 'plastic-surgery', 'muscleman",
+                "%b%",
+                "%R%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Laszlo Virag)', '(as Gary Brickman)', '(as Rikki Lixxx)', '(as Andre Ribiero)",
+                "[us]",
+                "goofs",
+                "flame-thrower', 'fear-of-hell', 'terrorist-attack', 'dave-crawley', 'wedding-reception",
+                "%e%",
+                "%l%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Regan Star)', '(as Kody)', '(as Ondrej)', '(as Tatjana)",
+                "[ar]",
+                "goofs",
+                "train-station', 'forest-of-crosses', 'woman-fights-a-man', 'sex-work', 'pushed-down-stairs",
+                "%n%",
+                "%s%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(stand-in: Faith)', '(as Lulu)', '(as Americana)', '(as Felicia Foxx)",
+                "[us]",
+                "copyright holder",
+                "shot-in-the-chest', 'long-title', 'political-criminal', 'venice-italy', 'chain-of-command",
+                "%p%",
+                "%d%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(segment \"Rapture\")', '(epk shooter)', '(as Sidney Capri)', '(as Victor L\u00c3\u00b3pez)",
+                "[ar]",
+                "countries",
+                "third-part', 'mini-submarine', 'recording-studio', 'holy-blood', 'sunspot",
+                "%U%",
+                "%A%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Meena)', '(as Rocky Buresh)', '(as Kristina Holm)', '(as Lisanne)",
+                "[de]",
+                "goofs",
+                "buttocks', 'imitate', 'closed-circuit-tv', 'mcdonalds', 'burlesque",
+                "%s%",
+                "%h%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tina Tinova)', '(video \"You Lie\")', '(as Amber Rox)', '(as Toby Eck)",
+                "[us]",
+                "release dates",
+                "announcer', 'contradiction', 'cyborg-double', 'goldfish', 'blondie",
+                "%4%",
+                "%0%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Stefan Dogaru)', '(as Kathy Caro)', '(as Zara)', '(as Tia Son)",
+                "[ca]",
+                "locations",
+                "pubic-hair', 'survival-training', 'interrupted-sex', 'gay-wedding', 'glowing-eyes",
+                "%l%",
+                "%l%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ashley)', '(as Eszter)', '(as Nicoletta Rush)', '(as Pat Oseni)",
+                "[us]",
+                "certificates",
+                "third-part', 'rubber-boat', 'marriage', 'babylon-babylonia', 'lockdown",
+                "%G%",
+                "%r%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Johhny Paoline)', '(mastered by)', '(Kystbasse)', '(as Myron Vasquez)",
+                "[ar]",
+                "goofs",
+                "news-report', 'guster', 'milwaukee-wisconsin', 'quantum-fiction', 'hangover",
+                "%e%",
+                "%s%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Enike)', '(as Joyce Lopez)', '(video \"Victory\")', '(as Sany Haydal)",
+                "[ca]",
+                "languages",
+                "shot-in-the-chest', 'venom', 'manchester', 'metamorphosis', 'wrongful-arrest",
+                "%n%",
+                "%s%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Buster Goode)', '(assistant AVI)', '(as Bret Parker)', '(as Wakaana)",
+                "[ar]",
+                "goofs",
+                "punched-in-the-face', 'soapland', 'murder-contract', 'athlete', 'chameleon",
+                "%y%",
+                "%z%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Vivien Tora)', '(as Stanislas)', '(as Jon Douglas)', '(as Dolores)",
+                "[us]",
+                "genres",
+                "hunt', 'liquor', 'hand-over-mouth', 'sex-on-grave', 'faberge''-chess-set",
+                "%i%",
+                "%t%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sid Ganis)', '(as Karren Summers)', '(as Mark Altman)', '(as Megumi Terase)",
+                "[ca]",
+                "locations",
+                "shot-to-death', 'tiger', 'parties', 'musical-education', 'chop-socky",
+                "%o%",
+                "%g%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Natali)', '(as Syndee Coxx)', '(ceo)', '(as Edwado Dinero)",
+                "[ca]",
+                "certificates",
+                "train-station', 'nomeansno', 'surfing', 'grave-robber', 'omega",
+                "%5%",
+                "%S%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(motion media)', '(as Jacky Brown)', '(as DJ Kay Slay)', '(as Jill Moore)",
+                "[us]",
+                "goofs",
+                "explosion', 'burning-city', 'mob-killing', 'foreskin', 'blind-girl",
+                "%a%",
+                "%e%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(during love scene)', '(as Ruslan Karpov)', '(German version)', '(as Corinna Anne)",
+                "[ar]",
+                "release dates",
+                "thong-swimsuit', 'strangling-a-boy', 'murder-of-lover', 'sympathy-sex', 'head-spin",
+                "%y%",
+                "%0%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Everlast)', '(as Vaclam Skipala)', '(as Kathy Moore)', '(as Kevin Glover)",
+                "[ar]",
+                "certificates",
+                "thong-swimsuit', 'cunnilingus', 'bra-and-panties', 'witch-hunter', 'extension-cord",
+                "%A%",
+                "%n%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Cherry Rose)', '(as Rick Desmond)', '(film set)', '(cake baker)",
+                "[us]",
+                "release dates",
+                "philadelphia-pennsylvania', 'travel-agent', 'pedicure', 'graduation-ceremony', 'physical-education",
+                "%a%",
+                "%e%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Lilian)', '(security captain)', '(as Raye D''ance)', '(as Kelly Howe)",
+                "[de]",
+                "goofs",
+                "philadelphia-pennsylvania', 'plague', 'hutu', 'urophilia', 'paintbrush",
+                "%e%",
+                "%d%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Lonnie Colon)', '(as Dave Gebroe)', '(as Liina Olmaru)', '(as Scott Colby)",
+                "[de]",
+                "goofs",
+                "atlantic-city-new-jersey', 'sex-in-pool', 'garage', 'shanghai-china', 'abandoned-car",
+                "%p%",
+                "%a%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Telicious)', '(as Shauna Harris)', '(2002)', '(as Bob Baldassari)",
+                "[de]",
+                "color info",
+                "train-station', 'cowhand', 'motorscooter', '21st-birthday', 'bulletproof-vest",
+                "%o%",
+                "%r%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tabatha Fox)', '(as Karl)', '(as Stacie Burke)', '(as Kelli Farmer)",
+                "[ca]",
+                "color info",
+                "shot-to-death', 'sexual-exploration', 'battle-royal', 'army-hospital', 'undercover-agent",
+                "%o%",
+                "%l%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ]
+        ]
+    }
+}

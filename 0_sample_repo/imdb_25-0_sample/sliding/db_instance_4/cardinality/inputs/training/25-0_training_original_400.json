@@ -1,0 +1,603 @@
+{
+    "25-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS male_writer, MIN(t.title) AS violent_movie_title\nFROM sampled_cast_info_4 AS ci,\n   sampled_info_type_4 AS it1,\n   sampled_info_type_4 AS it2,\n   sampled_keyword_4 AS k,\n   sampled_movie_info_4 AS mi,\n   sampled_movie_info_idx_4 AS mi_idx,\n   sampled_movie_keyword_4 AS mk,\n   sampled_name_4 AS n,\n   sampled_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info = '@param4'\nAND n.gender = '@param5';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "n"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_cast_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_name_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(voice: English version)', '(creator)', '(creator)', '(archive footage)', '(archive footage)",
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "USA",
+                "m"
+            ],
+            [
+                "(location manager)', '(production coordinator)', '(location manager)', '(co-producer)', '(archive footage)",
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'female-nudity', 'independent-film",
+                "Comedy",
+                "m"
+            ],
+            [
+                "(voice)', '(executive producer)', '(executive producer)', '(voice)', '(voice)",
+                "genres",
+                "rating",
+                "independent-film', 'female-nudity', 'female-nudity', 'independent-film', 'female-nudity",
+                "Comedy",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "genres",
+                "votes",
+                "male-nudity', 'based-on-novel', 'homosexual', 'anal-sex', 'number-in-title",
+                "Drama",
+                "m"
+            ],
+            [
+                "(written by)', '(credit only)', '(production assistant)', '(credit only)', '(written by)",
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Drama",
+                "m"
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "countries",
+                "rating",
+                "oral-sex', 'non-fiction', 'number-in-title', 'nudity', 'non-fiction",
+                "USA",
+                "m"
+            ],
+            [
+                "(written by)', '(supervising producer)', '(location manager)', '(production accountant)', '(supervising producer)",
+                "genres",
+                "votes",
+                "global-commerce', 'dry-well', 'teen-romance', 'headfirst-slide-into-base', 'attach\u00c3\u00a9-case",
+                "Drama",
+                "m"
+            ],
+            [
+                "(production accountant)', '(location manager)', '(archive footage)', '(production accountant)', '(script supervisor)",
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Documentary",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "Short",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "genres",
+                "votes",
+                "murder', 'oral-sex', 'non-fiction', 'love', 'based-on-novel",
+                "Documentary",
+                "m"
+            ],
+            [
+                "(supervising producer)', '(production coordinator)', '(producer)', '(co-producer)', '(associate producer)",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "USA",
+                "m"
+            ],
+            [
+                "(credit only)', '(written by)', '(credit only)', '(written by)', '(credit only)",
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Drama",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "genres",
+                "votes distribution",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "Documentary",
+                "m"
+            ],
+            [
+                "(associate producer)', '(uncredited)', '(associate producer)', '(associate producer)', '(uncredited)",
+                "countries",
+                "rating",
+                "character-slides-off-film', 'working-all-night', 'lyme-disease', 'springfield-massachusetts', 'police-surgeon",
+                "USA",
+                "m"
+            ],
+            [
+                "(production coordinator)', '(supervising producer)', '(production coordinator)', '(voice: English version)', '(co-producer)",
+                "countries",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "USA",
+                "m"
+            ],
+            [
+                "(written by)', '(supervising producer)', '(script supervisor)', '(written by)', '(script supervisor)",
+                "countries",
+                "top 250 rank",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(archive footage)', '(associate producer)', '(associate producer)', '(written by)', '(production accountant)",
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "USA",
+                "m"
+            ],
+            [
+                "(creator)', '(archive footage)', '(creator)', '(voice: English version)', '(creator)",
+                "countries",
+                "votes distribution",
+                "nudity', 'male-nudity', 'non-fiction', 'based-on-novel', 'murder",
+                "USA",
+                "m"
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(writer)', '(voice)",
+                "countries",
+                "votes distribution",
+                "muhammad', 'soda-pop', 'customer', 'single-parent', 'wind-power",
+                "USA",
+                "m"
+            ],
+            [
+                "(writer)', '(creator)', '(creator)', '(co-producer)', '(co-producer)",
+                "genres",
+                "votes distribution",
+                "mythical-kingdom', 'injury', 'heavy-breathing', 'asterix', 'the-american-institute-of-architecture",
+                "Comedy",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "genres",
+                "votes distribution",
+                "number-in-title', 'love', 'nudity', 'murder', 'based-on-novel",
+                "Drama",
+                "m"
+            ],
+            [
+                "(as John Moore)', '(uncredited)', '(uncredited)', '(assistant: Michael Rachmil)', '(dialogue coach: James Gandolfini)",
+                "countries",
+                "top 250 rank",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Short",
+                "m"
+            ],
+            [
+                "(co-producer)', '(script supervisor)', '(production coordinator)', '(voice: English version)', '(co-executive producer)",
+                "genres",
+                "rating",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "Comedy",
+                "m"
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "countries",
+                "top 250 rank",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(voice)', '(voice)', '(writer)', '(writer)', '(writer)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Short",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(voice)",
+                "countries",
+                "top 250 rank",
+                "female-nudity', 'female-nudity', 'female-nudity', 'independent-film', 'female-nudity",
+                "UK",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "top 250 rank",
+                "oral-sex', 'non-fiction', 'oral-sex', 'oral-sex', 'nudity",
+                "USA",
+                "m"
+            ],
+            [
+                "(voice: English version)', '(writer)', '(creator)', '(co-producer)', '(co-executive producer)",
+                "countries",
+                "top 250 rank",
+                "independent-film', 'female-nudity', 'independent-film', 'independent-film', 'female-nudity",
+                "USA",
+                "m"
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "genres",
+                "votes distribution",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "Short",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(voice)', '(writer)', '(writer)', '(writer)', '(writer)",
+                "genres",
+                "rating",
+                "oral-sex', 'oral-sex', 'oral-sex', 'non-fiction', 'anal-sex",
+                "Drama",
+                "m"
+            ],
+            [
+                "(executive producer)', '(producer)', '(executive producer)', '(producer)', '(producer)",
+                "genres",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Comedy",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "top 250 rank",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA",
+                "m"
+            ],
+            [
+                "(writer)', '(writer)', '(voice)', '(writer)', '(voice)",
+                "genres",
+                "votes distribution",
+                "independent-film', 'female-nudity', 'independent-film', 'female-nudity', 'independent-film",
+                "Comedy",
+                "m"
+            ],
+            [
+                "(writer)', '(writer)', '(writer)', '(voice)', '(voice)",
+                "countries",
+                "top 250 rank",
+                "female-nudity', 'female-nudity', 'independent-film', 'female-nudity', 'female-nudity",
+                "USA",
+                "m"
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Short",
+                "m"
+            ],
+            [
+                "(writer)', '(voice)', '(voice)', '(voice)', '(writer)",
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Short",
+                "m"
+            ],
+            [
+                "(producer)', '(executive producer)', '(producer)', '(executive producer)', '(producer)",
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Documentary",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "genres",
+                "votes distribution",
+                "female-nudity', 'independent-film', 'independent-film', 'independent-film', 'female-nudity",
+                "Drama",
+                "m"
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "genres",
+                "votes distribution",
+                "rain-of-blood', 'great-white-way', 'monarch-butterfly', 'plotless', 'chateau-shufstaffel",
+                "Drama",
+                "m"
+            ],
+            [
+                "(producer)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Comedy",
+                "m"
+            ],
+            [
+                "(production coordinator)', '(creator)', '(co-producer)', '(creator)', '(co-executive producer)",
+                "countries",
+                "votes",
+                "independent-film', 'independent-film', 'female-nudity', 'female-nudity', 'independent-film",
+                "USA",
+                "m"
+            ],
+            [
+                "(script supervisor)', '(production coordinator)', '(set production assistant)', '(archive footage)', '(script supervisor)",
+                "genres",
+                "votes",
+                "haunted-forest', 'extraterrestrial', 'reference-to-hecuba', 'wcw-wrestling', 'switched-identities",
+                "Drama",
+                "m"
+            ],
+            [
+                "(creator)', '(producer)', '(co-producer)', '(written by)', '(voice)",
+                "countries",
+                "votes distribution",
+                "independent-film', 'independent-film', 'independent-film', 'female-nudity', 'female-nudity",
+                "USA",
+                "m"
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(producer)",
+                "countries",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "UK",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "votes",
+                "independent-film', 'independent-film', 'female-nudity', 'independent-film', 'female-nudity",
+                "USA",
+                "m"
+            ],
+            [
+                "(co-executive producer)', '(writer)', '(creator)', '(writer)', '(co-executive producer)",
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Comedy",
+                "m"
+            ]
+        ]
+    }
+}

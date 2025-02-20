@@ -1,0 +1,2764 @@
+{
+    "24-0": {
+        "query": "SELECT MIN(chn.name) AS voiced_char_name, MIN(n.name) AS voicing_actress_name, MIN(t.title) AS voiced_action_movie_jap_eng\nFROM cat_aka_name_1 AS an,\n   cat_char_name_1 AS chn,\n   cat_cast_info_1 AS ci,\n   cat_company_name_1 AS cn,\n   cat_info_type_1 AS it,\n   cat_keyword_1 AS k,\n   cat_movie_companies_1 AS mc,\n   cat_movie_info_1 AS mi,\n   cat_movie_keyword_1 AS mk,\n   cat_name_1 AS n,\n   cat_role_type_1 AS rt,\n   cat_title_1 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mc.movie_id = mk.movie_id\nAND mi.movie_id = ci.movie_id\nAND mi.movie_id = mk.movie_id\nAND ci.movie_id = mk.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param4' OR mi.info LIKE '@param5')\nAND n.gender = '@param6'\nAND n.name LIKE '@param7'\nAND rt.role = '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_cast_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "mi",
+                    "mk",
+                    "n",
+                    "rt",
+                    "an",
+                    "chn"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_movie_companies_1",
+                    "cat_movie_info_1",
+                    "cat_movie_keyword_1",
+                    "cat_name_1",
+                    "cat_role_type_1",
+                    "cat_aka_name_1",
+                    "cat_char_name_1"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "mc.movie_id = ci.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id",
+                    "rt.id = ci.role_id",
+                    "ci.person_id = an.person_id",
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_1",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_1"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_1",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_movie_companies_1",
+                    "cat_cast_info_1",
+                    "cat_movie_keyword_1",
+                    "cat_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_movie_companies_1",
+                    "cat_cast_info_1",
+                    "cat_movie_keyword_1",
+                    "cat_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_name_1",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_1",
+                    "cat_aka_name_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_name_1",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_1",
+                    "cat_aka_name_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_role_type_1",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_cast_info_1"
+                ],
+                "join_conditions": [
+                    "rt.id = ci.role_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_1",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "mi",
+                    "mc",
+                    "ci",
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_info_1",
+                    "cat_movie_companies_1",
+                    "cat_cast_info_1",
+                    "cat_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mc.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%201%",
+                "USA:%200%",
+                "m",
+                "%L%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%200%",
+                "USA:%2008%",
+                "m",
+                "%P%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%U%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "Japan:%200%",
+                "USA:% 199%",
+                "m",
+                "%Z%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "%Y%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%201%",
+                "Japan:%2007%",
+                "m",
+                "%M%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[de]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:% 200%",
+                "Japan:%201%",
+                "m",
+                "B%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "A%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title",
+                "Japan:%201%",
+                "USA:%2008%",
+                "m",
+                "%Yo%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "Japan:%201%",
+                "m",
+                "G%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[nl]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "Japan:%201%",
+                "USA:%201%",
+                "m",
+                "%K%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%A%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 199%",
+                "USA:%200%",
+                "m",
+                "B%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%M%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[de]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "A%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:%201%",
+                "USA:% 200%",
+                "m",
+                "D%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "%M%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat', 'computer-animated-movie",
+                "USA:%201%",
+                "USA:% 200%",
+                "m",
+                "%G%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "A%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:%2008%",
+                "Japan:%200%",
+                "m",
+                "C%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "USA:% 200%",
+                "Japan:%201%",
+                "m",
+                "E%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "%U%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%201%",
+                "Japan:%201%",
+                "m",
+                "G%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:% 200%",
+                "Japan:%200%",
+                "m",
+                "C%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 199%",
+                "Japan:%200%",
+                "m",
+                "L%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "USA:%201%",
+                "m",
+                "%E%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "B%",
+                "actor",
+                "2008"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "Japan:%2007%",
+                "m",
+                "%B%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "G%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%201%",
+                "USA:% 200%",
+                "m",
+                "B%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "Japan:%201%",
+                "Japan:%2007%",
+                "m",
+                "%L%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Japan:%201%",
+                "USA:% 200%",
+                "m",
+                "%W%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "A%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Japan:%2007%",
+                "USA:%201%",
+                "m",
+                "C%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:%201%",
+                "m",
+                "%Q%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[ru]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%201%",
+                "USA:%200%",
+                "m",
+                "E%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title",
+                "USA:%2008%",
+                "Japan:%2007%",
+                "m",
+                "%E%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[nl]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "USA:% 199%",
+                "Japan:%200%",
+                "m",
+                "%F%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:%201%",
+                "USA:%200%",
+                "m",
+                "A%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 199%",
+                "USA:%201%",
+                "m",
+                "%Y%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "G%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "Japan:%201%",
+                "USA:% 199%",
+                "m",
+                "%C%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[jp]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:%200%",
+                "Japan:%200%",
+                "m",
+                "H%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "Japan:%200%",
+                "m",
+                "%S%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%D%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:%201%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%S%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:%201%",
+                "Japan:%200%",
+                "m",
+                "A%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Japan:%201%",
+                "USA:% 200%",
+                "m",
+                "%V%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "I%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:%201%",
+                "Japan:%201%",
+                "m",
+                "K%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:% 199%",
+                "USA:%2008%",
+                "m",
+                "%H%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 199%",
+                "USA:%2008%",
+                "m",
+                "%O%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Japan:%201%",
+                "Japan:%200%",
+                "m",
+                "%J%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "Japan:%201%",
+                "m",
+                "%J%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[nl]",
+                "release dates",
+                "murder', 'murder-in-title",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "C%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:%201%",
+                "m",
+                "%T%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "USA:% 199%",
+                "m",
+                "%F%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%201%",
+                "USA:%200%",
+                "m",
+                "%G%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 199%",
+                "USA:%200%",
+                "m",
+                "%Yo%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[jp]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%2008%",
+                "USA:% 199%",
+                "m",
+                "%J%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat', 'computer-animated-movie",
+                "Japan:%200%",
+                "USA:% 200%",
+                "m",
+                "%C%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Japan:%200%",
+                "USA:%2008%",
+                "m",
+                "%M%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title",
+                "USA:% 199%",
+                "USA:%2008%",
+                "m",
+                "I%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%2008%",
+                "Japan:%201%",
+                "m",
+                "J%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%200%",
+                "USA:%201%",
+                "m",
+                "J%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%2007%",
+                "USA:% 200%",
+                "m",
+                "I%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%E%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "Japan:%200%",
+                "m",
+                "%An%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[ru]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%D%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Japan:%2007%",
+                "USA:%200%",
+                "m",
+                "%T%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%200%",
+                "Japan:%2007%",
+                "m",
+                "%B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "%C%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "Japan:%200%",
+                "m",
+                "%W%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:% 200%",
+                "Japan:%2007%",
+                "m",
+                "B%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:% 200%",
+                "USA:%201%",
+                "m",
+                "C%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[nl]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%P%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "B%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "nerd', 'loner', 'alienation', 'dignity",
+                "USA:%200%",
+                "Japan:%200%",
+                "m",
+                "J%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%200%",
+                "Japan:%2007%",
+                "m",
+                "%P%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[ru]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Japan:%201%",
+                "USA:%2008%",
+                "m",
+                "%W%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%2008%",
+                "Japan:%201%",
+                "m",
+                "%B%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:%201%",
+                "m",
+                "%Yo%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title",
+                "USA:%201%",
+                "Japan:%201%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "USA:%200%",
+                "Japan:%201%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%An%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[jp]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Japan:%2007%",
+                "USA:% 200%",
+                "m",
+                "%W%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Japan:%200%",
+                "USA:%200%",
+                "m",
+                "%E%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Japan:%200%",
+                "USA:% 200%",
+                "m",
+                "A%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "%Y%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "%Z%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "%J%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:% 200%",
+                "Japan:%2007%",
+                "m",
+                "%C%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:%2008%",
+                "m",
+                "%M%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[nl]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "Japan:%200%",
+                "USA:%2008%",
+                "m",
+                "G%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "Japan:%200%",
+                "m",
+                "I%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%V%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%2007%",
+                "USA:%201%",
+                "m",
+                "%D%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:% 200%",
+                "m",
+                "%F%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%D%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%201%",
+                "Japan:%200%",
+                "m",
+                "%Y%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "USA:%201%",
+                "m",
+                "%T%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%R%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%200%",
+                "USA:% 200%",
+                "m",
+                "D%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "Japan:%200%",
+                "USA:% 199%",
+                "m",
+                "A%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 199%",
+                "USA:%2008%",
+                "m",
+                "%M%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%O%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Japan:%201%",
+                "USA:% 199%",
+                "m",
+                "%C%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:%2008%",
+                "m",
+                "%M%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%2008%",
+                "Japan:%200%",
+                "m",
+                "%R%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "USA:% 199%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "USA:% 200%",
+                "Japan:%200%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%K%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Japan:%201%",
+                "USA:% 199%",
+                "m",
+                "H%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "D%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[de]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:%201%",
+                "m",
+                "%B%",
+                "actor",
+                "2008"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Japan:%201%",
+                "USA:% 200%",
+                "m",
+                "%N%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%I%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%201%",
+                "USA:% 200%",
+                "m",
+                "%B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "F%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%201%",
+                "USA:%2008%",
+                "m",
+                "K%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat', 'computer-animated-movie",
+                "USA:%2008%",
+                "USA:%200%",
+                "m",
+                "%C%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Japan:%200%",
+                "Japan:%201%",
+                "m",
+                "C%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[jp]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Japan:%2007%",
+                "USA:% 199%",
+                "m",
+                "A%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "I%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%V%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "A%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%C%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%200%",
+                "USA:%200%",
+                "m",
+                "F%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "L%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%201%",
+                "USA:%200%",
+                "m",
+                "%M%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Japan:%201%",
+                "USA:% 200%",
+                "m",
+                "%G%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "Japan:%201%",
+                "USA:% 200%",
+                "m",
+                "%J%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:%200%",
+                "m",
+                "D%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%2007%",
+                "USA:%200%",
+                "m",
+                "%P%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:% 200%",
+                "m",
+                "%E%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[nl]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:% 199%",
+                "m",
+                "K%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[jp]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "USA:% 199%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "Japan:%201%",
+                "m",
+                "%Y%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Japan:%201%",
+                "USA:%200%",
+                "m",
+                "%I%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "Japan:%2007%",
+                "m",
+                "%F%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:% 200%",
+                "m",
+                "%Ang%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:% 199%",
+                "USA:%200%",
+                "m",
+                "%G%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "USA:%201%",
+                "m",
+                "%Y%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[de]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "%U%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "%I%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%A%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:% 199%",
+                "USA:% 200%",
+                "m",
+                "%J%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Japan:%2007%",
+                "Japan:%201%",
+                "m",
+                "%I%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat', 'computer-animated-movie",
+                "USA:% 200%",
+                "Japan:%201%",
+                "m",
+                "%G%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 199%",
+                "USA:%201%",
+                "m",
+                "C%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "E%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[jp]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:%201%",
+                "m",
+                "K%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[jp]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%G%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%E%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "USA:% 200%",
+                "m",
+                "%B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%O%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:% 200%",
+                "m",
+                "%T%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%2008%",
+                "Japan:%2007%",
+                "m",
+                "%G%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Japan:%200%",
+                "USA:%200%",
+                "m",
+                "%C%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%200%",
+                "Japan:%2007%",
+                "m",
+                "%E%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%201%",
+                "USA:% 199%",
+                "m",
+                "%E%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Japan:%2007%",
+                "USA:% 200%",
+                "m",
+                "%Yo%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%200%",
+                "Japan:%200%",
+                "m",
+                "%An%",
+                "actor",
+                "2008"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "D%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "%T%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[ru]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "Japan:%201%",
+                "m",
+                "%L%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:%201%",
+                "USA:%200%",
+                "m",
+                "B%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:%200%",
+                "USA:%201%",
+                "m",
+                "I%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%P%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat', 'computer-animated-movie",
+                "USA:% 200%",
+                "Japan:%2007%",
+                "m",
+                "K%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Japan:%201%",
+                "USA:% 199%",
+                "m",
+                "D%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "Japan:%200%",
+                "m",
+                "H%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Japan:%200%",
+                "USA:% 199%",
+                "m",
+                "%G%",
+                "actress",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[ru]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:%201%",
+                "USA:% 199%",
+                "m",
+                "%M%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%201%",
+                "USA:%2008%",
+                "m",
+                "%H%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[de]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "%K%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:% 199%",
+                "Japan:%201%",
+                "m",
+                "%H%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title",
+                "USA:%2008%",
+                "USA:%201%",
+                "m",
+                "%N%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Japan:%2007%",
+                "USA:% 200%",
+                "m",
+                "%T%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%200%",
+                "Japan:%200%",
+                "m",
+                "%W%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:%201%",
+                "USA:% 199%",
+                "m",
+                "%A%",
+                "actor",
+                "2010"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%T%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%W%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "%D%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Japan:%200%",
+                "USA:%200%",
+                "m",
+                "%O%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[nl]",
+                "release dates",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "USA:%200%",
+                "USA:% 199%",
+                "m",
+                "J%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[ru]",
+                "release dates",
+                "hero', 'martial-arts', 'hand-to-hand-combat', 'computer-animated-movie",
+                "USA:%200%",
+                "Japan:%200%",
+                "m",
+                "C%",
+                "actress",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[ru]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "USA:%200%",
+                "m",
+                "D%",
+                "actor",
+                "1990"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "USA:% 200%",
+                "m",
+                "B%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "USA:% 200%",
+                "Japan:%2007%",
+                "m",
+                "F%",
+                "actor",
+                "2000"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[de]",
+                "release dates",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "USA:% 200%",
+                "USA:% 199%",
+                "m",
+                "%E%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "USA:%2008%",
+                "Japan:%2007%",
+                "m",
+                "%A%",
+                "actor",
+                "2005"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "USA:%2008%",
+                "Japan:%201%",
+                "m",
+                "%E%",
+                "actor",
+                "1950"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "[us]",
+                "release dates",
+                "sequel', 'revenge', 'based-on-novel",
+                "USA:% 199%",
+                "Japan:%2007%",
+                "m",
+                "%I%",
+                "actor",
+                "1990"
+            ]
+        ]
+    }
+}

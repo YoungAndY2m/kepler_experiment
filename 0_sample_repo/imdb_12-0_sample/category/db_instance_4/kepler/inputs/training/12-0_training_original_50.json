@@ -1,0 +1,765 @@
+{
+  "12-0": {
+    "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS drama_horror_movie\nFROM cat_company_name_4 AS cn,\n cat_company_type_4 AS ct,\n cat_info_type_4 AS it1,\n cat_info_type_4 AS it2,\n cat_movie_companies_4 AS mc,\n cat_movie_info_4 AS mi,\n cat_movie_info_idx_4 AS mi_idx,\n cat_title_4 AS t\nWHERE t.id = mi.movie_id\n AND t.id = mi_idx.movie_id\n AND mi.info_type_id = it1.id\n AND mi_idx.info_type_id = it2.id\n AND t.id = mc.movie_id\n AND ct.id = mc.company_type_id\n AND cn.id = mc.company_id\n AND mc.movie_id = mi.movie_id\n AND mc.movie_id = mi_idx.movie_id\n AND mi.movie_id = mi_idx.movie_id\nAND cn.country_code = '@param0'\nAND ct.kind = '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info > '@param5'\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_type_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ct.id = mc.company_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "cat_movie_info_4"
+        ],
+        "join_conditions": [
+          "mi.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables": [
+          "cat_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "mi_idx.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi_idx"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_info_type_4",
+          "cat_movie_companies_4",
+          "cat_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mi.info_type_id = it.id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "column": "info",
+        "operator": ">",
+        "data_type": "text",
+        "table": "cat_movie_info_idx_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_info_type_4",
+          "cat_movie_companies_4",
+          "cat_movie_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "mi_idx.info_type_id = it.id",
+          "mc.movie_id = mi_idx.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_info_4",
+          "cat_movie_info_idx_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_info_4",
+          "cat_movie_info_idx_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[fr]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "USA', 'Italy:March 2013', 'USA:9 May 2009', 'Red Sea, Israel', 'Aditi: Gotcha!",
+        "0...111202",
+        1993,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Adult', 'UK:122', 'Herzliya, Israel', 'Italy:8 March 2008', 'UK:141",
+        "0000100102",
+        1990,
+        1995
+      ],
+      [
+        "[nl]",
+        "distributors",
+        "certificates",
+        "votes distribution",
+        "Netherlands:16', 'Canada:81', 'Mongolia:May 2012', 'Greece:25', 'Australia:13.30",
+        "3200000000",
+        1997,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'USA:28 April 2008', '440', 'USA:23 April 2001', 'Dolce Amore, Inc.",
+        "7",
+        1998,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "certificates",
+        "votes",
+        "Argentina:16', 'Les Cayes, Haiti', 'Mentor Pictures', 'Japan:26 June 1992', 'Eternal Life.",
+        "63",
+        1929,
+        2003
+      ],
+      [
+        "[us]",
+        "distributors",
+        "tech info",
+        "votes",
+        "PCS:Redcode RAW', 'UK:26 December 2007', 'Serbo-Croatian', 'UK:9 January 2006', '\u00e2\u0082\u00ac 270,000",
+        "3212",
+        1995,
+        2013
+      ],
+      [
+        "[de]",
+        "distributors",
+        "tech info",
+        "votes distribution",
+        "RAT:1.33 : 1', 'Finland:86', 'USA:16 May 1991', 'UK:1 November 2005', 'ID 6832 TP",
+        ".21100...2",
+        1978,
+        2012
+      ],
+      [
+        "[nl]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Animation', 'USA:21 July 2003', 'USA:GP', 'Russia:1 April 2006', 'Canada:3",
+        "0000012102",
+        1998,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA:29 April 1994', '$500', 'See! Hear! Pause!', 'New Zealand:32",
+        "4.1",
+        1965,
+        2001
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Short', 'USA:31 March 2005', 'France', 'Netherlands:130', 'Poland:19 May 2010",
+        "14",
+        1995,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "tech info",
+        "votes",
+        "RAT:1.33 : 1', 'India:November 2008', 'Swagger Films', 'A total nightmare.', 'UK:9 March 1992",
+        "37",
+        2004,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'Demian', 'USA:16 April 2009', 'Butte, Montana, USA', 'UK:20 May 2002",
+        "6.2",
+        1968,
+        2015
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA:February 2010', 'Greece:150', 'Feitre, Italy', 'February 2007 -",
+        "6.2",
+        2004,
+        2016
+      ],
+      [
+        "[us]",
+        "production companies",
+        "languages",
+        "votes distribution",
+        "English', 'USA:6 January 2012', 'Pharr, Texas, USA', 'UK:20 April 2009', 'Digicosm",
+        "30010100.1",
+        2001,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "sound mix",
+        "votes",
+        "Stereo', '- 15 September 2000', 'Hungary:April 2010', 'UK:13 December 2008', 'Newcastle, England",
+        "56",
+        1987,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes distribution",
+        "USA:1997', 'Russia:5', 'USA:7 March 2009', 'Japan:80', 'Austria:22 May 2008",
+        "2...2..003",
+        1983,
+        2007
+      ],
+      [
+        "[it]",
+        "distributors",
+        "languages",
+        "votes distribution",
+        "Italian', 'USA:27 January 2012', 'Portugal:March 2007', 'Recovering Memories', 'UK:13 October 2006",
+        "0...010102",
+        1997,
+        2012
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "USA', 'Hungary:12', 'Albatros Co., Ltd.', 'Germany:1 July 2011', '\u00c2\u00a91985 MCA Records",
+        "3000000001",
+        1977,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA:22 April 2005', 'UK:11 April 2011', 'USA:125', 'Germany:1994",
+        "6.6",
+        2001,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "release dates",
+        "rating",
+        "USA:20 April 2007', 'USA:17 October 1991', 'USA:13 July 2011', 'USA:22 August 2002', 'USA:22 May 2009",
+        "3.4",
+        1984,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "Japan', '\u00e2\u0082\u00ac 60,000', 'France:5 June 2002', '- 10 March 2003', 'USA:26 January 2008",
+        "0000011211",
+        1930,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "color info",
+        "rating",
+        "Color', 'USA:24 March 2003', 'USA:6 August 2003', 'France:20 June 2006', 'USA:11 May 1990",
+        "6.8",
+        1966,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Action', '? - 1 May 2001', 'UK:2 March 2003', 'CAM:Canon XH-A1', 'USA:7 February 2012",
+        "0000011211",
+        1974,
+        2006
+      ],
+      [
+        "[nl]",
+        "distributors",
+        "certificates",
+        "votes",
+        "Canada:18A', 'Japan:30 April 2008', 'UK:115', 'USA:29 October 2009', 'USA:9 July 1995",
+        "2807",
+        1993,
+        2010
+      ],
+      [
+        "[dk]",
+        "distributors",
+        "countries",
+        "votes",
+        "Denmark', 'France:10 July 2012', 'UK:11 July 2005', 'Singapore:50', 'USA:27 October 2003",
+        "10",
+        1971,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "color info",
+        "votes",
+        "Color', 'Kristen Bjorn Video', 'Sweden:5', 'Portugal:80', 'UK:4 December 1995",
+        "15",
+        1930,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Adult', '8 November 2009 -', 'Canada:154', 'Love lost & found', '1998",
+        ".....2.422",
+        1989,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "runtimes",
+        "votes distribution",
+        "90', 'Italy:65', 'Hebrew', 'USA:18 March 2012', 'Germany:56",
+        "20.002.011",
+        1979,
+        2016
+      ],
+      [
+        "[us]",
+        "distributors",
+        "color info",
+        "rating",
+        "Color', 'Germany:1 July 2009', 'Punkervision Ltd', 'UK:15 December 2006', 'USA:11 April 2003",
+        "3.2",
+        1971,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', '- 6 June 1997', 'CAM:Sony HDC-1500', 'Spain:23 March 2010', 'Surrey, England, UK",
+        "4.0",
+        1984,
+        1998
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "rating",
+        "Japan', 'Kumamoto, Japan', 'UK:108', 'USA:5 June 1991', 'Russia:8 July 2008",
+        "6.7",
+        1992,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "color info",
+        "votes",
+        "Color', 'Spain:April 2004', 'UK:28 April 2003', 'Russia:August 2011', 'Austria:12 May 2006",
+        "6",
+        1981,
+        2004
+      ],
+      [
+        "[ar]",
+        "distributors",
+        "languages",
+        "votes distribution",
+        "English', 'USA:23 August 2008', 'Spain:69', 'Brazil:7 May 2008', 'UK:14 November 2007",
+        "0011110000",
+        1990,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "locations",
+        "rating",
+        "Memphis, Tennessee, USA', 'USA:6 June 2010', 'Brazil:104', 'April 2003 -', 'Japan:28 April 2011",
+        "6.3",
+        1967,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes distribution",
+        "Portugal:February 1991', 'Portugal:April 1999', 'MET:2277 m', 'Spain:43', 'UK:20 May 1999",
+        "0001111000",
+        1975,
+        1993
+      ],
+      [
+        "[it]",
+        "distributors",
+        "tech info",
+        "rating",
+        "OFM:Video', 'Netherlands:1998', '1962 - 2006', 'Cairo, Egypt', 'USA:18 July 2006",
+        "5.2",
+        1980,
+        2003
+      ],
+      [
+        "[ar]",
+        "distributors",
+        "genres",
+        "votes",
+        "Drama', 'USA:22 January 1996', 'USA:20 October 1992', 'Germany:31 May 2006', 'Filmed in 16 days.",
+        "2807",
+        1975,
+        2014
+      ],
+      [
+        "[us]",
+        "production companies",
+        "certificates",
+        "votes",
+        "USA:Not Rated', 'USA:1976', 'PCS:Lomoscope', 'UK:20 August 2012', 'Sweden:30 May 2007",
+        "37",
+        1996,
+        2010
+      ],
+      [
+        "[au]",
+        "distributors",
+        "tech info",
+        "rating",
+        "PCS:Digital Intermediate', 'Tom Luong', 'A Kat Surth Film', 'USA:27 May 2005', 'filmed at home",
+        "3.7",
+        1929,
+        2012
+      ],
+      [
+        "[dk]",
+        "distributors",
+        "countries",
+        "rating",
+        "Denmark', '- September 2000', 'Spain:20 May 2007', '21 August 2004 - ?', 'UK:25 November 2006",
+        "5.6",
+        1930,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "certificates",
+        "votes distribution",
+        "Netherlands:AL', 'Brazil:23 May 2011', 'Papua New Guinea', 'China:(Banned)', 'Russia:1 June 2011",
+        "0000012102",
+        1995,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "certificates",
+        "votes",
+        "USA:X', '21', 'The Best of British', 'USA:30 May 2011', 'India:30",
+        "73",
+        1977,
+        2013
+      ],
+      [
+        "[hk]",
+        "distributors",
+        "certificates",
+        "votes",
+        "Australia:MA', 'Israel:10', 'Qatar', 'UK:18', 'France:1 March 2004",
+        "1162",
+        1988,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "certificates",
+        "rating",
+        "USA:X', 'USA:16 April 2006', 'Italy:27 May 2008', 'USA:27 March 1988', 'Italy:26 March 2012",
+        "7.4",
+        1986,
+        2014
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Thriller', 'USA:9 May 1989', 'Brazil:1988', 'Lesvos, Greece', 'Spain:4 March 1997",
+        "2807",
+        1979,
+        2007
+      ],
+      [
+        "[nl]",
+        "distributors",
+        "certificates",
+        "votes",
+        "Australia:R', 'USA:13 June 2007', 'Talk-Show', 'USA:2 October 2008', 'USA:7 January 2011",
+        "2807",
+        1966,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Music', 'USA:29 May 2012', 'USA:28 March 1997', 'Nagasaki, Japan', '29 September 2004 -",
+        "13",
+        1970,
+        1999
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'Sweden:18 May 2011', 'Brazil:1986', 'USA:26 October 1999', 'UK:December 1994",
+        "80",
+        1976,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "certificates",
+        "votes",
+        "USA:Unrated', 'Spain:1996', 'Marathi', '6937', 'USA:9 March 2007",
+        "11",
+        1995,
+        2012
+      ],
+      [
+        "[gr]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Thriller', 'UK:16 November 1998', 'Germany:June 2002', 'Germany:25', 'Brazil:79",
+        "0001120001",
+        1984,
+        1999
+      ]
+    ]
+  }
+}

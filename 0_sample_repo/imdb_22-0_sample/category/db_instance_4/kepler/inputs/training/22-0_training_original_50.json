@@ -1,0 +1,991 @@
+{
+    "22-0": {
+        "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS western_violent_movie\nFROM cat_company_name_4 AS cn,\n   cat_company_type_4 AS ct,\n   cat_info_type_4 AS it1,\n   cat_info_type_4 AS it2,\n   cat_keyword_4 AS k,\n   cat_kind_type_4 AS kt,\n   cat_movie_companies_4 AS mc,\n   cat_movie_info_4 AS mi,\n   cat_movie_info_idx_4 AS mi_idx,\n   cat_movie_keyword_4 AS mk,\n   cat_title_4 AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = mc.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mk.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mc.movie_id\nAND mc.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND ct.id = mc.company_type_id\nAND cn.id = mc.company_id\nAND cn.country_code != '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND kt.kind IN ('@param4')\nAND mc.note NOT LIKE '@param5'\nAND mc.note LIKE '@param6'\nAND mi.info IN ('@param7')\nAND mi_idx.info < '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "!=",
+                "data_type": "text",
+                "table": "cat_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "cat_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_kind_type_4",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "cat_title_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_info_idx_4",
+                    "cat_company_type_4",
+                    "cat_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_info_idx_4",
+                    "cat_company_type_4",
+                    "cat_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_idx_4",
+                    "cat_movie_companies_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "cat_movie_info_idx_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_companies_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_4",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_kind_type_4",
+                    "cat_movie_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_idx_4",
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[nl]",
+                "languages",
+                "votes",
+                "blood', 'electrocution', 'birth-defects', 'heraion', 'camping-trip",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%l%",
+                "%h%",
+                "English', '31 July 2008 -', 'Croatia:28', 'Andrew Mitchell', 'Waide Aaron Riddle",
+                "2807",
+                2004
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "votes distribution",
+                "e-mail', 'pinball-machine', 'chess-set', 'paintbrush', 'debut-film",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%f%",
+                "%0%",
+                "Netherlands:16', 'UK:127', 'Creole', 'TRL 10', 'Canada:90",
+                "0011110000",
+                2004
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "votes distribution",
+                "fear', 'end-love-affair', 'generation', 'shoe', 'handicap",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%r%",
+                "%(%",
+                "USA:Unrated', 'Germany:5 June 2007', 'Poland:28 July 2010', 'Venezuela:15', 'Brazil:80",
+                "0011110000",
+                2004
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "votes distribution",
+                "blood', 'henson', 'italian-culture', 'toy-train', 'manchester-england",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%(%",
+                "Germany:16', 'Japan:39', 'Netherlands:71', 'UK:10 December 2001', 'USA:8 June 2004",
+                "0011110000",
+                2004
+            ],
+            [
+                "[es]",
+                "genres",
+                "rating",
+                "hardcore', 'year-2005', 'women-empowerment', 'orlando-florida', 'keg-party",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%a%",
+                "%)%",
+                "Adult', 'New Zealand:R13', 'Greece:170', 'Denmark:99', '4554",
+                "6.4",
+                1994
+            ],
+            [
+                "[ar]",
+                "certificates",
+                "votes",
+                "flashback', 'garrotting', 'staircase', 'guns-n-roses', 'snare",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%n%",
+                "%(%",
+                "USA:Unrated', '50:32', '$30', 'USA:27 July 2009', 'Japan:9 April 2004",
+                "2807",
+                2004
+            ],
+            [
+                "[nl]",
+                "languages",
+                "votes",
+                "bra', 'arapaho-indian', 'cage', 'death-squad', 'time-for-title",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%N%",
+                "%t%",
+                "English', 'UK:12 July 2005', 'RUR 42,000', 'Greece:4 April 2007', 'Croatia:85",
+                "2807",
+                2004
+            ],
+            [
+                "[nl]",
+                "release dates",
+                "rating",
+                "blood', 'tram', 'cocaine-snorting', 'director', 'tail-as-a-corkscrew",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%L%",
+                "%a%",
+                "UK:26 December 2005', 'Belgium:2003', 'Italy:20', 'V 1013L', 'USA:14 May 2001",
+                "4.5",
+                2004
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "blood', 'irish-accent', 'el-paso', 'facial-scar', 'opening-theme",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%s%",
+                "%2%",
+                "RAT:1.85 : 1', 'Japan:27 April 2007', 'AUD 1,300,000', 'Australia:226', 'Canada:31 July 2011",
+                "0011110000",
+                2004
+            ],
+            [
+                "[it]",
+                "color info",
+                "votes distribution",
+                "ejaculation', 'hanged-boy', 'car-driver', 'cartoon-parrot', 'superpower",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%1%",
+                "%S%",
+                "Color', '10 May 2012 -', 'Spain:16 May 2001', 'USA:11 May 1992', 'UK:14 May 2007",
+                "0...010102",
+                1998
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "votes distribution",
+                "breasts', 'daredevil', 'healthy', 'filmed-play', 'morrissey",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%s%",
+                "%g%",
+                "Argentina:18', 'USA:22 May 2002', 'USA:10 April 1989', 'UK:8 February 2013', 'UK:20 November 2007",
+                "3200000000",
+                2000
+            ],
+            [
+                "[ar]",
+                "genres",
+                "votes distribution",
+                "embassy', 'magic-spell', 'mural-art', 'covert', 'mother",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%m%",
+                "%A%",
+                "Thriller', 'PLSAB 20041', 'USA:14 October 1995', 'Italy:24 July 2009', 'Finland:K-18",
+                "0011110000",
+                2004
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes",
+                "breasts', 'asana', 'natural', 'roses', 'black-dialect",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%l%",
+                "%V%",
+                "RAT:1.85 : 1', '1 June 2007 -', 'Finland:March 2011', 'Japan:19 July 2007', 'Japan:21 May 2007",
+                "2807",
+                2004
+            ],
+            [
+                "[us]",
+                "certificates",
+                "votes",
+                "interview', 'alive', 'spitting-blood', 'violinist', 'roskilde-festival",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%m%",
+                "%o%",
+                "USA:Unrated', 'Macao', 'Croatia:36', 'Medan, Indonesia', 'Mexico:1997",
+                "70",
+                2009
+            ],
+            [
+                "[nl]",
+                "genres",
+                "votes distribution",
+                "bra', 'hand-through-chest', 'sewing', 'games-convention', 'encoder",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%L%",
+                "%)%",
+                "Thriller', 'UK:6 May 2002', 'UK:20 November 2012', 'Austria:1989', 'All Natural",
+                "0011110000",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes distribution",
+                "blood', 'saw', 'free-running', 'pop', 'lost-film",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%U%",
+                "Thriller', 'USA:4 April 1995', 'CAM:Canon Camera', 'UK:16 December 2006', 'USA:24 July 2006",
+                "0011110000",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "friendship', 'sexy-babysitter', 'rock-song', 'drown', 'wild",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%2%",
+                "Comedy', 'USA:15 March 2010', 'UK:November 1993', 'Spain:8 June 2001', 'UK:22 April 2002",
+                "63",
+                1993
+            ],
+            [
+                "[ar]",
+                "certificates",
+                "votes distribution",
+                "embassy', 'louvre', 'cop', 'self-immolation', 'bushwhacker",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2%",
+                "%(%",
+                "Iceland:16', 'UK:January 2000', '- 15 November 2001', 'Canada:5 April 2008', 'Brazil:2006",
+                "0011110000",
+                2004
+            ],
+            [
+                "[us]",
+                "languages",
+                "votes distribution",
+                "jealousy', '17-year-old', 'wireless-radio', 'cinderella', 'men-in-black",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%V%",
+                "Japanese', 'USA:87', 'Bury your past', 'Japan:26 May 2007', 'France:22 July 2005",
+                "0000111003",
+                1993
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "rating",
+                "blood', 'bullfighter', 'marc-antony', 'woman-as-object', 'asphyxophilia",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%0%",
+                "%)%",
+                "Netherlands:16', 'ARS 5,000', 'Iceland:6 July 2004', 'Japan:7 May 1990', 'Barcelona, Spain",
+                "4.5",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "playboy-centerfold', 'volleyball', 'django', 'flatmate', 'lunar-landing",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%i%",
+                "%o%",
+                "Documentary', 'USA:20 August 2004', 'UK:20 August 2006', 'Ted Owens', 'Gettcha krump on!",
+                "33",
+                2000
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "rating",
+                "female-full-frontal-nudity', 'welshman', 'modern-day', 'wolverine', 'stabbed-in-the-eye",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%R%",
+                "%r%",
+                "Argentina:16', 'Denmark:1986', 'UK:1 October 2006', 'Norway:2004', 'USA:8 October 2012",
+                "4.5",
+                2004
+            ],
+            [
+                "[ar]",
+                "languages",
+                "rating",
+                "embassy', 'kids', 'chemical', 'swearing', 'music-manager",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%i%",
+                "%a%",
+                "English', 'India:15 March 2008', 'USA:21 July 2006', 'Sweden:69', 'Germany:4 May 2010",
+                "4.5",
+                2004
+            ],
+            [
+                "[ar]",
+                "tech info",
+                "votes distribution",
+                "black-panties', 'burrito', 'straw-bale-house', 'lesbian-roommate', 'screenwriter",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%l%",
+                "%e%",
+                "RAT:1.85 : 1', 'Sweden:45', 'UK:1 February 2010', 'USA:7 March 2005', 'France:16 July 2007",
+                "0011110000",
+                2004
+            ],
+            [
+                "[us]",
+                "certificates",
+                "votes",
+                "embassy', 'test-flight', 'favorite-chair', 'invitation', 'digital-short",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%)%",
+                "Netherlands:16', 'Iceland:1993', 'Japan:24 June 2002', '\u00c2\u00a3300,000', 'USA:December 2004",
+                "2807",
+                2004
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "rating",
+                "e-mail', 'driving-test', 'killer-scarecrow', 'ferris-wheel', 'hook-for-hand",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%a%",
+                "USA:R', 'Hungary:1 June 2006', 'Abandon all hope.', 'PFM:Super 8', '\u00c2\u00a356",
+                "4.5",
+                2004
+            ],
+            [
+                "[hk]",
+                "color info",
+                "votes distribution",
+                "digital-video', 'dead-woman-on-bed', 'molestation', 'couples', 'kickstarter",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%o%",
+                "%H%",
+                "Color', 'Sweden:20 May 2011', 'Romania:I.C.-14', 'UK:192', 'Japan:25 May 1999",
+                "3200000000",
+                2000
+            ],
+            [
+                "[us]",
+                "languages",
+                "rating",
+                "playboy-magazine', 'covered-in-mud', 'invasion-of-earth', 'sex-with-a-stranger', 'child-abduction",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%a%",
+                "%w%",
+                "English', 'UK:3 December 2001', 'UK:8 March 2013', 'Japan:10 June 2009', 'Japan:31 March 2007",
+                "5.6",
+                2000
+            ],
+            [
+                "[us]",
+                "certificates",
+                "rating",
+                "breast-suckling', 'u.s.-diplomacy', 'world-series', 'street', 'hill''s-angels",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%)%",
+                "Argentina:16', 'UK:11 November 2002', 'Netherlands:1993', 'USA:17 June 2006', 'UK:September 2008",
+                "5.5",
+                1993
+            ],
+            [
+                "[ar]",
+                "genres",
+                "votes",
+                "breasts', 'toilet-cleaning', 'bar-brawl', 'anti-communism', 'program",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%n%",
+                "%a%",
+                "Drama', 'USA:13 July 2010', 'Uruguay:15 May 2011', 'USA:31 October 2009', 'USA:3 March 2006",
+                "2807",
+                2004
+            ],
+            [
+                "[us]",
+                "tech info",
+                "votes",
+                "sexual-attraction', 'modern-gladiator', 'bangladesh', 'parking-meter', 'foreclosure",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%t%",
+                "%1%",
+                "OFM:Redcode RAW', 'UK:340', 'USA:4 February 1995', '\u00e2\u0082\u00ac 113,458,124', 'Russia:6 May 2005",
+                "3212",
+                2009
+            ],
+            [
+                "[us]",
+                "tech info",
+                "votes distribution",
+                "strip-club', 'falsification', 'custard-pie', 'lager', 'stabbed-in-the-arm",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%e%",
+                "%d%",
+                "RAT:1.78 : 1', 'USA:July 1985', 'USA:15 October 2003', '$2,400', 'USA:6 April 2009",
+                "214.1.11..",
+                2006
+            ],
+            [
+                "[it]",
+                "color info",
+                "votes",
+                "high-heels', 'ninjutsu', 'craps', 'radio-jingle', 'hand-rubbing-vagina",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%1%",
+                "%)%",
+                "Color', 'USA:7 July 1998', '38', 'Sweden:85', 'INR 2,000,000",
+                "11",
+                1998
+            ],
+            [
+                "[us]",
+                "languages",
+                "votes distribution",
+                "hardcore', 'prison-sentence', 'playstation', 'pumpkin-head', 'kettlebell",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%S%",
+                "%1%",
+                "English', 'It Is Terrifying!', 'USA:2 March 2001', 'Finland:18', 'UK:19 August 2005",
+                "1.111...15",
+                1994
+            ],
+            [
+                "[us]",
+                "certificates",
+                "votes",
+                "christmas', 'drinking-wine', 'moose-head', 'headmistress', 'loss-of-humanity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%U%",
+                "%0%",
+                "Germany:16', 'USA:16 July 1999', 'CAM:DVX-100B', '23 July 2005 - ?', 'Spain:6 March 2003",
+                "2807",
+                2004
+            ],
+            [
+                "[ar]",
+                "tech info",
+                "votes",
+                "e-mail', 'bullet-hole-in-car', 'ex-nazi', 'public-access', 'guns-n-roses",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%d%",
+                "%i%",
+                "RAT:1.85 : 1', 'USA:6 April 1989', 'USA:22 October 2007', '- 8 August 2006', 'Spain:15 March 2004",
+                "2807",
+                2004
+            ],
+            [
+                "[us]",
+                "certificates",
+                "rating",
+                "blood', 'heart-lung-machine', 'grub', 'hillary-clinton', 'pussycat",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%)%",
+                "Canada:R', 'Enjoy the Dance', 'SC058-6068', 'Wait For It', 'USA:20 August 2005",
+                "4.5",
+                2004
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "votes distribution",
+                "independent-film', 'photo-studio', 'treating-a-wound', 'evil-force', 'anti-authority",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%V%",
+                "%h%",
+                "Germany:18', 'UK:18 October 2004', 'Netherlands:136', 'USA:6 June 2006', 'USA:24 August 2010",
+                "3200000000",
+                2000
+            ],
+            [
+                "[us]",
+                "languages",
+                "votes distribution",
+                "topless-female-nudity', 'railway-station', 'chemical-light', 'court', 'cosplay",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%T%",
+                "%0%",
+                "English', 'UK:26 May 1992', 'Italy:8 March 2008', 'USA:4 April 1991', 'USA:11 April 2010",
+                "1111100001",
+                2009
+            ],
+            [
+                "[ar]",
+                "genres",
+                "votes distribution",
+                "flashback', 'bloodshot-eyes', 'indie-rock-music', 'neurology', 'clapper",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%A%",
+                "%)%",
+                "Drama', 'UK:4 November 1993', 'Uttrakhand, India', '1994 - 2000', 'Argentina:49",
+                "0011110000",
+                2004
+            ],
+            [
+                "[nl]",
+                "genres",
+                "votes",
+                "embassy', 'coal', 'queensland', 'locked-in', 'surrogate",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%t%",
+                "%)%",
+                "Drama', 'SEK 15,000,000', 'Korea', '- 2003', 'Spain:November 2006",
+                "2807",
+                2004
+            ],
+            [
+                "[nl]",
+                "certificates",
+                "votes distribution",
+                "fantasy-sequence', 'viz-magazine', 'death-by-gunshot', 'muscle-shirt', 'breast-removal",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%t%",
+                "%0%",
+                "USA:R', '11 September 2007 -', 'LAB:All Film, USA', '6 January 2006 -', 'Soviet Union:1987",
+                "0011110000",
+                2004
+            ],
+            [
+                "[nl]",
+                "countries",
+                "votes",
+                "embassy', 'vienna-austria', 'model-boat', 'ant', 'stolen-drugs",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%D%",
+                "%)%",
+                "USA', 'Japan:February 2011', 'France:27 May 2003', 'Germany:3 June 2000', 'CAD 20,000",
+                "2807",
+                2004
+            ],
+            [
+                "[nl]",
+                "genres",
+                "rating",
+                "fear', 'blue-panties', 'interruption', 'ghost-in-mirror', 'scheming",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%i%",
+                "%l%",
+                "Thriller', 'UK:4 April 1996', 'Hungary:23 May 2006', 'USA:164', 'USA:10 March 2012",
+                "4.5",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "blood', 'freshman', 'forensics', 'reception-center', 'racehorse",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%V%",
+                "%U%",
+                "Drama', 'Punkervision Ltd', 'France:4,20', '12 October 2006 -', 'USA:7 February 2012",
+                "2807",
+                2004
+            ],
+            [
+                "[it]",
+                "genres",
+                "votes distribution",
+                "double-penetration', 'mysterious-stranger', 'hard-rock', 'one-woman-army', 'tourist",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%9%",
+                "%S%",
+                "Adult', '333', 'Greece:120', 'UK:15 August 2002', 'UK:13",
+                "0...010102",
+                1998
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "erotica', 'pulling-tooth', 'greased-pig', 'dragged', 'title-from-bible",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%U%",
+                "%(%",
+                "Drama', 'USA:18 April 2004', 'Brazil:8 March 1995', 'Bulgaria', 'Russia:2005",
+                "3.2",
+                2002
+            ],
+            [
+                "[ar]",
+                "color info",
+                "rating",
+                "flashback', 'repair', 'eleven-word-title', 'skepticism', 'versace",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%l%",
+                "%)%",
+                "Color', 'CAD 750,000', 'Japan:3 April 2002', 'UK:26 April 2013', 'USA:5 April 2002",
+                "4.5",
+                2004
+            ],
+            [
+                "[ar]",
+                "certificates",
+                "votes distribution",
+                "flashback', 'jalopy', 'goldilocks', 'condom', 'dish",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%m%",
+                "%)%",
+                "New Zealand:R18', 'USA:23 April 2013', 'UK:11 July 2011', 'Estonia:2000', 'UK:7 November 1994",
+                "0011110000",
+                2004
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "topless-female-nudity', 'jumping-to-death', 'interfaith', 'soundtrack', 'treasure-hunter",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%w%",
+                "%d%",
+                "USA', 'Spain:2 August 2000', 'Don''t Get Caught', 'Philippines:45', 'UK:20",
+                "3.7",
+                2009
+            ]
+        ]
+    }
+}

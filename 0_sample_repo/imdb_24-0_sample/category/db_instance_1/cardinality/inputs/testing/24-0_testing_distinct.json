@@ -1,0 +1,2764 @@
+{
+    "24-0": {
+        "query": "SELECT MIN(chn.name) AS voiced_char_name, MIN(n.name) AS voicing_actress_name, MIN(t.title) AS voiced_action_movie_jap_eng\nFROM cat_aka_name_1 AS an,\n   cat_char_name_1 AS chn,\n   cat_cast_info_1 AS ci,\n   cat_company_name_1 AS cn,\n   cat_info_type_1 AS it,\n   cat_keyword_1 AS k,\n   cat_movie_companies_1 AS mc,\n   cat_movie_info_1 AS mi,\n   cat_movie_keyword_1 AS mk,\n   cat_name_1 AS n,\n   cat_role_type_1 AS rt,\n   cat_title_1 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mc.movie_id = mk.movie_id\nAND mi.movie_id = ci.movie_id\nAND mi.movie_id = mk.movie_id\nAND ci.movie_id = mk.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param4' OR mi.info LIKE '@param5')\nAND n.gender = '@param6'\nAND n.name LIKE '@param7'\nAND rt.role = '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_cast_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "mi",
+                    "mk",
+                    "n",
+                    "rt",
+                    "an",
+                    "chn"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_movie_companies_1",
+                    "cat_movie_info_1",
+                    "cat_movie_keyword_1",
+                    "cat_name_1",
+                    "cat_role_type_1",
+                    "cat_aka_name_1",
+                    "cat_char_name_1"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "mc.movie_id = ci.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id",
+                    "rt.id = ci.role_id",
+                    "ci.person_id = an.person_id",
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_1",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_1"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_1",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_movie_companies_1",
+                    "cat_cast_info_1",
+                    "cat_movie_keyword_1",
+                    "cat_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_movie_companies_1",
+                    "cat_cast_info_1",
+                    "cat_movie_keyword_1",
+                    "cat_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_name_1",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_1",
+                    "cat_aka_name_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_name_1",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_1",
+                    "cat_aka_name_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_role_type_1",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_cast_info_1"
+                ],
+                "join_conditions": [
+                    "rt.id = ci.role_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_1",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "mi",
+                    "mc",
+                    "ci",
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_info_1",
+                    "cat_movie_companies_1",
+                    "cat_cast_info_1",
+                    "cat_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mc.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%the%",
+                "%The%",
+                "m",
+                "%Franco%",
+                "actor",
+                1951
+            ],
+            [
+                "(as Halbert W. Brown)', '(as Mic Conway)', '(production secretary)', '(uncredited)', '(co-producer)",
+                "[us]",
+                "genres",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%mm%",
+                "%s%",
+                "m",
+                "%Ho%",
+                "actor",
+                1944
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(producer)",
+                "[gb]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%r%",
+                "%h%",
+                "m",
+                "%John%",
+                "actor",
+                1974
+            ],
+            [
+                "(production assistant)', '(uncredited)', '(production assistant)', '(uncredited)', '(production assistant)",
+                "[de]",
+                "release dates",
+                "based-on-play', 'female-nudity', 'based-on-play', 'female-nudity', 'based-on-play",
+                "%o%",
+                "%where%",
+                "m",
+                "%David%",
+                "actor",
+                2007
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "rayquza', 'meditating-bunny-studio', 'caving', '1610s', 'hostage-killed",
+                "%33%",
+                "%g%",
+                "m",
+                "%Brown%",
+                "actor",
+                2000
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%o%",
+                "%S%",
+                "m",
+                "%Shaun%",
+                "actor",
+                1981
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "countries",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%U%",
+                "%s%",
+                "m",
+                "%Ron%",
+                "actor",
+                2004
+            ],
+            [
+                "(writer)', '(uncredited)', '(uncredited)', '(executive producer)', '(executive producer)",
+                "[li]",
+                "countries",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%h%",
+                "%all%",
+                "m",
+                "%Franco%",
+                "actor",
+                1913
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "genres",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%s%",
+                "%PCS%",
+                "m",
+                "%Blanc%",
+                "actor",
+                1976
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[fr]",
+                "countries",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%PFM%",
+                "%r%",
+                "m",
+                "%S%",
+                "actor",
+                1998
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[gb]",
+                "countries",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%r%",
+                "%A%",
+                "m",
+                "%e%",
+                "actor",
+                1994
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%1%",
+                "%o%",
+                "m",
+                "%Blanc%",
+                "actor",
+                1936
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(producer)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "based-on-play', 'female-nudity', 'female-nudity', 'based-on-play', 'female-nudity",
+                "%1%",
+                "%r%",
+                "m",
+                "%Clark%",
+                "actor",
+                1977
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%I%",
+                "%h%",
+                "m",
+                "%William%",
+                "actor",
+                2005
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%o%",
+                "%l%",
+                "m",
+                "%Dirty%",
+                "actor",
+                1935
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "countries",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%U%",
+                "%A%",
+                "m",
+                "%Clark%",
+                "actor",
+                1915
+            ],
+            [
+                "(uncredited)', '(writer)', '(writer)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%33%",
+                "%o%",
+                "m",
+                "%D%",
+                "actor",
+                2006
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%mm%",
+                "%to%",
+                "m",
+                "%Holmes%",
+                "actor",
+                1976
+            ],
+            [
+                "(writer)', '(script supervisor)', '(associate producer)', '(uncredited)', '(producer)",
+                "[gb]",
+                "release dates",
+                "based-on-play', 'female-nudity', 'female-nudity', 'based-on-play', 'based-on-play",
+                "%e%",
+                "%r%",
+                "m",
+                "%Sam%",
+                "actor",
+                2006
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%S%",
+                "%mm%",
+                "m",
+                "%D%",
+                "actor",
+                1948
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%s%",
+                "%Black%",
+                "m",
+                "%Robert%",
+                "actor",
+                2010
+            ],
+            [
+                "(producer)', '(uncredited)', '(as Laxmikant)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%S%",
+                "%OFM%",
+                "m",
+                "%Carl%",
+                "actor",
+                1932
+            ],
+            [
+                "(uncredited)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "[de]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%Angenieux%",
+                "%l%",
+                "m",
+                "%James%",
+                "actor",
+                1988
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%r%",
+                "%U%",
+                "m",
+                "%Fox%",
+                "actor",
+                1972
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "love', 'nudity', 'number-in-title', 'hardcore', 'number-in-title",
+                "%o%",
+                "%M%",
+                "m",
+                "%Costello%",
+                "actor",
+                1914
+            ],
+            [
+                "(writer)', '(writer)', '(writer)', '(writer)', '(uncredited)",
+                "[gb]",
+                "countries",
+                "based-on-play', 'based-on-play', 'based-on-play', 'female-nudity', 'based-on-play",
+                "%USA%",
+                "%s%",
+                "m",
+                "%Ed%",
+                "actor",
+                1932
+            ],
+            [
+                "(choreographer) (as Kamal)', '(uncredited)', '(uncredited)', '(gowns)', '(uncredited)",
+                "[us]",
+                "countries",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%R%",
+                "%c%",
+                "m",
+                "%Tim%",
+                "actor",
+                1973
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "nudity', 'number-in-title', 'husband-wife-relationship', 'blood', 'family-relationships",
+                "%1%",
+                "%h%",
+                "m",
+                "%Mel%",
+                "actor",
+                1989
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "based-on-play', 'based-on-play', 'based-on-play', 'based-on-play', 'female-nudity",
+                "%and%",
+                "%o%",
+                "m",
+                "%Peter%",
+                "actor",
+                2000
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%s%",
+                "%here%",
+                "m",
+                "%D%",
+                "actor",
+                2009
+            ],
+            [
+                "(production assistant) (as Amir Khan)', '(production assistant)', '(original music by)', '(executive producer)', '(uncredited)",
+                "[de]",
+                "countries",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%K%",
+                "%o%",
+                "m",
+                "%Ron%",
+                "actor",
+                1991
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%C%",
+                "%s%",
+                "m",
+                "%Mel%",
+                "actor",
+                1944
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "revenge', 'explosion', 'jealousy', 'friend', 'gay",
+                "%Analog%",
+                "%l%",
+                "m",
+                "%Aaron%",
+                "actor",
+                2005
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(producer)",
+                "[us]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%m%",
+                "%White%",
+                "m",
+                "%Harris%",
+                "actor",
+                1904
+            ],
+            [
+                "(director of photography)', '(production assistant)', '(producer) (as Jorge Guerricaechevarria)', '(writer)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%s%",
+                "%UK%",
+                "m",
+                "%Joe%",
+                "actor",
+                1988
+            ],
+            [
+                "(associate producer)', '(producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%o%",
+                "%l%",
+                "m",
+                "%Gonz\u00c3\u00a1lez%",
+                "actor",
+                1962
+            ],
+            [
+                "(writer)', '(writer)', '(writer)', '(uncredited)', '(production assistant)",
+                "[us]",
+                "genres",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%r%",
+                "%h%",
+                "m",
+                "%Ford%",
+                "actor",
+                1942
+            ],
+            [
+                "(uncredited)', '(associate producer)', '(producer)', '(written by)', '(associate producer)",
+                "[fr]",
+                "release dates",
+                "based-on-play', 'based-on-play', 'based-on-play', 'based-on-play', 'female-nudity",
+                "%o%",
+                "%of%",
+                "m",
+                "%Bray%",
+                "actor",
+                1980
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%m%",
+                "%OFM%",
+                "m",
+                "%D%",
+                "actor",
+                1977
+            ],
+            [
+                "(uncredited)', '(producer)', '(producer)', '(executive producer)', '(producer)",
+                "[ca]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%K%",
+                "%33%",
+                "m",
+                "%D%",
+                "actor",
+                1972
+            ],
+            [
+                "(producer)', '(uncredited)', '(producer)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "based-on-play', 'based-on-play', 'female-nudity', 'based-on-play', 'female-nudity",
+                "%s%",
+                "%his%",
+                "m",
+                "%Gregoire%",
+                "actor",
+                1958
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%U%",
+                "%PFM%",
+                "m",
+                "%Ho%",
+                "actor",
+                2004
+            ],
+            [
+                "(associate producer)', '(associate producer)', '(voice)', '(co-producer)', '(co-producer)",
+                "[us]",
+                "release dates",
+                "female-nudity', 'female-nudity', 'based-on-play', 'based-on-play', 'based-on-play",
+                "%D%",
+                "%D%",
+                "m",
+                "%Mel%",
+                "actor",
+                1921
+            ],
+            [
+                "(voice) (uncredited)', '(voice) (uncredited)', '(producer)', '(voice) (uncredited)', '(voice) (uncredited)",
+                "[us]",
+                "release dates",
+                "love', 'father-son-relationship', 'love', 'husband-wife-relationship', 'number-in-title",
+                "%Spherical%",
+                "%r%",
+                "m",
+                "%George%",
+                "actor",
+                1914
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "police', 'family-relationships', 'father-son-relationship', 'hardcore', 'one-word-title",
+                "%n%",
+                "%A%",
+                "m",
+                "%Randolph%",
+                "actor",
+                1955
+            ],
+            [
+                "(voice) (uncredited)', '(voice) (uncredited)', '(producer)', '(producer)', '(producer)",
+                "[gb]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%U%",
+                "%35%",
+                "m",
+                "%Blanc%",
+                "actor",
+                1934
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(producer)",
+                "[us]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%Spherical%",
+                "%C%",
+                "m",
+                "%Carl%",
+                "actor",
+                2004
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[gb]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%mm%",
+                "%be%",
+                "m",
+                "%Brown%",
+                "actor",
+                1983
+            ],
+            [
+                "(producer)', '(producer)', '(uncredited)', '(uncredited)', '(producer)",
+                "[br]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%r%",
+                "%PFM%",
+                "m",
+                "%John%",
+                "actor",
+                1993
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%White%",
+                "%d%",
+                "m",
+                "%Carl%",
+                "actor",
+                1939
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "parental-love', 'kept-woman', 'recoil', 'stop-drop-and-roll', 'gymnastics-class",
+                "%U%",
+                "%d%",
+                "m",
+                "%Lee%",
+                "actor",
+                1974
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%l%",
+                "%Devika%",
+                "m",
+                "%John%",
+                "actor",
+                1993
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "release dates",
+                "woman-in-underwear', 'traffic-control', 'squid-monster', 'knife-wound', 'witness-to-murder",
+                "%s%",
+                "%OFM%",
+                "m",
+                "%H%",
+                "actor",
+                1905
+            ],
+            [
+                "(producer)', '(producer)', '(uncredited)', '(producer)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%1%",
+                "%o%",
+                "m",
+                "%Jesse%",
+                "actor",
+                1995
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%o%",
+                "%1%",
+                "m",
+                "%Keane%",
+                "actor",
+                1918
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "based-on-play', 'based-on-play', 'female-nudity', 'based-on-play', 'based-on-play",
+                "%s%",
+                "%h%",
+                "m",
+                "%Blanc%",
+                "actor",
+                2008
+            ],
+            [
+                "(screenplay)', '(voice)', '(executive producer)', '(screenplay)', '(voice)",
+                "[us]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%S%",
+                "%M%",
+                "m",
+                "%L%",
+                "actor",
+                1957
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "female-nudity', 'female-nudity', 'female-nudity', 'based-on-play', 'female-nudity",
+                "%the%",
+                "%h%",
+                "m",
+                "%Alexander%",
+                "actor",
+                1968
+            ],
+            [
+                "(uncredited)', '(producer)', '(executive producer)', '(uncredited)', '(producer)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%s%",
+                "%o%",
+                "m",
+                "%Scott%",
+                "actor",
+                1960
+            ],
+            [
+                "(executive producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(executive producer)",
+                "[de]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%mm%",
+                "%r%",
+                "m",
+                "%Jack%",
+                "actor",
+                2005
+            ],
+            [
+                "(screenplay)', '(screenplay)', '(executive producer)', '(voice)', '(executive producer)",
+                "[us]",
+                "genres",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%PFM%",
+                "%n%",
+                "m",
+                "%Blanc%",
+                "actor",
+                1930
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%o%",
+                "%OFM%",
+                "m",
+                "%Amato%",
+                "actor",
+                1999
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "genres",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%r%",
+                "%mm%",
+                "m",
+                "%Jittlov%",
+                "actor",
+                1969
+            ],
+            [
+                "(producer)', '(presenter)', '(producer)', '(presenter)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%Ace%",
+                "%r%",
+                "m",
+                "%Walt%",
+                "actor",
+                1930
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "genres",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%D%",
+                "%n%",
+                "m",
+                "%Donald%",
+                "actor",
+                1965
+            ],
+            [
+                "(uncredited)', '(presenter)', '(uncredited)', '(uncredited)', '(presenter)",
+                "[de]",
+                "genres",
+                "gun', 'world-war-two', 'male-nudity', 'mother-daughter-relationship', 'gay-interest",
+                "%h%",
+                "%PCS%",
+                "m",
+                "%Josep%",
+                "actor",
+                1972
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%r%",
+                "%1%",
+                "m",
+                "%Ho%",
+                "actor",
+                1977
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%S%",
+                "%U%",
+                "m",
+                "%Holmes%",
+                "actor",
+                1938
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "police', 'husband-wife-relationship', 'hardcore', 'one-word-title', 'violence",
+                "%1%",
+                "%Brazil%",
+                "m",
+                "%Kwong%",
+                "actor",
+                1956
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%Black%",
+                "%a%",
+                "m",
+                "%Mel%",
+                "actor",
+                1896
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%o%",
+                "%r%",
+                "m",
+                "%Franco%",
+                "actor",
+                1953
+            ],
+            [
+                "(producer)', '(executive producer)', '(executive producer)', '(producer)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%s%",
+                "%g%",
+                "m",
+                "%William%",
+                "actor",
+                1978
+            ],
+            [
+                "(executive producer)', '(producer)', '(uncredited)', '(writer)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%planet%",
+                "%d%",
+                "m",
+                "%Bray%",
+                "actor",
+                2001
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%RAT%",
+                "%o%",
+                "m",
+                "%Christoph%",
+                "actor",
+                1970
+            ],
+            [
+                "(uncredited)', '(production assistant)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "violence', 'nudity', 'death', 'one-word-title', 'violence",
+                "%D%",
+                "%1%",
+                "m",
+                "%Frazier%",
+                "actor",
+                1987
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%35%",
+                "%d%",
+                "m",
+                "%Amato%",
+                "actor",
+                1981
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'based-on-play",
+                "%o%",
+                "%s%",
+                "m",
+                "%Brown%",
+                "actor",
+                1963
+            ],
+            [
+                "(producer)', '(uncredited)', '(uncredited)', '(producer)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "gay-interest', 'singing', 'gun', 'world-war-two', 'melodrama",
+                "%m%",
+                "%e%",
+                "m",
+                "%Jesse%",
+                "actor",
+                1972
+            ],
+            [
+                "(uncredited)', '(dialogue director)', '(as Jeorge ''ER'' Estregan)', '(gun wrangler) (as Frenchie Berger)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "hardcore', 'love', 'number-in-title', 'hardcore', 'death",
+                "%o%",
+                "%35%",
+                "m",
+                "%Robert%",
+                "actor",
+                1992
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(executive producer)', '(uncredited)', '(as Laxmikant)",
+                "[de]",
+                "countries",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%PCS%",
+                "%S%",
+                "m",
+                "%Jim%",
+                "actor",
+                1955
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%2%",
+                "%r%",
+                "m",
+                "%Bell%",
+                "actor",
+                1977
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "countries",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%o%",
+                "%o%",
+                "m",
+                "%Sam%",
+                "actor",
+                1956
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(producer)",
+                "[gb]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%35%",
+                "%h%",
+                "m",
+                "%Milton%",
+                "actor",
+                1980
+            ],
+            [
+                "(uncredited)', '(writer)', '(producer)', '(executive producer)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%PFM%",
+                "%A%",
+                "m",
+                "%Dale%",
+                "actor",
+                1921
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[de]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%n%",
+                "%RAT%",
+                "m",
+                "%Jack%",
+                "actor",
+                1916
+            ],
+            [
+                "(production assistant)', '(writer)', '(production assistant)', '(production assistant)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%mm%",
+                "%h%",
+                "m",
+                "%Holmes%",
+                "actor",
+                1968
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%l%",
+                "%E%",
+                "m",
+                "%Amato%",
+                "actor",
+                2003
+            ],
+            [
+                "(writer)', '(uncredited)', '(writer)', '(uncredited)', '(writer)",
+                "[gb]",
+                "countries",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%o%",
+                "%r%",
+                "m",
+                "%Vic%",
+                "actor",
+                1945
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "countries",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%U%",
+                "%r%",
+                "m",
+                "%Jean%",
+                "actor",
+                1961
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(writer)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%m%",
+                "%g%",
+                "m",
+                "%Mike%",
+                "actor",
+                2008
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%2%",
+                "%PFM%",
+                "m",
+                "%John%",
+                "actor",
+                1903
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(presenter)', '(uncredited)', '(presenter)",
+                "[de]",
+                "genres",
+                "blood', 'blood', 'police', 'husband-wife-relationship', 'death",
+                "%e%",
+                "%Black%",
+                "m",
+                "%B%",
+                "actor",
+                1997
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%l%",
+                "%h%",
+                "m",
+                "%Joe%",
+                "actor",
+                2011
+            ],
+            [
+                "(co-producer)', '(screenplay)', '(voice)', '(script supervisor)', '(screenplay)",
+                "[fr]",
+                "release dates",
+                "number-in-title', 'hardcore', 'number-in-title', 'number-in-title', 'blood",
+                "%l%",
+                "%35%",
+                "m",
+                "%Ho%",
+                "actor",
+                1901
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%S%",
+                "%White%",
+                "m",
+                "%D%",
+                "actor",
+                2010
+            ],
+            [
+                "(voice)', '(story)', '(story)', '(script supervisor)', '(screenplay)",
+                "[gb]",
+                "release dates",
+                "gay-interest', 'jealousy', 'singer', 'mother-son-relationship', 'father-daughter-relationship",
+                "%m%",
+                "%R%",
+                "m",
+                "%Franco%",
+                "actor",
+                2001
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "hardcore', 'death', 'family-relationships', 'hardcore', 'hardcore",
+                "%OFM%",
+                "%l%",
+                "m",
+                "%Ho%",
+                "actor",
+                2009
+            ],
+            [
+                "(uncredited)', '(executive producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%1%",
+                "%h%",
+                "m",
+                "%Harris%",
+                "actor",
+                2001
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%r%",
+                "%l%",
+                "m",
+                "%Tom%",
+                "actor",
+                2008
+            ],
+            [
+                "(uncredited)', '(producer)', '(production assistant)', '(executive producer)', '(production assistant)",
+                "[gb]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%1%",
+                "%s%",
+                "m",
+                "%Ho%",
+                "actor",
+                1999
+            ],
+            [
+                "(production assistant)', '(uncredited)', '(production assistant)', '(writer)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%Spherical%",
+                "%s%",
+                "m",
+                "%Ho%",
+                "actor",
+                2009
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%d%",
+                "%S%",
+                "m",
+                "%Lee%",
+                "actor",
+                2000
+            ],
+            [
+                "(associate producer)', '(uncredited)', '(uncredited)', '(associate producer)', '(script supervisor)",
+                "[ch]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%Finland%",
+                "%o%",
+                "m",
+                "%Ho%",
+                "actor",
+                1942
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[de]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%taste%",
+                "%r%",
+                "m",
+                "%Buck%",
+                "actor",
+                1929
+            ],
+            [
+                "(producer)', '(uncredited)', '(producer)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "new-york-city', 'hospital', 'bare-breasts', 'children', 'remake",
+                "%PCS%",
+                "%A%",
+                "m",
+                "%Amato%",
+                "actor",
+                2008
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%n%",
+                "%mm%",
+                "m",
+                "%Ron%",
+                "actor",
+                1987
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%under%",
+                "%85%",
+                "m",
+                "%Joe%",
+                "actor",
+                1956
+            ],
+            [
+                "(uncredited)', '(producer)', '(executive producer)', '(rumored)', '(writer)",
+                "[fr]",
+                "release dates",
+                "nudity', 'blood', 'family-relationships', 'death', 'blood",
+                "%Title%",
+                "%o%",
+                "m",
+                "%D%",
+                "actor",
+                1999
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "father-son-relationship', 'love', 'husband-wife-relationship', 'one-word-title', 'family-relationships",
+                "%l%",
+                "%Spherical%",
+                "m",
+                "%H%",
+                "actor",
+                2007
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(as Laxmikant)",
+                "[de]",
+                "genres",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%n%",
+                "%Black%",
+                "m",
+                "%Jos\u00c3\u00a9%",
+                "actor",
+                1925
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(presenter)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%D%",
+                "%h%",
+                "m",
+                "%Richard%",
+                "actor",
+                2002
+            ],
+            [
+                "(production assistant)', '(executive producer)', '(executive producer)', '(producer)', '(uncredited)",
+                "[de]",
+                "genres",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%t%",
+                "%that%",
+                "m",
+                "%Carl%",
+                "actor",
+                1989
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "countries",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%career%",
+                "%U%",
+                "m",
+                "%Caine%",
+                "actor",
+                1946
+            ],
+            [
+                "(uncredited)', '(associate producer)', '(writer)', '(production assistant)', '(associate producer)",
+                "[us]",
+                "genres",
+                "father-son-relationship', 'love', 'one-word-title', 'nudity', 'violence",
+                "%l%",
+                "%r%",
+                "m",
+                "%Chau%",
+                "actor",
+                1903
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "explosion', 'male-nudity', 'drinking', 'train', 'lesbian",
+                "%o%",
+                "%35%",
+                "m",
+                "%Aleksandr%",
+                "actor",
+                1982
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(producer)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%U%",
+                "%s%",
+                "m",
+                "%Jes\u00c3\u00bas%",
+                "actor",
+                2009
+            ],
+            [
+                "(uncredited)', '(as Laxmikant)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%r%",
+                "%1%",
+                "m",
+                "%Mel%",
+                "actor",
+                1977
+            ],
+            [
+                "(voice) (uncredited)', '(producer)', '(voice) (uncredited)', '(voice) (uncredited)', '(producer)",
+                "[us]",
+                "genres",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%mm%",
+                "%o%",
+                "m",
+                "%Di%",
+                "actor",
+                2007
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(executive producer)', '(producer)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%Dolby%",
+                "%s%",
+                "m",
+                "%Joe%",
+                "actor",
+                1987
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%l%",
+                "%S%",
+                "m",
+                "%Shaun%",
+                "actor",
+                1974
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[fr]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%r%",
+                "%re%",
+                "m",
+                "%Robert%",
+                "actor",
+                1992
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "countries",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%o%",
+                "%S%",
+                "m",
+                "%Jos\u00c3\u00a9%",
+                "actor",
+                2000
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[fr]",
+                "genres",
+                "doctor', 'martial-arts', 'gun', 'horse', 'dancing",
+                "%l%",
+                "%g%",
+                "m",
+                "%Will%",
+                "actor",
+                1986
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(executive producer)', '(producer)', '(production assistant)",
+                "[us]",
+                "release dates",
+                "x-rayed-skeleton', 'futile-prospect', 'enchanted-object', 'beating-with-a-stick', 'smokers-and-nonsmokers",
+                "%o%",
+                "%o%",
+                "m",
+                "%Ho%",
+                "actor",
+                2003
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(executive producer)', '(uncredited)",
+                "[us]",
+                "countries",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%U%",
+                "%s%",
+                "m",
+                "%Ed%",
+                "actor",
+                1987
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "countries",
+                "female-nudity', 'based-on-play', 'female-nudity', 'female-nudity', 'female-nudity",
+                "%so%",
+                "%A%",
+                "m",
+                "%Brown%",
+                "actor",
+                1944
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "countries",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%r%",
+                "%o%",
+                "m",
+                "%Carl%",
+                "actor",
+                1993
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "countries",
+                "bryn-mawr-college', 'napoleon-spoof', 'smuggled-money', 'subtly-humorous', 'isolated-place",
+                "%l%",
+                "%Black%",
+                "m",
+                "%u%",
+                "actor",
+                1982
+            ],
+            [
+                "(presenter)', '(presenter)', '(uncredited)', '(presenter)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%o%",
+                "%h%",
+                "m",
+                "%L%",
+                "actor",
+                1985
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "gelato', 'wildcat-oil-rig', 'kitchen', 'mouthing-words', 'waiting-for-a-telephone-call",
+                "%o%",
+                "%o%",
+                "m",
+                "%Ho%",
+                "actor",
+                1954
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(writer)', '(uncredited)', '(production assistant)",
+                "[us]",
+                "genres",
+                "gay-interest', 'jealousy', 'kiss', 'surrealism', 'hospital",
+                "%the%",
+                "%t%",
+                "m",
+                "%Mel%",
+                "actor",
+                1953
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%m%",
+                "%35%",
+                "m",
+                "%Carl%",
+                "actor",
+                1952
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[au]",
+                "release dates",
+                "based-on-play', 'female-nudity', 'female-nudity', 'based-on-play', 'female-nudity",
+                "%d%",
+                "%r%",
+                "m",
+                "%L%",
+                "actor",
+                1894
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "based-on-play', 'female-nudity', 'based-on-play', 'female-nudity', 'based-on-play",
+                "%1%",
+                "%o%",
+                "m",
+                "%John%",
+                "actor",
+                1984
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "release dates",
+                "train', 'singing', 'remake', 'children', 'jealousy",
+                "%o%",
+                "%White%",
+                "m",
+                "%Max%",
+                "actor",
+                1995
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(writer)', '(uncredited)",
+                "[us]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%r%",
+                "%Dolby%",
+                "m",
+                "%D%",
+                "actor",
+                1975
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%r%",
+                "%mm%",
+                "m",
+                "%Joe%",
+                "actor",
+                2007
+            ],
+            [
+                "(producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "countries",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%PFM%",
+                "%r%",
+                "m",
+                "%Michael%",
+                "actor",
+                1940
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "countries",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%U%",
+                "%u%",
+                "m",
+                "%Lee%",
+                "actor",
+                1996
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "based-on-play', 'based-on-play', 'based-on-play', 'female-nudity', 'based-on-play",
+                "%U%",
+                "%C%",
+                "m",
+                "%Mel%",
+                "actor",
+                2008
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "countries",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%15%",
+                "%l%",
+                "m",
+                "%Carl%",
+                "actor",
+                1963
+            ],
+            [
+                "(uncredited)', '(writer)', '(uncredited)', '(production assistant)', '(writer)",
+                "[us]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%S%",
+                "%s%",
+                "m",
+                "%Edward%",
+                "actor",
+                1963
+            ],
+            [
+                "(screenplay)', '(voice)', '(screenplay)', '(screenplay)', '(voice)",
+                "[us]",
+                "release dates",
+                "gay-interest', 'gay-interest', 'cult-film', 'children', 'kidnapping",
+                "%mm%",
+                "%r%",
+                "m",
+                "%H%",
+                "actor",
+                2011
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "female-nudity', 'female-nudity', 'based-on-play', 'female-nudity', 'based-on-play",
+                "%U%",
+                "%h%",
+                "m",
+                "%Carl%",
+                "actor",
+                1915
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%33%",
+                "%i%",
+                "m",
+                "%Amato%",
+                "actor",
+                1941
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "genres",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%r%",
+                "%heavily%",
+                "m",
+                "%Amato%",
+                "actor",
+                1939
+            ],
+            [
+                "(presenter)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "blood', 'one-word-title', 'love', 'violence', 'family-relationships",
+                "%d%",
+                "%wants%",
+                "m",
+                "%James%",
+                "actor",
+                2007
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%l%",
+                "%s%",
+                "m",
+                "%Blanc%",
+                "actor",
+                2008
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%h%",
+                "%love%",
+                "m",
+                "%Vic%",
+                "actor",
+                1982
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(as Laxmikant)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "violence', 'police', 'nudity', 'hardcore', 'death",
+                "%PCS%",
+                "%l%",
+                "m",
+                "%Green%",
+                "actor",
+                1941
+            ],
+            [
+                "(voice: UK version)', '(apprentice director)', '(uncredited)', '(uncredited)', '(executive producer)",
+                "[us]",
+                "genres",
+                "based-on-play', 'based-on-play', 'based-on-play', 'based-on-play', 'female-nudity",
+                "%35%",
+                "%r%",
+                "m",
+                "%Robert%",
+                "actor",
+                1928
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "number-in-title', 'father-son-relationship', 'death', 'father-son-relationship', 'husband-wife-relationship",
+                "%of%",
+                "%r%",
+                "m",
+                "%Carl%",
+                "actor",
+                1973
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "based-on-play', 'female-nudity', 'based-on-play', 'based-on-play', 'based-on-play",
+                "%OFM%",
+                "%C%",
+                "m",
+                "%Blanc%",
+                "actor",
+                2008
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%r%",
+                "%mm%",
+                "m",
+                "%Al%",
+                "actor",
+                1973
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(producer)', '(producer)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "jealousy', 'dog', 'singer', 'friendship', 'title-spoken-by-character",
+                "%r%",
+                "%r%",
+                "m",
+                "%Blanc%",
+                "actor",
+                2003
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "one-word-title', 'love', 'death', 'violence', 'number-in-title",
+                "%t%",
+                "%farmer%",
+                "m",
+                "%Ho%",
+                "actor",
+                2012
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%year%",
+                "%h%",
+                "m",
+                "%Sam%",
+                "actor",
+                1920
+            ],
+            [
+                "(voice)', '(voice)', '(executive producer)', '(screenplay)', '(executive producer)",
+                "[us]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%35%",
+                "%s%",
+                "m",
+                "%Walt%",
+                "actor",
+                1999
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "female-nudity', 'based-on-play', 'female-nudity', 'based-on-play', 'based-on-play",
+                "%PCS%",
+                "%S%",
+                "m",
+                "%Alan%",
+                "actor",
+                1996
+            ],
+            [
+                "(writer)', '(uncredited)', '(uncredited)', '(uncredited)', '(production assistant)",
+                "[us]",
+                "genres",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%m%",
+                "%PCS%",
+                "m",
+                "%Jack%",
+                "actor",
+                2000
+            ],
+            [
+                "(presenter)', '(presenter)', '(presenter)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "new-york-city', 'fight', 'father-daughter-relationship', 'world-war-two', 'world-war-two",
+                "%o%",
+                "%i%",
+                "m",
+                "%Randolph%",
+                "actor",
+                1954
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%PFM%",
+                "%r%",
+                "m",
+                "%Ernst%",
+                "actor",
+                1916
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(producer)', '(uncredited)",
+                "[us]",
+                "countries",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%mm%",
+                "%n%",
+                "m",
+                "%John%",
+                "actor",
+                1922
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "father-son-relationship', 'one-word-title', 'one-word-title', 'one-word-title', 'love",
+                "%l%",
+                "%h%",
+                "m",
+                "%Earle%",
+                "actor",
+                1928
+            ],
+            [
+                "(production assistant)', '(writer)', '(uncredited)', '(writer)', '(writer)",
+                "[de]",
+                "countries",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%l%",
+                "%A%",
+                "m",
+                "%C%",
+                "actor",
+                1987
+            ],
+            [
+                "(producer)', '(voice)', '(production assistant)', '(uncredited)', '(producer)",
+                "[ky]",
+                "release dates",
+                "female-nudity', 'female-nudity', 'based-on-play', 'female-nudity', 'female-nudity",
+                "%and%",
+                "%PFM%",
+                "m",
+                "%T%",
+                "actor",
+                1987
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%l%",
+                "%o%",
+                "m",
+                "%Blanc%",
+                "actor",
+                1957
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%e%",
+                "%the%",
+                "m",
+                "%Carl%",
+                "actor",
+                1970
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%U%",
+                "%o%",
+                "m",
+                "%Al%",
+                "actor",
+                1980
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "countries",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%l%",
+                "%M%",
+                "m",
+                "%Al%",
+                "actor",
+                2007
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%o%",
+                "%A%",
+                "m",
+                "%Donald%",
+                "actor",
+                1976
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(executive producer)",
+                "[de]",
+                "genres",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%RAT%",
+                "%n%",
+                "m",
+                "%Pat%",
+                "actor",
+                2008
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "dog', 'suicide', 'fight', 'flashback', 'mother-son-relationship",
+                "%going%",
+                "%C%",
+                "m",
+                "%Charles%",
+                "actor",
+                1985
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[fr]",
+                "release dates",
+                "love', 'violence', 'police', 'love', 'blood",
+                "%USA%",
+                "%pan%",
+                "m",
+                "%Caine%",
+                "actor",
+                2010
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%S%",
+                "%o%",
+                "m",
+                "%Godfrey%",
+                "actor",
+                1957
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "female-nudity', 'based-on-play', 'based-on-play', 'based-on-play', 'female-nudity",
+                "%h%",
+                "%n%",
+                "m",
+                "%Jeffrey%",
+                "actor",
+                1974
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(producer)', '(uncredited)', '(producer)",
+                "[fr]",
+                "genres",
+                "female-nudity', 'female-nudity', 'based-on-play', 'based-on-play', 'female-nudity",
+                "%S%",
+                "%r%",
+                "m",
+                "%Carl%",
+                "actor",
+                1994
+            ],
+            [
+                "(executive producer)', '(production assistant)', '(uncredited)', '(executive producer)', '(producer)",
+                "[us]",
+                "genres",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%t%",
+                "%USA%",
+                "m",
+                "%Walt%",
+                "actor",
+                1890
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%i%",
+                "%OFM%",
+                "m",
+                "%Bravo%",
+                "actor",
+                1937
+            ],
+            [
+                "(uncredited)', '(producer)', '(uncredited)', '(producer)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%RAT%",
+                "%and%",
+                "m",
+                "%Donald%",
+                "actor",
+                1977
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%r%",
+                "%1%",
+                "m",
+                "%Jay%",
+                "actor",
+                1958
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[be]",
+                "countries",
+                "father-son-relationship', 'nudity', 'police', 'number-in-title', 'violence",
+                "%S%",
+                "%h%",
+                "m",
+                "%Clark%",
+                "actor",
+                1911
+            ],
+            [
+                "(presenter)', '(uncredited)', '(producer)', '(producer)', '(producer)",
+                "[de]",
+                "countries",
+                "kidnapping', 'fight', 'fight', 'cigarette-smoking', 'father-daughter-relationship",
+                "%U%",
+                "%bitch%",
+                "m",
+                "%Mel%",
+                "actor",
+                1931
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(producer)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "release dates",
+                "death', 'one-word-title', 'hardcore', 'father-son-relationship', 'violence",
+                "%14%",
+                "%vessel%",
+                "m",
+                "%Arthur%",
+                "actor",
+                1951
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(production assistant)', '(production assistant)', '(producer)",
+                "[jp]",
+                "countries",
+                "minions', 'explosive-vest', 'vw-k\u00c3\u00a4fer', 'bong', 'drum-magazine",
+                "%l%",
+                "%mm%",
+                "m",
+                "%i%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Al E. Christie)', '(as I. Freleng)', '(choreographer) (as Kamal)', '(uncredited)', '(uncredited)",
+                "[gb]",
+                "genres",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "%o%",
+                "%l%",
+                "m",
+                "%Dan%",
+                "actor",
+                1981
+            ],
+            [
+                "(as Jason Finney)', '(as Late Jeevan)', '(uncredited)', '(producer)', '(title designer)",
+                "[us]",
+                "genres",
+                "female-nudity', 'based-on-play', 'based-on-play', 'female-nudity', 'based-on-play",
+                "%s%",
+                "%and%",
+                "m",
+                "%Clark%",
+                "actor",
+                1933
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'based-on-play",
+                "%o%",
+                "%o%",
+                "m",
+                "%Richard%",
+                "actor",
+                1985
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[ca]",
+                "genres",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "%i%",
+                "%C%",
+                "m",
+                "%Walter%",
+                "actor",
+                1907
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "world-war-two', 'hospital', 'melodrama', 'revenge', 'dog",
+                "%o%",
+                "%mm%",
+                "m",
+                "%Rick%",
+                "actor",
+                1902
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "based-on-play', 'female-nudity', 'female-nudity', 'based-on-play', 'based-on-play",
+                "%s%",
+                "%Spherical%",
+                "m",
+                "%Carl%",
+                "actor",
+                2001
+            ],
+            [
+                "(producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "countries",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "%U%",
+                "%mm%",
+                "m",
+                "%Ho%",
+                "actor",
+                1985
+            ],
+            [
+                "(uncredited)', '(executive producer)', '(executive producer)', '(writer)', '(production assistant)",
+                "[us]",
+                "release dates",
+                "kidnapping', 'new-york-city', 'gay', 'dancing', 'hospital",
+                "%h%",
+                "%PCS%",
+                "m",
+                "%Blanc%",
+                "actor",
+                1959
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[fr]",
+                "release dates",
+                "based-on-play', 'based-on-play', 'based-on-play', 'based-on-play', 'based-on-play",
+                "%m%",
+                "%h%",
+                "m",
+                "%Jos\u00c3\u00a9%",
+                "actor",
+                2002
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(uncredited)', '(production assistant)', '(writer)",
+                "[fr]",
+                "genres",
+                "death', 'blood', 'blood', 'blood', 'family-relationships",
+                "%White%",
+                "%h%",
+                "m",
+                "%Mel%",
+                "actor",
+                2006
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "%PCS%",
+                "%Finland%",
+                "m",
+                "%Donald%",
+                "actor",
+                1932
+            ],
+            [
+                "(uncredited)', '(production assistant)', '(executive producer)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "violence', 'blood', 'father-son-relationship', 'love', 'number-in-title",
+                "%S%",
+                "%h%",
+                "m",
+                "%Blanc%",
+                "actor",
+                1988
+            ],
+            [
+                "(writer)', '(writer)', '(production assistant)', '(writer)', '(uncredited)",
+                "[fr]",
+                "release dates",
+                "world-war-two', 'world-war-two', 'doctor', 'drunkenness', 'fight",
+                "%D%",
+                "%r%",
+                "m",
+                "%D%",
+                "actor",
+                1925
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[de]",
+                "release dates",
+                "family-relationships', 'nudity', 'father-son-relationship', 'number-in-title', 'husband-wife-relationship",
+                "%2003%",
+                "%c%",
+                "m",
+                "%Joe%",
+                "actor",
+                1983
+            ],
+            [
+                "(uncredited)', '(executive producer)', '(producer)', '(uncredited)', '(uncredited)",
+                "[de]",
+                "countries",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "%one%",
+                "%n%",
+                "m",
+                "%Jack%",
+                "actor",
+                1958
+            ]
+        ]
+    }
+}

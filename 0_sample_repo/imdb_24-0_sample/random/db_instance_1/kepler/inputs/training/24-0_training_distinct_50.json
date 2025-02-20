@@ -1,0 +1,964 @@
+{
+    "24-0": {
+        "query": "SELECT MIN(chn.name) AS voiced_char_name, MIN(n.name) AS voicing_actress_name, MIN(t.title) AS voiced_action_movie_jap_eng\nFROM random_aka_name_1 AS an,\n   random_char_name_1 AS chn,\n   random_cast_info_1 AS ci,\n   random_company_name_1 AS cn,\n   random_info_type_1 AS it,\n   random_keyword_1 AS k,\n   random_movie_companies_1 AS mc,\n   random_movie_info_1 AS mi,\n   random_movie_keyword_1 AS mk,\n   random_name_1 AS n,\n   random_role_type_1 AS rt,\n   random_title_1 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mc.movie_id = mk.movie_id\nAND mi.movie_id = ci.movie_id\nAND mi.movie_id = mk.movie_id\nAND ci.movie_id = mk.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param4' OR mi.info LIKE '@param5')\nAND n.gender = '@param6'\nAND n.name LIKE '@param7'\nAND rt.role = '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_cast_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "mi",
+                    "mk",
+                    "n",
+                    "rt",
+                    "an",
+                    "chn"
+                ],
+                "join_tables": [
+                    "random_title_1",
+                    "random_movie_companies_1",
+                    "random_movie_info_1",
+                    "random_movie_keyword_1",
+                    "random_name_1",
+                    "random_role_type_1",
+                    "random_aka_name_1",
+                    "random_char_name_1"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "mc.movie_id = ci.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id",
+                    "rt.id = ci.role_id",
+                    "ci.person_id = an.person_id",
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "random_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_info_type_1",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "random_movie_info_1"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_keyword_1",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "random_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "random_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "random_title_1",
+                    "random_movie_companies_1",
+                    "random_cast_info_1",
+                    "random_movie_keyword_1",
+                    "random_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "random_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "random_title_1",
+                    "random_movie_companies_1",
+                    "random_cast_info_1",
+                    "random_movie_keyword_1",
+                    "random_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_name_1",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "random_cast_info_1",
+                    "random_aka_name_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "random_name_1",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "random_cast_info_1",
+                    "random_aka_name_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_role_type_1",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "random_cast_info_1"
+                ],
+                "join_conditions": [
+                    "rt.id = ci.role_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "random_title_1",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "mi",
+                    "mc",
+                    "ci",
+                    "mk"
+                ],
+                "join_tables": [
+                    "random_movie_info_1",
+                    "random_movie_companies_1",
+                    "random_cast_info_1",
+                    "random_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mc.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(as Jeff Dashnaw)', '(as Gabriella)', '(as Ging-man Cho)', '(as John Spence XI)', '(as Tara Smith)",
+                "[ch]",
+                "trivia",
+                "head-in-toilet', 'sunroof', 'cartoon-hare', 'horticulture', 'demolition",
+                "%q%",
+                "%i%",
+                "m",
+                "%,%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(Maggie''s fianc\u00c3\u00a9)', '(as Gackt Camui)', '(as Ming Yang)', '(as Ky\u00c3\u00b4 Ego)",
+                "[sg]",
+                "trivia",
+                "severed-head', 'waffles', 'magic-assistant', 'human-bite', 'grease-fire",
+                "%f%",
+                "%h%",
+                "m",
+                "%h%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Jasmin James)', '(as Ajankya Deo)', '(as Malu Martino)', '(as Anthony Giamo)",
+                "[sg]",
+                "quotes",
+                "evil', 'political-murder', 'runaway-girl', 'chopsticks-the-song', 'corsage",
+                "%a%",
+                "%i%",
+                "m",
+                "%r%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(1958 version)', '(as Mutter Beimer)', '(as Ruy Duarte)', '(play \"Choknutaya\")",
+                "[ch]",
+                "quotes",
+                "dark-horse-comics', 'loss-of-money', 'public-break-up', 'penciling', 'courthouse",
+                "%o%",
+                "%m%",
+                "m",
+                "%J%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Douglas Watson)', '(as Black Berry)', '(as L\u00c3\u00b5rinc \u00c3\u0081gi)', '(as L. Strizhenova)",
+                "[ch]",
+                "quotes",
+                "lesbian', 'milk-fund', 'salesclerk', 'teen-agers-series', 'lava-flow",
+                "%''%",
+                "%a%",
+                "m",
+                "%a%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Timothy Dale)', '(as James Hill)', '(TV mastering)', '(Interviewer)",
+                "[ch]",
+                "quotes",
+                "head-in-toilet', 'remote', 'watching-a-man-die', 'forbidden-sex', 'iconography",
+                "%r%",
+                "%i%",
+                "m",
+                "%f%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Carsten Speck)', '(teleplay by)', '(as Maria Sun)', '(as Carey Radcliff)",
+                "[ch]",
+                "quotes",
+                "dead-woman-with-eyes-open', 'sumpter-horse', 'reference-to-pascal', 'turning-the-tables', 'race",
+                "%e%",
+                "%a%",
+                "m",
+                "%n%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Angelica Black)', '(as Monica Iozzi)', '(as Piero Baldini)', '(as Lori Ann Alter)",
+                "[ch]",
+                "quotes",
+                "severed-head', 'car-hop', 'swear-jar', 'translating', 'cartoon-hound",
+                "%d%",
+                "%B%",
+                "m",
+                "%w%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Herbert Yost)', '(as Clemens)', '(mountaineer)', '(as Chico Martinez)",
+                "[sg]",
+                "trivia",
+                "silhouette', 'coleopterist', 'close-up-of-breasts', 'pig-imitation', 'nuclear-submarine",
+                "%n%",
+                "%s%",
+                "m",
+                "%,%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(intern: New York)', '(as Ciro Papa)', '(as Mama Jones)', '(as N.M. Lashari)",
+                "[ch]",
+                "trivia",
+                "cult-film', 'sophomore', 'kissing-a-penis', 'shallow', 'grinding",
+                "%e%",
+                "%t%",
+                "m",
+                "%D%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Luchy Prado)', '(as John Curran)', '(as Sergei Veselov)', '(as Jacky Jack)",
+                "[br]",
+                "quotes",
+                "mounted-human-head', 'antiquities', 'ice-tunnel', 'erotic-torture', 'pirate-radio",
+                "%e%",
+                "%e%",
+                "m",
+                "%J%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Javier Cruz)', '(as Lena La Fratta)', '(as Ilan Benatar)', '(as Hisa Yamauchi)",
+                "[br]",
+                "trivia",
+                "dark-horse-comics', 'mud-splash', 'seven-sisters', 'punch-tape', 'screaming-in-horror",
+                "%o%",
+                "%i%",
+                "m",
+                "%J%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as A. Yalovoy)', '(as David Rudd)', '(as Will Jefferies)', '(as Byron Brisco)",
+                "[sg]",
+                "trivia",
+                "broken-eyeglasses', 'vertigo-shot', 'walking-into-a-lake', 'threatening-call', 'roman-centurion",
+                "%t%",
+                "%r%",
+                "m",
+                "%s%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Rodolfo Hoyos)', '(as Rory Guy)', '(as Christi Pedigo)', '(as Tamanna)', '(as Tom Chase)",
+                "[us]",
+                "color info",
+                "u.s.-marshal', 'checks-and-balances', 'child-driving-a-bus', 'mail-delivery', 'broken-trust",
+                "%d%",
+                "%i%",
+                "m",
+                "%J%",
+                "actor",
+                1959
+            ],
+            [
+                "(as Jeff Dashnaw)', '(news writer)', '(play \"Dora\")', '(as Joanne Manley)', '(as Alicia Peramo)",
+                "[sg]",
+                "quotes",
+                "darkness', 'secret-police', 'richard-wagner', 'animal-love', 'indecisiveness",
+                "%o%",
+                "%r%",
+                "m",
+                "%J%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Billy Parolini)', '(general factorum)', '(product supporter)', '(as Umesh Varma)",
+                "[ch]",
+                "quotes",
+                "mounted-human-head', 'federal-agent', 'diamond-cutter', 'saint-nazaire', 'evangelist",
+                "%t%",
+                "%a%",
+                "m",
+                "%a%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as J. Kaliszewski)', '(replay producer)', '(as Alan J W Bell)', '(as Carole Kravetz)",
+                "[sg]",
+                "trivia",
+                "shot-multiple-times', 'boys''-school', 'breast-obsession', 'night-vision', 'chalk-screech",
+                "%a%",
+                "%o%",
+                "m",
+                "%r%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Dick Hart)', '(as Sagarm\u00c3\u00adnaga)', '(game maker)', '(as Rad\u00c3\u00b3 Istv\u00c3\u00a1n)",
+                "[br]",
+                "quotes",
+                "title-spoken-by-character', 'nerd-boy', 'tardiness', 'estonian-president', 'necrophilia",
+                "%.%",
+                "%h%",
+                "m",
+                "%f%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as B. Nagnaidorj)', '(as Aaron Tager)', '(chief researcher)', '(as Ian Bantiar)",
+                "[br]",
+                "trivia",
+                "g-string', 'bathing-baby', 'recruit', 'police-scanner', 'juggling-act",
+                "%e%",
+                "%t%",
+                "m",
+                "%f%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Xavier Fonti)', '(as Paul Vernon)', '(as Earl Hamner)', '(contents producer)",
+                "[br]",
+                "quotes",
+                "head-in-toilet', 'pirate-radio', 'fellini', 'mechanical-heart', 'wizardry",
+                "%v%",
+                "%a%",
+                "m",
+                "%,%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Swapana)', '(as C.J. Bennet)', '(additional poetry)', '(as Joseph Newman)",
+                "[ch]",
+                "quotes",
+                "helicopter', 'filming-movie', 'locked-desk', 'forehead-cut', 'suicide-by-hanging",
+                "%p%",
+                "%1%",
+                "m",
+                "%n%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Jaoa Penaguiao)', '(unfinished)', '(as Gary Shambrook)', '(video \"Big Shot\")",
+                "[ch]",
+                "quotes",
+                "prostitute', 'based-on-cult-film', 'cyborg-villain', 'bride-of-god', 'charcoal-making",
+                "%w%",
+                "%J%",
+                "m",
+                "%w%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Jack Halliday)', '(as Bimbo Akisanya)', '(as Mark Bannerman)', '(as Beres Hammond)",
+                "[ch]",
+                "quotes",
+                "lesbian', 'clandestine', 'troop-ship', 'parsimony', 'diabolical-laugh",
+                "%m%",
+                "%t%",
+                "m",
+                "%D%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Oiva Nuojua)', '(as E.J. Gage)', '(as Lin Lung Sung)', '(as Marlene Cipher)",
+                "[ch]",
+                "trivia",
+                "rescue', 'gustav-gun', 'drug-sniffing-dog', 'deafplanet', 'gay-friend",
+                "%s%",
+                "%e%",
+                "m",
+                "%n%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Junya Ishigaki)', '(as Rhapsody)', '(as Anne Hoybel)', '(as Jeff Gibson)",
+                "[br]",
+                "quotes",
+                "broken-eyeglasses', 'crash', 'army-medic', 'video-rental', 'cult-hero",
+                "%u%",
+                "%B%",
+                "m",
+                "%w%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Nyi Pu)', '(junior assistant)', '(as Radha Nilia)', '(as Nick de Mauro)",
+                "[ch]",
+                "quotes",
+                "blood-spatter', 'duck-dodgers', 'polo-game', 'picketing', 'alien-dna",
+                "%g%",
+                "%f%",
+                "m",
+                "%,%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Irina Gurzo)', '(segment \"Ye Gods\")', '(as Leonid Kinsky)', '(as Robert Kortman)",
+                "[ch]",
+                "quotes",
+                "shot-in-the-chest', 'campaign-manager', 'killer-clown', 'rich-widow', 'speedster",
+                "%]%",
+                "%n%",
+                "m",
+                "%f%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Tereza Dadic)', '(as Dr. E. Stoiber)', '(as Blaze)', '(as Paco de Osca)",
+                "[br]",
+                "trivia",
+                "hand-grenade', 'werewolf-pack', 'mall-rats', 'cartoon-pelican', 'global-ecology",
+                "%s%",
+                "%t%",
+                "m",
+                "%e%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Doug Frost)', '(as A. Frausto)', '(as Syed Ali Rizvi)', '(as Miss Darling)",
+                "[br]",
+                "quotes",
+                "doing-the-right-thing', 'rock-through-window', 'student-group', 'scabs', 'average-family",
+                "%h%",
+                "%I%",
+                "m",
+                "%y%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Ronnie Alicera)', '(as W.R. Walters)', '(as Milky Diva)', '(as Hiroko Oogi)",
+                "[ch]",
+                "quotes",
+                "head-in-a-toilet', 'mockumentary', 'minute-silence', 'elecciones-2006', 'social-worker",
+                "%t%",
+                "%e%",
+                "m",
+                "%.%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(president: NGT)', '(as Miss Robinson)', '(PR representative)', '(as Jan Tepl\u00c3\u00bd ml.)",
+                "[ch]",
+                "trivia",
+                "dark-hero', 'decorative-food', 'birkenau', 'color', 'bachelor-party",
+                "%n%",
+                "%o%",
+                "m",
+                "%a%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Kevin McCready)', '(as Joseph Mercury)', '(as Kim Dawson)', '(as Ewa Skorza)",
+                "[br]",
+                "quotes",
+                "wrath', 'skeleton-soldier', 'trailer', 'francisco-franco', 'paraffin-lamp",
+                "%t%",
+                "%r%",
+                "m",
+                "%r%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Minh Nguyen)', '(as Dominique Love)', '(as L. Kinsky)', '(as The B-52s)",
+                "[br]",
+                "trivia",
+                "stepping-on-someone', 'trustee', 'milky-way-galaxy', 'south-african', 'bermejo-river",
+                "%u%",
+                "%)%",
+                "m",
+                "%D%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Robert Carson)', '(as Vera Ilic)', '(as Terry Chiappe)', '(as Aneeta Kanwar)",
+                "[sg]",
+                "quotes",
+                "snow', 'secret-lair', 'springtime', 'royal-court', 'kissing-breasts",
+                "%o%",
+                "%i%",
+                "m",
+                "%h%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Carole Dev\u00c3\u00a8re)', '(as Joey Taylor)', '(as Bud Osborn)', '(segment \"3 sqm\")",
+                "[ch]",
+                "quotes",
+                "fiend', 'follow-that-car', 'lushkov', 'ftm', 'oxidation",
+                "%i%",
+                "%o%",
+                "m",
+                "%w%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as E. Sokolova)', '(creator: Zatanna)', '(as Roja Zargar)', '(as Claudia Clio)",
+                "[sg]",
+                "quotes",
+                "lighting-a-cigarette-from-a-cigarette', 'dress-shop', 'radio-call-in-show', 'slow-talker', 'pieing",
+                "%h%",
+                "%a%",
+                "m",
+                "%f%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Dan Gordon)', '(as Willie Kerr)', '(as Deanna)', '(as Lou Cavalier)",
+                "[sg]",
+                "quotes",
+                "fiend', 'polydactyly', 'decision-tree', 'oud', 'epopee",
+                "%a%",
+                "%y%",
+                "m",
+                "%D%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Gabby Anderman)', '(as Rob Bouchard)', '(as Alano Massi)', '(as Gary Hayes)",
+                "[br]",
+                "quotes",
+                "ear-shot-off', 'thames', 'dead-body', 'weight-watchers', 'woolen-mill",
+                "%p%",
+                "%n%",
+                "m",
+                "%e%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(canteen assistant)', '(as Nanook)', '(as Jay Grant)', '(as Rudolfo Hoyos)",
+                "[sg]",
+                "quotes",
+                "political-corruption', 'call-to-prayer', 'eye-drops', 'hindered-land', 'tv-interview",
+                "%a%",
+                "%''%",
+                "m",
+                "%f%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Eddie Chandler)', '(2006)', '(as Nisse Ahlrot)', '(as Sam Corey)",
+                "[ch]",
+                "trivia",
+                "face-slap', 'circus-family', 'high-cholesterol', 'cut-above-eye', 'taped-to-a-bed",
+                "%h%",
+                "%h%",
+                "m",
+                "%.%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(Finalist #7)', '(as L.H. Struna)', '(as Nawazuddin)', '(as Gary Yurosek)",
+                "[ch]",
+                "quotes",
+                "severed-leg', 'retrial', '10th-birthday', 'band-manager', 'diamond-cutter",
+                "%e%",
+                "%f%",
+                "m",
+                "%.%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Johnny Cheung)', '(as Ronnie)', '(novella \"Liebe\")', '(as Bobby)",
+                "[sg]",
+                "quotes",
+                "dead-woman-with-eyes-open', 'television-reporter', 'lying-to-husband', 'cottage', 'celibacy",
+                "%m%",
+                "%f%",
+                "m",
+                "%n%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Tom MacCauley)', '(as Zheng Hao)', '(U/5)', '(as Brandon Barre)",
+                "[br]",
+                "quotes",
+                "doing-the-right-thing', 'lighting-match', 'cross-stitch', 'mallorca', 'late-for-party",
+                "%t%",
+                "%n%",
+                "m",
+                "%s%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as John LeMay)', '(chief editor)', '(as Amber Agar)', '(as Paisley)",
+                "[br]",
+                "quotes",
+                "solitary-confinement', 'rally-driver', 'nyu', 'ariete-tank', 'folk-song",
+                "%N%",
+                "%h%",
+                "m",
+                "%a%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(draper/cutter)', '(as Tereza)', '(as Nicky Makulis)', '(as Alan Buckley)",
+                "[sg]",
+                "quotes",
+                "identical-twins', 'animal-cake', 'act-of-conscience', 'disturbed-childhood', 'scare-campaign",
+                "%e%",
+                "%c%",
+                "m",
+                "%r%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Souji Taro)', '(in talks)', '(as Kazuto Sat\u00c3\u00b4)', '(as Harriet Leider)",
+                "[sg]",
+                "trivia",
+                "vengeance', 'self-mutilation', 'applying-sunscreen', 'grand-prize', 'winegrower",
+                "%.%",
+                "%,%",
+                "m",
+                "%D%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Felisa Jimenez)', '(as Los Tres)', '(as Reka)', '(production oracle)",
+                "[br]",
+                "trivia",
+                "dead-woman-with-eyes-open', 'channel-surfing', 'apostrophe-in-title', 'swarm-of-bats', 'sing-and-be-happy",
+                "%''%",
+                "%t%",
+                "m",
+                "%w%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Sonia Segal)', '(as D.I.P. Project)', '(as Lacy Kohl)', '(as Leonard Lowe)",
+                "[ch]",
+                "trivia",
+                "hooker', 'last-day-on-job', 'war-flashback', 'immoral-love', 'carry-on",
+                "%t%",
+                "%a%",
+                "m",
+                "%w%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Karen Gordon)', '(as Stylish D.)', '(glassworks)', '(as Liu Zi Wei)",
+                "[ch]",
+                "trivia",
+                "fiend', 'migrant-farmworker', 'hawking-radiation', 'indian-village', 'police-motorbike",
+                "%o%",
+                "%l%",
+                "m",
+                "%n%",
+                "actor",
+                2004
+            ],
+            [
+                "(as Jeff Dashnaw)', '(as Samantha 38GG)', '(as Neal DeLama)', '(as Bob McFalls)', '(as Haftbefehl)",
+                "[ch]",
+                "quotes",
+                "shot-multiple-times', 'herbalist', 'myoptic', 'young-children', 'ends-with-a-kiss",
+                "%d%",
+                "%n%",
+                "m",
+                "%f%",
+                "actor",
+                2004
+            ]
+        ]
+    }
+}

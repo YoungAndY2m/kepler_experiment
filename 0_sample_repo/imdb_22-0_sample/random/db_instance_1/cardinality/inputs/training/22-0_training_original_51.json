@@ -1,0 +1,1003 @@
+{
+    "22-0": {
+        "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS western_violent_movie\nFROM random_company_name_1 AS cn,\n   random_company_type_1 AS ct,\n   random_info_type_1 AS it1,\n   random_info_type_1 AS it2,\n   random_keyword_1 AS k,\n   random_kind_type_1 AS kt,\n   random_movie_companies_1 AS mc,\n   random_movie_info_1 AS mi,\n   random_movie_info_idx_1 AS mi_idx,\n   random_movie_keyword_1 AS mk,\n   random_title_1 AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = mc.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mk.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mc.movie_id\nAND mc.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND ct.id = mc.company_type_id\nAND cn.id = mc.company_id\nAND cn.country_code != '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND kt.kind IN ('@param4')\nAND mc.note NOT LIKE '@param5'\nAND mc.note LIKE '@param6'\nAND mi.info IN ('@param7')\nAND mi_idx.info < '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "!=",
+                "data_type": "text",
+                "table": "random_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "random_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_info_type_1",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "random_movie_info_1"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_info_type_1",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "random_movie_info_idx_1"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_keyword_1",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "random_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_kind_type_1",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "random_title_1"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "random_movie_companies_1",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "random_title_1",
+                    "random_movie_keyword_1",
+                    "random_movie_info_1",
+                    "random_movie_info_idx_1",
+                    "random_company_type_1",
+                    "random_company_name_1"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "random_movie_companies_1",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "random_title_1",
+                    "random_movie_keyword_1",
+                    "random_movie_info_1",
+                    "random_movie_info_idx_1",
+                    "random_company_type_1",
+                    "random_company_name_1"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "random_title_1",
+                    "random_movie_keyword_1",
+                    "random_movie_info_idx_1",
+                    "random_movie_companies_1",
+                    "random_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "random_movie_info_idx_1",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "random_title_1",
+                    "random_movie_keyword_1",
+                    "random_movie_info_1",
+                    "random_movie_companies_1",
+                    "random_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "random_title_1",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx",
+                    "mc"
+                ],
+                "join_tables": [
+                    "random_kind_type_1",
+                    "random_movie_info_1",
+                    "random_movie_keyword_1",
+                    "random_movie_info_idx_1",
+                    "random_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%TV%",
+                "%DVD%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7.3",
+                1980
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "love', 'blood', 'number-in-title', 'police', 'violence",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%USA%",
+                "%v%",
+                "Color', 'USA', 'USA', 'English', 'Color",
+                "7.8",
+                2006
+            ],
+            [
+                "[us]",
+                "release dates",
+                "votes",
+                "father-son-relationship', 'bare-chested-male', 'family-relationships', 'father-son-relationship', 'blood",
+                "movie', 'movie', 'movie', 'episode', 'episode",
+                "%TV%",
+                "%theatrical%",
+                "UK:August 2005', '$18,317,151 (USA) (13 January 2008)', 'USA:27 October 2008', 'Although the cinema version was uncut the 1992 UK video was pre-cut by 9 secs before submission to remove scenes of bloodstained breasts during the shower murder. The 2000 Vipco release was the complete version.', 'Poland:22 March 2010",
+                "7.3",
+                2000
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "female-nudity', 'murder', 'female-nudity', 'murder', 'female-nudity",
+                "episode', 'episode', 'movie', 'movie', 'episode",
+                "%production%",
+                "%2002%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7",
+                1998
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode', 'episode', 'movie', 'episode', 'episode",
+                "%theatrical%",
+                "%2006%",
+                "12', 'Thriller', 'Crime', 'Action', 'USA:R",
+                "7",
+                2002
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'movie', 'movie', 'movie",
+                "%DVD%",
+                "%TV%",
+                "English', 'Color', 'PFM:35 mm', 'USA', 'PFM:35 mm",
+                "7.0",
+                1987
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "police', 'male-nudity', 'sequel', 'police', 'tv-mini-series",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%with%",
+                "%TV%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7.3",
+                1950
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'independent-film",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%with%",
+                "%DVD%",
+                "Color', 'USA', 'USA', 'English', 'Color",
+                "6",
+                2002
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "tv-mini-series', 'family-relationships', 'police', 'based-on-play', 'dog",
+                "episode', 'episode', 'movie', 'episode', 'episode",
+                "%with%",
+                "%2011%",
+                "RAT:1.33 : 1', 'OFM:35 mm', 'PFM:35 mm', 'Mono', 'Drama",
+                "9",
+                2005
+            ],
+            [
+                "[gb]",
+                "release dates",
+                "votes",
+                "murder', 'murder', 'murder', 'female-nudity', 'murder",
+                "movie', 'video game', 'movie', 'movie', 'video movie",
+                "%DVD%",
+                "%USA%",
+                "Germany:8 February 2001', 'USA:11 December 1991', '$20,000', 'Brazil:28 August 2006', 'Signoret, Simone. \"Les diaboliques\". In: \"La nostalgie n''est plus ce qu''elle \u00c3\u00a9tait\" (Paris, France), Seuil, 1975, Pg. 127-129, (BK), ISBN-10: 2-02004-520-6",
+                "7.2",
+                1982
+            ],
+            [
+                "[fr]",
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'episode', 'episode', 'movie",
+                "%2009%",
+                "%USA%",
+                "English', 'English', 'Color', 'Short', 'Short",
+                "86",
+                2008
+            ],
+            [
+                "[fr]",
+                "genres",
+                "votes",
+                "independent-film', 'based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "movie', 'episode', 'movie', 'episode', 'episode",
+                "%association%",
+                "%USA%",
+                "Drama', '-', 'OFM:35 mm', '-', 'Drama",
+                "6",
+                1963
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes distribution",
+                "father-daughter-relationship', 'love', 'tv-mini-series', 'nudity', 'police",
+                "episode', 'movie', 'episode', 'movie', 'episode",
+                "%with%",
+                "%production%",
+                "English', 'OFM:35 mm', 'Mono', 'Drama', 'Drama",
+                "...21321.1",
+                1987
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "based-on-novel', 'independent-film', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%2007%",
+                "%in%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                1998
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "female-nudity', 'murder', 'female-nudity', 'murder', 'murder",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%co%",
+                "%2004%",
+                "-', 'English', 'USA', 'French', 'OFM:35 mm",
+                "8",
+                1999
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "independent-film', 'independent-film', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode', 'episode', 'movie', 'episode', 'movie",
+                "%USA%",
+                "%co%",
+                "USA', 'USA', 'English', 'USA', 'USA",
+                "5.7",
+                1991
+            ],
+            [
+                "[fr]",
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'episode', 'movie', 'episode",
+                "%TV%",
+                "%production%",
+                "Documentary', 'UK', 'PCS:Spherical', 'Documentary', 'Comedy",
+                "6.4",
+                1975
+            ],
+            [
+                "[de]",
+                "genres",
+                "votes",
+                "based-on-novel', 'based-on-novel', 'independent-film', 'independent-film', 'independent-film",
+                "episode', 'movie', 'episode', 'episode', 'movie",
+                "%2%",
+                "%TV%",
+                "Drama', 'USA', 'Drama', 'USA', 'Drama",
+                "7.8",
+                1996
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'independent-film",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%2009%",
+                "%2010%",
+                "Drama', 'Drama', 'OFM:35 mm', '-', 'Drama",
+                "4.0",
+                1965
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes distribution",
+                "murder', 'murder', 'murder', 'murder', 'female-nudity",
+                "episode', 'episode', 'movie', 'episode', 'episode",
+                "%2005%",
+                "%USA%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "0001221000",
+                1987
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%RTL8%",
+                "%DVD%",
+                "USA', 'USA', 'Mono', 'Color', 'Color",
+                "6.7",
+                1998
+            ],
+            [
+                "[fr]",
+                "countries",
+                "votes distribution",
+                "murder', 'murder', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%p%",
+                "%DVD%",
+                "USA', 'USA', 'USA', 'Color', 'Drama",
+                "0000122100",
+                2011
+            ],
+            [
+                "[fr]",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'movie', 'movie', 'episode', 'episode",
+                "%DVD%",
+                "%2008%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.9",
+                1973
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'movie', 'episode', 'episode', 'episode",
+                "%DVD%",
+                "%USA%",
+                "PCS:Spherical', 'Black and White', 'Comedy', 'Comedy', 'Comedy",
+                "6.7",
+                1986
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes distribution",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "episode', 'movie', 'episode', 'movie', 'episode",
+                "%USA%",
+                "%DVD%",
+                "English', 'Drama', 'Color', 'Color', 'USA",
+                "8",
+                1959
+            ],
+            [
+                "[au]",
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%in%",
+                "%2004%",
+                "USA', 'Comedy', 'USA', 'Drama', 'English",
+                "5.7",
+                2002
+            ],
+            [
+                "[gb]",
+                "countries",
+                "votes distribution",
+                "husband-wife-relationship', 'non-fiction', 'dog', 'anal-sex', 'love",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%1968%",
+                "%r%",
+                "Color', 'USA', 'Color', 'Color', 'English",
+                "1...1...42",
+                2000
+            ],
+            [
+                "[hu]",
+                "countries",
+                "votes",
+                "waiting-room', 'murder-threat', 'dreams', '81-megahertz', 'manager",
+                "episode', 'episode', 'movie', 'episode', 'episode",
+                "%in%",
+                "%USA%",
+                "Color', 'USA', 'English', 'Color', 'Color",
+                "6.2",
+                1987
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "based-on-novel', 'based-on-novel', 'independent-film', 'based-on-novel', 'independent-film",
+                "episode', 'movie', 'episode', 'episode', 'movie",
+                "%DVD%",
+                "%2012%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                1968
+            ],
+            [
+                "[hu]",
+                "countries",
+                "votes",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'independent-film",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%TV%",
+                "%DVD%",
+                "English', 'Color', 'English', 'Color', 'USA",
+                "6.8",
+                1935
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "based-on-novel', 'independent-film', 'based-on-novel', 'independent-film', 'based-on-novel",
+                "movie', 'tv series', 'episode', 'tv series', 'tv series",
+                "%2005%",
+                "%USA%",
+                "-', '-', 'OFM:35 mm', 'OFM:35 mm', 'Drama",
+                "6",
+                1969
+            ],
+            [
+                "[de]",
+                "countries",
+                "votes",
+                "surrealism', 'tv-mini-series', 'violence', 'death', 'bare-chested-male",
+                "movie', 'tv movie', 'movie', 'episode', 'movie",
+                "%in%",
+                "%co%",
+                "USA', 'Color', 'Color', 'English', 'Color",
+                "6.9",
+                2001
+            ],
+            [
+                "[fr]",
+                "countries",
+                "rating",
+                "independent-film', 'independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "episode', 'movie', 'movie', 'episode', 'movie",
+                "%TV%",
+                "%co%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                2003
+            ],
+            [
+                "[de]",
+                "countries",
+                "rating",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'based-on-novel",
+                "movie', 'episode', 'episode', 'episode', 'episode",
+                "%DVD%",
+                "%p%",
+                "Color', 'Color', 'English', 'English', 'USA",
+                "7.1",
+                1971
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%theatrical%",
+                "%DVD%",
+                "OFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'English', 'USA",
+                "8",
+                1965
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode', 'episode', 'movie', 'episode', 'episode",
+                "%TV%",
+                "%t%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "24",
+                1904
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "female-nudity', 'female-nudity', 'female-nudity', 'murder', 'female-nudity",
+                "episode', 'movie', 'episode', 'episode', 'movie",
+                "%with%",
+                "%theatrical%",
+                "USA', 'OFM:35 mm', 'Mono', 'PFM:35 mm', 'Drama",
+                "6.6",
+                2012
+            ],
+            [
+                "[fr]",
+                "countries",
+                "rating",
+                "female-nudity', 'murder', 'female-nudity', 'female-nudity', 'murder",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%association%",
+                "%u%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7.9",
+                2007
+            ],
+            [
+                "[be]",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%TV%",
+                "%2006%",
+                "USA', 'USA', 'Color', 'English', 'Color",
+                "6.2",
+                1975
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "based-on-novel', 'independent-film', 'based-on-novel', 'independent-film', 'based-on-novel",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%co%",
+                "%in%",
+                "Drama', 'Drama', 'Color', 'USA', 'USA",
+                "7.2",
+                1911
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes distribution",
+                "snowflake', 'film-star', 'nude-statue', 'african-american-hero', 'action-man-doll",
+                "episode', 'video movie', 'tv movie', 'movie', 'movie",
+                "%USA%",
+                "%DVD%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7.6",
+                1999
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "number-in-title', 'bare-breasts', 'tv-mini-series', 'dog', 'nudity",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%DVD%",
+                "%TV%",
+                "English', 'Documentary', 'USA', 'Silent', 'RAT:1.33 : 1",
+                "9",
+                1967
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "female-nudity', 'female-nudity', 'murder', 'female-nudity', 'female-nudity",
+                "episode', 'movie', 'episode', 'episode', 'episode",
+                "%2001%",
+                "%2010%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "23",
+                2002
+            ],
+            [
+                "[hu]",
+                "countries",
+                "rating",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "tv movie', 'video game', 'tv movie', 'episode', 'episode",
+                "%1913%",
+                "%2006%",
+                "PFM:35 mm', 'OFM:35 mm', 'Color', 'Mono', 'USA",
+                "6",
+                1976
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "tv series', 'tv movie', 'movie', 'episode', 'tv series",
+                "%USA%",
+                "%in%",
+                "USA', 'English', 'English', 'USA', 'English",
+                "5",
+                1976
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "independent-film', 'based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode', 'episode', 'episode', 'episode', 'episode",
+                "%production%",
+                "%Netherlands%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.4",
+                2008
+            ],
+            [
+                "[dk]",
+                "genres",
+                "votes distribution",
+                "anal-sex', 'male-nudity', 'oral-sex', 'surrealism', 'bare-breasts",
+                "episode', 'episode', 'episode', 'episode', 'movie",
+                "%TV%",
+                "%2007%",
+                "English', 'PFM:35 mm', 'Black and White', 'Drama', 'Comedy",
+                "6.2",
+                1966
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'based-on-novel",
+                "episode', 'episode', 'episode', 'movie', 'movie",
+                "%Brazil%",
+                "%with%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5.7",
+                2005
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'murder', 'female-nudity', 'female-nudity",
+                "movie', 'episode', 'episode', 'episode', 'episode",
+                "%airing%",
+                "%DVD%",
+                "Drama', 'RAT:1.33 : 1', 'OFM:35 mm', 'Black and White', 'PFM:35 mm",
+                "6.5",
+                2007
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode', 'episode', 'episode', 'movie', 'episode",
+                "%1914%",
+                "%USA%",
+                "English', 'USA', 'USA', 'USA', 'USA",
+                "5.5",
+                2009
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "episode', 'episode', 'movie', 'movie', 'episode",
+                "%TV%",
+                "%USA%",
+                "USA', 'USA', 'Color', 'USA', 'USA",
+                "4..1.21..1",
+                1946
+            ]
+        ]
+    }
+}

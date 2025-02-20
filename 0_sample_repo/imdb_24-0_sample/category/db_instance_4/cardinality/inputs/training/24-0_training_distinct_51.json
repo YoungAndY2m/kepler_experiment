@@ -1,0 +1,976 @@
+{
+    "24-0": {
+        "query": "SELECT MIN(chn.name) AS voiced_char_name, MIN(n.name) AS voicing_actress_name, MIN(t.title) AS voiced_action_movie_jap_eng\nFROM cat_aka_name_4 AS an,\n   cat_char_name_4 AS chn,\n   cat_cast_info_4 AS ci,\n   cat_company_name_4 AS cn,\n   cat_info_type_4 AS it,\n   cat_keyword_4 AS k,\n   cat_movie_companies_4 AS mc,\n   cat_movie_info_4 AS mi,\n   cat_movie_keyword_4 AS mk,\n   cat_name_4 AS n,\n   cat_role_type_4 AS rt,\n   cat_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mc.movie_id = mk.movie_id\nAND mi.movie_id = ci.movie_id\nAND mi.movie_id = mk.movie_id\nAND ci.movie_id = mk.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param4' OR mi.info LIKE '@param5')\nAND n.gender = '@param6'\nAND n.name LIKE '@param7'\nAND rt.role = '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "mi",
+                    "mk",
+                    "n",
+                    "rt",
+                    "an",
+                    "chn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_movie_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_name_4",
+                    "cat_role_type_4",
+                    "cat_aka_name_4",
+                    "cat_char_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "mc.movie_id = ci.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id",
+                    "rt.id = ci.role_id",
+                    "ci.person_id = an.person_id",
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4",
+                    "cat_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4",
+                    "cat_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_role_type_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "rt.id = ci.role_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_4",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "mi",
+                    "mc",
+                    "ci",
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mc.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "hardcore', 'sex', 'hardcore', 'hardcore', 'hardcore",
+                "%U%",
+                "%t%",
+                "m",
+                "%D%",
+                "actor",
+                2009
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "countries",
+                "female-nudity', 'nudity', 'nudity', 'oral-sex', 'oral-sex",
+                "%at%",
+                "%A%",
+                "m",
+                "%Kevin%",
+                "actor",
+                2007
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "countries",
+                "untimely-death', 'bhakti-yoga', 'handcuffed-to-one''s-enemy', 'harem-costume', 'iraq",
+                "%U%",
+                "%USA%",
+                "m",
+                "%T%",
+                "actor",
+                1995
+            ],
+            [
+                "(producer)', '(producer)', '(voice)', '(voice)', '(producer)",
+                "[us]",
+                "countries",
+                "sex', 'sex', 'hardcore', 'sex', 'sex",
+                "%t%",
+                "%A%",
+                "m",
+                "%Jes\u00c3\u00bas%",
+                "actor",
+                1998
+            ],
+            [
+                "(voice)', '(voice)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "[us]",
+                "genres",
+                "female-nudity', 'anal-sex', 'female-nudity', 'nudity', 'anal-sex",
+                "%d%",
+                "%S%",
+                "m",
+                "%Harris%",
+                "actor",
+                1997
+            ],
+            [
+                "(co-producer)', '(co-producer)', '(voice)', '(voice)', '(co-producer)",
+                "[us]",
+                "release dates",
+                "hardcore', 'hardcore', 'sex', 'hardcore', 'sex",
+                "%d%",
+                "%A%",
+                "m",
+                "%o%",
+                "actor",
+                2003
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "hardcore', 'sex', 'hardcore', 'hardcore', 'sex",
+                "%grizzled%",
+                "%i%",
+                "m",
+                "%D%",
+                "actor",
+                2002
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'sex', 'hardcore', 'sex",
+                "%t%",
+                "%l%",
+                "m",
+                "%Robert%",
+                "actor",
+                1997
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "sex', 'hardcore', 'sex', 'hardcore', 'hardcore",
+                "%t%",
+                "%S%",
+                "m",
+                "%Mark%",
+                "actor",
+                2009
+            ],
+            [
+                "(voice: English version)', '(archive footage) (uncredited)', '(archive footage) (uncredited)', '(archive footage) (uncredited)', '(voice: English version)",
+                "[us]",
+                "genres",
+                "hardcore', 'hardcore', 'hardcore', 'sex', 'hardcore",
+                "%l%",
+                "%2004%",
+                "m",
+                "%Steve%",
+                "actor",
+                1985
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "nudity', 'oral-sex', 'anal-sex', 'oral-sex', 'anal-sex",
+                "%o%",
+                "%X%",
+                "m",
+                "%D%",
+                "actor",
+                2005
+            ],
+            [
+                "(executive producer)', '(producer)', '(archive footage)', '(producer)', '(as Jean Valjean)",
+                "[us]",
+                "genres",
+                "sex', 'sex', 'hardcore', 'sex', 'hardcore",
+                "%A%",
+                "%g%",
+                "m",
+                "%D%",
+                "actor",
+                2005
+            ],
+            [
+                "(producer)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "sex', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "%m%",
+                "%of%",
+                "m",
+                "%Richard%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Jake Williams)', '(as Rex Borsky)', '(as Jake Williams)', '(archive footage)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "hardcore', 'sex', 'hardcore', 'hardcore', 'hardcore",
+                "%E%",
+                "%l%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "hardcore', 'hardcore', 'sex', 'hardcore', 'sex",
+                "%l%",
+                "%t%",
+                "m",
+                "%Moe%",
+                "actor",
+                2008
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(executive producer)', '(executive producer)",
+                "[us]",
+                "genres",
+                "sex', 'hardcore', 'hardcore', 'hardcore', 'sex",
+                "%C%",
+                "%l%",
+                "m",
+                "%Chris%",
+                "actor",
+                2003
+            ],
+            [
+                "(executive producer)', '(voice)', '(executive producer)', '(executive producer)', '(voice)",
+                "[us]",
+                "genres",
+                "oral-sex', 'anal-sex', 'oral-sex', 'oral-sex', 'nudity",
+                "%A%",
+                "%USA%",
+                "m",
+                "%M%",
+                "actor",
+                2002
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "hardcore', 'hardcore', 'hardcore', 'sex', 'sex",
+                "%l%",
+                "%s%",
+                "m",
+                "%Steve%",
+                "actor",
+                1989
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "countries",
+                "oral-sex', 'anal-sex', 'anal-sex', 'female-nudity', 'oral-sex",
+                "%S%",
+                "%s%",
+                "m",
+                "%Chris%",
+                "actor",
+                1992
+            ],
+            [
+                "(archive footage)', '(producer)', '(archive footage)', '(archive footage)', '(producer)",
+                "[us]",
+                "genres",
+                "nudity', 'nudity', 'female-nudity', 'anal-sex', 'oral-sex",
+                "%USA%",
+                "%o%",
+                "m",
+                "%Chris%",
+                "actor",
+                1966
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(archive footage)', '(executive producer)', '(executive producer)",
+                "[us]",
+                "genres",
+                "sex', 'sex', 'sex', 'hardcore', 'hardcore",
+                "%r%",
+                "%h%",
+                "m",
+                "%Chris%",
+                "actor",
+                2000
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "oral-sex', 'nudity', 'oral-sex', 'anal-sex', 'nudity",
+                "%USA%",
+                "%S%",
+                "m",
+                "%Joe%",
+                "actor",
+                1996
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "sex', 'hardcore', 'sex', 'sex', 'sex",
+                "%C%",
+                "%2005%",
+                "m",
+                "%B%",
+                "actor",
+                2004
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "nudity', 'female-nudity', 'female-nudity', 'nudity', 'oral-sex",
+                "%l%",
+                "%u%",
+                "m",
+                "%Helms%",
+                "actor",
+                1995
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "countries",
+                "nudity', 'oral-sex', 'oral-sex', 'anal-sex', 'oral-sex",
+                "%i%",
+                "%A%",
+                "m",
+                "%Greg%",
+                "actor",
+                1997
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "oral-sex', 'anal-sex', 'oral-sex', 'anal-sex', 'anal-sex",
+                "%h%",
+                "%l%",
+                "m",
+                "%Joe%",
+                "actor",
+                1999
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "[us]",
+                "release dates",
+                "hardcore', 'sex', 'hardcore', 'hardcore', 'sex",
+                "%l%",
+                "%a%",
+                "m",
+                "%J%",
+                "actor",
+                2004
+            ],
+            [
+                "(uncredited)', '(voice)', '(archive footage)', '(archive footage)', '(producer)",
+                "[us]",
+                "genres",
+                "sex', 'sex', 'hardcore', 'sex', 'sex",
+                "%h%",
+                "%S%",
+                "m",
+                "%D%",
+                "actor",
+                2004
+            ],
+            [
+                "(archive footage)', '(executive producer)', '(uncredited)', '(associate producer)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "hardcore', 'sex', 'hardcore', 'sex', 'sex",
+                "%o%",
+                "%o%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "hardcore', 'sex', 'hardcore', 'hardcore', 'sex",
+                "%USA%",
+                "%r%",
+                "m",
+                "%Tom%",
+                "actor",
+                2005
+            ],
+            [
+                "(voice)', '(uncredited)', '(voice)', '(voice)', '(uncredited)",
+                "[us]",
+                "countries",
+                "epee', 'target-practice', 'drinking-contest', 'dual-identity', 'broken-glasses",
+                "%A%",
+                "%r%",
+                "m",
+                "%Michael%",
+                "actor",
+                2001
+            ],
+            [
+                "(producer)', '(producer)', '(voice)', '(producer)', '(executive producer)",
+                "[us]",
+                "release dates",
+                "nudity', 'nudity', 'oral-sex', 'female-nudity', 'oral-sex",
+                "%C%",
+                "%d%",
+                "m",
+                "%Jason%",
+                "actor",
+                2003
+            ],
+            [
+                "(production assistant)', '(voice)', '(voice)', '(voice)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'hardcore', 'hardcore', 'sex",
+                "%C%",
+                "%U%",
+                "m",
+                "%D%",
+                "actor",
+                2000
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "countries",
+                "hardcore', 'hardcore', 'hardcore', 'sex', 'sex",
+                "%of%",
+                "%USA%",
+                "m",
+                "%Joe%",
+                "actor",
+                2001
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'hardcore', 'sex', 'hardcore",
+                "%C%",
+                "%U%",
+                "m",
+                "%D%",
+                "actor",
+                2006
+            ],
+            [
+                "(voice)', '(uncredited)', '(uncredited)', '(voice)', '(uncredited)",
+                "[nl]",
+                "release dates",
+                "anal-sex', 'oral-sex', 'oral-sex', 'female-nudity', 'anal-sex",
+                "%l%",
+                "%t%",
+                "m",
+                "%D%",
+                "actor",
+                2002
+            ],
+            [
+                "(executive producer)', '(production assistant)', '(producer)', '(archive footage)', '(voice)",
+                "[us]",
+                "countries",
+                "hardcore', 'sex', 'sex', 'sex', 'sex",
+                "%U%",
+                "%h%",
+                "m",
+                "%Steve%",
+                "actor",
+                2007
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(voice)', '(executive producer)",
+                "[us]",
+                "genres",
+                "female-nudity', 'anal-sex', 'anal-sex', 'female-nudity', 'oral-sex",
+                "%U%",
+                "%o%",
+                "m",
+                "%G%",
+                "actor",
+                2004
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "sex', 'hardcore', 'hardcore', 'sex', 'sex",
+                "%o%",
+                "%X%",
+                "m",
+                "%k%",
+                "actor",
+                2004
+            ],
+            [
+                "(archive footage)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "[us]",
+                "release dates",
+                "anal-sex', 'oral-sex', 'female-nudity', 'anal-sex', 'oral-sex",
+                "%33%",
+                "%S%",
+                "m",
+                "%Tom%",
+                "actor",
+                2004
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "genres",
+                "hardcore', 'sex', 'hardcore', 'hardcore', 'hardcore",
+                "%m%",
+                "%o%",
+                "m",
+                "%Robert%",
+                "actor",
+                2004
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "female-nudity', 'anal-sex', 'anal-sex', 'oral-sex', 'oral-sex",
+                "%A%",
+                "%X%",
+                "m",
+                "%Joe%",
+                "actor",
+                2005
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "female-nudity', 'anal-sex', 'nudity', 'nudity', 'nudity",
+                "%U%",
+                "%r%",
+                "m",
+                "%Michael%",
+                "actor",
+                2006
+            ],
+            [
+                "(executive producer)', '(as Mike Burke)', '(voice)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "countries",
+                "sex', 'hardcore', 'hardcore', 'hardcore', 'sex",
+                "%comedy%",
+                "%U%",
+                "m",
+                "%Franco%",
+                "actor",
+                1997
+            ],
+            [
+                "(producer)', '(producer)', '(archive footage)', '(archive footage)', '(producer)",
+                "[us]",
+                "genres",
+                "hardcore', 'hardcore', 'sex', 'sex', 'hardcore",
+                "%l%",
+                "%o%",
+                "m",
+                "%G%",
+                "actor",
+                2005
+            ],
+            [
+                "(production assistant)', '(executive producer)', '(voice)', '(voice)', '(archive footage)",
+                "[us]",
+                "release dates",
+                "hardcore', 'sex', 'sex', 'sex', 'hardcore",
+                "%l%",
+                "%2011%",
+                "m",
+                "%de%",
+                "actor",
+                2007
+            ],
+            [
+                "(voice: English version)', '(archive footage) (uncredited)', '(voice: English version)', '(archive footage) (uncredited)', '(archive footage) (uncredited)",
+                "[us]",
+                "release dates",
+                "sex', 'sex', 'sex', 'hardcore', 'sex",
+                "%C%",
+                "%u%",
+                "m",
+                "%Joe%",
+                "actor",
+                2001
+            ],
+            [
+                "(producer)', '(executive producer)', '(archive footage)', '(archive footage)', '(producer)",
+                "[us]",
+                "release dates",
+                "sex', 'hardcore', 'sex', 'sex', 'hardcore",
+                "%USA%",
+                "%S%",
+                "m",
+                "%D%",
+                "actor",
+                1982
+            ],
+            [
+                "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+                "[us]",
+                "genres",
+                "female-nudity', 'female-nudity', 'nudity', 'anal-sex', 'nudity",
+                "%o%",
+                "%g%",
+                "m",
+                "%Chris%",
+                "actor",
+                2004
+            ],
+            [
+                "(voice)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "[us]",
+                "release dates",
+                "sex', 'hardcore', 'hardcore', 'sex', 'hardcore",
+                "%A%",
+                "%l%",
+                "m",
+                "%D%",
+                "actor",
+                2006
+            ],
+            [
+                "(producer)', '(archive footage)', '(producer)', '(executive producer)', '(executive producer)",
+                "[us]",
+                "genres",
+                "hardcore', 'sex', 'hardcore', 'sex', 'sex",
+                "%A%",
+                "%m%",
+                "m",
+                "%Tom%",
+                "actor",
+                1996
+            ]
+        ]
+    }
+}

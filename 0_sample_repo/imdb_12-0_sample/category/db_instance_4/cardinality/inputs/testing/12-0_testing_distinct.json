@@ -1,0 +1,2265 @@
+{
+  "12-0": {
+    "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS drama_horror_movie\nFROM cat_company_name_4 AS cn,\n cat_company_type_4 AS ct,\n cat_info_type_4 AS it1,\n cat_info_type_4 AS it2,\n cat_movie_companies_4 AS mc,\n cat_movie_info_4 AS mi,\n cat_movie_info_idx_4 AS mi_idx,\n cat_title_4 AS t\nWHERE t.id = mi.movie_id\n AND t.id = mi_idx.movie_id\n AND mi.info_type_id = it1.id\n AND mi_idx.info_type_id = it2.id\n AND t.id = mc.movie_id\n AND ct.id = mc.company_type_id\n AND cn.id = mc.company_id\n AND mc.movie_id = mi.movie_id\n AND mc.movie_id = mi_idx.movie_id\n AND mi.movie_id = mi_idx.movie_id\nAND cn.country_code = '@param0'\nAND ct.kind = '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info > '@param5'\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_type_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ct.id = mc.company_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "cat_movie_info_4"
+        ],
+        "join_conditions": [
+          "mi.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables": [
+          "cat_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "mi_idx.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi_idx"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_info_type_4",
+          "cat_movie_companies_4",
+          "cat_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mi.info_type_id = it.id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "column": "info",
+        "operator": ">",
+        "data_type": "text",
+        "table": "cat_movie_info_idx_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_info_type_4",
+          "cat_movie_companies_4",
+          "cat_movie_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "mi_idx.info_type_id = it.id",
+          "mc.movie_id = mi_idx.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_info_4",
+          "cat_movie_info_idx_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_info_4",
+          "cat_movie_info_idx_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'USA', 'English', 'English', 'Color",
+        "4.1",
+        1996,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'Adult', 'USA', 'Adult', 'Color",
+        "6.7",
+        2005,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "11",
+        2007,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "6",
+        1973,
+        2007
+      ],
+      [
+        "[fi]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'Color', 'Color', 'English', 'USA",
+        "6.4",
+        2000,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        1975,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Color', 'USA', 'Color', 'English",
+        "9",
+        1982,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "English', 'USA', 'Adult', 'USA', 'Short",
+        "7",
+        2005,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'USA', 'Color', 'English', 'Color",
+        "5",
+        1970,
+        2001
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Documentary', 'Adult', 'Color', 'Documentary', 'Comedy",
+        "7",
+        1981,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Documentary', 'USA:X', 'USA:X', 'Documentary",
+        "8",
+        2008,
+        2008
+      ],
+      [
+        "[nz]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA:2005', 'USA', 'English', 'USA', 'USA:2005",
+        "14",
+        1998,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Documentary', 'USA:X', 'Documentary', 'USA:X', 'Documentary",
+        "5.7",
+        1995,
+        2014
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Documentary', 'Adult', 'USA', 'Adult",
+        "6",
+        2006,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "6.4",
+        2003,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "5.7",
+        2003,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "rating",
+        "Denmark:100', 'This documentary is featured on the Third Season DVD set for _\"Angel\" (1999/I)_, released in 2004.', 'It all depends on your Point of View', '$80', 'Liechtenstein:December 2005",
+        "10",
+        1981,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "USA', 'USA', 'Short', 'USA:2004', 'USA",
+        "2.9",
+        2004,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6.6",
+        2000,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6",
+        2002,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "English', 'USA', 'Adult', 'English', 'Short",
+        "6.1",
+        2008,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Documentary', 'USA:X', 'Documentary', 'USA:X', 'Documentary",
+        "7",
+        2005,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "English', 'USA', 'Adult', 'Short', 'Adult",
+        "2110000001",
+        1996,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6",
+        2004,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "....112321",
+        2008,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:2009', 'Comedy', 'USA', 'Color', 'USA:X",
+        "9",
+        2006,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "English', 'USA', 'USA', 'English', 'USA",
+        "5",
+        1990,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "English', 'Color', 'USA', 'English', 'Adult",
+        "6",
+        2002,
+        2005
+      ],
+      [
+        "[hk]",
+        "distributors",
+        "countries",
+        "rating",
+        "English', 'Color', 'USA', 'USA', 'USA",
+        "6",
+        2009,
+        2013
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Documentary', 'Documentary', 'USA:X', 'USA:X', 'USA:X",
+        "6",
+        1987,
+        2001
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "English', 'Adult', 'Color', 'USA', 'English",
+        "200000.030",
+        1977,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "5",
+        2005,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'English', 'USA', 'USA', 'USA",
+        "..1....225",
+        1997,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "00.0111100",
+        2000,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "7",
+        2006,
+        2015
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "English', 'USA', 'English', 'USA', 'English",
+        "7",
+        2005,
+        2007
+      ],
+      [
+        "[hr]",
+        "production companies",
+        "genres",
+        "rating",
+        "Comedy', 'USA', 'Short', 'Adult', 'Drama",
+        "5",
+        2000,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Short', 'Color', 'English', 'Short', 'USA",
+        "5",
+        2000,
+        2008
+      ],
+      [
+        "[fi]",
+        "distributors",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "6.7",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Color', 'Adult', 'Adult",
+        "6.3",
+        2006,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "USA:X', 'USA:X', 'USA:X', 'Documentary', 'Documentary",
+        "5",
+        1995,
+        1995
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "3.7",
+        2000,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'English', 'USA', 'Color', 'USA",
+        "6.7",
+        2005,
+        2008
+      ],
+      [
+        "[dk]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "3.2",
+        1999,
+        1999
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "English', 'Short', 'Color', 'USA:2004', 'USA:2005",
+        "6.1",
+        1989,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "10",
+        2009,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "release dates",
+        "rating",
+        "73:30', 'The film builds up a portrait of a great Sudanese film-maker, Gadalla Gubara. At eighty-seven, he is one of the pioneers of cinema in Africa. He has recently lost his sight but still continues to film life in Sudan as no one before him. Through his oeuvre, Gadalla reveals to us a Sudan both mysterious and misunderstood. Despite censorship and lack of financial support over sixty years, he has produced cinema that is independent and unique in a country where freedom of expression is a rare luxury. The film \"Conversations with Gadalla Gubara\" retraces the struggle of a man who received the 2006 Award for Excellence for his career at the Africa Academy Awards, Nigeria.', 'Netherlands:15 May 2009', 'Rated PG-13 for action violence and some sensuality', 'Charley Simms: Hey, I''m Charley.::Taylor Hunter: Taylor.::Charley Simms: You''re either a mirage or lost cause I''ve never seen anyone my age around here.::Taylor Hunter: I''m real.::Charley Simms: How did you get up here? Sorry, none of my business.::Taylor Hunter: All I wanted was to go to the Olympics. Is that so much to ask. I mean I worked my butt off to get those tickets. I should have gone by myself, but no I had to make it a group trip with my sister and friends. And my luck I got stuck with a group that can do absolutely nothing right! My car got stolen, the Caddy got spiked, we flew to the wrong San, I got stuck with a $450 cab ride, we did migrant labour, our steaks got e-lemonated, we got on the wrong bus, we''re 120 miles from Vegas. The Olympics are almost over, I thought I lost my sister and thankfully some good news, found my sister!::Charley Simms: Thats the saddest story ever.::Taylor Hunter: No but, its definatly in the Top 10.",
+        "6",
+        2002,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'USA', 'USA', 'Color', 'USA:2004",
+        "6.2",
+        1996,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Color', 'USA', 'USA', 'USA",
+        "8",
+        1995,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "Color', 'USA:2008', 'Short', 'Adult', 'USA",
+        "6",
+        2002,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "English', 'USA', 'USA', 'English', 'Color",
+        "5.1",
+        2004,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6.7",
+        2007,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Color', 'Adult', 'Documentary', 'Color', 'English",
+        "4.7",
+        2002,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "release dates",
+        "votes distribution",
+        "USA', 'USA', 'USA:2004', 'USA', 'USA",
+        "21",
+        2001,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "USA:X', 'Documentary', 'USA:X', 'USA:X', 'USA:X",
+        "3.8",
+        1973,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "Argentina:10 December 2003', 'PCS:(anamorphic)', 'Short', 'USA:20 September 2005', 'Jonathon Grant is a very paranoid writer and illustrator. He specializes in works of horror. He also suffers from hellish nightmares and delusions. Now he must convince everyone that something is seriously wrong with his wife and that it is not his paranoia. Sarah Grant is married to Jonathon. But after six years of marriage something is happening to her. Something dark and twisted. Dr. Vincent Stone is the mysterious psychiatrist that Jonathon sees. He hopes Stone will help him with his paranoia. Dr. Stone thinks Jonathon''s wife is having an affair. Jonathon thinks differently. Katrina is the women in black that appears to Jonathon by the river. She claims to be their to help Jonathon. Jonathon is not sure if he is dreaming her or if she is real. Meanwhile in the woods behind his house there is a rash of women murders. Town''s people claim to see strange paranormal activity in the dark forest. Jonathon begins to see evil and finds himself being chased and haunted by a hooded killer. Jonathon''s paranoia is getting worse, women are being murdered in the forest, Jonathon''s wife is up to no good, and evil and horrific things are going on all around Jonathon. But what is real and what isn''t. Jonathon must find out. Along his way he hears evil voices, sees creatures swimming in the river, faces in the trees warn him, and the masked man continues to chase him.",
+        "5",
+        2004,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "6",
+        2002,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "Short', 'Adult', 'Short', 'USA', 'USA",
+        "9",
+        1986,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Color', 'USA', 'Adult', 'USA",
+        "6.1",
+        1996,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6",
+        2005,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Color', 'Adult', 'Color', 'Adult', 'English",
+        "13",
+        2006,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Adult', 'Drama', 'USA', 'Documentary', 'Drama",
+        "5",
+        1987,
+        1993
+      ],
+      [
+        "[lt]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "2.....1.15",
+        2004,
+        2015
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "12",
+        2002,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'English', 'USA', 'English', 'Adult",
+        "13",
+        2002,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Color', 'English', 'Adult', 'English",
+        "6.1",
+        2001,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "5",
+        2009,
+        2009
+      ],
+      [
+        "[ph]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "3.5",
+        1996,
+        2005
+      ],
+      [
+        "[cz]",
+        "production companies",
+        "genres",
+        "rating",
+        "USA:X', 'USA:X', 'Documentary', 'USA:X', 'Documentary",
+        "5.1",
+        2000,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "English', 'Documentary', 'Color', 'Color', 'Color",
+        "10",
+        1996,
+        1997
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "19",
+        1998,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA', 'Adult', 'USA:2006', 'Color', 'English",
+        "5.8",
+        2004,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'USA:X', 'Documentary', 'Documentary",
+        "4.21.1....",
+        1997,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Color', 'English', 'Color', 'Color', 'USA",
+        "5.3",
+        2001,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "5",
+        2003,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Documentary', 'USA:X', 'USA:X', 'Documentary', 'Documentary",
+        "5",
+        2000,
+        2003
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "USA', 'Adult', 'USA', 'USA', 'English",
+        "5",
+        2004,
+        2004
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA', 'USA', 'English', 'Adult', 'Adult",
+        "5",
+        1991,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "USA', 'Color', 'USA', 'USA:2005', 'Short",
+        "21..22...1",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA', 'English', 'USA', 'USA', 'Adult",
+        "6",
+        2004,
+        2012
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'USA', 'USA', 'Color', 'Adult",
+        "3.5",
+        2000,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "6",
+        2001,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Color', 'English', 'English', 'Color",
+        "7",
+        2006,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Short', 'Color', 'USA:2009', 'USA', 'USA",
+        "10",
+        1985,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7.6",
+        2000,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "6.8",
+        2003,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "6.7",
+        2001,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', 'Short', 'Adult', 'Adult', 'Adult",
+        "16",
+        2004,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Documentary', 'Documentary', 'Documentary', 'USA:X', 'Documentary",
+        "14",
+        1993,
+        2001
+      ],
+      [
+        "[ch]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "5",
+        2007,
+        2013
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "6.3",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'Color', 'Color', 'USA', 'English",
+        "5",
+        1994,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'USA:X', 'Documentary', 'USA:X",
+        "..1.1.51.1",
+        1997,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "USA:X', 'Documentary', 'Documentary', 'USA:X', 'USA:X",
+        "8",
+        2000,
+        2006
+      ],
+      [
+        "[ph]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'English', 'USA', 'Short",
+        "1000001013",
+        1995,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Drama', 'Documentary', 'USA', 'USA', 'Color",
+        "5",
+        1997,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Sci-Fi', 'Horror', 'Included as bonus material with the DVD release of _MVP: Most Vertical Primate (2001)_ (qv).', 'Germany:26 June 1992', 'Color",
+        "5",
+        2001,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Documentary', 'USA:X', 'Comedy', 'Adult', 'USA:2002",
+        "5.8",
+        2009,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "USA', 'USA:2006', 'USA:2008', 'Color', 'English",
+        "1.1......7",
+        2005,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Adult', 'Adult', 'English', 'English', 'Adult",
+        "16",
+        2003,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Documentary', 'USA:X', 'Documentary', 'English', 'Documentary",
+        "01..4..021",
+        2000,
+        2004
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'USA:X', 'Documentary', 'Documentary', 'Documentary",
+        "8",
+        2009,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "English', 'USA', 'Adult', 'USA', 'English",
+        "6.6",
+        2004,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'Documentary', 'Documentary', 'USA:X",
+        "5",
+        2008,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Documentary', 'Documentary', 'Documentary', 'Documentary",
+        "6.4",
+        2003,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "0...011311",
+        1995,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Documentary', 'Documentary', 'Documentary', 'USA:X', 'Documentary",
+        "6.5",
+        1996,
+        2004
+      ],
+      [
+        "[us]",
+        "production companies",
+        "release dates",
+        "votes",
+        "Color', 'Short', 'USA:2008', 'English', 'USA",
+        "24",
+        1965,
+        2008
+      ],
+      [
+        "[tr]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'English', 'Color', 'English', 'English",
+        "0..0.10013",
+        2006,
+        2010
+      ],
+      [
+        "[de]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'Adult', 'Adult', 'USA:2006",
+        "5",
+        1995,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Color', 'English', 'USA', 'Adult', 'English",
+        "6",
+        1994,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "1100002.11",
+        1996,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'English', 'USA', 'Color', 'USA",
+        "7",
+        1974,
+        2004
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6.4",
+        2001,
+        2014
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "3.7",
+        2005,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Color', 'USA', 'Color', 'Adult', 'USA:2005",
+        "10",
+        1972,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "English', 'English', 'USA', 'Color', 'Color",
+        "9",
+        2000,
+        2004
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Documentary', 'Documentary', 'Documentary', 'Documentary', 'Documentary",
+        "5",
+        1990,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA', 'English', 'Adult', 'Short', 'Short",
+        "6",
+        1997,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'Color', 'Color', 'USA', 'English",
+        "6",
+        1994,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'Documentary', 'USA:X', 'USA:X",
+        "6",
+        1987,
+        2000
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "rating",
+        "Pogue, William R. How do you go to the bathroom in space? (cartoons by Sidney Harris). \"New York : Tom Doherty Associates\". 1999, ISBN-10: 031287295X', 'Together four women make up one man''s dream woman. When the stress of each of their character flaws and issues become too much to handle he gives, with the help of an eccentric married couple, the women a final test of compatibility and love. Ultimately, he is faced with the decision of which woman he will to pursue.', 'Coach Z: [introducing the Strong Sad Look-Alike Contest] So without further ado, I''d like to introduce the man of the hour, the deathly pallor: Strong Sad! [Strong Sad walks up]::The King of Town: [offscreen] Boo!::Strong Sad: Thank you! Thank you! I''m simultaneously honored and insulted to be involved in this contest for the fourth time in a row.::Coach Z: [shoving Strong Sad aside] That''s enough there, Strong Sad. Your work is done here.', 'USA:16 February 2001', 'Some scenes of the explosion and the car chase at the beginning of the film were taken from the film \"The Corruptor\" with Chow Yun-fat and Mark Wahlberg.",
+        "3.7",
+        1998,
+        2013
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "English', 'Adult', 'English', 'Color', 'USA:X",
+        "5",
+        2002,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "English', 'USA', 'USA:X', 'Adult', 'USA",
+        "20",
+        1992,
+        2000
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "6.6",
+        1991,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Color', 'Color', 'Color', 'USA', 'USA",
+        "00.11110.2",
+        1978,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'USA:X', 'Documentary', 'Documentary",
+        "6",
+        2005,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "USA', 'Color', 'Color', 'Color', 'English",
+        "6.7",
+        1996,
+        1998
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "English', 'Adult', 'Short', 'USA', 'Adult",
+        "9",
+        1996,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "English', 'English', 'Adult', 'Color', 'Adult",
+        "6.7",
+        1994,
+        2002
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "Color', 'Color', 'Color', 'USA', 'Color",
+        "6.4",
+        2001,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "PCS:DVC Pro HD', 'These may be the last good scenes I ever do. Extremely Yours, Kristi Myst.', '$1,500', 'USA:19 December 1987', 'Comedy",
+        "4.0",
+        1998,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Color', 'Adult', 'Color', 'Adult', 'English",
+        "6.7",
+        1999,
+        2003
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "6",
+        2005,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA:X', 'USA:X', 'USA:X', 'Documentary', 'Documentary",
+        "5",
+        2006,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'Color', 'Short', 'Color', 'USA",
+        "5",
+        2004,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Adult', 'Documentary', 'Color', 'English",
+        "8",
+        1995,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "8",
+        2003,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'Color', 'USA', 'Color', 'Color",
+        "459",
+        1984,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "English', 'Color', 'Color', 'USA', 'USA",
+        "5",
+        2003,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "5.5",
+        2005,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "English', 'Short', 'Color', 'Short', 'USA",
+        "6",
+        2009,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA:X', 'USA', 'English', 'USA:X', 'Documentary",
+        "6",
+        2004,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'Color', 'USA",
+        "4.1",
+        2001,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "8",
+        2006,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Documentary', 'USA', 'English', 'Short', 'Color",
+        "5.1",
+        2009,
+        2015
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', 'USA', 'USA', 'USA', 'USA",
+        "7.4",
+        2005,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Color', 'USA', 'Color', 'Color', 'Color",
+        "7",
+        2007,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "5",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'English', 'Color",
+        "8",
+        2005,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "10",
+        1994,
+        2010
+      ],
+      [
+        "[it]",
+        "production companies",
+        "genres",
+        "votes",
+        "English', 'Color', 'Short', 'USA:2007', 'English",
+        "1.003.11.2",
+        1996,
+        2002
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "USA:2004', 'USA', 'Color', 'Color', 'Short",
+        "6.4",
+        1998,
+        2003
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Color', 'English', 'USA', 'English",
+        "5.9",
+        1986,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'English', 'English', 'Color', 'English",
+        "5",
+        2002,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'English', 'Color', 'English', 'Color",
+        "5.9",
+        2003,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "English', 'USA', 'English', 'English', 'USA",
+        "6",
+        1999,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "release dates",
+        "rating",
+        "USA', 'Short', 'USA', 'USA:2004', 'USA",
+        "7",
+        2002,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'USA', 'Color', 'USA', 'Short",
+        "5.9",
+        2003,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "4.0",
+        1984,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        2004,
+        2011
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "5",
+        2006,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "3.7",
+        1992,
+        2004
+      ],
+      [
+        "[dk]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Color', 'Color', 'Short', 'Adult",
+        "8",
+        2005,
+        2009
+      ],
+      [
+        "[ro]",
+        "production companies",
+        "countries",
+        "rating",
+        "Color', 'USA', 'English', 'Color', 'USA",
+        "6",
+        1989,
+        2012
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "38289-6', 'USA:92', 'USA:Not Rated', 'Short', 'Rome, Lazio, Italy",
+        "6.2",
+        2002,
+        2008
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        2001,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "9",
+        2005,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "English', 'USA', 'Color', 'Color', 'Adult",
+        "9.2",
+        1985,
+        1998
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'English', 'Color', 'USA', 'USA",
+        "14",
+        2001,
+        2003
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "18",
+        1995,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "11",
+        1999,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'Color', 'USA', 'English",
+        "6",
+        2006,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'Adult', 'English', 'English",
+        "6.7",
+        2006,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'English', 'English",
+        "6",
+        2005,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Color', 'USA', 'English', 'Adult', 'Adult",
+        "5",
+        1988,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Color', 'Penny: [on her costume choice for Comic-Con] I just haven''t decided yet.::Leonard: But, we''re going over there this afternoon, after you get off work. Don''t you think that''s kinda important?::Penny: Yeah, but if I don''t figure it out, I''ll just go as myself, okay?::Leonard: Why would you want to go as a college dropout?::Penny: What did you say?::Leonard: Oh boy.::Penny: That is not what you said. And, for your information, Len-nerd, the only reason I''m going to this geekfest is because I wanted to spend time with you and get to know you a little better, so maybe you''d take your head out of your comic books and put it between my legs. But instead, you can shove it up your ass.', 'Animal: I used to kill people who looked liked me.', 'USA', 'Many of the people used in the action sequences of the film were former team members or (as of time of filming) members of the Luko Anti-Terrorist Unit; which Mirco was once a part of. By using them in the film they used live ammo in some parts of the film safely.",
+        "5",
+        2006,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "6",
+        1980,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'English', 'USA', 'Adult', 'Adult",
+        "3.5",
+        1993,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Adult', 'Color', 'English', 'USA', 'USA",
+        "7",
+        1998,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "English', 'Drama', 'Drama', 'USA:X', 'Color",
+        "17",
+        1972,
+        1979
+      ],
+      [
+        "[sg]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'Color', 'English', 'English', 'English",
+        "10",
+        1999,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'English', 'USA', 'USA', 'English",
+        "11",
+        2004,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'Documentary', 'USA:X', 'Documentary",
+        "879",
+        1984,
+        2002
+      ],
+      [
+        "[it]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        2004,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Documentary', 'USA:X', 'USA:X', 'USA:X', 'USA:X",
+        "7",
+        2002,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA', 'Adult', 'USA', 'USA:2005', 'Color",
+        "8",
+        1982,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'USA', 'English', 'USA', 'USA",
+        "22",
+        2007,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Short', 'Documentary', 'Adult', 'USA', 'USA",
+        "5",
+        1997,
+        2001
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'Color', 'Color', 'USA', 'Color",
+        "6",
+        2005,
+        2014
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Short', 'Color', 'Color', 'USA', 'Color",
+        "6",
+        2002,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'USA:2005', 'Adult",
+        "7",
+        1997,
+        2005
+      ],
+      [
+        "[bb]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Documentary', 'Documentary', 'USA:X', 'Documentary",
+        "00.0.10003",
+        2000,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        1995,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "5.9",
+        2003,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "rating",
+        "USA', 'USA:2004', 'USA', 'English', 'USA",
+        "7",
+        1998,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        2000,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'English', 'Color', 'English', 'Adult",
+        "5",
+        1988,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "9",
+        1987,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "Color', 'USA', 'Color', 'Color', 'Color",
+        "8",
+        1988,
+        2007
+      ]
+    ]
+  }
+}

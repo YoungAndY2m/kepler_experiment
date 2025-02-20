@@ -1,0 +1,603 @@
+{
+    "25-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS male_writer, MIN(t.title) AS violent_movie_title\nFROM sampled_cast_info_4 AS ci,\n   sampled_info_type_4 AS it1,\n   sampled_info_type_4 AS it2,\n   sampled_keyword_4 AS k,\n   sampled_movie_info_4 AS mi,\n   sampled_movie_info_idx_4 AS mi_idx,\n   sampled_movie_keyword_4 AS mk,\n   sampled_name_4 AS n,\n   sampled_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info = '@param4'\nAND n.gender = '@param5';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "n"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_cast_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_name_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(executive producer)', '(as Grace Adejobi)', '(as Ben Townsend)', '(as Atmen K\u00c3\u00a9lif)', '(as Rob Burnett)",
+                "weekend gross",
+                "votes",
+                "racism', 'wellington', 'letter-of-gratitude', 'tidy-whitey', 'legislator",
+                "\u00c2\u00a348,162 (UK) (16 June 2002) (90 screens)",
+                "m"
+            ],
+            [
+                "(written by)', '(as E.S. Mintz)', '(the Burglar)', '(as A.Kolokoltsev)', '(drama coordinator)",
+                "runtimes",
+                "rating",
+                "cocaine', 'hainaut', 'bicarbonate-of-soda', 'eating-a-dog', 'inseperability",
+                "135",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Shmil Ben-Ari)', '(as Robert Mak)', '(as Cowboy)', '(chief designer)",
+                "gross",
+                "votes",
+                "possession', 'desensitization', 'looking-under-a-bed', 'policecar-crash', 'death-tunnel",
+                "\u00e2\u0082\u00ac 3,537,582 (Spain) (10 August 2002)",
+                "m"
+            ],
+            [
+                "(story)', '(as Ma Zijun)', '(R-CA)', '(as Kate Duchene)', '(as Kayla Levels)",
+                "weekend gross",
+                "votes",
+                "flashback', 'self-absorbed', 'sapper', 'camera-man', 'opera-performance",
+                "$3,237,772 (USA) (22 October 2000) (1,970 screens)",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Zdenek Hamouz)', '(as Marc Eck\u00c3\u00b5)', '(as Vince Forcier)', '(as Callie Swow)",
+                "budget",
+                "votes",
+                "punjabi', 'sentencing', 'imax-version', 'sai', 'international-trip",
+                "\u00c2\u00a33,500,159",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Mike Mazaruk)', '(1969 screenplay)', '(episodes 61-65)', '(as Mike King)",
+                "printed media reviews",
+                "votes distribution",
+                "cocaine', 'sacred-horse', 'label', 'principal''s-office', 'u.s.-embassy",
+                "Mihm, Kai. \"\u00c3\u009cber Taylor Hackford und seinen neuen Film ''Lebenszeichen''\". In: \"epd Film\" (Germany), Vol. 18, Iss. 4, 1 April 2001, Pg. 20-26",
+                "m"
+            ],
+            [
+                "(screenplay)', '(as Matt Barry)', '(as Odile)', '(bull wrangler)', '(as Lee R. Berger)",
+                "languages",
+                "votes",
+                "asylum', 'sexual-dysfunction', 'grenoble-france', 'murder', 'stomach",
+                "English",
+                "m"
+            ],
+            [
+                "(written by)', '(as Jenn Massi)', '(horse assistant)', '(Estrella invitada)', '(as Kot Man Fai)",
+                "locations",
+                "votes",
+                "box-office-flop', 'space-rocket', 'burning-store', 'radio-variety-show', 'filmed-in-mirror",
+                "Ecuador",
+                "m"
+            ],
+            [
+                "(written by)', '(strike crew)', '(as Jhon Alex Toro)', '(present day)', '(as Kelsy Waye)",
+                "languages",
+                "votes distribution",
+                "cocaine', 'flying-bomb', 'bonding', 'teachers''-lounge', 'shaving-one''s-chest",
+                "Italian",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Arturo)', '(as Cesa David)', '(as Jane Park)', '(as Melody Foxxe)",
+                "weekend gross",
+                "votes",
+                "interview', 'cell-block', 'wurlitzer-organ', 'wooden-bell', 'catfish",
+                "$1,369,140 (USA) (29 October 2000) (1,708 screens)",
+                "m"
+            ],
+            [
+                "(uncredited)', '(Hill Thug)', '(as Murphy Ray)', '(offline editor)', '(as Master LaRocka)",
+                "release dates",
+                "votes",
+                "old-man', 'porno-website', 'american-tourist', 'pachamama', 'nibbles",
+                "Russia:14 March 2002",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Ho Jung)', '(as Mike Francis)', '(as Simone Horvath)', '(weapon designer)",
+                "mpaa",
+                "votes distribution",
+                "asylum', 'professional-actor', 'washroom-attendant', 'halo-2', 'nipples-of-venus",
+                "Rated R for violence/terror and some language",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as Diana Emery)', '(as P. Plasman)', '(as Shivaji Sattam)', '(bass technician)",
+                "color info",
+                "votes",
+                "racism', 'sex-art', 'granada', 'bacterium', 'appeasement",
+                "Color",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Matt Micka)', '(The Adulteress)', '(story) (dialogue)', '(as Lisa Bouman)",
+                "gross",
+                "votes distribution",
+                "code', 'afterburner', 'history-episode', 'saintes-france', 'fan-culture",
+                "$31,355,910 (Worldwide) (26 November 2000)",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Debbie Lien)', '(as Edith Edit)', '(as Tim Stevens)', '(nurse)",
+                "weekend gross",
+                "rating",
+                "crying', 'napoleon-war', 'anti-islam', 'sexy-agent', 'fake-german-accent",
+                "$304,874 (USA) (20 July 2003) (156 screens)",
+                "m"
+            ],
+            [
+                "(director of photography)', '(as Shannon Giles)', '(as Pete Conrad)', '(1985)', '(as Esther Virgin)",
+                "release dates",
+                "votes",
+                "south-america', 'scooter', 'ordained-minister', 'masked-robber', 'charity-dinner",
+                "Belgium:11 April 2001",
+                "m"
+            ],
+            [
+                "(co-producer)', '(assistant: cast)', '(Season One)', '(as Reo Morimoto)', '(as Kerry McFadden)",
+                "release dates",
+                "votes",
+                "buttocks', 'dennis-the-menace', 'iranian-government', 'chemistry-professor', 'fishing-trawler",
+                "Germany:8 February 2002",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Chan Wing Yuk)', '(as Iris Steen)', '(as Suzan Wenera)', '(computer program)",
+                "gross",
+                "votes",
+                "interracial-love', 'treasury-department', 'christian-democrat', 'pole', 'webslinging",
+                "\u00e2\u0082\u00ac 2,248,232 (Italy) (23 March 2003)",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Sara LaWall)', '(as Kenny Utt)', '(as Steve Hall)', '(as Joan Pons)",
+                "goofs",
+                "votes distribution",
+                "possession', 'last-week', 'alice-in-wonderland', 'ritual-abuse', 'antelope-brogues",
+                "CREW: The thumb visible in the close-up of the scene in which Peter is preparing a fishing bait isn''t his.",
+                "m"
+            ],
+            [
+                "(written by)', '(as Mar\u00c3\u00ad''a Canals)', '(Sheena)', '(as Joe Rassulo)', '(as Robert Blake)",
+                "release dates",
+                "votes",
+                "racist', 'weather-vane', 'hot-bath', 'human-race', 'john-ford",
+                "Greece:5 April 2002",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Alton White)', '(infermiere)', '(Florian Kiel)', '(as Der Rabe)",
+                "goofs",
+                "votes",
+                "volkswagen-beetle', 'lung-disease', 'mouth', 'hack', 'bomber-pilot",
+                "CONT: When Herbie is about to be in the crusher, the driver''s window is closed, then in the next shot, it''s fully open",
+                "m"
+            ],
+            [
+                "(director of photography)', '(as Laurent D.)', '(as Gelin Vicente)', '(as Suresh Tupe)', '(Audi provider)",
+                "admissions",
+                "rating",
+                "mental-institution', 'housing-estate', 'piston', 'watch-alarm', 'sarcophagus",
+                "15,239 (Netherlands) (31 December 2001)",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Judith)', '(as Samantha Chu)', '(as Doug Reiser)', '(as Sumay)",
+                "certificates",
+                "votes",
+                "split-screen', 'former-p.o.w.', 'cafe-owner', 'notice-of-eviction', 'chin-up-bar",
+                "Norway:A",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Chris Chilton)', '(as Nick Romm)', '(1st Place)', '(as Avery Kayten)",
+                "weekend gross",
+                "votes",
+                "celebration', 'fishing-boat', 'sex-with-dwarf', 'recipe-as-title', 'florida-film",
+                "\u00c2\u00a348,162 (UK) (16 June 2002) (90 screens)",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Terry Bulley)', '(as Toots)', '(as Dario D''Alba)', '(stills provider)",
+                "weekend gross",
+                "votes distribution",
+                "drinking', 'anaheim-california', 'suite', 'live-recording', 'chain-connectivity",
+                "\u00c2\u00a31,233,315 (UK) (28 April 2002) (384 screens)",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Alan Graf)', '(as Jayanti Bhatia)', '(as Jen Malloy)', '(as Mahara Sun)",
+                "gross",
+                "rating",
+                "interracial-love', 'woman-in-bath', 'wine-drinking', 'minimum-wage', 'obese-girl",
+                "\u00e2\u0082\u00ac 90,439 (Spain) (22 September 2002)",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Subha)', '(special concept)', '(as Heidrun Hermes)', '(as Kamiko)",
+                "weekend gross",
+                "votes",
+                "london-underground', 'refusing-to-pay', 'photo-exhibit', 'dr.-will-kirby', 'poison-apple",
+                "\u00c2\u00a3614,034 (UK) (12 May 2002) (331 screens)",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Dallas Teague)', '(as Alastair Brown)', '(as Anthony York)', '(as Zoe Bridgeman)",
+                "weekend gross",
+                "votes",
+                "rubbing-noses', 'capoeira', 'summer-festival', 'social-status', 'candlestick",
+                "$5,135 (USA) (19 October 2003) (16 screens)",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Manuel Aleman)', '(as Ruslan Peterko)', '(segment \"Ape\")', '(as Bambi)",
+                "release dates",
+                "rating",
+                "old-man', 'antique-watch', 'swan-attack', 'signing-a-treaty', 'school-bully",
+                "Brazil:April 2002",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as James Quinn)', '(personal trainer)', '(as Jui-chia Chang)', '(as Isabella Blue)",
+                "weekend gross",
+                "votes distribution",
+                "generation-gap', 'hand-shot-off', 'school-festival', 'year-1969', 'supermarket-clerk",
+                "$384,784 (USA) (13 July 2003) (195 screens)",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(Her)', '(as D-Von Dudley)', '(as Ricky Neumann)', '(Prostitute)",
+                "release dates",
+                "rating",
+                "death', 'ballet-flamenco', 'white-feather', 'hole-in-ground', 'the-end",
+                "South Africa:3 May 2002",
+                "m"
+            ],
+            [
+                "(written by)', '(program leader)', '(Yuta''s mother)', '(as Nicky Murphy)', '(as Guiseppe)",
+                "release dates",
+                "rating",
+                "whiskey', 'life-after-college', 'internet-banking', 'kicked-in-the-belly', 'bomb-threat",
+                "France:20 March 2002",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Mike Peros)', '(ghost)', '(as Heidi Marie)', '(as 5ive)",
+                "weekend gross",
+                "rating",
+                "generation-gap', '555-phone-number', 'dart-gun', 'spreadeagle', 'family-tragedy",
+                "$2,247,421 (USA) (26 May 2003) (522 screens)",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Kelly Taylor)', '(research: Turkey)', '(as Anyssa)', '(as Kiran Katpalli)",
+                "trivia",
+                "votes",
+                "old-man', 'pair-of-killers', 'kindred-spirit', 'cosplay', '1850s",
+                "In a 2009 interview with Monster''s Ball producer Lee Daniels, he revealed that ''Wes Bentley'' (qv) did not actually turn down the role of Sonny Grotowski, as was reported at the time. What actually happened was that Bentley committed to the role but then pulled out at the very last minute, and Lionsgate gave them only 48 hours to find a replacement (who turned out to be ''Heath Ledger'' (qv)). In 2010, Wes Bentley admitted that his erratic, unpredictable, and unreliable behavior throughout much of the 2000s had been caused by a longstanding addiction to heroin.",
+                "m"
+            ],
+            [
+                "(written by)', '(as Rita Aruma)', '(as Lars Johansson)', '(as Mijs Heesen)', '(as Mean Adonis)",
+                "release dates",
+                "rating",
+                "bullet-hole', 'snowball-fight', 'football-referee', 'slashed-wrist', 'betelnut-beauty",
+                "Peru:18 April 2002",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(Computer)', '(as Pep Cortes)', '(as Prasenjit)', '(as Adrian Makala)",
+                "trivia",
+                "votes distribution",
+                "oxygen-tank', 'mccarthy-hearings', 'former-athlete', 'grab-knife-blade', 'security-code",
+                "In a 2009 interview with Monster''s Ball producer Lee Daniels, he revealed that ''Wes Bentley'' (qv) did not actually turn down the role of Sonny Grotowski, as was reported at the time. What actually happened was that Bentley committed to the role but then pulled out at the very last minute, and Lionsgate gave them only 48 hours to find a replacement (who turned out to be ''Heath Ledger'' (qv)). In 2010, Wes Bentley admitted that his erratic, unpredictable, and unreliable behavior throughout much of the 2000s had been caused by a longstanding addiction to heroin.",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(as Angelina (X))', '(as Laurent Weber)', '(as Sylvia Suarez)', '(clearance) (2002-)",
+                "weekend gross",
+                "votes distribution",
+                "racist-insult', 'cookie', 'hair-conditioner', 'july-7th-2005', 'h\u00c3\u00b6lle",
+                "\u00e2\u0082\u00ac 145,763 (Italy) (19 January 2003) (62 screens)",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as P.J. Swinburne)', '(real mom)', '(as Chan Wing Yuk)', '(as Tar\u00c3\u00b4 Kawadu)",
+                "release dates",
+                "votes",
+                "change-of-heart', 'consumer-economics', '1720s', 'thirteen-chimes', 'statue-of-lenin",
+                "Italy:5 April 2002",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Jackie Tong)', '(as Jason Kaye)', '(as Tobias)', '(as Dan Melnick)",
+                "plot",
+                "votes distribution",
+                "interracial-love', 'unexpected-kiss', 'robot-as-menace', 'kiev', 'target-sheet",
+                "A comedy about bending the rules to reach your goal, Bend It Like Beckham explores the world of women''s football, from kick-abouts in the park to freekicks in the Final. Set in Hounslow, West London and Hamburg, the film follows two 18 year olds with their hearts set on a future in professional soccer. Heart-stopping talent doesn''t seem to be enough when your parents want you to hang up your football boots, find a nice boyfriend and learn to cook the perfect chapatti.",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Poojah Shah)', '(medic)', '(as Ajay Shanti)', '(clip source)",
+                "release dates",
+                "votes",
+                "hate', 'lust-for-power', 'gadget', 'internet-chat', 'adoptive-family",
+                "Hong Kong:11 April 2002",
+                "m"
+            ],
+            [
+                "(screenplay)', '(as Weifeng Tang)', '(episodes 2, 3)', '(as Angelica Baran)', '(as Marcos G\u00c3\u00b3mez)",
+                "weekend gross",
+                "votes distribution",
+                "flashback', 'pennies', 'formula-1', 'swimsuit', 'egoism",
+                "$3,237,772 (USA) (22 October 2000) (1,970 screens)",
+                "m"
+            ],
+            [
+                "(executive producer)', '(chief armorer)', '(as Areta Anderson)', '(Rise FM)', '(Rejected X-Men)",
+                "weekend gross",
+                "votes",
+                "drinking', 'gum-in-one''s-hair', 'vocal', 'mercury', 'drug-cartel",
+                "\u00e2\u0082\u00ac 1,549 (Italy) (6 April 2003) (2 screens)",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as Jerry Martin)', '(producer: Daiei)', '(as Sons of Jim)', '(as P. Komorowski)",
+                "printed media reviews",
+                "rating",
+                "african-american', 'chicken-thief', 'focus', 'helicopter-rescue', 'musical-performance",
+                "Travers, Peter. \"Monster''s Ball\". In: \"Rolling Stone\" (USA), Vol. 1, Iss. 887, 17 January 2002, Pg. 56, (MG)",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Stan Piotr)', '(as Gustau Biosca)', '(as Alison Frazier)', '(staff auditor)",
+                "weekend gross",
+                "votes distribution",
+                "cooking', 'stray-cat', 'heart-monitor', 'suicide-of-sister', 'throwing-money",
+                "\u00c2\u00a370,143 (UK) (9 June 2002) (158 screens)",
+                "m"
+            ],
+            [
+                "(voice director)', '(office runner)', '(trainer: Yodel)', '(as Zdenek Bartok)', '(military advisor)",
+                "color info",
+                "votes distribution",
+                "commando', 'fame', 'rendevouz', 'throwing-a-bra', 'pottery-fragment",
+                "Color",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Frederic Lane)', '(as Zabrina)', '(as Lili Thai)', '(as Katie Keane)",
+                "copyright holder",
+                "votes distribution",
+                "religion', 'bullet-ballet', 'girl-group', 'lost-child', 'deal-with-the-devil",
+                "Kintop Pictures/Bend It Films/Road Movies/Roc Media",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Kasia Vasos)', '(as Diana Hufford)', '(as Beano Agundez)', '(as Mark Klaas)",
+                "copyright holder",
+                "votes distribution",
+                "generation-gap', 'kodak-camera', 'migration', 'sacrilege', 'techne",
+                "Kintop Pictures/Bend It Films/Road Movies/Roc Media",
+                "m"
+            ],
+            [
+                "(pedestrian dialogue)', '(as Sharka)', '(as Josh Feinman)', '(as Fabeha Sultana)', '(as Szalay K\u00c3\u00a1roly)",
+                "taglines",
+                "votes distribution",
+                "ambulance', 'theatre-education', 'tribal-elder', 'opera', 'giving-away-a-child",
+                "Welcome to Liberty City - Lock your doors.",
+                "m"
+            ],
+            [
+                "(uncredited)', '(Keyboards)', '(episodes 7-13)', '(as Wanda Sais)', '(episode \"Train\")",
+                "certificates",
+                "rating",
+                "brother-sister-relationship', 'dream-imagery', 'peace-treaty', 'blouse-ripping', 'sorority-girl",
+                "USA:G",
+                "m"
+            ],
+            [
+                "(archive footage) (uncredited)', '(key stand-in)', '(as Sam Yu Lam)', '(as Marcos Miranda)', '(as Steven Elliott)",
+                "taglines",
+                "votes distribution",
+                "locker-room', 'coco-beach-florida', 'truckstop', 'rambo-spoof', 'naked-news",
+                "Sometimes, to follow your dreams... you''ve got to bend the rules!",
+                "m"
+            ],
+            [
+                "(dispatcher)', '(as Fraser Heston)', '(as Jenna Von Oy)', '(Kitten)', '(as Tori Sinclair)",
+                "locations",
+                "rating",
+                "boyfriend-girlfriend-relationship', 'railroad-business', 'fuse-box', 'spiraling-eyes', 'belief-in-angels",
+                "Los Angeles, California, USA",
+                "m"
+            ]
+        ]
+    }
+}

@@ -1,0 +1,686 @@
+{
+    "31-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS writer, MIN(t.title) AS violent_liongate_movie\nFROM sampled_cast_info_1 AS ci,\n    sampled_company_name_1 AS cn,\n    sampled_info_type_1 AS it1,\n    sampled_info_type_1 AS it2,\n    sampled_keyword_1 AS k,\n    sampled_movie_companies_1 AS mc,\n    sampled_movie_info_1 AS mi,\n    sampled_movie_info_idx_1 AS mi_idx,\n    sampled_movie_keyword_1 AS mk,\n    sampled_name_1 AS n,\n    sampled_title_1 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND t.id = mc.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND ci.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi.movie_id = mc.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND mi_idx.movie_id = mc.movie_id\nAND mk.movie_id = mc.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND cn.id = mc.company_id\nAND ci.note IN ('@param0')\nAND cn.name LIKE '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND k.keyword IN ('@param4')\nAND mi.info IN ('@param5')\nAND n.gender = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_cast_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "n"
+                ],
+                "join_tables": [
+                    "sampled_title_1",
+                    "sampled_movie_info_1",
+                    "sampled_movie_info_idx_1",
+                    "sampled_movie_keyword_1",
+                    "sampled_movie_companies_1",
+                    "sampled_name_1"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_1",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_1"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_1",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_idx_1"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_keyword_1",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_movie_info_1",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_1",
+                    "sampled_cast_info_1",
+                    "sampled_movie_info_idx_1",
+                    "sampled_movie_keyword_1",
+                    "sampled_movie_companies_1",
+                    "sampled_info_type_1"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_name_1",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(story)', '(story)', '(script supervisor)', '(story)', '(script supervisor)",
+                "%CBS%",
+                "genres",
+                "votes distribution",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "Documentary', 'Short', 'Comedy', 'Documentary', 'Short",
+                "m"
+            ],
+            [
+                "(production assistant)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "%Company%",
+                "genres",
+                "top 250 rank",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "RAT:1.33 : 1', 'Australia:M', 'Available', 'UK:18', 'Thriller",
+                "m"
+            ],
+            [
+                "(associate producer)', '(story)', '(story)', '(archive footage)', '(archive footage)",
+                "%Warner%",
+                "countries",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "RAT:1.33 : 1', 'USA', 'PFM:35 mm', 'OFM:35 mm', 'OFM:35 mm",
+                "m"
+            ],
+            [
+                "(voice)', '(voice)', '(uncredited)', '(producer)', '(producer)",
+                "%CBS%",
+                "genres",
+                "top 250 rank",
+                "based-on-play', 'nudity', 'nudity', 'based-on-play', 'based-on-play",
+                "Drama', 'Black and White', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(executive producer)', '(writer)', '(voice)', '(voice)', '(executive producer)",
+                "%Columbia%",
+                "countries",
+                "top 250 rank",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "Short', 'Short', 'UK', 'Comedy', 'UK",
+                "m"
+            ],
+            [
+                "(associate producer)', '(screenplay)', '(archive footage)', '(story)', '(story)",
+                "%Broadcasting%",
+                "genres",
+                "top 250 rank",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "UK', 'Documentary', 'Comedy', 'UK', 'UK",
+                "m"
+            ],
+            [
+                "(creator)', '(creator)', '(written by)', '(creator)', '(written by)",
+                "%Broadcasting%",
+                "countries",
+                "rating",
+                "two-word-title', 'tv-mini-series', 'police', 'non-fiction', 'violence",
+                "OFM:35 mm', 'USA', 'RAT:1.33 : 1', 'OFM:35 mm', 'USA",
+                "m"
+            ],
+            [
+                "(associate producer)', '(written by)', '(associate producer)', '(writer)', '(associate producer)",
+                "%Broadcasting%",
+                "genres",
+                "votes distribution",
+                "number-in-title', 'nudity', 'based-on-play', 'number-in-title', 'nudity",
+                "Comedy', 'Film', 'Black and White', 'PCS:Spherical', 'NTSC",
+                "m"
+            ],
+            [
+                "(voice)', '(voice)', '(voice)', '(producer)', '(voice)",
+                "%Company%",
+                "genres",
+                "top 250 rank",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "Drama', 'Drama', 'Drama', 'Black and White', 'Black and White",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "%System%",
+                "countries",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "USA', 'USA', 'PFM:35 mm', 'PFM:35 mm', 'USA",
+                "m"
+            ],
+            [
+                "(director of photography)', '(uncredited)', '(written by)', '(uncredited)', '(uncredited)",
+                "%Warner%",
+                "countries",
+                "rating",
+                "invisible-tennis-ball', 'army-recruiter', 'wehrmacht-officer', 'brazilian-history', 'chubby-woman",
+                "UK', 'Short', 'Comedy', 'Comedy', 'Comedy",
+                "m"
+            ],
+            [
+                "(voice)', '(executive producer)', '(voice)', '(voice)', '(voice)",
+                "%Home%",
+                "countries",
+                "votes distribution",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "-', 'USA', 'PFM:35 mm', '-', 'PFM:35 mm",
+                "m"
+            ],
+            [
+                "(director of photography)', '(archive footage)', '(archive footage)', '(script supervisor)', '(script supervisor)",
+                "%Broadcasting%",
+                "genres",
+                "rating",
+                "based-on-play', 'based-on-play', 'nudity', 'nudity', 'number-in-title",
+                "Short', 'Short', 'UK', 'Short', 'Comedy",
+                "m"
+            ],
+            [
+                "(script supervisor)', '(associate producer)', '(screenplay)', '(associate producer)', '(script supervisor)",
+                "%Video%",
+                "genres",
+                "top 250 rank",
+                "rape', 'male-nudity', 'sequel', 'revenge', 'arcade-game",
+                "RAT:1.85 : 1', 'Action', 'Horror', 'Sweden:15', 'UK",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "%CBS%",
+                "genres",
+                "votes",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "Drama', 'Black and White', 'Drama', 'Black and White', 'Black and White",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "%British%",
+                "countries",
+                "rating",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "RAT:1.33 : 1', 'RAT:1.33 : 1', 'PFM:35 mm', 'USA', 'OFM:35 mm",
+                "m"
+            ],
+            [
+                "(written by)', '(written by)', '(associate producer)', '(writer)', '(writer)",
+                "%s%",
+                "genres",
+                "top 250 rank",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "Black and White', 'Drama', 'Black and White', 'Black and White', 'Black and White",
+                "m"
+            ],
+            [
+                "(producer)', '(voice)', '(archive footage)', '(producer)', '(uncredited)",
+                "%NBC%",
+                "genres",
+                "rating",
+                "non-fiction', 'family-relationships', 'tv-mini-series', 'family-relationships', 'friendship",
+                "Short', 'Short', 'Documentary', 'Comedy', 'Comedy",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(uncredited)', '(producer)', '(producer)",
+                "%Home%",
+                "release dates",
+                "votes",
+                "independent-film', 'character-name-in-title', 'independent-film', 'character-name-in-title', 'character-name-in-title",
+                "Bo and Luke begin infiltrating J.J. Carver''s organization, compiling evidence to bring Carver and his henchmen to justice. But Boss and Rosco - aware that the Duke boys have left for the NASCAR circuit but unaware they are government witnesses - nearly blow the whole operation when they confront Luke while he is secretly taking photographs of Carver''s activities.', '3,200,000 (Soviet Union)', 'Juliet: My only love sprung from my only hate. Too early seen unknown, and known too late.', 'Action Jackson', 'South Korea:15 December 1989",
+                "m"
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(production assistant)', '(voice)', '(production assistant)",
+                "%Video%",
+                "genres",
+                "votes",
+                "number-in-title', 'based-on-play', 'nudity', 'number-in-title', 'number-in-title",
+                "Short', 'Documentary', 'Documentary', 'Documentary', 'Short",
+                "m"
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(executive producer)', '(uncredited)",
+                "%Broadcasting%",
+                "genres",
+                "votes distribution",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(uncredited)', '(uncredited)",
+                "%Columbia%",
+                "countries",
+                "votes",
+                "thumb-on-fire', 'sex-with-a-nun', 'swiss-bank-account', 'squirrel-cage', 'dead-cow",
+                "USA', 'Color', 'OFM:35 mm', 'PFM:35 mm', 'Color",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(producer)', '(producer)', '(executive producer)",
+                "%Home%",
+                "genres",
+                "top 250 rank",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "Black and White', 'Drama', 'Drama', 'Black and White', 'Black and White",
+                "m"
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "%System%",
+                "countries",
+                "votes",
+                "martial-arts', 'surrealism', 'blood', 'love', 'father-son-relationship",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m"
+            ],
+            [
+                "(executive producer)', '(uncredited)', '(production assistant)', '(executive producer)', '(voice)",
+                "%ABC%",
+                "genres",
+                "top 250 rank",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(written by)', '(creator)', '(written by)', '(creator)', '(creator)",
+                "%Home%",
+                "countries",
+                "votes",
+                "softcore', 'husband-wife-relationship', 'sequel', 'softcore', 'police",
+                "Short', 'Comedy', 'UK', 'UK', 'Comedy",
+                "m"
+            ],
+            [
+                "(executive producer)', '(written by)', '(voice)', '(voice)', '(executive producer)",
+                "%Fernsehen%",
+                "genres",
+                "votes",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "UK', 'Comedy', 'Documentary', 'Short', 'UK",
+                "m"
+            ],
+            [
+                "(creator)', '(associate producer)', '(executive producer)', '(written by)', '(voice)",
+                "%National%",
+                "genres",
+                "top 250 rank",
+                "independent-film', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'independent-film",
+                "Drama', 'Drama', 'Drama', 'Black and White', 'Black and White",
+                "m"
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "%System%",
+                "genres",
+                "rating",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "Drama', 'Comedy', 'Comedy', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(uncredited)', '(producer)', '(voice)', '(producer)', '(producer)",
+                "%Columbia%",
+                "countries",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "English', 'USA', 'Color', 'Color', 'English",
+                "m"
+            ],
+            [
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "%Company%",
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "UK', '1.33 : 1', 'Thriller', '2', 'Action",
+                "m"
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "%Broadcasting%",
+                "genres",
+                "top 250 rank",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "Black and White', 'Drama', 'Black and White', 'Black and White', 'Drama",
+                "m"
+            ],
+            [
+                "(written by)', '(associate producer)', '(written by)', '(written by)', '(production assistant)",
+                "%American%",
+                "genres",
+                "votes distribution",
+                "independent-film', 'independent-film', 'independent-film', 'character-name-in-title', 'character-name-in-title",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(screenplay)', '(associate producer)', '(executive producer)",
+                "%Warner%",
+                "countries",
+                "top 250 rank",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "English', 'Color', 'USA', 'RAT:1.33 : 1', 'English",
+                "m"
+            ],
+            [
+                "(screenplay)', '(associate producer)', '(executive producer)', '(script supervisor)', '(executive producer)",
+                "%Pictures%",
+                "genres",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(script supervisor)', '(story editor)', '(supervising producer)', '(director of photography)', '(story)",
+                "%Video%",
+                "countries",
+                "rating",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "USA', 'OFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'OFM:35 mm",
+                "m"
+            ],
+            [
+                "(creator)', '(associate producer)', '(executive producer)', '(creator)', '(associate producer)",
+                "%Home%",
+                "genres",
+                "votes distribution",
+                "nudity', 'nudity', 'based-on-play', 'nudity', 'nudity",
+                "Black and White', 'Drama', 'Black and White', 'Black and White', 'Black and White",
+                "m"
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "%Pictures%",
+                "countries",
+                "rating",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "PCS:Spherical', 'UK', 'Black and White', 'Black and White', 'PCS:Spherical",
+                "m"
+            ],
+            [
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(voice)",
+                "%Warner%",
+                "countries",
+                "votes",
+                "character-name-in-title', 'independent-film', 'independent-film', 'character-name-in-title', 'independent-film",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m"
+            ],
+            [
+                "(producer)', '(voice)', '(writer)', '(creator)', '(creator)",
+                "%Corporation%",
+                "genres",
+                "top 250 rank",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(uncredited)', '(executive producer)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "%la%",
+                "genres",
+                "votes distribution",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "Drama', 'Black and White', 'Black and White', 'Black and White', 'Drama",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "%British%",
+                "genres",
+                "rating",
+                "death', 'male-nudity', 'love', 'friendship', 'revenge",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(screenplay)', '(director of photography)', '(creator)', '(script supervisor)', '(screenplay)",
+                "%Home%",
+                "genres",
+                "top 250 rank",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(written by)', '(written by)', '(creator)', '(written by)', '(written by)",
+                "%Corporation%",
+                "countries",
+                "rating",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "PFM:35 mm', 'USA', 'PFM:35 mm', 'RAT:1.33 : 1', 'OFM:35 mm",
+                "m"
+            ],
+            [
+                "(writer)', '(writer)', '(writer)', '(writer)', '(writer)",
+                "%Company%",
+                "countries",
+                "votes distribution",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "OFM:35 mm', 'RAT:1.33 : 1', 'Mono', 'USA', 'Color",
+                "m"
+            ],
+            [
+                "(creator)', '(voice)', '(director of photography)', '(associate producer)', '(creator)",
+                "%Broadcasting%",
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "RAT:2.35 : 1', 'Comedy', 'USA', 'Mono', 'PCS:Spherical",
+                "m"
+            ],
+            [
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "%British%",
+                "countries",
+                "rating",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "PFM:35 mm', 'USA', 'USA', 'PFM:35 mm', 'USA",
+                "m"
+            ],
+            [
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "%Home%",
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'independent-film', 'independent-film', 'character-name-in-title",
+                "USA', 'RAT:1.33 : 1', 'RAT:1.33 : 1', 'USA', 'PFM:35 mm",
+                "m"
+            ],
+            [
+                "(producer)', '(voice)', '(voice)', '(voice)', '(producer)",
+                "%Broadcasting%",
+                "genres",
+                "votes",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "Drama', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m"
+            ],
+            [
+                "(executive producer)', '(producer)', '(uncredited)', '(executive producer)', '(executive producer)",
+                "%CBS%",
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "PCS:Spherical', '-', 'UK', 'UK', '-",
+                "m"
+            ],
+            [
+                "(associate producer)', '(written by)', '(associate producer)', '(associate producer)', '(writer)",
+                "%Film%",
+                "countries",
+                "rating",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "UK', 'PCS:Spherical', 'UK', 'UK', 'UK",
+                "m"
+            ]
+        ]
+    }
+}

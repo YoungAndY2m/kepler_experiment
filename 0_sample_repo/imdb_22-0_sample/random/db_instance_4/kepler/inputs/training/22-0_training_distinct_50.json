@@ -1,0 +1,991 @@
+{
+    "22-0": {
+        "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS western_violent_movie\nFROM random_company_name_4 AS cn,\n   random_company_type_4 AS ct,\n   random_info_type_4 AS it1,\n   random_info_type_4 AS it2,\n   random_keyword_4 AS k,\n   random_kind_type_4 AS kt,\n   random_movie_companies_4 AS mc,\n   random_movie_info_4 AS mi,\n   random_movie_info_idx_4 AS mi_idx,\n   random_movie_keyword_4 AS mk,\n   random_title_4 AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = mc.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mk.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mc.movie_id\nAND mc.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND ct.id = mc.company_type_id\nAND cn.id = mc.company_id\nAND cn.country_code != '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND kt.kind IN ('@param4')\nAND mc.note NOT LIKE '@param5'\nAND mc.note LIKE '@param6'\nAND mi.info IN ('@param7')\nAND mi_idx.info < '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "!=",
+                "data_type": "text",
+                "table": "random_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "random_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "random_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "random_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "random_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "random_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_kind_type_4",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "random_title_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "random_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "random_title_4",
+                    "random_movie_keyword_4",
+                    "random_movie_info_4",
+                    "random_movie_info_idx_4",
+                    "random_company_type_4",
+                    "random_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "random_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "random_title_4",
+                    "random_movie_keyword_4",
+                    "random_movie_info_4",
+                    "random_movie_info_idx_4",
+                    "random_company_type_4",
+                    "random_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "random_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "random_title_4",
+                    "random_movie_keyword_4",
+                    "random_movie_info_idx_4",
+                    "random_movie_companies_4",
+                    "random_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "random_movie_info_idx_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "random_title_4",
+                    "random_movie_keyword_4",
+                    "random_movie_info_4",
+                    "random_movie_companies_4",
+                    "random_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "random_title_4",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx",
+                    "mc"
+                ],
+                "join_tables": [
+                    "random_kind_type_4",
+                    "random_movie_info_4",
+                    "random_movie_keyword_4",
+                    "random_movie_info_idx_4",
+                    "random_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[gr]",
+                "countries",
+                "rating",
+                "violence', 'mysterious-woman', 'swing-bridge', 'swash', 'masterpiece",
+                "movie', 'video movie', 'video game', 'episode', 'episode",
+                "%e%",
+                "%c%",
+                "USA', 'USA:15 October 2006', 'Kokkola, Finland', 'Japan:2 June 1966', 'Turkey:28 June 2011",
+                "5.0",
+                1994
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes",
+                "husband-wife-relationship', 'death-of-children', 'east-side-kids', 'vip-room', 'etiquette-coach",
+                "movie', 'tv movie', 'video movie', 'movie', 'video game",
+                "%h%",
+                "%V%",
+                "RAT:2.35 : 1', 'February 2006 - ?', 'Mexico:5 April 1979', 'Japan:6 June 2004', '333",
+                "12410",
+                2007
+            ],
+            [
+                "[gr]",
+                "certificates",
+                "votes distribution",
+                "mental-illness', 'diamond-theft', 'stuck-during-sex', 'indian-immigrant', 'ghosts-japan",
+                "movie', 'video movie', 'video game', 'tv movie', 'tv movie",
+                "%1%",
+                "%5%",
+                "Norway:18', 'Japan:13 April 2001', 'USA:23 July 1937', 'CAM:Arriflex 16', 'UK:30 May 1962",
+                "1000210001",
+                1994
+            ],
+            [
+                "[gr]",
+                "runtimes",
+                "votes",
+                "based-on-true-story', 'french-cinema', 'woman-heroine', 'velociraptor', 'american-red-cross",
+                "movie', 'tv movie', 'movie', 'video game', 'episode",
+                "%S%",
+                "%c%",
+                "95', 'UK:26 July 2004', 'Taiwan:79', 'Italy:24 March 2007', 'Spain:13 June 2003",
+                "372",
+                1994
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes",
+                "toilet', 'hanging-meat', 'japanese-soldier', 'half-brother', 'day-planner",
+                "movie', 'video movie', 'movie', 'video movie', 'video movie",
+                "%D%",
+                "%e%",
+                "OFM:35 mm', 'What a night', 'Spain:4 July 2008', 'Where for art thou', 'MET:1975.71 m",
+                "12410",
+                2007
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "rating",
+                "metal-detector', 'repo-man', 'lesbian-rape', 'billiard-stick', 'sexual-experiment",
+                "movie', 'video game', 'tv series', 'episode', 'episode",
+                "%8%",
+                "%)%",
+                "Dolby Digital', 'Italy:1 June 2004', 'France:3 April 2008', 'USA:25 March 2005', 'UK:9 April 1987",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "votes distribution",
+                "co-worker', 'parsoneli-poland', 'sensationalist', 'sport-competition', 'excrement-eating",
+                "movie', 'video movie', 'episode', 'movie', 'episode",
+                "%0%",
+                "%)%",
+                "SDDS', 'Smolenice, Slovakia', 'Sweden:83', 'EE 1095', 'UK:25 December 1991",
+                "0000121000",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "husband-wife-relationship', 'pioneer-life', 'pioneer-life', 'racing-pigeon', 'public-restroom",
+                "movie', 'episode', 'video movie', 'video game', 'tv series",
+                "%d%",
+                "%D%",
+                "RAT:2.35 : 1', 'USA:17 March 1969', 'New Zealand:1986', 'USA:23 August 1971', 'UK:27 December 1974",
+                "0000121000",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "recreational-vehicle', 'pierced-nose', 'fountain-pen', 'space-age', 'ancient-korea",
+                "movie', 'tv series', 'video game', 'movie', 'video game",
+                "%h%",
+                "%(%",
+                "PFM:D-Cinema', 'UK:20 August 1967', 'USA:17 October 2012', 'Spain:16 April 2004', 'UK:20 December 1999",
+                "0000121000",
+                2007
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "music-video', 'ballet-school', 'news-junkie', 'iraq-war', 'scottish-regiment",
+                "movie', 'tv movie', 'tv movie', 'tv series', 'movie",
+                "%2%",
+                "%(%",
+                "Short', 'Canada:22 July 2003', 'UK:13 January 2010', 'USA:20 August 1962', 'Mexico:25 June 1948",
+                "43",
+                1980
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "husband-wife-relationship', 'sexual-confusion', 'nine-year-old-boy', 'riding-lesson', 'pedal-boat",
+                "movie', 'movie', 'episode', 'tv series', 'tv series",
+                "%D%",
+                "%8%",
+                "PCS:Digital Intermediate', 'MET:38.10 m', 'Finland:7 June 1956', 'Spain:2 August 2011', 'UK:6 October 1975",
+                "0000121000",
+                2007
+            ],
+            [
+                "[gr]",
+                "tech info",
+                "votes",
+                "mental-illness', 'seeing-one''s-breath', 'house-hunting', 'auditing', 'craving",
+                "movie', 'movie', 'tv series', 'tv movie', 'video game",
+                "%V%",
+                "%S%",
+                "OFM:35 mm', 'Japan:31 March 1979', 'UK:8 September 1969', 'USA:4 March 1961', 'Argentina:1994",
+                "372",
+                1994
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "planning', 'cheesecake', 'drug-shipment', 'red-currant', 'hurdy-gurdy",
+                "movie', 'tv series', 'tv movie', 'video movie', 'tv movie",
+                "%V%",
+                "%0%",
+                "PFM:35 mm', 'UK:4 July 2009', '\u00c2\u00a9BBC MCMLXXXVI', 'USA:12 March 1910', 'Austria:92",
+                "0000121000",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "title-spoken-by-character', 'wringer', 'resolution', 'nurse-uniform', 'troop-truck",
+                "movie', 'tv movie', 'tv series', 'video movie', 'tv series",
+                "%V%",
+                "%)%",
+                "LAB:Technicolor, Hollywood (CA), USA', 'PCS:3-D', '$30,862,146 (USA)', 'India:19 May 1944', 'USA:22 January 1984",
+                "0000121000",
+                2007
+            ],
+            [
+                "[gr]",
+                "genres",
+                "votes distribution",
+                "violence', 'united-airlines', 'sweeping', 'low-budget', 'stuck",
+                "movie', 'tv series', 'video movie', 'tv movie', 'tv movie",
+                "%5%",
+                "%9%",
+                "Crime', 'Italy:30 July 2003', 'USA:27 January 1994', 'UK:21 August 1968', '5189",
+                "1000210001",
+                1994
+            ],
+            [
+                "[nl]",
+                "languages",
+                "votes distribution",
+                "metal-detector', 'zombie-master', 'multiple-killing', 'china-cabinet', 'compact-mirror",
+                "movie', 'episode', 'video game', 'video movie', 'episode",
+                "%d%",
+                "%a%",
+                "English', 'UK:9 August 2001', 'France:13 July 1951', 'Russia:16', 'Hong Kong:90",
+                "0000121000",
+                2007
+            ],
+            [
+                "[gr]",
+                "tech info",
+                "rating",
+                "violence', 'veitch', 'hanged-to-death', 'incest-overtone', 'katana-sword",
+                "movie', 'movie', 'video game', 'tv series', 'tv series",
+                "%e%",
+                "%9%",
+                "OFM:35 mm', 'Japan:24 April 1956', 'Austria:9 May 1976', 'MET:1088 m', 'Hungary:5 June 1969",
+                "5.0",
+                1994
+            ],
+            [
+                "[us]",
+                "runtimes",
+                "votes",
+                "teenage-boy', 'newspaper-review', 'military-base', 'eye-makeup', 'volcanic-island",
+                "movie', 'video movie', 'video movie', 'video game', 'video movie",
+                "%r%",
+                "%U%",
+                "109', 'MET:2052 m', 'UK:7 July 1990', '2,024,000 (France)', 'MET:2620 m",
+                "776",
+                1984
+            ],
+            [
+                "[us]",
+                "tech info",
+                "votes distribution",
+                "watching-tv', 'tied-to-a-post', 'loner', 'armistice', 'distant-future",
+                "movie', 'episode', 'video movie', 'tv movie', 'video movie",
+                "%a%",
+                "%t%",
+                "RAT:2.35 : 1', 'USA:3 February 1981', 'MET:1472.80 m', 'USA:25 July 1980', 'France:8 July 2005",
+                "0001111001",
+                1984
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "votes distribution",
+                "planning', 'big-company', 'baby-feces', 'singing-on-bus', 'gay-adoption",
+                "movie', 'video movie', 'episode', 'video movie', 'tv series",
+                "%N%",
+                "%(%",
+                "DTS', 'Unique Television', 'Japan:17 July 1958', 'Mexico:1995', 'MET:135 m",
+                "0000121000",
+                2007
+            ],
+            [
+                "[gr]",
+                "certificates",
+                "votes",
+                "based-on-true-story', 'not-answering', 'acting-musician', 'james-gang', 'driving-game",
+                "movie', 'tv movie', 'tv movie', 'tv movie', 'episode",
+                "%H%",
+                "%1%",
+                "USA:R', 'Hungary:June 1911', 'USA:30 March 1922', 'BBC (2004', 'USA:21 April 1906",
+                "372",
+                1994
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "rating",
+                "title-spoken-by-character', 'rape-by-boyfriend', 'strangling-a-boy', 'flintlock-gun', 'vote-rigging",
+                "movie', 'tv series', 'movie', 'episode', 'video game",
+                "%e%",
+                "%(%",
+                "OFM:35 mm', 'USA:15 March 1981', 'USA:7 February 1985', 'Japan:30 June 2004', 'LV 40270-231",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "housekeeper', 'unemployed', 'streaking', 'nitrate-film', 'flyer",
+                "movie', 'movie', 'episode', 'video game', 'video movie",
+                "%D%",
+                "%h%",
+                "PFM:D-Cinema', 'Japan:29 July 1999', 'UK:16 November 2006', 'Let''s Go On a Trip!', 'Sweden:March 2002",
+                "0000121000",
+                2007
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "spoof', 'jackalope', 'vacationing', 'landspout', 'female-photographer",
+                "movie', 'video movie', 'video movie', 'tv movie', 'tv series",
+                "%D%",
+                "%U%",
+                "USA', 'China:June 2007', 'USA:24 March 1911', 'TRL 3,000', 'UK:5 December 2009",
+                "52",
+                1931
+            ],
+            [
+                "[us]",
+                "tech info",
+                "votes",
+                "spoof', 'mennonite', 'peg-doll', 'female-rocker', 'bloody-sunday",
+                "movie', 'tv movie', 'video game', 'tv movie', 'video movie",
+                "%A%",
+                "%)%",
+                "RAT:1.37 : 1', 'Karelia, Russia', 'Peru:1992', 'UK:20 November 2008', 'France:9 May 1952",
+                "52",
+                1931
+            ],
+            [
+                "[nl]",
+                "languages",
+                "rating",
+                "urination', 'horticulture', 'canadian-culture', 'crop', 'shopkeeper",
+                "movie', 'episode', 'tv series', 'movie', 'tv movie",
+                "%D%",
+                "%d%",
+                "English', 'UK:29 April 1984', 'USA:23 March 1942', 'USA:25 October 1990', 'Sweden:7 May 1955",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "rating",
+                "co-worker', 'bald-hero', 'western-movie', 'legs-in-water', 'lost-lease",
+                "movie', 'video game', 'video movie', 'video game', 'movie",
+                "%l%",
+                "%(%",
+                "RAT:2.35 : 1', 'UK:20 August 2004', 'Poland:March 2002', 'Hungary:28 May 2010', 'UK:28 August 1996",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "votes",
+                "urination', 'gdansk-monument', 'sexy-lingerie', 'shed', 'lake-w\u00c3\u00b6rther",
+                "movie', 'tv series', 'episode', 'movie', 'tv movie",
+                "%s%",
+                "%n%",
+                "Dolby Digital', 'The time has come', 'Iran:110', 'MET:581 m', 'Finland:36",
+                "12410",
+                2007
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "topless', 'devised', 'glass-block-wall', 'national-guard', 'missing-man",
+                "movie', 'movie', 'tv movie', 'tv series', 'tv series",
+                "%0%",
+                "%)%",
+                "Comedy', 'Mexico:18 June 2001', 'UK:22 April 1990', '52 Pick-Up', 'October 2009 -",
+                "4.9",
+                1931
+            ],
+            [
+                "[gr]",
+                "genres",
+                "rating",
+                "mental-illness', 'faked-footage', 'lonely-woman', 'google', 'high-school-junior",
+                "movie', 'video movie', 'movie', 'movie', 'movie",
+                "%G%",
+                "%V%",
+                "Drama', 'India:1 May 1986', 'UK:28 August 1997', '1 November 2013 - ?', 'Japan:15 March 1968",
+                "5.0",
+                1994
+            ],
+            [
+                "[us]",
+                "tech info",
+                "votes distribution",
+                "television-screen', 'land-sale', 'break-up', 'cancer-treatment', 'doll-clothes",
+                "movie', 'video movie', 'video game', 'movie', 'tv movie",
+                "%l%",
+                "%t%",
+                "PCS:Panavision', 'France:6 April 1968', 'USA:8 August 1986', 'Germany:173', '25 May 1994",
+                "0001111001",
+                1984
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "helicopter', 'viewfinder', 'injured-hand', 'baguio-philippines', 'cereal",
+                "movie', 'tv movie', 'movie', 'episode', 'movie",
+                "%a%",
+                "%t%",
+                "RAT:2.35 : 1', 'MET:3818 m', 'UK:8 March 1992', 'USA:6 June 1969', 'Spain:27 July 2012",
+                "0000121000",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "rating",
+                "helicopter', 'specter', 'juice', 'umbrella', 'tv-magazine",
+                "movie', 'tv movie', 'video movie', 'video game', 'movie",
+                "%2%",
+                "%e%",
+                "RAT:2.35 : 1', 'Canada:8 March 2009', 'Copyright @ 1995', 'MET:4944 m', 'Italy:January 1909",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "toilet', 'labor-party', 'border-patrol', 'hole-in-the-ice', 'sex-with-teacher",
+                "movie', 'tv movie', 'video movie', 'tv movie', 'video game",
+                "%l%",
+                "%V%",
+                "PCS:Digital Intermediate', 'Hungary:3 July 2009', 'France:2 April 1995', 'Norway:106', 'France:27 June 2001",
+                "0000121000",
+                2007
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "rating",
+                "job-interview', 'busking', 'encounter-group', 'probation', 'animal-on-trial",
+                "movie', 'video game', 'video movie', 'tv series', 'video game",
+                "%e%",
+                "%V%",
+                "Dolby Digital', '440', 'Canada:99', 'USA:5 May 1910', 'Nigeria:1973",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "hardware-store', 'stabbed-in-the-eye', 'wetting-the-bed', 'car-driving', 'confucius",
+                "movie', 'tv series', 'episode', 'video movie', 'episode",
+                "%2%",
+                "%(%",
+                "PCS:Digital Intermediate', 'Erbl, Turkey', '\u00e2\u0082\u00ac 95,000', 'Iran:1987', 'USA:9 February 1938",
+                "0000121000",
+                2007
+            ],
+            [
+                "[gr]",
+                "genres",
+                "votes",
+                "based-on-true-story', 'mohave-desert', 'orange-bra', 'black-policewoman', 'sports-betting",
+                "movie', 'movie', 'tv movie', 'tv movie', 'movie",
+                "%r%",
+                "%c%",
+                "Action', '24,210 (Spain)', 'CAD 475', 'Japan:6 March 1984', 'Denmark:15 May 1936",
+                "372",
+                1994
+            ],
+            [
+                "[us]",
+                "languages",
+                "rating",
+                "telephone-call', 'former-best-friend', 'snob', 'peril', 'phd",
+                "movie', 'tv series', 'video game', 'video movie', 'tv series",
+                "%1%",
+                "%(%",
+                "English', 'USA:3 May 1960', 'IDR 10,000,000,000', 'MET:2398.75 m', 'UK:5 February 1992",
+                "5.0",
+                1984
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "rating",
+                "co-worker', 'running-over-a-dog', 'eye-witness', 'guadalcanal', 'quote-from-hamlet",
+                "movie', 'tv movie', 'video movie', 'movie', 'video game",
+                "%e%",
+                "%s%",
+                "Dolby Digital', 'Canada:16 May 1972', '1996 - 1996', 'MET:1,219.02 m', 'Canada:23 July 1998",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes",
+                "guard-dog', 'friendly-fire', 'lighting-cigarette', 'river-bridge', 'lost-car",
+                "movie', 'video movie', 'episode', 'tv series', 'tv series",
+                "%0%",
+                "%)%",
+                "PFM:D-Cinema', 'USA:18 March 1912', 'MET:38.1 m', 'USA:12 June 2001', 'UK:8 December 2003",
+                "12410",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "rating",
+                "locker-room', 'death-of-pet', 'failed-project', 'scottish-fold', 'nude-photo",
+                "movie', 'episode', 'movie', 'movie', 'tv series",
+                "%e%",
+                "%s%",
+                "PCS:Super 35', 'UK:128', 'UK:23 January 1959', 'Panama:22 June 2001', 'UK:3 April 1973",
+                "5.5",
+                2007
+            ],
+            [
+                "[us]",
+                "color info",
+                "votes distribution",
+                "lead-actor''s-last-film', 'confronting-a-thief', 'synthetic', 'nicole-richie', 'biracial-child",
+                "movie', 'video game', 'movie', 'tv series', 'tv movie",
+                "%r%",
+                "%)%",
+                "Color', '869,196 (France)', 'Zvolen, Slovakia', 'USA:2 November 1991', 'Turkey:4 July 1997",
+                "0011110001",
+                1965
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "votes distribution",
+                "elevator', 'crossdresser', 'stockbroker', 'heat-exhaustion', 'aloneness",
+                "movie', 'tv series', 'movie', 'video movie', 'video game",
+                "%h%",
+                "%d%",
+                "LAB:Technicolor, Hollywood (CA), USA', 'UK:9 June 2010', 'Father Hood', 'Japan:13 May 1997', 'Poland:23 July 2008",
+                "0000121000",
+                2007
+            ],
+            [
+                "[nl]",
+                "runtimes",
+                "votes distribution",
+                "title-spoken-by-character', 'playboy-centerfold', 'unjust-system', 'airtight', 'family-life",
+                "movie', 'tv movie', 'tv series', 'video movie', 'tv movie",
+                "%N%",
+                "%e%",
+                "104', 'USA:22 January 1996', 'Soviet Union:1961', 'USA:11 June 1994', 'Hungary:9 June 2005",
+                "0000121000",
+                2007
+            ],
+            [
+                "[gr]",
+                "release dates",
+                "votes distribution",
+                "violence', 'pleading', 'busy-street', 'soldier-of-fortune', 'ham-and-bud-series",
+                "movie', 'episode', 'video movie', 'tv series', 'movie",
+                "%G%",
+                "%e%",
+                "France:May 1995', 'Spain:26 July 1990', 'USA:November 1965', 'Slovakia:85', 'USA:8 January 1986",
+                "1000210001",
+                1994
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "rating",
+                "elevator', 'ex-cheerleader', 'sedative', 'six-pack-of-beer', 'gleaning",
+                "movie', 'video game', 'video game', 'video movie', 'video game",
+                "%n%",
+                "%)%",
+                "PFM:35 mm', '41474', 'USA:8 December 1954', 'USA:11 March 1994', 'MET:507.18 m",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "tech info",
+                "rating",
+                "husband-wife-relationship', 'police-ambush', 'two-on-a-motorcycle', 'moor', 'writing-check",
+                "movie', 'tv series', 'tv series', 'episode', 'video game",
+                "%l%",
+                "%0%",
+                "PFM:35 mm', 'USA:12 April 1996', 'Mexico:11 May 1967', 'UK:12 December 1967', 'Ireland:9 June 2009",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "languages",
+                "rating",
+                "federal-reserve-bank', 'throwing-brick', 'sting-operation', 'gypsy', 'giant-web",
+                "movie', 'episode', 'movie', 'video movie', 'movie",
+                "%d%",
+                "%2%",
+                "English', 'Sweden:17 June 2009', 'USA:December 1995', '3966', '0899585",
+                "5.5",
+                2007
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "votes distribution",
+                "federal-reserve-bank', 'jesus-christ', 'jive', 'audio-video-club', 'celebrity-guest",
+                "movie', 'video movie', 'episode', 'video game', 'tv series",
+                "%N%",
+                "%)%",
+                "SDDS', 'Serbia:8 May 2011', 'USA:18 May 1960', 'UK:20 December 1968', '75,524 (Sweden)",
+                "0000121000",
+                2007
+            ],
+            [
+                "[nl]",
+                "sound mix",
+                "votes distribution",
+                "title-spoken-by-character', 'troma', 'gag-humor', 'lesbian-athlete', 'playing-mahjong",
+                "movie', 'video movie', 'tv series', 'video movie', 'movie",
+                "%N%",
+                "%t%",
+                "SDDS', 'USA:31 August 1982', 'UK:27 March 1962', '$41,455,230 (USA)', 'Taiwan:16 June 2007",
+                "0000121000",
+                2007
+            ]
+        ]
+    }
+}

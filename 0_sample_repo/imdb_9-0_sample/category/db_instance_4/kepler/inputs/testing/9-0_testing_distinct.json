@@ -1,0 +1,2513 @@
+{
+  "9-0": {
+    "query": "SELECT MIN(an.name) AS alternative_name, MIN(chn.name) AS character_name, MIN(t.title) AS movie\nFROM cat_aka_name_4 AS an,\n cat_char_name_4 AS chn,\n cat_cast_info_4 AS ci,\n cat_company_name_4 AS cn,\n cat_movie_companies_4 AS mc,\n cat_name_4 AS n,\n cat_role_type_4 AS rt,\n cat_title_4 AS t\nWHERE ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND ci.movie_id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND n.id = ci.person_id\n AND chn.id = ci.person_role_id\n AND an.person_id = n.id\n AND an.person_id = ci.person_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND mc.note IS NOT NULL \nAND (mc.note LIKE '@param2' OR mc.note LIKE '@param3')\nAND n.gender = '@param4'\nAND n.name LIKE '@param5'\nAND rt.role = '@param6'\nAND t.production_year BETWEEN @param7 AND @param8;",
+    "predicates": [
+      {
+        "alias": "ci",
+        "column": "note",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_cast_info_4",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "rt",
+          "n",
+          "chn",
+          "an"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_movie_companies_4",
+          "cat_role_type_4",
+          "cat_name_4",
+          "cat_char_name_4",
+          "cat_aka_name_4"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "ci.movie_id = mc.movie_id",
+          "ci.role_id = rt.id",
+          "n.id = ci.person_id",
+          "chn.id = ci.person_role_id",
+          "an.person_id = ci.person_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "role"
+          ],
+          [
+            "gender",
+            "name"
+          ],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "cat_movie_companies_4",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "cn"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_cast_info_4",
+          "cat_company_name_4"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "ci.movie_id = mc.movie_id",
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "cat_movie_companies_4",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "cn"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_cast_info_4",
+          "cat_company_name_4"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "ci.movie_id = mc.movie_id",
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "gender",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_name_4",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "cat_cast_info_4",
+          "cat_aka_name_4"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "an.person_id = n.id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "cat_name_4",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "cat_cast_info_4",
+          "cat_aka_name_4"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "an.person_id = n.id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "rt",
+        "column": "role",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_role_type_4",
+        "join_tables_alias": [
+          "ci"
+        ],
+        "join_tables": [
+          "cat_cast_info_4"
+        ],
+        "join_conditions": [
+          "ci.role_id = rt.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "ci",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_cast_info_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "ci",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_cast_info_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      }
+    ],
+    "params": [
+      [
+        "(as Ken Flori)', '(story developer)', '(as Nando)', '(as Emil Smith)', '(as Loreilee Lee)",
+        "[fi]",
+        "%(%",
+        "%)%",
+        "m",
+        "%y%",
+        "actor",
+        1984,
+        2006
+      ],
+      [
+        "(archive footage)', '(as David Darling)', '(as St\u00c3\u00a9phanie Bon)', '(as Rosemary)', '(Dirty Anal Kelly)",
+        "[us]",
+        "%s%",
+        "%s%",
+        "m",
+        "%n%",
+        "actor",
+        1997,
+        2014
+      ],
+      [
+        "(archive footage)', '(as Michael Truly)', '(as Masahito Yabe)', '(Satan)', '(as Grant Albrecht)",
+        "[us]",
+        "%e%",
+        "%)%",
+        "m",
+        "%F%",
+        "actor",
+        1965,
+        2008
+      ],
+      [
+        "(segment \"King of Rock\")', '(as Nadia S. Buari)', '(as Scotty Swartz)', '(as Terry Diver)', '(as Tunder)",
+        "[us]",
+        "%)%",
+        "%V%",
+        "m",
+        "%t%",
+        "actor",
+        1968,
+        2007
+      ],
+      [
+        "(archive footage)', '(Henchman)', '(as Kim Ho)', '(as Sabena Black)', '(segment \"Beat It\")",
+        "[us]",
+        "%)%",
+        "%2%",
+        "m",
+        "%f%",
+        "actor",
+        1967,
+        2012
+      ],
+      [
+        "(voice)', '(as Jack Ruby)', '(as Thomas Spitzer)', '(as Katie Coxx)', '(as Delores Delux)",
+        "[us]",
+        "%D%",
+        "%7%",
+        "m",
+        "%y%",
+        "actor",
+        1983,
+        2012
+      ],
+      [
+        "(voice)', '(as Veronica)', '(as Adam Jannin)', '(as Mike Hover)', '(as Lancer Brooks)",
+        "[fi]",
+        "%)%",
+        "%i%",
+        "m",
+        "%,%",
+        "actor",
+        1981,
+        2014
+      ],
+      [
+        "(voice) (archive footage)', '(as Riccardo Bell)', '(as Emilly)', '(as Jef Hickey)', '(sound production)",
+        "[us]",
+        "%l%",
+        "%2%",
+        "m",
+        "%k%",
+        "actor",
+        1974,
+        2007
+      ],
+      [
+        "(as Giuliano G\u00c3\u00a9leng)', '(as Ayanna Santana)', '(as Ivy Brooks)', '(as Dusk Del Mar)', '(as Ildico)",
+        "[fr]",
+        "%0%",
+        "%n%",
+        "m",
+        "%u%",
+        "actor",
+        1971,
+        2011
+      ],
+      [
+        "(as Danko Iordanov)', '(as Anna)', '(as Kemmy)', '(as Jabbar George)', '(as Tyler Cherman)",
+        "[br]",
+        "%0%",
+        "%D%",
+        "m",
+        "%r%",
+        "actor",
+        1998,
+        2013
+      ],
+      [
+        "(archive footage)', '(promotion)', '(as Myra)', '(broadcast writer)', '(as Filipe Miguez)",
+        "[us]",
+        "%(%",
+        "%p%",
+        "m",
+        "%A%",
+        "actor",
+        1967,
+        2016
+      ],
+      [
+        "(segment \"99 Problems\")', '(as Kapri)', '(as Puff Daddy)', '(as Tim Heber)', '(as Paul Hamilton)",
+        "[au]",
+        "%a%",
+        "%a%",
+        "m",
+        "%J%",
+        "actor",
+        1970,
+        2013
+      ],
+      [
+        "(archive footage)', '(as Kunga Sludge)', '(as Mandy Misteri)', '(as SebastiAn)', '(as Sami)",
+        "[us]",
+        "%s%",
+        "%r%",
+        "m",
+        "%l%",
+        "actor",
+        1991,
+        2013
+      ],
+      [
+        "(voice)', '(as JD Cadinot)', '(segment \"Pause\")', '(as Devyn Devine)', '(as Braeden Casey)",
+        "[us]",
+        "%a%",
+        "%l%",
+        "m",
+        "%h%",
+        "actor",
+        1970,
+        2015
+      ],
+      [
+        "(archive footage)', '(as Carl Stanyon)', '(as Azumi Mut\u00c3\u00b4)', '(as Kathy Parker)', '(guard)",
+        "[nl]",
+        "%V%",
+        "%0%",
+        "m",
+        "%v%",
+        "actor",
+        1973,
+        2014
+      ],
+      [
+        "(voice)', '(as Mary Casey)', '(as Dascha Plus)', '(as Pier Evergreen)', '(as Casper C)",
+        "[us]",
+        "%w%",
+        "%)%",
+        "m",
+        "%h%",
+        "actor",
+        1973,
+        2001
+      ],
+      [
+        "(archive footage)', '(as Marisa Iovine)', '(as Arben Tachi)', '(as David Backhaus)', '(genny)",
+        "[us]",
+        "%S%",
+        "%(%",
+        "m",
+        "%e%",
+        "actor",
+        1990,
+        2010
+      ],
+      [
+        "(as George Cybulsky)', '(as Jodie)', '(as Cuntre Loc)', '(as Zarena Zapico)', '(as Sherry Wyne)",
+        "[nl]",
+        "%(%",
+        "%(%",
+        "m",
+        "%i%",
+        "actor",
+        1982,
+        1998
+      ],
+      [
+        "(before)', '(as Angeliqu\u00c3\u00a9)', '(as Sdenka)', '(as Deni Rodriguez)', '(as Neveah)",
+        "[us]",
+        "%U%",
+        "%V%",
+        "m",
+        "%i%",
+        "actor",
+        1982,
+        2006
+      ],
+      [
+        "(voice)', '(video \"Tomorrow\")', '(as Melanie)', '(as Erica Rhodes)', '(as Ariana Jolie)",
+        "[us]",
+        "%D%",
+        "%V%",
+        "m",
+        "%g%",
+        "actress",
+        1998,
+        2016
+      ],
+      [
+        "(segment ''The Nutcracker'')', '(Robin)', '(as Denise Kunt)', '(as Da Big Drew)', '(as Jocko)",
+        "[br]",
+        "%l%",
+        "%B%",
+        "m",
+        "%e%",
+        "actor",
+        1999,
+        2003
+      ],
+      [
+        "(voice)', '(as Shelby Smith)', '(as Chloe Staines)', '(as Fred Ray)', '(meal checker)",
+        "[us]",
+        "%s%",
+        "%e%",
+        "m",
+        "%r%",
+        "actor",
+        1977,
+        2001
+      ],
+      [
+        "(segment \"Carmilla\": English Version)', '(as Jessiree)', '(as Paris Granat)', '(as Lillian Barter)', '(smoke effects)",
+        "[us]",
+        "%o%",
+        "%(%",
+        "m",
+        "%F%",
+        "actor",
+        1991,
+        2014
+      ],
+      [
+        "(guitar)', '(video \"Porcelain\")', '(as Trent Salouri)', '(as Dekarlo)', '(as Heini Bloom)",
+        "[us]",
+        "%a%",
+        "%r%",
+        "m",
+        "%r%",
+        "actor",
+        1961,
+        1994
+      ],
+      [
+        "(archive footage)', '(as Pa Kasumu)', '(as O''livia Banno)', '(as Ty Andre)', '(as Chip Knoll)",
+        "[us]",
+        "%(%",
+        "%(%",
+        "m",
+        "%l%",
+        "actor",
+        1982,
+        2012
+      ],
+      [
+        "(voice)', '(Cassandra Stiles)', '(spooky music)', '(as C.D. Smith)', '(as McKenzee Lee)",
+        "[fi]",
+        "%k%",
+        "%9%",
+        "m",
+        "%E%",
+        "actor",
+        1989,
+        1999
+      ],
+      [
+        "(voice)', '(as Ron Jeremey)', '(as Erika Idol)', '(Friday)', '(as Toa)",
+        "[gb]",
+        "%2%",
+        "%(%",
+        "m",
+        "%,%",
+        "actor",
+        1975,
+        1995
+      ],
+      [
+        "(voice)', '(as Jimmy Larson)', '(as Annabelle)', '(as Minxxx)', '(as Pamela Louise)",
+        "[br]",
+        "%0%",
+        "%)%",
+        "m",
+        "%W%",
+        "actor",
+        1989,
+        2006
+      ],
+      [
+        "(archive footage)', '(as Venus Lamour)', '(as Kameron Styles)', '(as Randy Aitken)', '(as Amy Bernstein)",
+        "[us]",
+        "%(%",
+        "%(%",
+        "m",
+        "%c%",
+        "actor",
+        1929,
+        2005
+      ],
+      [
+        "(also archive footage)', '(as Moira Meyer)', '(Magazine Model)', '(as Shay La Mar)', '(as Hara Finnegan)",
+        "[us]",
+        "%V%",
+        "%(%",
+        "m",
+        "%J%",
+        "actor",
+        1961,
+        2003
+      ],
+      [
+        "(archive footage)', '(as Taylor Jade)', '(as Sara Indrio)', '(as Harry Murphy)', '(as Nikkie Vixon)",
+        "[us]",
+        "%1%",
+        "%S%",
+        "m",
+        "%n%",
+        "actor",
+        1971,
+        2014
+      ],
+      [
+        "(voice)', '(as Daren Dune)', '(as Pepe Ortiz)', '(as Lily)', '(as Vicki Ford)",
+        "[us]",
+        "%)%",
+        "%H%",
+        "m",
+        "%C%",
+        "actor",
+        1980,
+        2004
+      ],
+      [
+        "(as Plus One)', '(as Ron Manner)', '(as Kym Wild)', '(as Militia)', '(suit performer)",
+        "[us]",
+        "%i%",
+        "%d%",
+        "m",
+        "%b%",
+        "actor",
+        1999,
+        2013
+      ],
+      [
+        "(as Reg. Sgt. Major Bob Bennett)', '(as Babi Slymm)', '(as Alexa Siren)', '(as Edita Khain)', '(as Keegan Sky)",
+        "[gb]",
+        "%9%",
+        "%9%",
+        "m",
+        "%B%",
+        "actor",
+        1998,
+        2015
+      ],
+      [
+        "(archive footage)', '(as Frank Morino)', '(as Jazmin)', '(as Velvet)', '(as Kyla Swallows)",
+        "[gb]",
+        "%V%",
+        "%0%",
+        "m",
+        "%,%",
+        "actor",
+        1983,
+        2014
+      ],
+      [
+        "(voice)', '(as Jamie Denton)', '(as Alaura)', '(promoter)', '(as Sam Ritter)",
+        "[nl]",
+        "%t%",
+        "%a%",
+        "m",
+        "%E%",
+        "actor",
+        2001,
+        2015
+      ],
+      [
+        "(archive footage)', '(as Steve Brooks)', '(associate editor)', '(as Daryn)', '(as Nyeisha Nicole)",
+        "[us]",
+        "%n%",
+        "%n%",
+        "m",
+        "%a%",
+        "actor",
+        1930,
+        2011
+      ],
+      [
+        "(archive footage)', '(as CeCe Monroe)', '(as Martin Baker)', '(as Beatrix Saint)', '(as Dick Lechey)",
+        "[us]",
+        "%0%",
+        "%)%",
+        "m",
+        "%k%",
+        "actor",
+        1991,
+        2006
+      ],
+      [
+        "(voice) (as Ivan Crossland)', '(as Hofner Katalin)', '(as Ronda Flannery)', '(screenwriter)', '(as Jason Carroll)",
+        "[us]",
+        "%w%",
+        "%e%",
+        "m",
+        "%s%",
+        "actor",
+        1987,
+        2012
+      ],
+      [
+        "(as Bryan Brisko)', '(as Helen Shirley)', '(as John Doe)', '(as Greg Milburn)', '(as Dr. Brent Agin)",
+        "[ca]",
+        "%a%",
+        "%w%",
+        "m",
+        "%n%",
+        "actor",
+        1996,
+        2014
+      ],
+      [
+        "(voice)', '(as Vive Anne)', '(made by)', '(as Dr. Drew Hall)', '(as Silvia Lancome)",
+        "[gb]",
+        "%V%",
+        "%D%",
+        "m",
+        "%o%",
+        "actor",
+        1989,
+        2015
+      ],
+      [
+        "(as Ernesto Bautista)', '(as Sola Shobowale)', '(as Joshua Tenney)', '(as Danielle)', '(as Art Pittman)",
+        "[us]",
+        "%V%",
+        "%)%",
+        "m",
+        "%s%",
+        "actor",
+        2000,
+        2012
+      ],
+      [
+        "(as Jeff Kaiser)', '(as Alex Landau)', '(as Pete Zuccarini)', '(as The Messiah)', '(as Alain P.)",
+        "[au]",
+        "%D%",
+        "%(%",
+        "m",
+        "%,%",
+        "actor",
+        1977,
+        2015
+      ],
+      [
+        "(voice)', '(as Isobel)', '(as Ildiko Szucs)', '(as Lemon Angel)', '(as DeVille)",
+        "[us]",
+        "%2%",
+        "%0%",
+        "m",
+        "%r%",
+        "actor",
+        1970,
+        2015
+      ],
+      [
+        "(as Mike Green)', '(as Raye D''ance)', '(catering)', '(as Attila Juhasz)', '(as Cassie Marie)",
+        "[cz]",
+        "%n%",
+        "%)%",
+        "m",
+        "%r%",
+        "actor",
+        1990,
+        2011
+      ],
+      [
+        "(as Ventzislav Kisiov)', '(segment \"Y.B.E.\")', '(\"Jeopardy!\" Host)', '(as Harley Raines)', '(rhythm guitarist)",
+        "[br]",
+        "%3%",
+        "%)%",
+        "m",
+        "%v%",
+        "actor",
+        1972,
+        2014
+      ],
+      [
+        "(archive footage)', '(as Heather Bevis)', '(video \"Y-Control\")', '(as 8francis)', '(Guest Keyboardist)",
+        "[us]",
+        "%1%",
+        "%)%",
+        "m",
+        "%o%",
+        "actor",
+        1966,
+        2012
+      ],
+      [
+        "(archive footage)', '(as Jon Kinyon)', '(as Lucy Lovelle)', '(as Dru Barrymore)', '(Guitarist)",
+        "[nl]",
+        "%d%",
+        "%n%",
+        "m",
+        "%B%",
+        "actor",
+        1987,
+        2002
+      ],
+      [
+        "(as Svilen Kamburov)', '(premiere saint)', '(as No\u00c3\u00a9mi Domokos)', '(cinematographer)', '(Guitar & Vocals)",
+        "[us]",
+        "%)%",
+        "%(%",
+        "m",
+        "%,%",
+        "actor",
+        1993,
+        2010
+      ],
+      [
+        "(archive footage)', '(as Tony Marino)', '(as Douglas Terry)', '(as Giselle Correa)', '(as Jillian Fox)",
+        "[us]",
+        "%A%",
+        "%)%",
+        "m",
+        "%o%",
+        "actor",
+        1983,
+        2015
+      ],
+      [
+        "(archive footage)', '(as Kaly)', '(designer: website)', '(as Avalone)', '(as K''Sun Ray)",
+        "[us]",
+        "%)%",
+        "%0%",
+        "m",
+        "%B%",
+        "actor",
+        1991,
+        2013
+      ],
+      [
+        "(as Lukacs Bicskey)', '(as Climaxx)', '(as Stan Piotr)', '(as Heather Heart)', '(as Emmanuael Mark)",
+        "[ar]",
+        "%n%",
+        "%0%",
+        "m",
+        "%c%",
+        "actor",
+        1968,
+        2015
+      ],
+      [
+        "(as Eugene R. Glazer)', '(as Donna V.)', '(as Justine Romee'')', '(as Illana)', '(as will.i.am)",
+        "[nl]",
+        "%1%",
+        "%e%",
+        "m",
+        "%u%",
+        "actor",
+        1987,
+        1994
+      ],
+      [
+        "(archive footage) (uncredited)', '(as Alexandria)', '(as Teena Fine)', '(as Vitor Lion)', '(as Fr3deR1ck)",
+        "[gb]",
+        "%K%",
+        "%)%",
+        "m",
+        "%R%",
+        "actor",
+        1993,
+        2014
+      ],
+      [
+        "(as Jose Mari Avellana)', '(as Jacobs)', '(as Daysie)', '(as Daniel Dixxx)', '(as Eric Davis)",
+        "[ar]",
+        "%n%",
+        "%V%",
+        "m",
+        "%o%",
+        "actor",
+        1961,
+        2014
+      ],
+      [
+        "(as X. Atencio)', '(as Mike Neilson)', '(as Mia Sylvio)', '(as Mia Sylvio)', '(as Racel Evans)",
+        "[us]",
+        "%i%",
+        "%n%",
+        "m",
+        "%v%",
+        "actor",
+        1967,
+        2015
+      ],
+      [
+        "(segment \"Man in the Mirror)', '(on set medic)', '(as Alexis Love)', '(as Kathie)', '(as Silvia Doll)",
+        "[us]",
+        "%c%",
+        "%M%",
+        "m",
+        "%r%",
+        "actor",
+        1967,
+        2007
+      ],
+      [
+        "(voice)', '(cover designer)', '(as Merone DaNola)', '(location site rep)', '(other crew)",
+        "[gb]",
+        "%2%",
+        "%(%",
+        "m",
+        "%r%",
+        "actor",
+        1987,
+        2013
+      ],
+      [
+        "(archive footage)', '(as Faythe)', '(as Jenny Franco)', '(as Jasmine Jolie)', '(as Shawn Michele)",
+        "[gb]",
+        "%(%",
+        "%U%",
+        "m",
+        "%e%",
+        "actor",
+        2000,
+        2011
+      ],
+      [
+        "(archive footage)', '(as Belicia)', '(giggles)', '(as Robert Gursha)', '(as Andy Knight)",
+        "[us]",
+        "%S%",
+        "%)%",
+        "m",
+        "%c%",
+        "actor",
+        1986,
+        2000
+      ],
+      [
+        "(voice)', '(as Jacki Geewhiz)', '(as Mia Asian)', '(as Jeff Daniels)', '(as Sunny Day)",
+        "[us]",
+        "%s%",
+        "%)%",
+        "m",
+        "%G%",
+        "actor",
+        2005,
+        2015
+      ],
+      [
+        "(voice)', '(as Mark Curtis)', '(as Johnny Matrix)', '(as Anna Corvi)', '(poster model)",
+        "[hu]",
+        "%0%",
+        "%y%",
+        "m",
+        "%i%",
+        "actor",
+        1929,
+        2014
+      ],
+      [
+        "(also archive footage)', '(as FeeFee Bardot)', '(timecode writer)', '(as Michael Hart)', '(as Ashley Morley)",
+        "[us]",
+        "%(%",
+        "%)%",
+        "m",
+        "%i%",
+        "actor",
+        1930,
+        2014
+      ],
+      [
+        "(voice) (as Charlie Adler)', '(as Mrs. M. Cruz)', '(as Sandy Wolf)', '(as Gerry Davis)', '(location site rep)",
+        "[ar]",
+        "%)%",
+        "%n%",
+        "m",
+        "%,%",
+        "actor",
+        1979,
+        2015
+      ],
+      [
+        "(as Matthew DeMeritt)', '(as Ronnie Coxxx)', '(bondage scene)', '(technician)', '(boy racer)",
+        "[gb]",
+        "%(%",
+        "%2%",
+        "m",
+        "%t%",
+        "actor",
+        1977,
+        1996
+      ],
+      [
+        "(singing voice)', '(as Lexy)', '(as Ann Lambert)', '(as Kim I. Martin)', '(EMT)",
+        "[ar]",
+        "%n%",
+        "%(%",
+        "m",
+        "%n%",
+        "actor",
+        1993,
+        2003
+      ],
+      [
+        "(as Bob Hoy)', '(as Kunga Sludge)', '(as Yugomir Lonich)', '(as Marcie)', '(as Jim Jarosz)",
+        "[us]",
+        "%S%",
+        "%(%",
+        "m",
+        "%F%",
+        "actor",
+        1978,
+        1993
+      ],
+      [
+        "(archive footage)', '(as Lee Ermey)', '(as Marianna Bruni)', '(as DJ Muggs)', '(as Ivy Elfstrom)",
+        "[nl]",
+        "%l%",
+        "%a%",
+        "m",
+        "%e%",
+        "actor",
+        1985,
+        2008
+      ],
+      [
+        "(uncredited)', '(as Taipan)', '(as A.M. Bertucci)', '(Justin)', '(as Priscila Sol)",
+        "[us]",
+        "%(%",
+        "%V%",
+        "m",
+        "%r%",
+        "actor",
+        1966,
+        2010
+      ],
+      [
+        "(archive footage)', '(play adaptation)', '(as Patrice Valle)', '(as Stella Hott)', '(off-line editor)",
+        "[us]",
+        "%e%",
+        "%(%",
+        "m",
+        "%A%",
+        "actor",
+        1990,
+        2008
+      ],
+      [
+        "(as Don Hart)', '(as Rich Dworsky)', '(as Jay P. Lipa)', '(Sawaki Oroku)', '(studio director)",
+        "[us]",
+        "%(%",
+        "%8%",
+        "m",
+        "%i%",
+        "actor",
+        1968,
+        1990
+      ],
+      [
+        "(voice)', '(as Jeffrey Victor)', '(as Kyle McCullod)', '(photography by)', '(as Velvet Angel)",
+        "[us]",
+        "%i%",
+        "%(%",
+        "m",
+        "%o%",
+        "actor",
+        1986,
+        2005
+      ],
+      [
+        "(archive footage)', '(as Nadia Moore)', '(as Carolla)', '(as F.M. Bradlee)', '(as Chioma Onyechi)",
+        "[us]",
+        "%e%",
+        "%s%",
+        "m",
+        "%u%",
+        "actor",
+        2001,
+        2014
+      ],
+      [
+        "(as Tommy Huff)', '(as Mauve)', '(as Doug Sobon)', '(as Lorenz Popkov)', '(as Roger Wink)",
+        "[us]",
+        "%a%",
+        "%o%",
+        "m",
+        "%f%",
+        "actor",
+        1954,
+        2010
+      ],
+      [
+        "(archive footage)', '(as Mike Legge)', '(as Tina)', '(as Sparkle Ross)', '(as Naudia Hilton)",
+        "[us]",
+        "%e%",
+        "%s%",
+        "m",
+        "%E%",
+        "actor",
+        1965,
+        2014
+      ],
+      [
+        "(archive footage) (as Father Oscar Huber)', '(as Peter Stallion)', '(as Carlos Jones)', '(opticals)', '(as Janet Lee)",
+        "[us]",
+        "%)%",
+        "%(%",
+        "m",
+        "%s%",
+        "actor",
+        1967,
+        2000
+      ],
+      [
+        "(as John La Zar)', '(as Liza Minnellii)', '(as Susan Bernard)', '(as Kink Boy UK)', '(as Vitor Assuncao)",
+        "[us]",
+        "%r%",
+        "%o%",
+        "m",
+        "%a%",
+        "actor",
+        1966,
+        2014
+      ],
+      [
+        "(uncredited)', '(as Heather Leer)', '(as Katja Love)', '(as Katie Ray)', '(as Venus L''Amour)",
+        "[de]",
+        "%1%",
+        "%r%",
+        "m",
+        "%n%",
+        "actor",
+        1930,
+        2011
+      ],
+      [
+        "(as Chuck D)', '(as Bridgett)', '(as Hillary Scoot)', '(as Estella)', '(as Eva Raso)",
+        "[us]",
+        "%)%",
+        "%D%",
+        "m",
+        "%c%",
+        "actor",
+        1972,
+        2001
+      ],
+      [
+        "(archive footage)', '(legal assistance)', '(as William Blair)', '(as Kim Christie)', '(as Laurenz Rupp)",
+        "[us]",
+        "%A%",
+        "%D%",
+        "m",
+        "%o%",
+        "actor",
+        2000,
+        2011
+      ],
+      [
+        "(archive footage)', '(as Monique Yates)', '(as Joe Kalinka)', '(titles designer)', '(as Jazmin Ryder)",
+        "[us]",
+        "%(%",
+        "%V%",
+        "m",
+        "%s%",
+        "actor",
+        1967,
+        2011
+      ],
+      [
+        "(voice)', '(as Sabrina Sweet)', '(as Ernest Jenkins)', '(as Jackie Becker)', '(assistant: kennel)",
+        "[us]",
+        "%2%",
+        "%)%",
+        "m",
+        "%a%",
+        "actor",
+        1991,
+        2012
+      ],
+      [
+        "(voice)', '(video \"Perfect\")', '(as Josef Hardt)', '(as Nicole Andris)', '(as Mikael Dickson)",
+        "[us]",
+        "%(%",
+        "%(%",
+        "m",
+        "%o%",
+        "actor",
+        2005,
+        2008
+      ],
+      [
+        "(archive footage)', '(as James Duron)', '(as Jezebelle)', '(as Chlo Nicholle)', '(as Jessica Daltin)",
+        "[us]",
+        "%1%",
+        "%1%",
+        "m",
+        "%s%",
+        "actor",
+        1929,
+        2011
+      ],
+      [
+        "(as Curtis ''50 Cent'' Jackson)', '(title: Bionaut)', '(Miss January 1996)', '(as CKY Alliance)', '(as Rusty Rodes)",
+        "[fi]",
+        "%d%",
+        "%n%",
+        "m",
+        "%e%",
+        "actor",
+        1987,
+        2016
+      ],
+      [
+        "(segment \"When We Was Fab\")', '(as Joe Allain)', '(as Tonya)', '(as Taika Cohen)', '(video \"Iskala''\")",
+        "[us]",
+        "%d%",
+        "%e%",
+        "m",
+        "%o%",
+        "actor",
+        1970,
+        2011
+      ],
+      [
+        "(archive footage)', '(Bass Guitar)', '(as Alexxxis)', '(as Matthew Angel)', '(as Liana Reda)",
+        "[us]",
+        "%D%",
+        "%)%",
+        "m",
+        "%e%",
+        "actor",
+        1977,
+        2013
+      ],
+      [
+        "(archive footage)', '(as Kimani Sanchez)', '(talent supervisor)', '(as Freddie Usher)', '(as Platinum)",
+        "[us]",
+        "%V%",
+        "%U%",
+        "m",
+        "%e%",
+        "actor",
+        2001,
+        2014
+      ],
+      [
+        "(bass & vocals)', '(as Miggie Donahoe)', '(as Emily Biggs)', '(as Aaliyah Jollie)', '(as Michelle Dior)",
+        "[gb]",
+        "%d%",
+        "%1%",
+        "m",
+        "%t%",
+        "actor",
+        1978,
+        2015
+      ],
+      [
+        "(uncredited)', '(as Pippi)', '(as Debroah Wells)', '(as Hannah Ekelund)', '(as Susan Lanier)",
+        "[us]",
+        "%r%",
+        "%)%",
+        "m",
+        "%n%",
+        "actor",
+        2001,
+        2011
+      ],
+      [
+        "(archive footage)', '(as Ayana)', '(as Robert Corna)', '(as Nataly Szep)', '(as Rikki Licks)",
+        "[ar]",
+        "%i%",
+        "%t%",
+        "m",
+        "%Y%",
+        "actor",
+        1968,
+        2008
+      ],
+      [
+        "(as Roberto Purvis)', '(as Lauro Giottlo)', '(as Lazar)', '(as Shane)', '(as Roberto Purvis)",
+        "[gb]",
+        "%8%",
+        "%0%",
+        "m",
+        "%d%",
+        "actor",
+        1996,
+        2010
+      ],
+      [
+        "(member, The Byrds)', '(as Gery Owen)', '(as Erroll Kelly)', '(video \"Fame ''90\")', '(screen direction)",
+        "[us]",
+        "%(%",
+        "%0%",
+        "m",
+        "%r%",
+        "actor",
+        1977,
+        2008
+      ],
+      [
+        "(archive footage)', '(as Milly Jay)', '(as Paisley Park)', '(tutor)', '(commentary writer)",
+        "[ca]",
+        "%0%",
+        "%(%",
+        "m",
+        "%M%",
+        "actor",
+        2000,
+        2012
+      ],
+      [
+        "(voice: English version) (as Stevie Beeline)', '(as Yomi Fash)', '(as Sean W. Scott)', '(as Fionna)', '(as Veronica Rain)",
+        "[jp]",
+        "%p%",
+        "%(%",
+        "m",
+        "%u%",
+        "actor",
+        1961,
+        2005
+      ],
+      [
+        "(voice)', '(as The Clash)', '(as Aryan Love)', '(Temple University)', '(as Heidi Kcat)",
+        "[us]",
+        "%A%",
+        "%9%",
+        "m",
+        "%S%",
+        "actor",
+        1973,
+        1996
+      ],
+      [
+        "(as Andrew Gareth Griffiths)', '(as Miajah)', '(as Menage a Trois)', '(as Khristina)', '(as Syren)",
+        "[de]",
+        "%y%",
+        "%\"%",
+        "m",
+        "%r%",
+        "actor",
+        2000,
+        2016
+      ],
+      [
+        "(as Gerard Jones)', '(title sequence)', '(creator and story)', '(as Gadget)', '(as Tory Wells)",
+        "[us]",
+        "%0%",
+        "%D%",
+        "m",
+        "%r%",
+        "actor",
+        1999,
+        2012
+      ],
+      [
+        "(as Brian ''Blue Meanie'' Heffron)', '(as Nicolas Corsi)', '(as Richard Vialet)', '(as Erzsi)', '(as Paul Marsala)",
+        "[us]",
+        "%0%",
+        "%e%",
+        "m",
+        "%B%",
+        "actor",
+        1985,
+        2012
+      ],
+      [
+        "(voice) (archive footage)', '(as Ander OS)', '(as Chelsea)', '(as Anushka Garin)', '(as Arpad Mikos)",
+        "[us]",
+        "%3%",
+        "%d%",
+        "m",
+        "%e%",
+        "actor",
+        1973,
+        2016
+      ],
+      [
+        "(as Jim Fimiani)', '(as Joseph Tennent)', '(as Chayne Collins)', '(as Alexa)', '(as Gisele)",
+        "[us]",
+        "%H%",
+        "%1%",
+        "m",
+        "%J%",
+        "actor",
+        1976,
+        2008
+      ],
+      [
+        "(voice)', '(as Janice Jones)', '(Azlea)', '(series supervisor)', '(fire safety)",
+        "[us]",
+        "%e%",
+        "%c%",
+        "m",
+        "%,%",
+        "actor",
+        1980,
+        2014
+      ],
+      [
+        "(as Bryan Brisko)', '(as Domino Presley)', '(graphic novel)', '(as Kitty Shane)', '(food caterer)",
+        "[us]",
+        "%)%",
+        "%r%",
+        "m",
+        "%o%",
+        "actor",
+        2005,
+        2012
+      ],
+      [
+        "(archive footage)', '(as Talen)', '(as Arielle)', '(as Miky Blu)', '(as Meeka)",
+        "[us]",
+        "%0%",
+        "%)%",
+        "m",
+        "%L%",
+        "actor",
+        1978,
+        2013
+      ],
+      [
+        "(as Danko Iordanov)', '(as Don L.)', '(as P. Vatelli)', '(as Ondrej)', '(as Livia)",
+        "[us]",
+        "%U%",
+        "%V%",
+        "m",
+        "%n%",
+        "actor",
+        1977,
+        2013
+      ],
+      [
+        "(archive footage) (uncredited)', '(segment \"Kanna\")', '(as Jamelah Ashmar)', '(as Axle Hose)', '(tour director)",
+        "[gb]",
+        "%D%",
+        "%0%",
+        "m",
+        "%A%",
+        "actor",
+        1994,
+        2007
+      ],
+      [
+        "(archive footage)', '(as Kim Alexus)', '(as Kevin De Lullo)', '(producer) (as Dan)', '(woman on bus)",
+        "[us]",
+        "%U%",
+        "%V%",
+        "m",
+        "%b%",
+        "actor",
+        1971,
+        2003
+      ],
+      [
+        "(archive footage) (uncredited)', '(as Steve Kennedy)', '(as Vixen)', '(as Striker)', '(as Scott Davis)",
+        "[us]",
+        "%S%",
+        "%V%",
+        "m",
+        "%b%",
+        "actor",
+        1971,
+        2011
+      ],
+      [
+        "(voice)', '(as Selly Elson)', '(as Lucy Satin)', '(as Trinity Lo''ren)', '(as Robin Lewis)",
+        "[us]",
+        "%n%",
+        "%r%",
+        "m",
+        "%,%",
+        "actor",
+        1999,
+        2012
+      ],
+      [
+        "(as Gabriel D''Alessandro)', '(as Tatiyana Fox)', '(as Barret Blade)', '(lab supervisor)', '(as Thomas Jeno)",
+        "[us]",
+        "%)%",
+        "%0%",
+        "m",
+        "%i%",
+        "actor",
+        1974,
+        2010
+      ],
+      [
+        "(archive footage)', '(as Joe Lawernce)', '(as RJ Cummings)', '(as KT)', '(as Rife Urquhart)",
+        "[us]",
+        "%o%",
+        "%(%",
+        "m",
+        "%n%",
+        "actor",
+        1986,
+        2007
+      ],
+      [
+        "(as James Bell)', '(as Mary Chukwu)', '(as Heaven Taylor)', '(p\u00c3\u00a6dagog)', '(as Brett)",
+        "[us]",
+        "%)%",
+        "%1%",
+        "m",
+        "%e%",
+        "actor",
+        1977,
+        2013
+      ],
+      [
+        "(archive footage)', '(as Niki Knockers)', '(as Tami Anderson)', '(as Deshawn Hayes)', '(as Milky Diva)",
+        "[us]",
+        "%s%",
+        "%(%",
+        "m",
+        "%n%",
+        "actor",
+        1987,
+        2012
+      ],
+      [
+        "(archive footage)', '(as ''E'')', '(as Akos Piros)', '(episodes 5 & 6)', '(as Masami Ohbari)",
+        "[us]",
+        "%0%",
+        "%S%",
+        "m",
+        "%l%",
+        "actor",
+        1984,
+        2011
+      ],
+      [
+        "(archive footage)', '(as Tim Ryans)', '(as Kabat Egbon)', '(as Ken Bates)', '(cast coordinator)",
+        "[us]",
+        "%0%",
+        "%)%",
+        "m",
+        "%u%",
+        "actor",
+        1983,
+        2011
+      ],
+      [
+        "(as Kawee Sirikhanaerut)', '(as Lexie Findarle)', '(as Klenot)', '(as Poperratic)', '(as Jana B.)",
+        "[nl]",
+        "%)%",
+        "%i%",
+        "m",
+        "%e%",
+        "actor",
+        1984,
+        2013
+      ],
+      [
+        "(as CDR Michael Bernacchi USN)', '(as Mellissa Doll)', '(as Alisson Wyte)', '(as Ivette)', '(as Belle Bonde)",
+        "[ca]",
+        "%n%",
+        "%d%",
+        "m",
+        "%e%",
+        "actor",
+        1983,
+        2010
+      ],
+      [
+        "(voice)', '(as J. Janeiro)', '(as Greg French)', '(as Robert Smile)', '(as Lucas Arthurs)",
+        "[us]",
+        "%0%",
+        "%r%",
+        "m",
+        "%n%",
+        "actor",
+        1974,
+        2015
+      ],
+      [
+        "(as Mark Anthony Chavarria)', '(as Dick Laurant)', '(as JacQueline)', '(as Johnny Gitaur)', '(as Mike Legge)",
+        "[nl]",
+        "%s%",
+        "%(%",
+        "m",
+        "%,%",
+        "actor",
+        1992,
+        2014
+      ],
+      [
+        "(archive footage)', '(as David Veleo)', '(as Kathy Parker)', '(titles & opticals)', '(as Tony Tedeci)",
+        "[us]",
+        "%(%",
+        "%A%",
+        "m",
+        "%a%",
+        "actor",
+        1994,
+        2003
+      ],
+      [
+        "(voice)', '(as Yexes Dine)', '(live crew)', '(Nikki Hendry)', '(as Dominik Day)",
+        "[us]",
+        "%i%",
+        "%)%",
+        "m",
+        "%c%",
+        "actor",
+        1967,
+        2014
+      ],
+      [
+        "(as Franklin Roberto ''Bobby'' Lashley)', '(as Lisa Caryl)', '(as Regina Moore)', '(as K.C.)', '(as Jose Mignone)",
+        "[us]",
+        "%A%",
+        "%1%",
+        "m",
+        "%l%",
+        "actor",
+        1996,
+        2015
+      ],
+      [
+        "(voice)', '(as Alex Corsi)', '(as Ezster Kiss)', '(as Lance Williams)', '(archive materials)",
+        "[gb]",
+        "%V%",
+        "%(%",
+        "m",
+        "%,%",
+        "actor",
+        1973,
+        2013
+      ],
+      [
+        "(archive footage) (uncredited)', '(as Jeremy Polo)', '(as Lexi Erickson)', '(as Jackee)', '(as Isaiah Fox)",
+        "[gb]",
+        "%)%",
+        "%(%",
+        "m",
+        "%l%",
+        "actor",
+        1930,
+        2009
+      ],
+      [
+        "(as Robert Baum)', '(as C. M\u00c3\u00a9lonie)', '(story)', '(video ''Ariana'')', '(as Danny Kremer)",
+        "[fi]",
+        "%y%",
+        "%)%",
+        "m",
+        "%r%",
+        "actor",
+        2005,
+        2012
+      ],
+      [
+        "(archive footage)', '(as Joy Karin''s)', '(as Jake Smith)', '(as Zoe'' May)', '(as Marina Akta)",
+        "[us]",
+        "%)%",
+        "%(%",
+        "m",
+        "%a%",
+        "actor",
+        1978,
+        2008
+      ],
+      [
+        "(voice)', '(as Tiffany Bolton)', '(Asia)', '(as Ndubisi Okoh)', '(talent agent)",
+        "[us]",
+        "%1%",
+        "%0%",
+        "m",
+        "%a%",
+        "actor",
+        1986,
+        2014
+      ],
+      [
+        "(archive footage)', '(Special Guest)', '(as Heather Martel)', '(as Ben Kelley)', '(as Doug Smythe)",
+        "[us]",
+        "%(%",
+        "%S%",
+        "m",
+        "%s%",
+        "actor",
+        1991,
+        2011
+      ],
+      [
+        "(as Seguridad Social)', '(as Danny Wilde)', '(as Sean Taylor)', '(as Jesse Stern)', '(as rownii Treats)",
+        "[es]",
+        "%n%",
+        "%i%",
+        "m",
+        "%,%",
+        "actor",
+        1981,
+        2008
+      ],
+      [
+        "(voice)', '(as Ritchie)', '(as Azlea)', '(video \"Breakout\")', '(as Ralph Ogbaje)",
+        "[ar]",
+        "%n%",
+        "%t%",
+        "m",
+        "%K%",
+        "actor",
+        1996,
+        2015
+      ],
+      [
+        "(segment \"Half on a Baby\")', '(staff support)', '(set producer)', '(as Jay Stewart)', '(as Brian Kidd)",
+        "[us]",
+        "%0%",
+        "%(%",
+        "m",
+        "%e%",
+        "actor",
+        1973,
+        2003
+      ],
+      [
+        "(archive footage) (uncredited)', '(additional voice)', '(as Dion)', '(as Selina Knight)', '(music segments)",
+        "[nl]",
+        "%0%",
+        "%F%",
+        "m",
+        "%k%",
+        "actor",
+        2001,
+        2006
+      ],
+      [
+        "(as Alfred E. Humphreys)', '(as Vanessa Gold)', '(as Pearl Jam)', '(as Jillian Hart)', '(as Asaret Arroyo)",
+        "[be]",
+        "%)%",
+        "%g%",
+        "m",
+        "%h%",
+        "actor",
+        1967,
+        2006
+      ],
+      [
+        "(as Los Lonely Boys)', '(as Kim Wylde)', '(team: DoRo)', '(as Anouk)', '(as Dave Valeo)",
+        "[us]",
+        "%S%",
+        "%i%",
+        "m",
+        "%R%",
+        "actor",
+        1968,
+        2007
+      ],
+      [
+        "(archive footage)', '(as Dave Vanian)', '(as \u00c3\u0081gi B\u00c3\u00a1nfalvi)', '(as Felix Miller)', '(as Raphaella)",
+        "[us]",
+        "%e%",
+        "%e%",
+        "m",
+        "%f%",
+        "actor",
+        1990,
+        2012
+      ],
+      [
+        "(archive footage)', '(as Mauve)', '(as Ronny Lefauve)', '(as Oxana)', '(as Zsolt Kivalt)",
+        "[us]",
+        "%(%",
+        "%D%",
+        "m",
+        "%,%",
+        "actor",
+        1994,
+        2010
+      ],
+      [
+        "(as Jean Yves Le Castel)', '(as Jeanne Pepper)', '(as Jeremy Luc)', '(as Sarah B)', '(as Rob Kane)",
+        "[us]",
+        "%1%",
+        "%9%",
+        "m",
+        "%t%",
+        "actor",
+        1989,
+        2000
+      ],
+      [
+        "(as Dan Astilean)', '(as Sinan Beginer)', '(theme tune)', '(producer: videos)', '(as David Getz)",
+        "[us]",
+        "%(%",
+        "%(%",
+        "m",
+        "%A%",
+        "actor",
+        1930,
+        2006
+      ],
+      [
+        "(archive footage)', '(as Pixie)', '(as Simone Peach)', '(as Lucy Pearl)', '(as Tracy Luv)",
+        "[gb]",
+        "%0%",
+        "%(%",
+        "m",
+        "%r%",
+        "actor",
+        2002,
+        2008
+      ],
+      [
+        "(uncredited)', '(as Tysen D''Eston)', '(video \"Bedshaped\")', '(as Edwige)', '(as Ralena Rios)",
+        "[be]",
+        "%(%",
+        "%0%",
+        "m",
+        "%i%",
+        "actor",
+        1981,
+        2016
+      ],
+      [
+        "(voice)', '(video \"So Fresh\")', '(as Scorpion)', '(as Debbie Wakeman)', '(as Jean Pepper)",
+        "[us]",
+        "%)%",
+        "%l%",
+        "m",
+        "%o%",
+        "actor",
+        1981,
+        2012
+      ],
+      [
+        "(voice)', '(Christal)', '(as Stella Banxxx)', '(Cameraman)', '(intro animations)",
+        "[us]",
+        "%A%",
+        "%(%",
+        "m",
+        "%a%",
+        "actor",
+        2004,
+        2011
+      ],
+      [
+        "(as Kenny Gorrell)', '(as Meka)', '(as Mike Neilson)', '(as Rudi Strong)', '(as Kelly King)",
+        "[us]",
+        "%)%",
+        "%l%",
+        "m",
+        "%K%",
+        "actor",
+        1998,
+        2011
+      ],
+      [
+        "(archive footage)', '(as Ice La Fox)', '(as Lady Jones)', '(as John Kalodner)', '(as Morgan Rae)",
+        "[us]",
+        "%(%",
+        "%S%",
+        "m",
+        "%k%",
+        "actor",
+        1988,
+        2016
+      ],
+      [
+        "(voice: English version)', '(as Lecastel)', '(as Paul Pooley)', '(as Rossa)', '(various writings)",
+        "[jp]",
+        "%n%",
+        "%0%",
+        "m",
+        "%e%",
+        "actor",
+        2001,
+        2007
+      ],
+      [
+        "(US)', '(as St\u00c3\u00a9phanie Bon)', '(as Floss P.)', '(as Jake)', '(as Vickie P)",
+        "[gb]",
+        "%)%",
+        "%(%",
+        "m",
+        "%l%",
+        "actor",
+        1985,
+        2012
+      ],
+      [
+        "(archive footage) (as Kane)', '(groomer)', '(as Francine)', '(as John Dammann)', '(as Jill Conner)",
+        "[us]",
+        "%e%",
+        "%s%",
+        "m",
+        "%,%",
+        "actor",
+        2003,
+        2016
+      ],
+      [
+        "(also archive footage) (uncredited)', '(as Tyler Lindsey)', '(as Alexis On Fire)', '(as Yessie Sanchez)', '(menu artwork)",
+        "[us]",
+        "%)%",
+        "%(%",
+        "m",
+        "%d%",
+        "actor",
+        1972,
+        2012
+      ],
+      [
+        "(segment \"Bump ''n'' Grind\")', '(as Norm Golightly)', '(as Ted Hemingway)', '(as Sky Blue)', '(accountant)",
+        "[us]",
+        "%A%",
+        "%D%",
+        "m",
+        "%,%",
+        "actor",
+        1930,
+        2016
+      ],
+      [
+        "(archive footage)', '(as Eva Sweet)', '(as Philip o''Toole)', '(as Koko B. Ware)', '(sword fighter)",
+        "[us]",
+        "%(%",
+        "%i%",
+        "m",
+        "%r%",
+        "actor",
+        1997,
+        2010
+      ],
+      [
+        "(singing voice)', '(as Lil Jon)', '(as Richard Hearst)', '(day 6)', '(as James Schwalm)",
+        "[it]",
+        "%y%",
+        "%I%",
+        "m",
+        "%d%",
+        "actor",
+        1978,
+        2013
+      ],
+      [
+        "(voice)', '(as Dr. Leung Ting)', '(Ebony)', '(as Kristian)', '(The Boss)",
+        "[us]",
+        "%(%",
+        "%s%",
+        "m",
+        "%w%",
+        "actor",
+        1990,
+        2004
+      ],
+      [
+        "(as John P. Fedele)', '(as Jezerre)', '(as Lynne LeMay)', '(as Jumila Umar)', '(as Emy)",
+        "[de]",
+        "%(%",
+        "%(%",
+        "m",
+        "%P%",
+        "actor",
+        1954,
+        2004
+      ],
+      [
+        "(as Paul Barressi)', '(Guest Keyboardist)', '(as Lexxy Love)', '(as Esther)', '(as Mark Vahanian)",
+        "[us]",
+        "%1%",
+        "%S%",
+        "m",
+        "%,%",
+        "actor",
+        1976,
+        1991
+      ],
+      [
+        "(voice)', '(as EZ Duzit)', '(story) (segment 1)', '(as Merelyn Rose)', '(as Daren James)",
+        "[us]",
+        "%A%",
+        "%U%",
+        "m",
+        "%\u00b4%",
+        "actor",
+        1968,
+        1988
+      ],
+      [
+        "(as The Clash)', '(photo)', '(as Boris Vatsky)', '(as Valoria)', '(as Risi Simms)",
+        "[de]",
+        "%(%",
+        "%r%",
+        "m",
+        "%c%",
+        "actor",
+        2002,
+        2008
+      ],
+      [
+        "(voice)', '(Barrett Moore)', '(as Eric Lineau)', '(as Vin Dicksel)', '(provider: Viper)",
+        "[us]",
+        "%A%",
+        "%0%",
+        "m",
+        "%n%",
+        "actor",
+        1989,
+        2013
+      ],
+      [
+        "(archive footage)', '(as Victor Nye)', '(as Mercy 44FF)', '(as Dana Smith)', '(as Electra Angel)",
+        "[us]",
+        "%r%",
+        "%t%",
+        "m",
+        "%e%",
+        "actor",
+        1983,
+        2016
+      ],
+      [
+        "(archive footage) (uncredited)', '(wrangler)', '(as Nicki Blond)', '(as Mike Gaglio)', '(as Sabina Zuniga)",
+        "[dk]",
+        "%F%",
+        "%d%",
+        "m",
+        "%r%",
+        "actor",
+        1984,
+        2010
+      ],
+      [
+        "(uncredited)', '(story) (segment 1)', '(as Steve Turbo)', '(as Deliah)', '(technician)",
+        "[us]",
+        "%S%",
+        "%(%",
+        "m",
+        "%o%",
+        "actor",
+        1992,
+        2005
+      ],
+      [
+        "(J\u00c3\u00b4 Asakura)', '(tour agent)', '(as Michael Eshaq)', '(as Zolt\u00c3\u00a1n Hess)', '(as Olga Mattei)",
+        "[us]",
+        "%d%",
+        "%v%",
+        "m",
+        "%K%",
+        "actor",
+        1977,
+        2006
+      ],
+      [
+        "(archive footage)', '(as Luca Spyder)', '(as Bianca Ramos)', '(segment \"Plastic\")', '(as Erin Nicole)",
+        "[gb]",
+        "%K%",
+        "%K%",
+        "m",
+        "%i%",
+        "actor",
+        1968,
+        2010
+      ],
+      [
+        "(as Florin Chevorchian)', '(as Garcia Udulo)', '(as Benita Agane)', '(grooming)', '(as Anita Iron)",
+        "[us]",
+        "%D%",
+        "%D%",
+        "m",
+        "%r%",
+        "actor",
+        1995,
+        2010
+      ],
+      [
+        "(Animaze 1998)', '(Chloe Adams)', '(as Sydney)', '(as Tory Von Wolfe)', '(as Elle A.)",
+        "[us]",
+        "%S%",
+        "%)%",
+        "m",
+        "%S%",
+        "actor",
+        1974,
+        2009
+      ],
+      [
+        "(voice)', '(as Deny Moor)', '(video \"Zip-Lock\")', '(finalist-Manitoba)', '(as Hillary Muff)",
+        "[us]",
+        "%(%",
+        "%D%",
+        "m",
+        "%e%",
+        "actor",
+        1999,
+        2012
+      ],
+      [
+        "(voice)', '(as Nichole Thomas)', '(as Blake Bailey)', '(as Stephen Motto)', '(as Jake Douval)",
+        "[br]",
+        "%B%",
+        "%i%",
+        "m",
+        "%p%",
+        "actor",
+        1965,
+        2012
+      ],
+      [
+        "(as Ionut Chermenschi)', '(plane specialist)', '(production staff)', '(as Extacee)', '(as Chris Parker)",
+        "[us]",
+        "%h%",
+        "%(%",
+        "m",
+        "%s%",
+        "actor",
+        1976,
+        2009
+      ],
+      [
+        "(uncredited)', '(as Hayley-Marie)', '(as Sarah Cabrera)', '(as Russell Fenton)', '(Cherry)",
+        "[es]",
+        "%)%",
+        "%n%",
+        "m",
+        "%r%",
+        "actor",
+        1930,
+        2012
+      ],
+      [
+        "(archive footage) (as Rudolph Giuliani)', '(as Moreno)', '(as Dee Summers)', '(as Dave Smith)', '(as Charles Antony)",
+        "[us]",
+        "%9%",
+        "%)%",
+        "m",
+        "%a%",
+        "actor",
+        1966,
+        2003
+      ],
+      [
+        "(voice: English version)', '(as Suzi Leigh)', '(as Nukie)', '(as Jenaveve)', '(co-story idea)",
+        "[au]",
+        "%2%",
+        "%D%",
+        "m",
+        "%n%",
+        "actor",
+        1984,
+        2010
+      ],
+      [
+        "(as John Gray Ph.D.)', '(as Kim Acosta)', '(as Richard Marin)', '(as Rod Stevans)', '(as Annabella)",
+        "[us]",
+        "%)%",
+        "%)%",
+        "m",
+        "%r%",
+        "actor",
+        1981,
+        2011
+      ],
+      [
+        "(segment \"You Have The Right To Remain Silent\")', '(as Chipy)', '(as Chaty Heaven)', '(Melting Derelict)', '(as Babyface)",
+        "[us]",
+        "%)%",
+        "%9%",
+        "m",
+        "%n%",
+        "actor",
+        1990,
+        2004
+      ],
+      [
+        "(uncredited)', '(as Patricia Khan)', '(as Daton Rains)', '(Miss June 1986)', '(as Stacy Nichols)",
+        "[ca]",
+        "%d%",
+        "%a%",
+        "m",
+        "%e%",
+        "actor",
+        1978,
+        2007
+      ],
+      [
+        "(voice)', '(as Donna Anne)', '(as Chayne Collins)', '(as Johnny Farrell)', '(as Anette M\u00c3\u00bcller)",
+        "[ar]",
+        "%6%",
+        "%r%",
+        "m",
+        "%n%",
+        "actor",
+        1983,
+        2013
+      ],
+      [
+        "(as Charles Brill)', '(as Olivea Del Rio)', '(as Brita)', '(as Ron L. Coons)', '(as Javier Canals)",
+        "[nl]",
+        "%)%",
+        "%a%",
+        "m",
+        "%i%",
+        "actor",
+        1979,
+        2011
+      ],
+      [
+        "(as Hari Anichkin)', '(as Malory Knox)', '(as Rubby Orjiako)', '(as Steve Lekowicz)', '(as Oby Edozie)",
+        "[us]",
+        "%)%",
+        "%T%",
+        "m",
+        "%i%",
+        "actor",
+        1978,
+        2007
+      ],
+      [
+        "(as Christophe Clark)', '(Alaina)', '(as Mandy Bentley)', '(as Ravyn Lotito)', '(as Piper Auston)",
+        "[es]",
+        "%i%",
+        "%p%",
+        "m",
+        "%h%",
+        "actor",
+        1978,
+        2015
+      ],
+      [
+        "(as Andrew D. Gore)', '(as Aminu Shariff)', '(as Carmen Bella)', '(as Lee Whey)', '(as Misty Wild)",
+        "[us]",
+        "%2%",
+        "%a%",
+        "m",
+        "%A%",
+        "actor",
+        1982,
+        2013
+      ],
+      [
+        "(uncredited)', '(as Joan)', '(as Hailey Paige)', '(as Istvan Kurikov)', '(as Mark Hutter)",
+        "[us]",
+        "%)%",
+        "%(%",
+        "m",
+        "%M%",
+        "actor",
+        1987,
+        2010
+      ],
+      [
+        "(voice)', '(as Naudia Hilton)', '(as Nenah Cherry)', '(as Melissa Ashley)', '(as Tinishia Mills)",
+        "[us]",
+        "%)%",
+        "%(%",
+        "m",
+        "%a%",
+        "actor",
+        1976,
+        1999
+      ],
+      [
+        "(archive footage) (uncredited)', '(as Stacey Lords)', '(as Alexis Kincade)', '(as Geraldine)', '(as Lena Malaika)",
+        "[us]",
+        "%W%",
+        "%l%",
+        "m",
+        "%m%",
+        "actor",
+        1982,
+        2002
+      ],
+      [
+        "(voice)', '(as Rikki)', '(as Koronbia Toppu)', '(as Angus McFadyen)', '(as Julio Vidal)",
+        "[jp]",
+        "%(%",
+        "%)%",
+        "m",
+        "%C%",
+        "actor",
+        1990,
+        2012
+      ],
+      [
+        "(as Gil Combs)', '(\"Freedom\" video)', '(as Bayo Adun)', '(as Timothy Roemer)', '(as Ramon Sutra)",
+        "[de]",
+        "%(%",
+        "%f%",
+        "m",
+        "%s%",
+        "actor",
+        1989,
+        2015
+      ],
+      [
+        "(as Dusty ''GD'' Kocks)', '(as Linda Reyes)', '(as Laura Zrake)', '(as Nat Hall)', '(as Juliet James)",
+        "[pt]",
+        "%l%",
+        "%t%",
+        "m",
+        "%D%",
+        "actor",
+        1986,
+        2015
+      ],
+      [
+        "(voice) (archive sound) (uncredited)', '(as Ian Vindiver)', '(as Erin Gardner)', '(Anastasia Blue)', '(as Adam)",
+        "[us]",
+        "%V%",
+        "%U%",
+        "m",
+        "%i%",
+        "actor",
+        1987,
+        2010
+      ],
+      [
+        "(archive footage)', '(as Susie Bartlet)', '(as Jimmy Kaufman)', '(pilot)', '(as TWO-MIX)",
+        "[us]",
+        "%V%",
+        "%-%",
+        "m",
+        "%e%",
+        "actor",
+        1991,
+        2010
+      ],
+      [
+        "(voice)', '(as Deseree)', '(as Arturo Tay)', '(as Lars Petterson)', '(as Lilly)",
+        "[br]",
+        "%a%",
+        "%2%",
+        "m",
+        "%,%",
+        "actor",
+        1975,
+        2015
+      ],
+      [
+        "(archive footage)', '(as JH Rochereuil)', '(as Al Faris)', '(as Sandy Sloane)', '(as Rebecca Smith)",
+        "[us]",
+        "%)%",
+        "%2%",
+        "m",
+        "%r%",
+        "actor",
+        1930,
+        2012
+      ],
+      [
+        "(archive footage)', '(as Estelle Jovi)', '(as Gina Lee)', '(as Pablo Cairo)', '(as Kenneth Gallo)",
+        "[us]",
+        "%U%",
+        "%)%",
+        "m",
+        "%l%",
+        "actor",
+        1965,
+        2011
+      ],
+      [
+        "(as Scott Ateah)', '(as Sergei Larin)', '(video \"Slam\")', '(as Teran Hayes)', '(as Troy Scoughton)",
+        "[us]",
+        "%2%",
+        "%1%",
+        "m",
+        "%,%",
+        "actor",
+        1965,
+        2006
+      ],
+      [
+        "(as Charles Brill)', '(as Pavel Luknar)', '(as Laurl Canyon)', '(as Jason Jewell)', '(as Marek Matyas)",
+        "[us]",
+        "%0%",
+        "%)%",
+        "m",
+        "%e%",
+        "actor",
+        1929,
+        1996
+      ],
+      [
+        "(uncredited)', '(as Josef Finke)', '(as Akane Mochida)', '(as Molestky)', '(as Victor Kohl)",
+        "[fi]",
+        "%(%",
+        "%V%",
+        "m",
+        "%w%",
+        "actor",
+        1971,
+        2014
+      ],
+      [
+        "(uncredited)', '(as Sofia Gonzalez)', '(as Goddy Ezenwa)', '(as Cayton)', '(as Lester Jordan)",
+        "[nl]",
+        "%m%",
+        "%(%",
+        "m",
+        "%C%",
+        "actor",
+        1973,
+        2016
+      ],
+      [
+        "(also archive footage)', '(as B\u00c3\u00a4bel)', '(as Maximo T. Bird)', '(as Iveta Zernicek)', '(as KS)",
+        "[us]",
+        "%D%",
+        "%)%",
+        "m",
+        "%a%",
+        "actor",
+        1965,
+        2014
+      ],
+      [
+        "(voice)', '(Trumpet)', '(as Stephon)', '(as Laura Sol)', '(as Dan Johnson)",
+        "[us]",
+        "%0%",
+        "%S%",
+        "m",
+        "%l%",
+        "actor",
+        1966,
+        2016
+      ],
+      [
+        "(archive footage) (uncredited)', '(as Ruthie Redfern)', '(as Juan Marquez)', '(as Arthur Adams)', '(as Anjelica)",
+        "[de]",
+        "%(%",
+        "%(%",
+        "m",
+        "%n%",
+        "actor",
+        1985,
+        2009
+      ],
+      [
+        "(voice)', '(as Marko Nagy)', '(as Jessie)', '(as Ilona Galore)', '(Alex''s Friend)",
+        "[br]",
+        "%(%",
+        "%)%",
+        "m",
+        "%,%",
+        "actor",
+        1994,
+        2013
+      ],
+      [
+        "(Segment: \"Somebody Save Me\")', '(as Kimmy Kat)', '(as Ray Veness)', '(as Marcela)', '(as Frank Marks)",
+        "[us]",
+        "%d%",
+        "%5%",
+        "m",
+        "%h%",
+        "actor",
+        1972,
+        2010
+      ],
+      [
+        "(as Dr. John F. Demartini D.C. Bsc)', '(as Pam Stein)', '(as Ella)', '(copier/shipper)', '(as Fathia Balogun)",
+        "[ar]",
+        "%V%",
+        "%)%",
+        "m",
+        "%i%",
+        "actor",
+        1973,
+        2007
+      ],
+      [
+        "(as Wesley Emerson Jr.)', '(as Gery)', '(as Tommy Rose)', '(as Dlava)', '(as Devon Wolfe)",
+        "[de]",
+        "%(%",
+        "%(%",
+        "m",
+        "%s%",
+        "actor",
+        1972,
+        2010
+      ]
+    ]
+  }
+}

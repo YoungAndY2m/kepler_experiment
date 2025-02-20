@@ -1,0 +1,976 @@
+{
+    "24-0": {
+        "query": "SELECT MIN(chn.name) AS voiced_char_name, MIN(n.name) AS voicing_actress_name, MIN(t.title) AS voiced_action_movie_jap_eng\nFROM cat_aka_name_4 AS an,\n   cat_char_name_4 AS chn,\n   cat_cast_info_4 AS ci,\n   cat_company_name_4 AS cn,\n   cat_info_type_4 AS it,\n   cat_keyword_4 AS k,\n   cat_movie_companies_4 AS mc,\n   cat_movie_info_4 AS mi,\n   cat_movie_keyword_4 AS mk,\n   cat_name_4 AS n,\n   cat_role_type_4 AS rt,\n   cat_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mc.movie_id = mk.movie_id\nAND mi.movie_id = ci.movie_id\nAND mi.movie_id = mk.movie_id\nAND ci.movie_id = mk.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param4' OR mi.info LIKE '@param5')\nAND n.gender = '@param6'\nAND n.name LIKE '@param7'\nAND rt.role = '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "mi",
+                    "mk",
+                    "n",
+                    "rt",
+                    "an",
+                    "chn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_movie_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_name_4",
+                    "cat_role_type_4",
+                    "cat_aka_name_4",
+                    "cat_char_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "mc.movie_id = ci.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id",
+                    "rt.id = ci.role_id",
+                    "ci.person_id = an.person_id",
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4",
+                    "cat_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4",
+                    "cat_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_role_type_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_cast_info_4"
+                ],
+                "join_conditions": [
+                    "rt.id = ci.role_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_4",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "mi",
+                    "mc",
+                    "ci",
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4",
+                    "cat_movie_companies_4",
+                    "cat_cast_info_4",
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mc.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(as Spike Dauner)', '(as Kathy Bouch)', '(as Lauren Bryce)', '(as Mira)', '(as Richard Carole)",
+                "[ca]",
+                "release dates",
+                "flame-thrower', 'history-student', 'gay-acceptance', 'wrestler-hero', 'dramatization",
+                "%t%",
+                "%u%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(head accountant)', '(adapted by)', '(executive: VVL)', '(Mia Starr)",
+                "[ar]",
+                "goofs",
+                "corpse', 'payment-in-kind', 'u.s.-civil-war', 'legislation', 'high-octane",
+                "%a%",
+                "%e%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Selly Elson)', '(fighter handler)', '(as Rikki)', '(as Koronbia Toppu)",
+                "[de]",
+                "languages",
+                "scientist', 'blow-up-doll', 'horus', 'nomad', 'traffic",
+                "%i%",
+                "%l%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tunde Bamgbode)', '(as Laetitia)', '(as Ted Hunter)', '(as Jemstone)",
+                "[ca]",
+                "goofs",
+                "blonde', 'muscle-car', 'stone', 'short-filmmaking', 'photocopier",
+                "%C%",
+                "%a%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Mrs. V. Vail)', '(as Yasimine Lee)', '(tour security)', '(rendering artist)",
+                "[de]",
+                "goofs",
+                "pubic-hair', 'soprano', 'crystal-meth', 'theologian', 'nurse''s-aide",
+                "%e%",
+                "%.%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Diego Rivera)', '(as Dean G.)', '(as Miss Sad\u00c3\u00a9)', '(opening titles)",
+                "[ar]",
+                "certificates",
+                "military', 'gender-confusion', 'inner-city', 'necromancer', 'old-bailey",
+                "%s%",
+                "%a%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(special guest)', '(as Jack LaFonte)', '(as Krista Lynn)', '(as Eva Bond)",
+                "[de]",
+                "sound mix",
+                "disco', 'universe', 'walk-on-the-beach', 'ozark-mountains', 'colleague",
+                "%o%",
+                "%o%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as S.G. Tarjoto)', '(as Rene Foxxe)', '(before)', '(as Zoe Mathews)",
+                "[ar]",
+                "goofs",
+                "reptile', 'whisky', 'stepsister', 'sky-trails-ranch', 'mystic",
+                "%a%",
+                "%a%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Judge)', '(as Pavel)', '(as Camili)', '(video watchdog)",
+                "[de]",
+                "goofs",
+                "second-part', 'harvard-university', 'pillar', 'hula-hoop', 'prayer",
+                "%p%",
+                "%b%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Mark Curtis)', '(personnel manager)', '(Beautiful Pussy)', '(as Ryan Litzinger)",
+                "[ar]",
+                "certificates",
+                "scientist', 'runner-up', 'feeling-cold', 'female-manager', 'lunar-rover",
+                "%e%",
+                "%e%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(\"Come and Go\")', '(as Jessika)', '(diver)', '(as Saimon Simonet)",
+                "[ca]",
+                "mpaa",
+                "atlantic-city-new-jersey', 'ice-cream-truck', 'run', 'fox', 'swim-meet",
+                "%g%",
+                "%l%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(additional medic)', '(line-up)', '(dvd meister)', '(as Hakan Dan)",
+                "[ar]",
+                "taglines",
+                "blood', 'check-up', 'drug-runner', 'rednecks', 'hula-dancer",
+                "%r%",
+                "%i%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ebele Okaro)', '(as Rocco Sifreddi)', '(as Nikky Blu)', '(as Pussy Girl Or)",
+                "[ar]",
+                "goofs",
+                "python', 'girl-detective', 'morning-sex', 'pigalle-paris', 'corporatocracy",
+                "%t%",
+                "%i%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(voice)', '(as Scott Ressler)', '(dvd meister)', '(as Brittany Fox)', '(as Debbie Hupp)",
+                "[us]",
+                "budget",
+                "machinima', 'credulousness', 'arrow-in-neck', 'strapping-young-lad', 'liquor",
+                "%1%",
+                "%0%",
+                "m",
+                "%l%",
+                "actor",
+                2005
+            ],
+            [
+                "(as Spike Dauner)', '(as Dakota Dare)', '(as Anaya Leon)', '(news reporter)', '(as Angelica)",
+                "[us]",
+                "tech info",
+                "pubic-hair', 'burnt-hand', 'confessional', 'motorcycle-chase', 'pandora''s-box",
+                "%m%",
+                "%m%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ronald Gordon)', '(as Clifford Stone)', '(as Steven Wong)', '(as Tatjana)",
+                "[de]",
+                "goofs",
+                "train-station', 'charleston', 'chest', 'magic-mirror', 'breaking",
+                "%m%",
+                "%i%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Ryan De Rouen)', '(as Sandra Nova)', '(as Savannah)', '(as Selly Elson)",
+                "[de]",
+                "goofs",
+                "philadelphia-pennsylvania', 'loss-of-powers', 'soiling-pants', 'product-endorsement', 'public",
+                "%d%",
+                "%d%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Sienna)', '(as Dawn Davies)', '(as Ellie Gottwald)', '(as Carie)",
+                "[ca]",
+                "release dates",
+                "animal-in-title', 'demolition-derby', 'dark-power', 'talking-to-a-dog', 'iranian",
+                "%r%",
+                "%a%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Malaysia)', '(as Ericka Fontes)', '(as Kirk Heflin)', '(Miss May 1991)",
+                "[us]",
+                "goofs",
+                "airport', 'make-out', 'menstruation', 'underage-drinking', 'aphrodisiac",
+                "%p%",
+                "%e%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Bob Hakan)', '(as Steffy Kraft)', '(as Maryann)', '(as Marcos Ferraez)",
+                "[ca]",
+                "certificates",
+                "investigation', 'ramones', 'braces', 'trombo', 'katana",
+                "%e%",
+                "%n%",
+                "m",
+                "%R%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Luisa Rosso)', '(as Zahari Baharov)', '(as Miso)', '(as Larisa)",
+                "[ar]",
+                "certificates",
+                "explosion', 'lost-father', 'sex-in-school', 'foot-pedal', 'midget-sex",
+                "%1%",
+                "%g%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(colourist)', '(as Miki)', '(as Candice)', '(as Denjarasu)",
+                "[us]",
+                "goofs",
+                "scientist', 'wound', 'exploding-ball', 'surprise-attack', 'shiloh",
+                "%W%",
+                "%i%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Episode #3)', '(as Sharin Wood)', '(as Michaela Raabe)', '(as Deana Demko)",
+                "[us]",
+                "release dates",
+                "python', 'college-life', 'scavenger-hunt', 'high-school-reunion', 'morning-coffee",
+                "%n%",
+                "%g%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Stina)', '(as Julia Jones)', '(as Denni)', '(as Kaylie)",
+                "[ar]",
+                "filming dates",
+                "buttocks', 'universe', 'car-park', 'invisible-man', 'paintball-gun",
+                "%e%",
+                "%3%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Deon)', '(as Emmanuael Mark)', '(as Sharron Wilde)', '(as R .Tomy)",
+                "[ar]",
+                "tech info",
+                "betting', 'romantic-novel', 'lock-combination', 'stunt-driver', 'broken-glasses",
+                "%1%",
+                "%A%",
+                "m",
+                "%S%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Taylor Starr)', '(as Warren DeRosa)', '(as Ace Elliott)', '(as Candice Heart)",
+                "[ca]",
+                "countries",
+                "accidental-killing', 'lesion', 'critically-bashed', 'male-friendship', 'lamp-post",
+                "%l%",
+                "%u%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Mat Scollon)', '(as Lucille Darcy)', '(head of promotion)', '(as Bob Ezrin)",
+                "[us]",
+                "release dates",
+                "shot-to-death', 'gutting', 'syringe', 'farm-hand', 'tantra",
+                "%c%",
+                "%c%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(Miko Lee)', '(bay producer)', '(as Michael Dacri)', '(as Susan Froemke)",
+                "[de]",
+                "goofs",
+                "announcer', 'rage', 'children', 'bald-man', 'purple-clothing",
+                "%B%",
+                "%n%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Harry Murphy)', '(as Nikkie Vixon)', '(Ring Announcer)', '(as C.J. Bennet)",
+                "[ar]",
+                "goofs",
+                "period-in-title', 'woman-singer', 'esa', 'grounded-flight', 'mecha",
+                "%b%",
+                "%e%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Atilla Bravoso)', '(as Naudia Hilton)', '(producer) (EPK)', '(as Bernie Deleo)",
+                "[de]",
+                "goofs",
+                "blood', 'car-brakes', 'angry-customer', 'rabbit''s-foot', 'disability",
+                "%a%",
+                "%o%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Uschi Digart)', '(as Fallon)', '(as Paul Smith)', '(as Diana Wynn)",
+                "[de]",
+                "color info",
+                "betting', 'all-female-army', 'sins-from-the-past', 'underwater-scene', 'street-performer",
+                "%r%",
+                "%o%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Sweet Treesa)', '(as Lorian James)', '(as Kevin Hewitt)', '(as Pam Nimo)",
+                "[us]",
+                "goofs",
+                "atlantic-city-new-jersey', 'earache-records', 'aids', 'nude-bicycling', 'rape-joke",
+                "%n%",
+                "%n%",
+                "m",
+                "%i%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Holly Howard)', '(as Cathy Brown)', '(as Val Agwulonu)', '(as Darren Burrows)",
+                "[us]",
+                "genres",
+                "antivenin', 'gangster-woman', 'naturalist', 'car-tuning', '20th-century",
+                "%n%",
+                "%n%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(film clips)', '(eic: Unitel)', '(Blues Traveler)', '(as Sindy Cummings)",
+                "[ca]",
+                "release dates",
+                "abbreviation-in-title', 'diabolical-laugh', 'gryphon''s-egg', 'pollack', 'wooden-stake",
+                "%b%",
+                "%e%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Peter Peck)', '(as Kelly Hoana)', '(as David S.)', '(as Ken Chukwu)",
+                "[ar]",
+                "release dates",
+                "animal-in-title', 'cheating-husband', 'finger-bitten-off', 'pharaoh', 'jumping-from-a-boat",
+                "%t%",
+                "%a%",
+                "m",
+                "%n%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Johnny Slim)', '(as Stacy Nichols)', '(as Gabor Roberts)', '(as Silvya Lauren)",
+                "[us]",
+                "genres",
+                "third-part', 'secret-development', 'dental-wax', 'weeping', 'amniotic-fluid",
+                "%F%",
+                "%i%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as J. Morgan)', '(as Ade Aderle)', '(as Zig Le Bric)', '(as Roy Denanie)",
+                "[us]",
+                "release dates",
+                "subway', 'time-warp', 'indian-canadian', 'popular-music', 'bricklin",
+                "%M%",
+                "%2%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Susan Serena)', '(as Vanessa K)', '(as Lisa Breeze)', '(production head)",
+                "[us]",
+                "goofs",
+                "scientist', 'bra-burning', 'filmed-killing', 'rogue', 'female-singer",
+                "%o%",
+                "%t%",
+                "m",
+                "%u%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Joanne Storm)', '(as Dorian Grant)', '(as Scott Forsina)', '(as Cayenne)",
+                "[de]",
+                "goofs",
+                "train-station', 'coal-industry', 'publicity', 'amputation', 'virtual-set",
+                "%N%",
+                "%l%",
+                "m",
+                "%D%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Gy\u00c3\u00b6ngyi)', '(as Pat Pedraza)', '(as Jenni Loveitt)', '(Guitar & Vocals)",
+                "[ar]",
+                "goofs",
+                "thong-swimsuit', 'excalibur', 'detour', 'set-up', 'm\u00c3\u00a9nage-\u00c3\u00a0-quatre",
+                "%r%",
+                "%d%",
+                "m",
+                "%,%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(2009)', '(as Chris Boyes)', '(as Arianna Jolie)', '(as Marino Rogers)",
+                "[de]",
+                "certificates",
+                "abbreviation-in-title', 'arm-ripped-off', 'twin-babies', 'starter-pistol', 'vegetable",
+                "%A%",
+                "%:%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Emanuelle Rios)', '(as Nick Springer)', '(as Valerie)', '(as Autumn Angel)",
+                "[ca]",
+                "tech info",
+                "dancing', 'frat-boy', 'survival-skills', 'dead-baby', 'railway",
+                "%5%",
+                "%m%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Juli)', '(as Ron Smith)', '(on-set doctor)', '(as CJ Bennett)",
+                "[us]",
+                "goofs",
+                "flame-thrower', 'tejano', 'lucky-charm', 'corrupt-soldier', 'caught-from-falling",
+                "%i%",
+                "%M%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Rolf Kristen)', '(as Liana Smiss)', '(as Rene Bar)', '(as Stacy Nichol)",
+                "[de]",
+                "color info",
+                "flame-thrower', 'stand-of-birch', 'comicon', 'crypt', 'lizard-monster",
+                "%r%",
+                "%o%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as John Glazer)', '(marketing: Pixion)', '(as Kameron Styles)', '(as Alexandru Cuza)",
+                "[us]",
+                "languages",
+                "betting', 'hollywood-records', 'sarcasm', 'spacedog', 'appetite",
+                "%n%",
+                "%n%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as J.C. Andrews)', '(as Jim Bataglia)', '(as Steven Drake)', '(video programmer)",
+                "[ca]",
+                "goofs",
+                "announcer', 'supernatural-rape', 'karmapa', 'ethiopian', 'idol",
+                "%a%",
+                "%h%",
+                "m",
+                "%r%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Kerry Cooper)', '(as Scorpion)', '(The Host)', '(as Tom Bradley)",
+                "[de]",
+                "locations",
+                "blonde', 'witches-horror', 'interrogation', 'breast-pump', 'bent-over",
+                "%o%",
+                "%a%",
+                "m",
+                "%e%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Cinabunz)', '(as Misty Raines)', '(as Ilona Tihase)', '(as Puma)",
+                "[de]",
+                "goofs",
+                "abbreviation-in-title', 'porno-film', 'satanic-book', 'roman', 'bentwaters",
+                "%t%",
+                "%k%",
+                "m",
+                "%y%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Tatiyana Fox)', '(as Barret Blade)', '(lab supervisor)', '(as Thomas Jeno)",
+                "[ar]",
+                "goofs",
+                "soldier', 'trapped-in-a-car', 'swiss-alps', 'pot', 'skipping-rope",
+                "%t%",
+                "%f%",
+                "m",
+                "%a%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(news article)', '(as Pal Tengeri)', '(as Eric Johanson)', '(as Ricky Free)",
+                "[ar]",
+                "runtimes",
+                "reference-to-jeff-goldblum', 'land-developer', 'computer-dating', 'general''s-daughter', 'stand-alone-sequel",
+                "%2%",
+                "%:%",
+                "m",
+                "%p%",
+                "actor",
+                2003
+            ],
+            [
+                "(as Spike Dauner)', '(as Thomas Yu)', '(as Tommy B.)', '(as Alison Star)', '(as Caroline Leone)",
+                "[ca]",
+                "genres",
+                "military', 'drug-deal', 'shotgun-guitar', 'fight', 'raf",
+                "%r%",
+                "%o%",
+                "m",
+                "%k%",
+                "actor",
+                2003
+            ]
+        ]
+    }
+}

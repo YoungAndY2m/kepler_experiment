@@ -1,0 +1,1176 @@
+{
+  "19-0": {
+    "query": "SELECT MIN(n.name) AS voicing_actress, MIN(t.title) AS voiced_movie\nFROM sampled_aka_name_4 AS an,\n   sampled_char_name_4 AS chn,\n   sampled_cast_info_4 AS ci,\n   sampled_company_name_4 AS cn,\n   sampled_info_type_4 AS it,\n  sampled_movie_companies_4 AS mc,\n   sampled_movie_info_4 AS mi,\n   sampled_name_4 AS n,\n   sampled_role_type_4 AS rt,\n   sampled_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mi.movie_id = ci.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND mc.note IS NOT NULL\nAND (mc.note LIKE '@param3' OR mc.note LIKE '@param4')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param5' OR mi.info LIKE '@param6')\nAND n.gender = '@param7'\nAND n.name LIKE '@param8'\nAND rt.role = '@param9'\nAND t.production_year BETWEEN @param10 AND @param11;",
+    "predicates": [
+      {
+        "alias": "ci",
+        "column": "note",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_cast_info_4",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "mi",
+          "n",
+          "rt",
+          "an",
+          "chn"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_movie_companies_4",
+          "sampled_movie_info_4",
+          "sampled_name_4",
+          "sampled_role_type_4",
+          "sampled_aka_name_4",
+          "sampled_char_name_4"
+        ],
+        "join_conditions": [
+          "t.id = ci.movie_id",
+          "mc.movie_id = ci.movie_id",
+          "mi.movie_id = ci.movie_id",
+          "n.id = ci.person_id",
+          "rt.id = ci.role_id",
+          "ci.person_id = an.person_id",
+          "chn.id = ci.person_role_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both",
+          "both",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ],
+          [
+            "gender",
+            "name"
+          ],
+          [
+            "role"
+          ],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4"
+        ],
+        "join_conditions": [
+          "it.id = mi.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_companies_4",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "mi",
+          "cn"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_cast_info_4",
+          "sampled_movie_info_4",
+          "sampled_company_name_4"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "mc.movie_id = ci.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_companies_4",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "mi",
+          "cn"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_cast_info_4",
+          "sampled_movie_info_4",
+          "sampled_company_name_4"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "mc.movie_id = ci.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "ci",
+          "it"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_movie_companies_4",
+          "sampled_cast_info_4",
+          "sampled_info_type_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = ci.movie_id",
+          "it.id = mi.info_type_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "ci",
+          "it"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_movie_companies_4",
+          "sampled_cast_info_4",
+          "sampled_info_type_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = ci.movie_id",
+          "it.id = mi.info_type_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "gender",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_name_4",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "sampled_cast_info_4",
+          "sampled_aka_name_4"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "n.id = an.person_id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_name_4",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "sampled_cast_info_4",
+          "sampled_aka_name_4"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "n.id = an.person_id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "rt",
+        "column": "role",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_role_type_4",
+        "join_tables_alias": [
+          "ci"
+        ],
+        "join_tables": [
+          "sampled_cast_info_4"
+        ],
+        "join_conditions": [
+          "rt.id = ci.role_id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mc",
+          "ci"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4",
+          "sampled_movie_companies_4",
+          "sampled_cast_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mc.movie_id",
+          "t.id = ci.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mc",
+          "ci"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4",
+          "sampled_movie_companies_4",
+          "sampled_cast_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mc.movie_id",
+          "t.id = ci.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      }
+    ],
+    "params": [
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "countries",
+        "%2005%",
+        "%association%",
+        "%U%",
+        "%Prior%",
+        "m",
+        "%Andrew%",
+        "actor",
+        2003,
+        2006
+      ],
+      [
+        "(producer)', '(producer)', '(producer)', '(producer)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%TV%",
+        "%Japan%",
+        "%542%",
+        "%l%",
+        "m",
+        "%Bradley%",
+        "actor",
+        2003,
+        2005
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(associate producer)",
+        "[us]",
+        "release dates",
+        "%2005%",
+        "%2004%",
+        "%o%",
+        "%S%",
+        "m",
+        "%D%",
+        "actor",
+        2002,
+        2005
+      ],
+      [
+        "(executive producer)', '(voice)', '(executive producer)', '(executive producer)', '(executive producer)",
+        "[us]",
+        "countries",
+        "%USA%",
+        "%worldwide%",
+        "%m%",
+        "%o%",
+        "m",
+        "%Brian%",
+        "actor",
+        2003,
+        2006
+      ],
+      [
+        "(writer)', '(voice)', '(voice)', '(executive producer)', '(voice)",
+        "[us]",
+        "genres",
+        "%USA%",
+        "%TV%",
+        "%i%",
+        "%r%",
+        "m",
+        "%Daniel%",
+        "actor",
+        1999,
+        2004
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%DVD%",
+        "%2004%",
+        "%r%",
+        "%r%",
+        "m",
+        "%Bell%",
+        "actor",
+        2001,
+        2005
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%in%",
+        "%TV%",
+        "%o%",
+        "%busy%",
+        "m",
+        "%Kenny%",
+        "actor",
+        2000,
+        2006
+      ],
+      [
+        "(credit only)', '(credit only)', '(credit only)', '(credit only)', '(credit only)",
+        "[us]",
+        "release dates",
+        "%Hungary%",
+        "%2005%",
+        "%S%",
+        "%U%",
+        "m",
+        "%Jamie%",
+        "actor",
+        2003,
+        2005
+      ],
+      [
+        "(production assistant)', '(producer)', '(written by)', '(archive footage)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%TV%",
+        "%2006%",
+        "%2005%",
+        "%E%",
+        "m",
+        "%Brian%",
+        "actor",
+        2005,
+        2006
+      ],
+      [
+        "(voice: English version)', '(voice: English version)', '(voice: English version)', '(voice: English version)', '(voice: English version)",
+        "[us]",
+        "countries",
+        "%DVD%",
+        "%co%",
+        "%h%",
+        "%U%",
+        "m",
+        "%Eric%",
+        "actor",
+        2001,
+        2003
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%TV%",
+        "%worldwide%",
+        "%U%",
+        "%S%",
+        "m",
+        "%Daniel%",
+        "actor",
+        2000,
+        2003
+      ],
+      [
+        "(voice)', '(writer)', '(voice)', '(writer)', '(writer)",
+        "[us]",
+        "release dates",
+        "%2002%",
+        "%Hungary%",
+        "%U%",
+        "%e%",
+        "m",
+        "%Castellaneta%",
+        "actor",
+        2002,
+        2004
+      ],
+      [
+        "(writer)', '(voice)', '(writer)', '(voice)', '(voice)",
+        "[us]",
+        "genres",
+        "%USA%",
+        "%USA%",
+        "%o%",
+        "%U%",
+        "m",
+        "%Tony%",
+        "actor",
+        2000,
+        2004
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(executive producer)', '(uncredited)', '(executive producer)",
+        "[us]",
+        "countries",
+        "%USA%",
+        "%2006%",
+        "%to%",
+        "%U%",
+        "m",
+        "%Ka%",
+        "actor",
+        2002,
+        2003
+      ],
+      [
+        "(associate producer)', '(associate producer)', '(associate producer)', '(associate producer)', '(uncredited)",
+        "[gb]",
+        "release dates",
+        "%media%",
+        "%TV%",
+        "%C%",
+        "%g%",
+        "m",
+        "%D%",
+        "actor",
+        2006,
+        2006
+      ],
+      [
+        "(voice)', '(writer)', '(writer)', '(executive producer)', '(voice)",
+        "[jp]",
+        "genres",
+        "%DVD%",
+        "%n%",
+        "%U%",
+        "%S%",
+        "m",
+        "%Kenny%",
+        "actor",
+        2005,
+        2005
+      ],
+      [
+        "(uncredited)', '(writer)', '(production assistant)', '(writer)', '(associate producer)",
+        "[us]",
+        "release dates",
+        "%2005%",
+        "%2005%",
+        "%have%",
+        "%E%",
+        "m",
+        "%David%",
+        "actor",
+        2003,
+        2004
+      ],
+      [
+        "(creator)', '(uncredited)', '(creator)', '(uncredited)', '(creator)",
+        "[us]",
+        "release dates",
+        "%Zula%",
+        "%media%",
+        "%l%",
+        "%S%",
+        "m",
+        "%Phil%",
+        "actor",
+        2003,
+        2003
+      ],
+      [
+        "(written by)', '(associate producer)', '(uncredited)', '(credit only)', '(associate producer)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%2007%",
+        "%h%",
+        "%l%",
+        "m",
+        "%Acqua%",
+        "actor",
+        2003,
+        2004
+      ],
+      [
+        "(written by)', '(executive producer)', '(voice)', '(production assistant)', '(supervising producer)",
+        "[us]",
+        "genres",
+        "%2006%",
+        "%2005%",
+        "%l%",
+        "%S%",
+        "m",
+        "%L%",
+        "actor",
+        2004,
+        2004
+      ],
+      [
+        "(creator)', '(creator)', '(uncredited)', '(uncredited)', '(creator)",
+        "[us]",
+        "countries",
+        "%TV%",
+        "%2005%",
+        "%S%",
+        "%o%",
+        "m",
+        "%Jack%",
+        "actor",
+        2002,
+        2004
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(creator)', '(voice)', '(voice)",
+        "[us]",
+        "countries",
+        "%2006%",
+        "%USA%",
+        "%U%",
+        "%C%",
+        "m",
+        "%James%",
+        "actor",
+        2004,
+        2005
+      ],
+      [
+        "(writer)', '(executive producer)', '(writer)', '(executive producer)', '(archive footage)",
+        "[us]",
+        "genres",
+        "%2006%",
+        "%TV%",
+        "%u%",
+        "%E%",
+        "m",
+        "%Kenny%",
+        "actor",
+        2000,
+        2006
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(creator)', '(uncredited)', '(creator)",
+        "[us]",
+        "release dates",
+        "%2005%",
+        "%USA%",
+        "%h%",
+        "%C%",
+        "m",
+        "%Tony%",
+        "actor",
+        2002,
+        2003
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%2006%",
+        "%USA%",
+        "%h%",
+        "%s%",
+        "m",
+        "%James%",
+        "actor",
+        2006,
+        2006
+      ],
+      [
+        "(producer)', '(producer)', '(uncredited)', '(uncredited)', '(associate producer)",
+        "[fr]",
+        "countries",
+        "%r%",
+        "%DVD%",
+        "%S%",
+        "%mm%",
+        "m",
+        "%Ho%",
+        "actor",
+        2002,
+        2006
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%TV%",
+        "%USA%",
+        "%U%",
+        "%U%",
+        "m",
+        "%Miguel%",
+        "actor",
+        2002,
+        2006
+      ],
+      [
+        "(writer)', '(writer)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%e%",
+        "%TV%",
+        "%t%",
+        "%E%",
+        "m",
+        "%Tony%",
+        "actor",
+        2006,
+        2006
+      ],
+      [
+        "(voice)', '(voice: English version)', '(writer)', '(voice)', '(executive producer)",
+        "[us]",
+        "release dates",
+        "%2006%",
+        "%2005%",
+        "%o%",
+        "%S%",
+        "m",
+        "%George%",
+        "actor",
+        2006,
+        2006
+      ],
+      [
+        "(voice)', '(producer)', '(security)', '(office production assistant) (uncredited)', '(as Kuba Klawiter)",
+        "[us]",
+        "release dates",
+        "%Germany%",
+        "%TV%",
+        "%h%",
+        "%E%",
+        "m",
+        "%LaMarr%",
+        "actor",
+        2005,
+        2005
+      ],
+      [
+        "(producer)', '(executive producer)', '(creator)', '(voice)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%2003%",
+        "%2008%",
+        "%o%",
+        "%l%",
+        "m",
+        "%James%",
+        "actor",
+        2003,
+        2003
+      ],
+      [
+        "(voice: English version)', '(voice: English version)', '(voice: English version)', '(voice: English version)', '(voice: English version)",
+        "[us]",
+        "genres",
+        "%New%",
+        "%TV%",
+        "%c%",
+        "%h%",
+        "m",
+        "%Joe%",
+        "actor",
+        2003,
+        2004
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(creator)', '(uncredited)', '(uncredited)",
+        "[de]",
+        "release dates",
+        "%USA%",
+        "%2005%",
+        "%S%",
+        "%U%",
+        "m",
+        "%Tony%",
+        "actor",
+        2005,
+        2005
+      ],
+      [
+        "(script supervisor)', '(uncredited)', '(creator)', '(production coordinator)', '(co-executive producer)",
+        "[us]",
+        "release dates",
+        "%V%",
+        "%co%",
+        "%s%",
+        "%A%",
+        "m",
+        "%James%",
+        "actor",
+        2003,
+        2005
+      ],
+      [
+        "(voice: English version)', '(associate producer)', '(voice)', '(creator)', '(voice: Japanese version)",
+        "[us]",
+        "release dates",
+        "%DVD%",
+        "%TV%",
+        "%h%",
+        "%F%",
+        "m",
+        "%Brian%",
+        "actor",
+        2004,
+        2006
+      ],
+      [
+        "(written by)', '(archive footage)', '(creator)', '(co-producer)', '(co-executive producer)",
+        "[us]",
+        "release dates",
+        "%as%",
+        "%2006%",
+        "%o%",
+        "%r%",
+        "m",
+        "%Franco%",
+        "actor",
+        2005,
+        2005
+      ],
+      [
+        "(voice)', '(writer)', '(writer)', '(writer)', '(writer)",
+        "[gb]",
+        "genres",
+        "%theatrical%",
+        "%2007%",
+        "%C%",
+        "%h%",
+        "m",
+        "%D%",
+        "actor",
+        2001,
+        2001
+      ],
+      [
+        "(executive producer)', '(voice)', '(voice)', '(voice)', '(executive producer)",
+        "[us]",
+        "release dates",
+        "%2005%",
+        "%TV%",
+        "%s%",
+        "%l%",
+        "m",
+        "%Tom%",
+        "actor",
+        1999,
+        2006
+      ],
+      [
+        "(uncredited)', '(creator)', '(uncredited)', '(creator)', '(creator)",
+        "[us]",
+        "release dates",
+        "%with%",
+        "%USA%",
+        "%h%",
+        "%l%",
+        "m",
+        "%K%",
+        "actor",
+        2005,
+        2006
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[gb]",
+        "release dates",
+        "%TV%",
+        "%DVD%",
+        "%U%",
+        "%a%",
+        "m",
+        "%R%",
+        "actor",
+        2004,
+        2006
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(writer)', '(writer)",
+        "[us]",
+        "release dates",
+        "%theatrical%",
+        "%DVD%",
+        "%E%",
+        "%U%",
+        "m",
+        "%Paul%",
+        "actor",
+        2006,
+        2006
+      ],
+      [
+        "(voice)', '(associate producer)', '(voice)', '(associate producer)', '(voice)",
+        "[us]",
+        "release dates",
+        "%association%",
+        "%USA%",
+        "%n%",
+        "%m%",
+        "m",
+        "%LaMarr%",
+        "actor",
+        2000,
+        2002
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(uncredited)', '(executive producer)', '(executive producer)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%USA%",
+        "%K%",
+        "%o%",
+        "m",
+        "%Damian%",
+        "actor",
+        2001,
+        2004
+      ],
+      [
+        "(producer)', '(producer)', '(producer)', '(executive producer)', '(voice)",
+        "[us]",
+        "genres",
+        "%USA%",
+        "%USA%",
+        "%U%",
+        "%l%",
+        "m",
+        "%Mike%",
+        "actor",
+        2005,
+        2006
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%2006%",
+        "%USA%",
+        "%C%",
+        "%U%",
+        "m",
+        "%Costello%",
+        "actor",
+        2002,
+        2004
+      ],
+      [
+        "(writer)', '(voice)', '(writer)', '(writer)', '(voice)",
+        "[us]",
+        "genres",
+        "%2005%",
+        "%USA%",
+        "%C%",
+        "%l%",
+        "m",
+        "%James%",
+        "actor",
+        2002,
+        2006
+      ],
+      [
+        "(producer)', '(producer)', '(archive footage)', '(producer)', '(writer)",
+        "[us]",
+        "release dates",
+        "%theatrical%",
+        "%DVD%",
+        "%r%",
+        "%Daffy%",
+        "m",
+        "%Joe%",
+        "actor",
+        2003,
+        2006
+      ],
+      [
+        "(voice: English version)', '(archive footage)', '(voice: English version)', '(voice: English version)', '(archive footage)",
+        "[us]",
+        "release dates",
+        "%production%",
+        "%the%",
+        "%t%",
+        "%S%",
+        "m",
+        "%D%",
+        "actor",
+        2006,
+        2006
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%DVD%",
+        "%2001%",
+        "%h%",
+        "%U%",
+        "m",
+        "%James%",
+        "actor",
+        2002,
+        2003
+      ],
+      [
+        "(voice)', '(executive producer)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%Kong%",
+        "%season%",
+        "%U%",
+        "m",
+        "%E%",
+        "actor",
+        2001,
+        2005
+      ],
+      [
+        "(voice)', '(writer)', '(voice)', '(writer)', '(writer)",
+        "[us]",
+        "countries",
+        "%USA%",
+        "%USA%",
+        "%S%",
+        "%U%",
+        "m",
+        "%Hank%",
+        "actor",
+        2000,
+        2005
+      ]
+    ]
+  }
+}

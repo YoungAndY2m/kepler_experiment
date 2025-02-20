@@ -1,0 +1,2791 @@
+{
+    "22-0": {
+        "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS western_violent_movie\nFROM sampled_company_name_4 AS cn,\n   sampled_company_type_4 AS ct,\n   sampled_info_type_4 AS it1,\n   sampled_info_type_4 AS it2,\n   sampled_keyword_4 AS k,\n   sampled_kind_type_4 AS kt,\n   sampled_movie_companies_4 AS mc,\n   sampled_movie_info_4 AS mi,\n   sampled_movie_info_idx_4 AS mi_idx,\n   sampled_movie_keyword_4 AS mk,\n   sampled_title_4 AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = mc.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mk.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mc.movie_id\nAND mc.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND ct.id = mc.company_type_id\nAND cn.id = mc.company_id\nAND cn.country_code != '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND kt.kind IN ('@param4')\nAND mc.note NOT LIKE '@param5'\nAND mc.note LIKE '@param6'\nAND mi.info IN ('@param7')\nAND mi_idx.info < '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "!=",
+                "data_type": "text",
+                "table": "sampled_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_kind_type_4",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "sampled_title_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "sampled_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_company_type_4",
+                    "sampled_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_company_type_4",
+                    "sampled_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_companies_4",
+                    "sampled_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "sampled_movie_info_idx_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_companies_4",
+                    "sampled_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "sampled_title_4",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx",
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_kind_type_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'pau', 'hard-rock', 'the-incredibles', 'cleaning-agent",
+                "movie', 'episode', 'video game', 'movie', 'tv series",
+                "%l%",
+                "%d%",
+                "Philippines:PG-13', 'Run Like Hell', 'Italy:July 2003', 'USA:175', 'UK:21 March 2011",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "supernatural-power', 'haggling', 'trojan-war', 'institution', 'flying-bomb",
+                "movie', 'episode', 'video movie', 'video game', 'movie",
+                "%l%",
+                "%t%",
+                "Sweden:15', 'Denmark:7 May 2007', 'Lakeside, Ohio, USA', 'Canada:2002', '93",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "island', 'mind-game', 'slamdance', 'prom-night', 'scoop",
+                "movie', 'episode', 'movie', 'video movie', 'video game",
+                "%w%",
+                "%n%",
+                "Peru:14', 'Spain:4 June 2005', 'Greece:22 June 2001', 'UK:30 January 2002', 'Kitgum, Uganda",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "bloodshed', 'christmas-ornament', 'egypt', 'burgos-spain', 'playing-dress-up",
+                "movie', 'tv movie', 'video movie', 'episode', 'tv movie",
+                "%a%",
+                "%(%",
+                "Germany:16', 'UK:27 December 2003', 'DKK 250,000', 'USA:10 April 2010', 'Marsaxlokk, Malta",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "mediterranean', 'watch-band', 'thriller-episode', 'chart-show', 'driving-off-cliff",
+                "movie', 'tv movie', 'movie', 'tv movie', 'tv series",
+                "%z%",
+                "%2%",
+                "Australia:M', 'SKK 120,000', 'Sweden:19 May 2005', 'USA:8 December 2007', 'Japan:10 March 2007",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "heart-in-hand', 'buying-and-selling', 'extreme-film', 'same-birthday', 'indian-spanish",
+                "movie', 'video movie', 'video game', 'video movie', 'tv movie",
+                "%z%",
+                "%n%",
+                "Portugal:M/12', 'IDR 2,000,000,000', 'Love Hurts', '- 4 February 2006', 'AUD 195,000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "speech', 'sexual-dysfunction', 'pineal-gland', 'coast-guard', 'social-justice",
+                "movie', 'movie', 'video game', 'tv series', 'video movie",
+                "%e%",
+                "%(%",
+                "Germany:12', 'Hungary:2003', 'Germany:43', 'USA:1 October 1999', 'Canada:9 June 2002",
+                "6.1",
+                2002
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes distribution",
+                "part-computer-animation', 'pagan-god', 'english-countryside', 'paducah-kentucky', 'medieval-faire",
+                "movie', 'tv series', 'tv series', 'movie', 'tv series",
+                "%0%",
+                "%n%",
+                "Horror', 'Italy:16,02', 'Sweden:105', 'Norway:6 July 2004', 'Japan:7 July 2009",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "hood', 'rochester-new-york', 'television-crew', 'pot-of-gold', 'steam-room",
+                "movie', 'video game', 'episode', 'episode', 'video game",
+                "%h%",
+                "%i%",
+                "UK:12A', '\u00e2\u0082\u00ac 6,000', 'CAD 21,000', 'INR 50,000,000', 'Finland:28 May 2004",
+                "6.1",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "island', 'george-whitman', 'hiroshima-japan', 'traffic-accident', 'patriarchy",
+                "movie', 'movie', 'episode', 'tv movie', 'tv movie",
+                "%0%",
+                "%V%",
+                "Canada:14A', 'Colombia:2005', 'Germany:17.51', 'Hungary:5 July 2006', 'One Rule... His",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes distribution",
+                "queen', 'drinking-ink', 'recognition', 'search-for-parent', 'fire-department",
+                "movie', 'tv movie', 'tv movie', 'video game', 'movie",
+                "%c%",
+                "%l%",
+                "Horror', 'Japan:3 June 2001', 'USA:26 May 2005', 'Goin'' Somewhere...', 'Canada:157",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes distribution",
+                "supernatural-power', 'wanting-a-divorce', 'gendun', 'japanese-tank', 'braggadocio",
+                "movie', 'tv movie', 'video movie', 'video movie', 'tv movie",
+                "%a%",
+                "%h%",
+                "DTS', 'USA:28 June 2001', 'Come Out To Play', 'Michoac\u00c3\u00a1n, Mexico', 'USA:31 January 2005",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'moose-antlers', 'guaiacuru-indian', 'german-american', 'woman-kills-woman",
+                "movie', 'episode', 'episode', 'video movie', 'movie",
+                "%0%",
+                "%a%",
+                "Finland:K-15', 'Chile:15 May 2006', 'Turkey:99', 'USA:34:00', '$6,600,000",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "island', 'hydrochloric-acid', 'pink-light', 'statistics', 'jeweller",
+                "movie', 'episode', 'video game', 'video game', 'video movie",
+                "%e%",
+                "%l%",
+                "Portugal:M/12', 'South Africa:94', 'Chile:120', 'Hotter Than Ever!!', '16,549 (France)",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "rating",
+                "island', 'troll-doll', 'descent', 'airlock', 'elope",
+                "movie', 'tv series', 'tv series', 'video game', 'episode",
+                "%h%",
+                "%a%",
+                "Fantasy', 'France:8.30', 'Spain:21 May 2000', 'HKD 80,000,000', 'UK:12 May 2004",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "tech info",
+                "votes distribution",
+                "speech', 'housing-ad', 'noni-fruit', 'trade-law', 'wedding-band",
+                "movie', 'tv movie', 'video movie', 'movie', 'video game",
+                "%e%",
+                "%(%",
+                "RAT:2.35 : 1', 'AUD 97,500', 'UK:24 April 2008', 'Spain:1 April 2002', 'Thank you, please!",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "queen', 'water-hose', 'anglo-asian', 'managing-director', 'broken-violin",
+                "movie', 'video game', 'video movie', 'tv series', 'movie",
+                "%0%",
+                "%t%",
+                "Spain:13', 'They Walk Among Us', '12.18', 'Taiwan:17 May 2006', 'Sweden:4 May 2000",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "hero', 'forced-to-resign', 'oompa-loompa', 'tokyo''s-sky-city', 'dining-car",
+                "movie', 'episode', 'tv series', 'tv movie', 'tv movie",
+                "%a%",
+                "%(%",
+                "South Korea:12', 'Russia:1 July 2008', 'Licensed To Chill', 'Italy:24 April 2000', 'Russia:18 May 2004",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "queen', 'car-in-living-room', 'san-andrea-school', 'bussler', 'toy-making",
+                "movie', 'tv movie', 'tv series', 'tv movie', 'tv movie",
+                "%z%",
+                "%2%",
+                "Finland:K-15', 'Porto, Portugal', 'Cuba:171', 'Jason P. Hunt', '$25,461 (USA)",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "1780s', 'power-abuse', 'suffolk-england', 'saints', 'homecoming-soldier",
+                "movie', 'tv series', 'video movie', 'video movie', 'tv movie",
+                "%i%",
+                "%(%",
+                "Portugal:M/12', 'CAD 10,000,000', 'MET:3778 m', 'Greece:85', 'Italy:2 June 2004",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes distribution",
+                "queen', 'running-after-a-dog', 'pay-day', 'bouquet-of-flowers', 'grillparzer-play",
+                "movie', 'tv movie', 'episode', 'video movie', 'video movie",
+                "%e%",
+                "%D%",
+                "SDDS', 'MET:415 m', 'Finland:1 May 2006', 'UK:16 August 2006', 'Ready, Fire... Aim!",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "groupie', 'twisted-love', 'grand-ball', 'female-psychologist', 'dance-band-singer",
+                "movie', 'video game', 'video game', 'movie', 'movie",
+                "%t%",
+                "%)%",
+                "Germany:16', 'UK:1 January 2002', '$3,600,000', 'South Africa:5', 'Taiwan:24 June 2004",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes distribution",
+                "bloodshed', 'sigmund-freud', 'playing-solitaire', 'nevada', 'special-needs-child",
+                "movie', 'tv movie', 'tv movie', 'tv movie', 'episode",
+                "%t%",
+                "%e%",
+                "DTS', 'Japan:30 April 2008', 'Turkey:30 June 2006', 'Norway:1 March 2001', 'Get A Real Job",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "1780s', 'weighing-scales', 'costumer', 'police-infiltrator', 'animate-skeleton",
+                "movie', 'tv movie', 'tv movie', 'tv series', 'tv series",
+                "%D%",
+                "%)%",
+                "Argentina:13', 'Canada:30 May 2005', 'Philippines:122', 'MET:2965 m', 'Spain:25",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "queen', 'barbados', 'bioengineering', 'rubber-boots', 'bail-bondsman",
+                "movie', 'episode', 'tv movie', 'tv series', 'tv movie",
+                "%a%",
+                "%)%",
+                "Netherlands:16', 'Spain:12 May 2002', 'Chile:June 2003', '? - 31 March 2000', 'China:20 July 2006",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "rating",
+                "bloodshed', 'salinity', 'flying-machine', 'emptiness', 'irish-film-board",
+                "movie', 'video movie', 'episode', 'episode', 'video movie",
+                "%c%",
+                "%i%",
+                "DTS', 'UK:15m', 'got guns?', 'Sweden:17 May 2003', 'Brazil:6 April 2005",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "confederacy', 'grieving-widower', 'nab', 'high-roller', 'film-director",
+                "movie', 'episode', 'movie', 'movie', 'tv movie",
+                "%3%",
+                "%a%",
+                "Netherlands:12', 'UK:28 December 2000', 'Japan:30 April 2006', 'Egypt:4 March 2004', 'USA:27 August 2001",
+                "6.1",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "groupie', 'pencil-in-hair', 'schoolmaster', 'sex-by-fireplace', 'card-counting",
+                "movie', 'tv series', 'movie', 'tv series', 'video movie",
+                "%a%",
+                "%(%",
+                "Philippines:PG-13', 'Finland:April 2000', 'Brazil:2 May 2008', 'Denmark:7 July 2001', 'MET:2981 m",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "military-training', 'citizen-action', 'christmas', 'physical-training', 'chav",
+                "movie', 'episode', 'tv series', 'video game', 'tv series",
+                "%l%",
+                "%)%",
+                "Germany:16', 'Egypt:21 March 2007', 'Finland:18 May 2005', 'Italy:1 June 2000', '\u00e2\u0082\u00ac 108,000",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "evil-queen', 'dominoes-game', 'border-patrol', 'australian-composer', 'lsd",
+                "movie', 'tv movie', 'video game', 'tv movie', 'tv series",
+                "%a%",
+                "%l%",
+                "Australia:M', '$6,068 (Romania)', 'John P. Foster', '$218', 'A modern fairy tale",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "bloodshed', 'wife-shoots-husband', 'hiding-in-a-shower', 'maxim-magazine', 'water-geyser",
+                "movie', 'video movie', 'video movie', 'episode', 'episode",
+                "%i%",
+                "%)%",
+                "Singapore:PG', 'France:5 May 2000', 'Chile:27 April 2006', 'Spain:15 March 2006', '$1,900,000",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "evil-queen', 'memoir', 'shrunken-head', 'losing-weight', 'human-relationship",
+                "movie', 'video movie', 'video game', 'video game', 'video game",
+                "%D%",
+                "%(%",
+                "Australia:M', 'Germany:18,53', 'Suit up for action!', 'Spain:2 June 2006', 'USA:4:57",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "battlefield', 'leg-touching', 'co-ed', 'burger-flipper', 'folk-tale",
+                "movie', 'tv series', 'episode', 'movie', 'video game",
+                "%n%",
+                "%(%",
+                "South Korea:12', 'Belgium:6 May 2002', 'Australia:24', 'DKK 7,000', 'USA:20 April 2007",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'playing-drums', 'radiologist', 'coal-company', 'pommel-horse",
+                "movie', 'episode', 'video movie', 'tv series', 'movie",
+                "%d%",
+                "%2%",
+                "UK:15', 'Hernandez, Hector', 'Canada:26:30', 'UK:22 January 2005', 'Spain:30 June 2009",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "new-orleans-louisiana', 'high-speed-pursuit', 'digivice', 'pompeii', 'light-bulb",
+                "movie', 'episode', 'movie', 'tv movie', 'movie",
+                "%S%",
+                "%)%",
+                "Malaysia:(Banned)', '$404,000 (USA)', 'Never Follow.', '660', 'Electronic Arts",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "part-computer-animation', 'independence', 'test-tube', 'shiv', 'u-haul",
+                "movie', 'video movie', 'episode', 'movie', 'tv movie",
+                "%i%",
+                "%r%",
+                "Australia:M', 'Austria:7 July 2002', 'Serbia:17 June 2001', 'Peru:19', 'Estonia:8 June 2001",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes",
+                "queen', 'illegal-fundraising', 'task-force-58', 'fashion-writer', 'inner-city",
+                "movie', 'video movie', 'episode', 'tv series', 'video game",
+                "%n%",
+                "%(%",
+                "DTS', 'Norway:July 2003', 'Austria:47', 'The Open University', '\u00c2\u00a3330,000",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "queen', 'estranged-daughter', 'caper-comedy', 'dwight-illinois', 'floating-in-the-air",
+                "movie', 'tv movie', 'episode', 'video game', 'episode",
+                "%a%",
+                "%)%",
+                "Philippines:PG-13', 'Brazil:24 May 2005', 'Mexico:3 July 2001', 'HUF 90,000,000', '\u00c2\u00a9ZDF 2000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'ancient-weapon', 'labor-demonstration', 'baby-with-glasses', 'arab-spring",
+                "movie', 'tv movie', 'tv series', 'video game', 'video movie",
+                "%r%",
+                "%)%",
+                "Philippines:PG-13', '? - 21 May 2002', 'Kuwait:8 May 2008', 'Japan:4 July 2011', 'CAM:Sony DSR-200A",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "murder', 'famous-painting', 'jungle-adventure', 'funkdaddy', 'trader",
+                "movie', 'movie', 'tv series', 'tv movie', 'video movie",
+                "%0%",
+                "%a%",
+                "Brazil:14', '$8,725,813 (USA)', 'Brazil:3 April 2009', 'MET:2150 m', 'USA:6 May 2008",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "murder', 'hook-for-hand', 'medal-ceremony', 'vertical-sports', 'probation-hearing",
+                "movie', 'video game', 'tv movie', 'movie', 'video game",
+                "%e%",
+                "%n%",
+                "Brazil:14', 'Greece:4 May 2001', 'Brazil:7 June 2000', 'AUD 265,000', 'Chile:4 June 2002",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "new-orleans-louisiana', 'carried-over-back', 'sand-animation', 'mechanics', 'man-as-island",
+                "movie', 'video game', 'episode', 'video movie', 'tv movie",
+                "%c%",
+                "%)%",
+                "Canada:14A', 'Netherlands:108', 'New Zealand:70', 'Spain:04 May 2006', 'ARS 10,000",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "battlefield', 'marathon-concert', 'cormorant', 'squid', 'anchorman",
+                "movie', 'video game', 'video movie', 'video game', 'tv series",
+                "%t%",
+                "%l%",
+                "Singapore:PG', 'India:7 April 2006', 'UK:16 November 2003', 'Mechanical Bull', 'CNY 19,950,000",
+                "10537",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'murder-of-brother', 'collapsing-chair', 'meatballs', 'einstein",
+                "movie', 'video game', 'video game', 'tv movie', 'video game",
+                "%r%",
+                "%(%",
+                "Singapore:PG', '$160,854 (USA)', 'USA:8 November 2008', 'Mexico:6 April 2003', 'Germany:20 May 2006",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "queen', 'kidnapping-suspect', 'christian-cross', 'gay-panic', 'internet-chat",
+                "movie', 'video movie', 'episode', 'video game', 'video movie",
+                "%0%",
+                "%i%",
+                "Portugal:M/12', 'France:29 May 2007', 'Everybody dies', 'CAM:Sony CCD-V8', 'RAT:2.55 : 1",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "new-orleans-louisiana', 'jeepney-driver', 'bombardier', 'idiocy', 'ventriloquist-dummy",
+                "movie', 'movie', 'video movie', 'tv series', 'tv movie",
+                "%c%",
+                "%t%",
+                "Argentina:13', 'Norway:82', 'UK:9 April 2006', '$70', 'USA:16 April 2000",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes distribution",
+                "mediterranean', 'vendetta', 'fatalism', 'tobacco-tycoon', 'work-mate",
+                "movie', 'video game', 'movie', 'video game', 'tv series",
+                "%e%",
+                "%i%",
+                "DTS', 'Kevin Powis', 'CAD 1,300,000', 'USA:14 June 2002', 'USA:20 May 2003",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "island', 'secret-hideout', 'cadaver-dog', 'recapture', 'hou",
+                "movie', 'tv series', 'movie', 'episode', 'video movie",
+                "%d%",
+                "%a%",
+                "UK:15', 'Japan:20 April 2003', '\u00c2\u00a92005 ZDF', 'Peru:2000', 'Brazil:16 June 2004",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "murder', 'suing-for-damages', 'american-girl', 'pontiac-trans-am', 'italian-bakery",
+                "movie', 'tv series', 'movie', 'tv movie', 'tv movie",
+                "%l%",
+                "%a%",
+                "Argentina:13', 'CAD 3,200,000', 'Chile:7 March 2006', 'Australia:74', 'MET:268 m",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "murder', 'pesce', 'toy-rifle', 'insurance', 'nude-photo",
+                "movie', 'tv series', 'tv series', 'video game', 'tv series",
+                "%r%",
+                "%a%",
+                "Germany:16', 'Poland:7 May 2007', 'Italy:30 May 2003', 'USA:1 June 2006', 'Egypt:5 June 2002",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "queen', 'pack-animal', 'confederates', 'pig-actor', 'maubeuge-france",
+                "movie', 'video game', 'tv series', 'video movie', 'episode",
+                "%n%",
+                "%(%",
+                "Singapore:PG', 'USA:13 July 2011', '60', 'Poland:11 July 2003', 'Japan:1 June 2005",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'bujagali-falls', 'trees', 'prison-bus', 'bubonic-plague",
+                "movie', 'video movie', 'episode', 'episode', 'video game",
+                "%S%",
+                "%0%",
+                "Netherlands:16', 'Austria:1 July 2005', 'USA:29 March 2003', 'USA:10:17', 'Canada:21 May 2001",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "island', 'lipstick-on-boy', 'drug-murder', 'chain-link-fence', 'cosmos",
+                "movie', 'movie', 'episode', 'video movie', 'movie",
+                "%0%",
+                "%(%",
+                "Australia:M', 'Japan:31 May 2000', 'Belgium:27 May 2011', 'Greece:4 March 2010', 'UK:December 2004",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "groupie', 'rampage', 'false-information', 'vcr', 'nomadic-culture",
+                "movie', 'episode', 'movie', 'tv movie', 'episode",
+                "%t%",
+                "%)%",
+                "Canada:14A', 'Unleash the power.', 'France:12 May 2003', 'Mexico:6 April 2005', 'Denmark:12 May 2002",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes distribution",
+                "heart-in-hand', 'high-chair', 'riot-control', 'bizarre-ritual', 'tv-cook",
+                "movie', 'episode', 'tv series', 'movie', 'tv movie",
+                "%l%",
+                "%D%",
+                "SDDS', 'Japan:6 July 2009', 'UK:11 June 2001', 'Japan:20 June 2004', 'John Brodie",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes",
+                "evil-queen', 'hypochondriac', 'burns', 'tattoo-on-back', 'intrusion",
+                "movie', 'tv movie', 'movie', 'video movie', 'video movie",
+                "%2%",
+                "%l%",
+                "DTS', 'Drive carefully', 'USA:17 May 2008', 'Banned in the UK!', 'Naseriyah, Iraq",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "groupie', 'accident', 'motion-comic', 'incision', 'thai-army",
+                "movie', 'tv movie', 'movie', 'video movie', 'episode",
+                "%t%",
+                "%a%",
+                "Singapore:NC-16', 'PC/Windows Version.', 'Canada:13', 'DOP 250,000', '29 July 2002 -",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "battlefield', 'blood-stain', 'culture', 'scrambled-egg', 'still",
+                "movie', 'video movie', 'video movie', 'movie', 'movie",
+                "%t%",
+                "%2%",
+                "Argentina:13', 'France:7 March 2003', 'Romania:8 July 2006', 'Fear runs deep.', 'A Woman In Trouble",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "rating",
+                "part-computer-animation', 'zombie-bite', 'multiple-cameos', 'chinese-icelandic', 'compact-disc",
+                "movie', 'episode', 'video game', 'video movie', 'episode",
+                "%n%",
+                "%l%",
+                "SDDS', 'Sweden:14 May 1999', 'Canada:7 July 1999', 'Japan:69', 'Denmark:9 June 2003",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "battlefield', 'stills', 'color-photocopier', 'reindeer', 'wine-collecting",
+                "movie', 'tv series', 'tv series', 'tv movie', 'video movie",
+                "%t%",
+                "%h%",
+                "Australia:M', 'Iceland:17 May 2006', 'Finland:K-13', '\u00c2\u00a92004 VH1', 'Norway:2 March 2004",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "supernatural-power', 'transmission', 'ashtray', 'bird-watching', 'zurich",
+                "movie', 'movie', 'episode', 'episode', 'episode",
+                "%S%",
+                "%)%",
+                "Peru:14', 'Norway:12 May 2001', 'The Pack Is Back.', 'PFM:8 mm', 'France:3 May 2006",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'status-quo', 'snorkeling-monterey', 'multi-millionaire', 'attempted-patricide",
+                "movie', 'episode', 'tv movie', 'movie', 'movie",
+                "%a%",
+                "%e%",
+                "Sweden:15', 'Netherlands:128', '\u00c2\u00a9 2005 Sat.1', '$1,150,000', 'Braga, Portugal",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'murder-in-window', 'european', 'self-consciousness', 'costa-rica",
+                "movie', 'video movie', 'video game', 'episode', 'video game",
+                "%e%",
+                "%(%",
+                "Argentina:13', 'Japan:16 May 2000', 'Belgium:27 May 2009', 'UK:19 May 1999', 'Australia:21",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "bloodshed', 'masculinity', 'shears', 'shootout-on-a-beach', 'sex-in-train",
+                "movie', 'video game', 'tv series', 'episode', 'movie",
+                "%0%",
+                "%r%",
+                "Singapore:PG', 'USA:87 minutes', 'Pray to Die', 'Canada:25 June 2001', 'USA:30 May 2010",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "new-orleans-louisiana', 'ant-farm', 'conquest-of-chile', 'emigre', 'couples-therapy",
+                "movie', 'episode', 'tv movie', 'video game', 'tv movie",
+                "%2%",
+                "%(%",
+                "Peru:14', 'Once Upon A Time', 'UK:20 November 2000', 'Italy:37', '$106,000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "queen', 'company-car', 'chainsaw-murder', 'fleeing-animals', 'm1-rifle",
+                "movie', 'tv movie', 'tv movie', 'episode', 'tv series",
+                "%a%",
+                "%0%",
+                "Italy:VM18', 'Kensington, Jamaica', '1:10:43', '\u00e2\u0082\u00ac 300,000', 'Finland:K-11/9",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "queen', 'precocious-sex', 'stem-cell', 'combover', 'tit-milk",
+                "movie', 'episode', 'episode', 'tv movie', 'tv movie",
+                "%S%",
+                "%V%",
+                "Canada:14A', 'Itilleq, Greenland', 'Australia:May 2006', 'Canada:5 July 2000', 'As Seen On TV.",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "heart-in-hand', 'desire', 'random-kill', 'theologist', 'third-world",
+                "movie', 'episode', 'tv movie', 'episode', 'tv movie",
+                "%i%",
+                "%2%",
+                "Finland:K-15', 'South Africa:150', '227', 'Austria:176', 'Panama:14 May 2004",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "murder', 'loggerhead-turtle', 'ocean-wave', 'provins-france', 'evil-robot",
+                "movie', 'tv movie', 'tv movie', 'movie', 'video movie",
+                "%2%",
+                "%a%",
+                "UK:15', 'UK:28 March 1999', 'Denmark:3 July 2003', '245', 'UK:3 December 2004",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "tech info",
+                "rating",
+                "speech', 'stopover', 'scene-of-the-crime', 'boy-with-glasses', 'female-sex",
+                "movie', 'movie', 'movie', 'episode', 'episode",
+                "%C%",
+                "%a%",
+                "PCS:Digital Intermediate', 'CHF 350,000', 'Thailand:96', 'USA:8 October 2005', '\u00c2\u00a38,000,000",
+                "6.1",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "new-orleans-louisiana', 'dull-party', 'swedish-soldier', 'pig-costume', 'fear-of-women",
+                "movie', 'tv series', 'video movie', 'episode', 'video game",
+                "%D%",
+                "%n%",
+                "Portugal:M/12', 'Boom, Belgium', 'NZD 2,000', 'The Epic that Was', 'Israel:19 May 2005",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "main-character-shot', 'crude-humor', 'multiple-villains', 'color-tints', 'udaipur-india",
+                "movie', 'episode', 'video movie', 'video movie', 'video movie",
+                "%a%",
+                "%(%",
+                "New Zealand:M', 'USA:59', '$30,915 (USA)', 'He will find you.', 'Lithuania:10",
+                "6.1",
+                2002
+            ],
+            [
+                "[ch]",
+                "genres",
+                "votes",
+                "evil-queen', 'radio-news', 'aleister-crowley', 'brutus', 'taking-a-picture",
+                "movie', 'tv movie', 'episode', 'video movie', 'video game",
+                "%t%",
+                "%0%",
+                "Horror', 'Jura, France', '$17,500,000', 'Madagascar', 'Spain:14 May 2007",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "genres",
+                "votes distribution",
+                "queen', 'strip-club-audition', 'sense-of-sound', 'shopping-trolley', 'somerset-england",
+                "movie', 'video movie', 'tv movie', 'tv series', 'tv movie",
+                "%S%",
+                "%)%",
+                "Horror', 'Spain:76', '$66,000', 'Sweden:24 May 2002', 'Hungary:6 June 2010",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "murder', 'identity-theft', 'science', 'costiveness', 'transportation",
+                "movie', 'episode', 'video game', 'video movie', 'video game",
+                "%D%",
+                "%(%",
+                "Spain:13', 'Czech Republic:32', 'Hungary:April 2003', 'The con is on!', 'Spain:30 March 2007",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "new-orleans-louisiana', 'casino-card-game', 'star-athlete', 'headless-corpse', 'apollo-15",
+                "movie', 'tv series', 'movie', 'episode', 'tv movie",
+                "%V%",
+                "%r%",
+                "Finland:K-15', 'Germany:14 May 2005', 'SGD 7,000,000', 'UK:12 January 2007', 'Spain:30 March 2008",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes",
+                "1780s', 'underwear', 'dental-insurance', 'removal-of-hand', 'fitness-club",
+                "movie', 'video movie', 'tv movie', 'episode', 'video movie",
+                "%t%",
+                "%c%",
+                "Horror', '? - 17 April 2001', 'Shot in 2001.', 'UK:12 January 2002', 'Greece:26 June 2005",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "heart-in-hand', 'killer-teen', 'sleeping-on-duty', 'excommunication', 'gallow",
+                "movie', 'episode', 'tv series', 'episode', 'tv series",
+                "%a%",
+                "%e%",
+                "Finland:K-15', 'Canada:43', '- 27 August 2005', 'India:G', 'Sidra Im Shlichut",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'cancer-survivor', 'abetting-a-criminal', 'vung-tau', 'imaginary-kingdom",
+                "movie', 'tv series', 'tv series', 'video game', 'video movie",
+                "%t%",
+                "%)%",
+                "Peru:14', 'Poland:9 April 2006', '$30,915 (USA)', 'France:1 July 2003', '$8,500,000",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes",
+                "island', 'toy-airplane', 'lipstick-imprint', 'gummi-bear', 'fatherhood-test",
+                "movie', 'movie', 'tv series', 'tv movie', 'episode",
+                "%2%",
+                "%n%",
+                "Horror', 'Chile:June 2003', 'Don''t be a Stranger', 'Italy:5 June 2005', 'USA:18 July 2005",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "new-orleans-louisiana', 'oneiric', 'pedicure', 'djinn', 'military-trial",
+                "movie', 'movie', 'video movie', 'video game', 'movie",
+                "%l%",
+                "%)%",
+                "Portugal:M/12', 'USA:27 March 2001', 'The Funny One, LLC', 'Arnaud Duterque', 'Germany:269",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes distribution",
+                "murder', 'videotape', 'man-kissing-man', 'liberated-woman', 'crown-of-thorns",
+                "movie', 'tv movie', 'video movie', 'video movie', 'movie",
+                "%r%",
+                "%d%",
+                "Horror', 'INR 8,200,000', 'DEM 3,300,000', 'Sweden:21 July 2005', 'Kuwait:11 July 2006",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'hardcore-techno', 'last-week', 'alice-in-wonderland', 'ritual-abuse",
+                "movie', 'episode', 'video game', 'tv series', 'video game",
+                "%i%",
+                "%V%",
+                "Sweden:15', 'Sweden:30 May 2006', 'Sweden:35', 'Kuwait:23 May 2001', 'INR 8,842,000",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "supernatural-power', 'male-escort-service', 'handcuffed-to-a-car', 'flare', 'hard-labor",
+                "movie', 'video movie', 'movie', 'video game', 'movie",
+                "%D%",
+                "%l%",
+                "Canada:14A', 'Sweden:15 July 2012', 'India:8 March 2002', 'Spain:7 April 1999', 'UK:19 March 2001",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "speech', 'anne-of-cleaves', 'cold-case', 'red-balloon', 'teen-relationships",
+                "movie', 'movie', 'tv movie', 'video game', 'video movie",
+                "%t%",
+                "%C%",
+                "Germany:12', 'Kenya:5 July 2002', 'UK:September 2001', 'France:4 June 2008', 'HUF 300,000,000",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "queen', 'illegal-logging', 'trenchcoat', 'tragedy-child', 'napoleonic-conquest",
+                "movie', 'tv series', 'video game', 'tv series', 'episode",
+                "%C%",
+                "%(%",
+                "Sweden:15', 'Spain:5 May 2003', 'PFM:HDCAM', 'Iran:November 2005', 'MET:3428 m",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes distribution",
+                "new-orleans-louisiana', 'channel-islands', 'catholic', 'molester', 'drooling",
+                "movie', 'movie', 'video movie', 'episode', 'video movie",
+                "%d%",
+                "%r%",
+                "DTS', 'USA:335', 'UK:23 June 2010', 'France:115', 'Japan:16 July 2010",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "speech', 'body-in-bag', 'cholo', 'street-wars', 'morten",
+                "movie', 'video movie', 'tv movie', 'tv movie', 'movie",
+                "%e%",
+                "%)%",
+                "Canada:PG', '963,901 (Spain)', 'AUD 91,000', 'Italy:1 April 2005', 'France:210",
+                "6.1",
+                2002
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes",
+                "part-computer-animation', 'jealous-husband', 'foreign-diplomat', 'seed-ball', 'aphrodite",
+                "movie', 'tv movie', 'video movie', 'tv movie', 'tv series",
+                "%C%",
+                "%a%",
+                "SDDS', '766,416 (Spain)', 'Australia:June 2004', 'Italy:17', 'Norway:9 April 2002",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "supernatural-power', 'beanbag', 'cadillac', 'mad', 'king''s-cross-london",
+                "movie', 'tv series', 'tv movie', 'video game', 'tv series",
+                "%r%",
+                "%h%",
+                "Argentina:13', 'UK:30 December 2005', 'A Few Good Hen', 'UK:28 January 2003', 'Czech Republic:109",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "tech info",
+                "votes distribution",
+                "siege', '1200s', 'gambling', 'bombmaker', 'diabetes",
+                "movie', 'tv series', 'movie', 'episode', 'video game",
+                "%e%",
+                "%a%",
+                "PCS:Panavision', 'USA:10 March 2001', 'Egypt:May 2001', 'France:8 March 2001', '- 14 December 2005",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "evil-queen', 'mini-movies', 'shrine-maiden', 'detention-center', 'beretta",
+                "movie', 'episode', 'movie', 'tv movie', 'video movie",
+                "%t%",
+                "%2%",
+                "UK:15', 'Sweden:46', 'Cuba:8', 'Shot in one day.', 'Yl\u00c3\u00b6j\u00c3\u00a4rvi, Finland",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "part-computer-animation', 'tahiti', 'video-art', 'lasso', 'crab-dinner",
+                "movie', 'tv movie', 'tv series', 'video movie', 'video movie",
+                "%a%",
+                "%)%",
+                "UK:15', '- September 1999', 'UK:28 November 2011', '\u00e2\u0082\u00ac 30,000', 'Italy:30 July 2003",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "evil-queen', 'postulant', 'torn-off-ear', 'social-commentary', 'floating-head",
+                "movie', 'video game', 'video game', 'episode', 'episode",
+                "%a%",
+                "%r%",
+                "Finland:K-15', 'Serbia:16 July 2002', 'Have a better day.', 'Finland:14 May 2010', 'MET:2937 m",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "murder', 'lobster-as-food', 'power-station', 'whale-costume', 'alien-influence",
+                "movie', 'video game', 'video game', 'video game', 'movie",
+                "%0%",
+                "%n%",
+                "Canada:14A', 'South Korea:60', '$169,659 (USA)', 'Sweden:31 July 2006', 'UK:8 August 2001",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "island', 'mosquito-bite', 'el-cibao', 'achilles-tendon', 'sexual-alienation",
+                "movie', 'video game', 'tv series', 'video movie', 'video game",
+                "%0%",
+                "%V%",
+                "Switzerland:16', 'France:15 June 2007', 'AUD 500', 'DigiFest Southwest', 'Spain:28 March 2005",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "queen', 'implied-blow-job', 'literary-critic', 'mobile-business', 'confessor",
+                "movie', 'video game', 'episode', 'movie', 'tv movie",
+                "%t%",
+                "%r%",
+                "Spain:13', 'IEP 255', 'UK:26 November 2001', 'Italy:9 March 2007', 'Japan:154",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "island', 'herschell', 'sugar-art', 'b-girl', 'bellboy",
+                "movie', 'episode', 'video movie', 'video game', 'video game",
+                "%i%",
+                "%)%",
+                "Netherlands:16', 'THB 18,000,000', 'USA:10 minutes', 'Netherlands:138', 'Turkey:55",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "groupie', 'hostility', 'erotic-fantasy', 'i-ching', 'walthers-ppk",
+                "movie', 'episode', 'tv movie', 'video movie', 'episode",
+                "%0%",
+                "%t%",
+                "Switzerland:16', 'UK:14 December 2002', 'Finland:110', 'Turkey:30', 'France:15 May 2000",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes distribution",
+                "mediterranean', 'arms-industry', 'harem-girl', 'boricua-brothers', 'mullet",
+                "movie', 'tv series', 'episode', 'tv series', 'episode",
+                "%a%",
+                "%)%",
+                "Fantasy', 'India:18 March 2000', 'Israel:60', 'Mexico:2004', '\u00c2\u00a31,300,000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes",
+                "murder', 'orange-peel', 'live-characters', 'guard-post', 'genitalia",
+                "movie', 'movie', 'movie', 'video movie', 'tv series",
+                "%d%",
+                "%(%",
+                "Music', 'Czech Republic:132', 'Germany:353', 'Panama:30 July 2004', 'France:January 2001",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'rose', 'promiscuous-past', 'eating-poison', 'feminization",
+                "movie', 'episode', 'tv movie', 'video movie', 'episode",
+                "%2%",
+                "%r%",
+                "Peru:14', 'Raise The Woof.', 'Spain:13 July 2004', 'Greece:255', 'It''s about family",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes distribution",
+                "supernatural-power', 'ox-drawn-wagon', 'blood-on-ground', 'stuffed-deer-head', 'miracles",
+                "movie', 'video movie', 'episode', 'video movie', 'episode",
+                "%a%",
+                "%n%",
+                "Dolby Digital', 'UK:25 February 2006', 'MET:2219 m', 'NC State University', 'USA:5 March 1999",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes",
+                "island', 'urban-comedy', 'nazi-race-laws', 'syrup-of-ipecac', 'fabularny",
+                "movie', 'video game', 'tv series', 'episode', 'episode",
+                "%2%",
+                "%r%",
+                "DTS', '$61,649,911 (USA)', 'CAM:Sony IMX Camera', 'Norway:9 March 2002', 'Kasara, India",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes distribution",
+                "heart-in-hand', 'fire-exit', 'handcuffs', 'biblical-epic', 'civil-resistance",
+                "movie', 'episode', 'tv series', 'video game', 'episode",
+                "%t%",
+                "%0%",
+                "Dolby Digital', 'USA:7 April 2000', 'Spain:28 July 2009', 'Spain:15 June 2003', 'MET:2843 m",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "island', 'small-penis', 'cultural-product', 'refuge', 'nanotechnology",
+                "movie', 'episode', 'video movie', 'video movie', 'video game",
+                "%0%",
+                "%(%",
+                "Portugal:M/12', 'Shadow INC', 'Canada:230', 'Japan:11 June 2002', 'Japan:6 April 2000",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes distribution",
+                "part-computer-animation', 'biblical', 'space-monster', 'driver''s-license', 'crack-in-the-wall",
+                "movie', 'video game', 'tv movie', 'video game', 'episode",
+                "%r%",
+                "%t%",
+                "Fantasy', 'Senegal', 'UK:25 January 2005', 'DTS', 'UK:24 January 2006",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "confederacy', 'pin-up', 'snare-trap', 'heuler', 'covered-in-blood",
+                "movie', 'episode', 'tv movie', 'tv series', 'tv series",
+                "%a%",
+                "%c%",
+                "Netherlands:12', 'Dallas, Texas, USA', '$1,350', 'Belize:4 July 2002', 'Italy:23 April 2000",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "queen', 'paris-peace-talks', 'favignana-italy', 'open-outcry', 'clogging",
+                "movie', 'video game', 'video game', 'tv series', 'tv series",
+                "%r%",
+                "%)%",
+                "Germany:16', 'Korea:132', 'Kalmyk-Oirat', 'Germany:23 May 2009', 'Estonia:143",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "island', 'garbage-bag', 'hires-root-beer', 'mosquito', 'lonely",
+                "movie', 'tv series', 'tv movie', 'movie', 'tv series",
+                "%V%",
+                "%l%",
+                "Netherlands:16', 'Finland:22 May 2007', 'Andaluc\u00c3\u00ada, Spain', 'Canada:107', 'Denmark:24 May 2005",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "new-orleans-louisiana', 'government-worker', 'sports-counselor', 'locked-in-a-cage', 'romzomcom",
+                "movie', 'tv series', 'movie', 'video game', 'movie",
+                "%0%",
+                "%(%",
+                "Norway:15', 'Throat fucking!', 'Japan:18 March 2008', 'Turkey:22 July 2005', 'Ukraine:1999",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "genres",
+                "votes distribution",
+                "groupie', 'lactose-intolerance', 'switching-bodies', 'earphones', 'weed",
+                "movie', 'video movie', 'tv movie', 'episode', 'episode",
+                "%0%",
+                "%)%",
+                "Horror', '12:42', 'UK:7 May 2007', 'Hessen, Germany', 'Japan:14 July 2011",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "genres",
+                "rating",
+                "part-computer-animation', 'parakeet', 'youth-violence', 'shiva', 'olympic-games",
+                "movie', 'episode', 'tv movie', 'tv movie', 'video game",
+                "%0%",
+                "%(%",
+                "Horror', '\u00c2\u00a3135,000', 'Brazil:22 July 2006', 'Indonesia:91', 'Russia:21 July 2005",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "supernatural-power', 'rock-crawling', 'theatre-call-boy', 'gin', 'louis-xv-desk",
+                "movie', 'movie', 'tv movie', 'tv movie', 'video game",
+                "%a%",
+                "%(%",
+                "Sweden:15', 'Qatar:April 2006', 'Philippines:119', 'Australia:3', '2 July 2004 - ?",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes",
+                "bloodshed', '1730s', 'competitiveness', 'fixed-fight', 'depopulation",
+                "movie', 'tv series', 'tv movie', 'video movie', 'tv series",
+                "%r%",
+                "%2%",
+                "DTS', 'India:6 June 2003', 'Singapore:89', 'Israel:18 July 2004', 'Portugal:9 May 2002",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "main-character-shot', 'marching-song', 'core-strength', 'exclusive-school', 'ice-tea",
+                "movie', 'tv series', 'tv series', 'movie', 'movie",
+                "%0%",
+                "%t%",
+                "UK:12A', 'Terror In Numbers', 'April 2004 - ?', 'Spain:3 July 2002', 'Denmark:150",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "island', 'pickup-truck', 'feeding-baby-food', 'public-confession', 'weinermobile",
+                "movie', 'movie', 'episode', 'video game', 'tv movie",
+                "%D%",
+                "%t%",
+                "Hong Kong:IIB', 'USA:14 April 2003', 'MET:2787 m', 'Debrecen, Hungary', 'A scary Fairy Tale",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "battlefield', 'baby-picture', 'genetic-research', 'homoparentality', 'miss-marple",
+                "movie', 'episode', 'tv series', 'tv movie', 'episode",
+                "%0%",
+                "%(%",
+                "Germany:12', 'Italy:15 May 2006', 'Germany:7 May 2001', 'France:March 2002', 'Russia:6 March 2006",
+                "10537",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "heart-in-hand', 'mexican-writer', 'childbirth', 'stunt-riding', 'first-lieutenant",
+                "movie', 'episode', 'movie', 'video game', 'tv movie",
+                "%D%",
+                "%0%",
+                "Spain:13', 'Emden, Germany', 'Norway:March 2004', 'Delaware, USA', '$28,955 (Bulgaria)",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "island', 'erotic-asphyxiation', 'alien-abduction', 'singing-on-rooftop', 'boys-and-girls",
+                "movie', 'tv movie', 'episode', 'video movie', 'episode",
+                "%0%",
+                "%i%",
+                "UK:15', 'Japan:15 April 2009', 'France:21 May 2004', 'Borgarnes, Iceland', 'Denmark:579",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "murder', 'retail-trade', '24-hours-to-live', 'reassurance', 'giving-away-a-child",
+                "movie', 'video game', 'video movie', 'tv movie', 'tv movie",
+                "%d%",
+                "%e%",
+                "Portugal:M/12', 'Turkey:16 May 2008', 'Brazil:July 2003', 'India:15 July 2005', 'Dave: Go team!",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "groupie', 'low-income-housing', 'dimethyl-sulfoxide', 'haters', 'contesting",
+                "movie', 'video movie', 'tv movie', 'video movie', 'movie",
+                "%z%",
+                "%r%",
+                "Singapore:PG', 'USA:9 June 2007', 'RAT:2.76 : 1', 'Mexico:21 May 2004', 'Hungary:1 July 1999",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "tech info",
+                "rating",
+                "hero', 'anti-biopic', 'first-acting-job', 'urbanism', 'mole-hill",
+                "movie', 'movie', 'video movie', 'video game', 'episode",
+                "%a%",
+                "%t%",
+                "PCS:Digital Intermediate', 'Iceland:5 May 2006', 'SEK 80,000', 'Japan:7 July 2000', 'HKD 10,000",
+                "6.1",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "murder', 'olympics', 'star-trek-spinoff', 'teenage-prostitute', 'patton",
+                "movie', 'video movie', 'tv movie', 'tv movie', 'tv series",
+                "%e%",
+                "%2%",
+                "Germany:16', 'India:23 April 2004', 'Greece:2 May 2003', '$15,600', 'TV to die for...",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes",
+                "supernatural-power', 'bellaire-hotel', 'homecoming', 'regression', 'cape-cobra",
+                "movie', 'episode', 'episode', 'episode', 'episode",
+                "%t%",
+                "%d%",
+                "DTS', 'USA:17 July 2004', 'October 2004 -', 'Finland:29 May 2006', 'Truth in the Raw",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "groupie', 'bringing-work-home', 'garden-swing', 'reference-to-bach', 'felt-tip-pen",
+                "movie', 'video game', 'tv movie', 'video game', 'tv series",
+                "%S%",
+                "%)%",
+                "Canada:14A', 'MET:498 m', 'UK:19 July 2005', '8 Scenes!', 'UK:30 March 2001",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "speech', 'dog-show', 'choral-recitative', 'pancho-villa', 'davy-jones''s-locker",
+                "movie', 'video movie', 'video movie', 'movie', 'video movie",
+                "%t%",
+                "%)%",
+                "Netherlands:12', 'Italy:30 July 2006', '1994 - 2000', 'Hungary:1170', '18 April 2005 - ?",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'good-deed', 'authoress', 'frogman', 'basketball-shoes",
+                "movie', 'tv movie', 'video movie', 'episode', 'tv movie",
+                "%d%",
+                "%a%",
+                "Canada:14A', 'UK:18 October 2004', 'Spain:18 July 2002', 'USA:2013', 'Hungary:21 May 2006",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "genres",
+                "votes",
+                "queen', 'sound-check', 'polo', 'parachutist', 'narrow-gauge",
+                "movie', 'episode', 'video movie', 'video game', 'movie",
+                "%D%",
+                "%2%",
+                "Fantasy', 'November 2001 -', 'Portugal:1 May 2004', 'Hungary:71', 'Mecca, Saudi Arabia",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "rating",
+                "supernatural-power', 'nougat', 'shrink', 'fraction-in-title', 'plane-wreck",
+                "movie', 'tv movie', 'tv series', 'episode', 'episode",
+                "%i%",
+                "%(%",
+                "Fantasy', 'UK:31 December 1999', 'France:26 May 2006', 'Spain:8', 'Switzerland:6",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "mediterranean', 'kissing-ring', 'kill', 'disarming-someone', 'wellington",
+                "movie', 'episode', 'video movie', 'tv series', 'video game",
+                "%0%",
+                "%)%",
+                "UK:15', 'Spain:2 May 2006', 'USA:10 October 2000', 'Mnyandu Films', 'Brazil:2 March 2005",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "languages",
+                "votes",
+                "hero', 'horror-movie-remade', 'east-indian', 'recurring-dream', 'anti-semitism",
+                "movie', 'episode', 'video game', 'tv movie', 'video game",
+                "%r%",
+                "%a%",
+                "English', 'India:30 May 2005', 'Ireland:1 June 2004', 'Norway:15 July 2005', 'Brazil:107",
+                "10537",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "part-computer-animation', 'dual-wield', 'gesture', 'evil-corporation', 'yorkshire-england",
+                "movie', 'video game', 'tv movie', 'movie', 'tv movie",
+                "%C%",
+                "%(%",
+                "Spain:13', 'Canada:18A', 'Hungary:7 July 2010', 'MET:2101 m', 'Denmark:25 May 2006",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "queen', 'submarine-sandwich', 'child-vampire', 'sexual-aberration', 'child-martial-arts",
+                "movie', 'episode', 'video movie', 'tv movie', 'movie",
+                "%0%",
+                "%(%",
+                "Canada:14A', 'Mediacorp', 'Israel:3 May 2006', 'USA:17 June 2000', '\u00e2\u0082\u00ac 36,100,000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "languages",
+                "votes distribution",
+                "battlefield', 'movie-studio-guard', 'wine', 'israeli-ambassador', 'sliding-glass-door",
+                "movie', 'tv series', 'tv movie', 'tv series', 'video movie",
+                "%C%",
+                "%e%",
+                "English', 'Peru:5 April 2001', 'India:February 2004', 'Benjamin Lemaire', 'LAB:ZAO CYRUS FILM",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "part-computer-animation', 'academic-integrity', 'laser-cannon', 'hurt', 'trapdoor",
+                "movie', 'tv movie', 'tv movie', 'tv movie', 'episode",
+                "%S%",
+                "%0%",
+                "Spain:13', 'UK:19 April 2002', 'Brazil:5 May 2000', 'USA:11 April 2006', 'Chile:27 April 2000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "murder', 'soldier-father', 'cgi-film', 'clip', 'korean-army",
+                "movie', 'video game', 'episode', 'video movie', 'video game",
+                "%c%",
+                "%a%",
+                "Finland:K-15', 'Gobabis, Namibia', 'UK:28 May 2008', 'Germany:5 June 2008', 'Egypt:30 April 2003",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "queen', 'carson-grant', 'dramatic-reading', 'resuscitation', 'condoleezza-rice",
+                "movie', 'video game', 'video game', 'movie', 'video movie",
+                "%e%",
+                "%n%",
+                "Switzerland:16', '1996 - ?', 'UK:2006', 'Iceland:4 May 2001', 'Spain:2 August 2004",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "island', 'siren-the-alarm', 'blood-on-face', 'spoof-title', 'chess-game",
+                "movie', 'tv series', 'video movie', 'video movie', 'video game",
+                "%l%",
+                "%)%",
+                "Norway:15', '\u00e2\u0082\u00ac 23,400', 'Hungary:1 May 2004', 'CAD 1,700,000', 'USA:1 January 2008",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "genres",
+                "votes",
+                "island', 'hidden-message', 'maiasaur', 'heart-tattoo', 'beverage",
+                "movie', 'video movie', 'video movie', 'movie', 'movie",
+                "%r%",
+                "%V%",
+                "Fantasy', 'Shot in 22 Days.', '- 16 May 2006', 'UK:22 April 2002', 'Peru:26 August 2006",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "confederacy', 'rent-strike', 'car-in-water', 'veteran''s-day', 'powder-keg",
+                "movie', 'tv movie', 'episode', 'tv series', 'video game",
+                "%t%",
+                "%(%",
+                "UK:12A', 'Austria:29 May 2001', 'UK:25 March 2005', '? - 22 October 2001', '100% toy-free!",
+                "6.1",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "mediterranean', 'airshaft', 'ephemeral-film', 'self-education', 'scandal",
+                "movie', 'movie', 'video movie', 'tv movie', 'video game",
+                "%t%",
+                "%0%",
+                "Canada:14A', '\u00c2\u00a372,000', 'Russia:1 March 2005', 'Hungary:16 May 2011', '3 March 2005 - ?",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "evil-queen', 'athleticism', 'butterfly', 'croissant', 'death-of-a-salesman",
+                "movie', 'episode', 'episode', 'tv series', 'tv series",
+                "%a%",
+                "%)%",
+                "Sweden:15', 'Norway:3 July 2001', 'Italy:8 July 2008', 'Italy:5 June 2003', '$3,417,328 (Japan)",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "island', 'americanization', 'benoa-bali', 'doublecross', 'feeling-stressed",
+                "movie', 'video movie', 'episode', 'tv series', 'video game",
+                "%r%",
+                "%0%",
+                "Argentina:13', 'Music. Love. Sex.', 'Israel:10 June 2004', 'Greece:October 2008', 'Maramures, Romania",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "bloodshed', 'neurosurgeon', 'embezzler', 'lives', 'judicial-error",
+                "movie', 'video movie', 'video game', 'video movie', 'video game",
+                "%w%",
+                "%z%",
+                "Norway:15', 'Estonia:4 May 2007', 'CAD 14,340,000', 'USA:1 December 2004', 'USA:17 June 2004",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "siege', 'framing-story', 'victor-hugo', 'escargot', 'lake-tahoe",
+                "movie', 'movie', 'video game', 'tv movie', 'video movie",
+                "%0%",
+                "%r%",
+                "Singapore:PG', 'Fuse Networks', 'India:10 April 2005', 'Austria:March 2007', 'Zhejiang, China",
+                "6.1",
+                2002
+            ],
+            [
+                "[ch]",
+                "genres",
+                "rating",
+                "groupie', 'bicycle-acrobat', 'muhammad-ali', 'anecdote', 'suburb",
+                "movie', 'video movie', 'episode', 'tv movie', 'video movie",
+                "%e%",
+                "%)%",
+                "Horror', 'Greece:1 June 2010', 'Netherlands:40', 'Magadan, Russia', '...The Last Resort",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "bloodshed', 'amalfi-coast', 'jumping-from-a-car', 'lost-wife', 'arianism",
+                "movie', 'tv series', 'tv movie', 'episode', 'movie",
+                "%0%",
+                "%V%",
+                "Canada:14A', 'MET:2573 m', '1370', 'USA:28 October 2005', 'UK:26 January 2000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "hero', 'army-of-the-dead', 'burning-a-house', 'twitching', 'video-screen",
+                "movie', 'tv movie', 'video movie', 'video game', 'video game",
+                "%a%",
+                "%t%",
+                "Germany:12', 'Canada:18 June 2002', 'MET:3062 m', 'Israel:6 March 2005', 'USA:7 December 1999",
+                "6.1",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "mediterranean', 'tramp', 'dance-band', 'child-boss', 'turkey-sandwich",
+                "movie', 'movie', 'tv movie', 'movie', 'movie",
+                "%w%",
+                "%z%",
+                "Argentina:13', 'Canada:19 May 2002', 'Marrakech, Morocco', 'George Duroy', '28 May 2002 - ?",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "heart-in-hand', 'time-stands-still', 'hitlist', 'managing-director', 'holy-sacrament",
+                "movie', 'tv movie', 'movie', 'movie', 'movie",
+                "%i%",
+                "%e%",
+                "Philippines:PG-13', 'Nord, France', '$63,000,000', 'USA:380', 'Kosovo",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "queen', 'bad-painter', 'burning-letter', 'undercover-spy', 'montecristo",
+                "movie', 'movie', 'episode', 'tv series', 'video movie",
+                "%0%",
+                "%)%",
+                "Peru:14', 'Dragon Films', 'Spain:111', 'MET:466 m', 'Oriol Sala",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "genres",
+                "rating",
+                "island', 'lutsk-ukraine', 'marital-law', 'new-teacher', 'self-parody",
+                "movie', 'video movie', 'movie', 'tv series', 'video movie",
+                "%e%",
+                "%D%",
+                "Horror', 'Australia:1', 'USA:04 May 2006', '18 May 1998 - ?', 'Spain:112",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "island', 'community-education', 'yellow-journalism', 'lost-planet', 'holocaust",
+                "movie', 'video game', 'tv movie', 'episode', 'tv movie",
+                "%n%",
+                "%r%",
+                "UK:15', 'Portugal:6', 'Liechtenstein', 'UK:2 May 2004', 'Japan:3 June 2003",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "genres",
+                "votes distribution",
+                "island', 'dangerous-love', 'fence-cutting', 'convict-labor', 'nusseirat",
+                "movie', 'movie', 'tv movie', 'tv movie', 'video movie",
+                "%t%",
+                "%h%",
+                "Fantasy', '\u00c2\u00a364,000', 'USA:05:56', 'THB 555', '$404,000 (USA)",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "hero', 'charas', 'grammy-award', 'mini-dress', 'piss",
+                "movie', 'tv series', 'tv series', 'tv movie', 'tv series",
+                "%a%",
+                "%t%",
+                "Denmark:11', 'India:6 April 2006', 'UK:14 February 2000', 'Spain:January 2002', 'USA:19 June 2007",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "murder', 'type-1a-supernova', 'fake-movie-deal', 'arranged-marriage', 'group-dance",
+                "movie', 'video game', 'tv series', 'movie', 'tv series",
+                "%0%",
+                "%(%",
+                "Italy:VM18', 'What if....', 'Greece:2 July 2004', 'USA:12 October 1999', 'Ecuador:17 May 2002",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "heart-in-hand', 'dog-mask', 'igor', 'hoodie', 'cosmic-zoom",
+                "movie', 'tv series', 'tv movie', 'tv movie', 'episode",
+                "%a%",
+                "%d%",
+                "Canada:14A', 'Spain:30 March 2001', 'HTML Productions', 'Russia:6 March 2000', 'Russia:11 May 2005",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "tech info",
+                "votes distribution",
+                "siege', 'hospital-visit', 'high-voltage-line', 'latin-lover', 'summer-festival",
+                "movie', 'movie', 'movie', 'tv movie', 'episode",
+                "%c%",
+                "%(%",
+                "PFM:35 mm', 'Get Fit! Stay Fit!', 'CLP 200,000', 'UK:2 November 2000', 'Croatia:105",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "rating",
+                "bloodshed', 'amman-jordan', 'gas', 'snow-shower', 'falling",
+                "movie', 'video movie', 'tv movie', 'movie', 'episode",
+                "%S%",
+                "%2%",
+                "Germany:16', 'Norway:2 June 2006', 'Canada:9 March 2006', 'Why study?', 'UK:7 April 2004",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "rating",
+                "new-orleans-louisiana', 'triple-child-murder', 'chocolates', 'sounion', 'stir",
+                "movie', 'video movie', 'tv series', 'tv series', 'movie",
+                "%D%",
+                "%V%",
+                "Dolby Digital', 'India:November 2001', '$525,000', 'Belgium:8 May 2001', 'Iceland:12 May 2003",
+                "4.9",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "part-computer-animation', 'mouth-cancer', 'southwest-airlines', 'gay-pornography', 'puck",
+                "movie', 'video game', 'episode', 'episode', 'episode",
+                "%V%",
+                "%0%",
+                "Norway:15', 'Sweden:1 June 2008', '$600,000', 'USA:11 July 2004', 'Spain:22 March 2001",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "island', 'human-race', 'shoving', 'hand-trick', 'funeral-wreath",
+                "movie', 'video game', 'tv movie', 'tv series', 'tv movie",
+                "%a%",
+                "%t%",
+                "Argentina:13', 'India:7 July 2002', 'Denmark:4 June 2004', 'USA:5 June 2007', 'Mexico:9 May 2004",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "tech info",
+                "votes distribution",
+                "confederacy', 'arm', 'trolley-dolly', 'heart-patient', 'group-punishment",
+                "movie', 'episode', 'episode', 'video movie', 'tv series",
+                "%a%",
+                "%c%",
+                "RAT:2.35 : 1', 'Brazil:21 June 2006', 'Germany:14 May 2002', 'UK:24 August 2001', 'UK:16 March 2004",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "languages",
+                "votes distribution",
+                "hood', 'school-director', 'exhaust-pipe', 'customs-house', 'chalet",
+                "movie', 'video movie', 'video game', 'episode', 'video movie",
+                "%0%",
+                "%)%",
+                "English', 'Australia:65', 'Sopu, Tonga', 'MET:4050 m', '14 October 2005 - ?",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "1780s', 'adulterous-mother', 'portobello-mushroom', 'thumb-sucking', 'table-tennis",
+                "movie', 'video movie', 'tv series', 'tv movie', 'tv series",
+                "%2%",
+                "%e%",
+                "Malaysia:(Banned)', 'Saltdal, Norway', 'JPY 15,000,000', '884,468 (Germany)', 'Spain:6 May 2001",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "speech', 'alban', 'charlatan', 'frozen-sea', 'traditionalism",
+                "movie', 'movie', 'tv movie', 'movie', 'video game",
+                "%a%",
+                "%t%",
+                "USA:PG-13', '211,000 (Sweden)', 'UK:23 January 2012', 'Corsican', 'Argentina:138",
+                "6.1",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "queen', 'manta-ray', 'roundup-gang', 'buick-automobile', 'clues-from-killer",
+                "movie', 'video movie', 'tv movie', 'movie', 'video game",
+                "%a%",
+                "%)%",
+                "Malaysia:(Banned)', 'Nanhai, China', 'Set pet: Pistol', 'France:12 May 2007', 'Israel:1 May 2001",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'dippy-bird', 'all-female-cast', 'simon-says', 'chopsticks",
+                "movie', 'video game', 'video game', 'movie', 'episode",
+                "%t%",
+                "%0%",
+                "Hong Kong:IIB', 'Not So Private.', 'JB: POWERSLIDE!', 'Brazil:26 June 2004', 'Netherlands:4",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "heart-in-hand', 'poor-tv-reception', 'love-declaration', 'robot', 'sommersi",
+                "movie', 'video game', 'tv series', 'tv series', 'tv movie",
+                "%w%",
+                "%(%",
+                "Singapore:NC-16', 'Eric Jewell', 'Portugal:27', '- 5 April 2005', 'Greece:1 March 2003",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "part-computer-animation', 'run-on-a-bank', 'owl-collection', 'pepe', 'elderly",
+                "movie', 'episode', 'movie', 'movie', 'video game",
+                "%2%",
+                "%(%",
+                "Singapore:NC-16', 'Japan:114', 'Turkey:23 June 2004', 'USA:9 December 2000', 'Greece:20",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "queen', 'kanye-west', 'disinheritance', 'boys''-choir', 'cautery",
+                "movie', 'movie', 'video game', 'episode', 'video movie",
+                "%2%",
+                "%)%",
+                "Singapore:PG', 'Russia:349', 'Spain:06 July 2006', 'Hungary:30 May 2001', 'Hungary:30 May 2002",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "island', 'college-recruiter', 'bumping-heads', 'daddy', 'biker-women",
+                "movie', 'tv movie', 'tv movie', 'episode', 'movie",
+                "%c%",
+                "%C%",
+                "Argentina:13', '14 August 2000 - ?', '$420,000', 'UK:30 May 1999', 'USA:22 May 2001",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "military-training', 'creation', 'galapagos-islands', 'body-language', 'glen-echo",
+                "movie', 'episode', 'tv series', 'tv series', 'tv series",
+                "%l%",
+                "%t%",
+                "Germany:12', 'Mandarin', 'Netherlands:86', 'Alexandre Films', 'Israel:19",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "evil-queen', 'sunday', 'algeria', 'teenage-issues', 'riverdance",
+                "movie', 'movie', 'tv series', 'movie', 'tv movie",
+                "%a%",
+                "%n%",
+                "Portugal:M/12', 'Switzerland:8''38\"', 'INR 17,000,000', 'INR 10,500,000', 'CAD 14,340,000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes distribution",
+                "bloodshed', 'residence', 'crest', 'miniature-person', 'woodworking",
+                "movie', 'movie', 'video movie', 'movie', 'tv movie",
+                "%t%",
+                "%e%",
+                "SDDS', 'USA:18 October 2004', 'UK:November 2004', '$207,000,000', 'Italy:70",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "votes distribution",
+                "part-computer-animation', 'body-in-chipper', 'buxom', 'confection', 'mormon",
+                "movie', 'tv series', 'tv movie', 'tv movie', 'tv series",
+                "%w%",
+                "%V%",
+                "SDDS', 'Turkey:9 March 2001', 'Peru:8 March 2001', 'Netherlands:79', '$987,850",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "bloodshed', 'backcountry', 'raconteur', 'strap-on-dildo', 'funnel",
+                "movie', 'movie', 'movie', 'movie', 'episode",
+                "%e%",
+                "%a%",
+                "Singapore:NC-16', 'MET:2796 m', 'Canada:1 May 2001', 'UK:6 April 2002', 'Spain:2 April 2005",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "supernatural-power', 'bossy-girl', 'health-clinic', 'glock-17', 'tanker-truck",
+                "movie', 'video movie', 'video game', 'tv series', 'movie",
+                "%a%",
+                "%)%",
+                "Philippines:PG-13', 'Italy:29 May 2002', 'Ireland:1 July 2003', 'Socio Vision Films', 'Israel:17 July 2000",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes distribution",
+                "part-computer-animation', 'product-tampering', 'usa-government', 'hassidic-jew', 'eight-word-title",
+                "movie', 'episode', 'episode', 'tv movie', 'video game",
+                "%a%",
+                "%(%",
+                "DTS', 'Canada:4 July 2001', 'Food Network', 'Sweden:5 May 2004', 'USA:12 June 2003",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "island', 'chop-down-tree', 'aristocracy', 'pitch', 'three-word-title",
+                "movie', 'tv series', 'video movie', 'episode', 'movie",
+                "%t%",
+                "%2%",
+                "Hong Kong:IIB', 'Poland:148', '15 June 2005 - ?', 'CAD 3,100,000', 'UK:24 June 2006",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "part-computer-animation', 'endo', 'oklahoma', 'holocaust-denier', 'normandy-beach",
+                "movie', 'tv series', 'tv series', 'episode', 'episode",
+                "%0%",
+                "%a%",
+                "Argentina:13', 'South Korea:100', 'Canada:4 June 2001', 'USA:1 June 2007', 'Egypt:15 June 2005",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "votes distribution",
+                "mediterranean', 'glasgow-scotland', 'cross-dressing', 'woman-wearing-a-wig', 'laboratory",
+                "movie', 'video game', 'movie', 'movie', 'tv movie",
+                "%2%",
+                "%t%",
+                "SDDS', 'PLN 15,000', 'UK:2 January 2002', 'All Real!', 'Spain:25 July 2006",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "island', 'romzomcom', 'wing-flap', 'unmasking', 'defendant",
+                "movie', 'episode', 'video movie', 'episode', 'video game",
+                "%a%",
+                "%0%",
+                "Netherlands:16', 'PLN 1,000,000', 'UK:14 July 2003', 'Poland:23 May 2004', 'Shot in three days.",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "military-training', 'anger', 'nigerian', 'finger-bitten-off', 'terrorist-alert",
+                "movie', 'movie', 'tv series', 'movie', 'video movie",
+                "%r%",
+                "%e%",
+                "South Korea:12', 'Sweden:152', 'USA:13 October 1999', 'Italy:87', 'MET:2957 m",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'marriage-custom', 'snowball-fight', 'football-referee', 'slashed-wrist",
+                "movie', 'episode', 'tv movie', 'tv movie', 'tv movie",
+                "%a%",
+                "%h%",
+                "Switzerland:16', 'Hartmann+Zabel GbR', 'UK:24 March 2002', 'Peru:13 May 2004', 'Belgium:May 2010",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "groupie', 'princeton', 'french-maid-costume', 'hammam', 'book-cover",
+                "movie', 'movie', 'video movie', 'tv movie', 'tv movie",
+                "%r%",
+                "%a%",
+                "Singapore:PG', 'Croatia:21', '- 5 July 1999', 'Sweden:22 June 2000', 'MET:2330 m",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "sound mix",
+                "rating",
+                "part-computer-animation', 'aeronautics', 'topless-dancing', 'sneaking', 'painting-on-velvet",
+                "movie', 'movie', 'episode', 'video movie', 'episode",
+                "%e%",
+                "%)%",
+                "DTS', 'USA:8 October 1999', 'Sweden:23 May 2003', 'Denmark:26 May 2001', 'Armenia:1 July 2004",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "supernatural-power', 'missing-girl', 'learning-to-drive', 'bear-claw', 'digging-in-snow",
+                "movie', 'video game', 'tv movie', 'tv movie', 'episode",
+                "%t%",
+                "%a%",
+                "Spain:13', 'Japan:24 April 2000', 'Beveren, Belgium', 'MET:1660 m', 'MET:77 m",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "1780s', 'art-catalogue', 'framed-for-a-crime', 'sidewalk-cafe', 'scatterbrain",
+                "movie', 'episode', 'video game', 'video movie', 'video movie",
+                "%n%",
+                "%D%",
+                "Brazil:14', 'Antakya, Turkey', 'May 2005 -', 'MET:2575 m', 'Chile:21",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "rating",
+                "siege', 'limbo-dancing', 'malory-weiss', 'beauty-therapist', 'archive-footage",
+                "movie', 'episode', 'video game', 'episode', 'episode",
+                "%a%",
+                "%)%",
+                "UK:12A', 'Yugoslavia:86', 'USA:112', 'France:30 May 2000', 'UK:16 December 2007",
+                "6.1",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes",
+                "supernatural-power', 'credit-score', 'v-2-rocket', 'abremalin-ritual', 'bombsight",
+                "movie', 'tv series', 'tv series', 'tv series', 'episode",
+                "%t%",
+                "%D%",
+                "Peru:14', 'China:18 June 2003', 'Germany:22 May 2002', 'South Korea:139', 'Hungary:100",
+                "32434",
+                2001
+            ],
+            [
+                "[ch]",
+                "sound mix",
+                "rating",
+                "bloodshed', 'monochrome', 'friendship-betrayal', 'final-performance', 'elderly",
+                "movie', 'video game', 'video game', 'movie', 'episode",
+                "%2%",
+                "%)%",
+                "SDDS', '$3,800,000', 'Philippines:4', 'USA:20 April 2003', 'India:3 May 2002",
+                "4.9",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "new-orleans-louisiana', 'gainesville-georgia', 'label', 'flag-burning', 'm-g-m",
+                "movie', 'video movie', 'episode', 'tv series', 'movie",
+                "%r%",
+                "%a%",
+                "Singapore:NC-16', 'Gers, France', '- 3 March 2003', 'Spain:9 August 2001', 'Break The Silence",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "military-training', 'removal-of-finger', 'north-shore-hawaii', 'language-course', 'reprimand",
+                "movie', 'video game', 'video game', 'tv series', 'movie",
+                "%C%",
+                "%t%",
+                "New Zealand:M', 'USA:16 March 2009', 'Andros, Greece', 'The enemy in me', 'France:6 April 2009",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "genres",
+                "votes",
+                "heart-in-hand', 'hero-worship', 'patterson-revolver', 'fellatio', 'air-in-pipes",
+                "movie', 'tv series', 'tv movie', 'movie', 'video game",
+                "%V%",
+                "%w%",
+                "Horror', 'Canada:2x60', '$35,818,913 (USA)', 'Japan:3 March 2011', 'France:220",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes",
+                "evil-queen', 'argument', 'beauty-tips', 'soup', 'ink",
+                "movie', 'tv movie', 'movie', 'tv movie', 'video movie",
+                "%n%",
+                "%r%",
+                "Germany:16', 'DEM 6,000', 'Taiwan:16 July 2002', 'Morgan Creek', 'Brazil:14 July 2000",
+                "32434",
+                2001
+            ],
+            [
+                "[ca]",
+                "certificates",
+                "votes distribution",
+                "speech', 'hand-shot-off', 'school-festival', 'year-1969', 'supermarket-clerk",
+                "movie', 'tv movie', 'movie', 'tv movie', 'tv movie",
+                "%C%",
+                "%a%",
+                "Australia:M', 'Canada:17 June 2001', 'USA:86:46', 'Japan:8 July 2004', 'Australia:73",
+                "0000111101",
+                2002
+            ],
+            [
+                "[ch]",
+                "certificates",
+                "votes distribution",
+                "queen', 'health-problem', 'ox-cart', 'closet', 'art-exhibition",
+                "movie', 'tv series', 'movie', 'tv series', 'video game",
+                "%a%",
+                "%w%",
+                "Peru:14', 'It never ends.', 'USA:13 July 2001', 'Denmark:24', '13 April 2004 - ?",
+                "0001111001",
+                2001
+            ],
+            [
+                "[ch]",
+                "genres",
+                "rating",
+                "supernatural-power', 'immunisation', 'godwin''s-law', 'sundance', 'spiritual-cinema",
+                "movie', 'movie', 'video game', 'tv movie', 'movie",
+                "%D%",
+                "%)%",
+                "Horror', 'Japan:12 May 2000', 'Serbia:3 April 2007', 'Spain:54', 'MET:5177.67 m",
+                "4.9",
+                2001
+            ]
+        ]
+    }
+}

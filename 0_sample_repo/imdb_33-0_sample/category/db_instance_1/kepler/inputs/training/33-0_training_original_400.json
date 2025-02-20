@@ -1,0 +1,753 @@
+{
+  "33-0": {
+    "query": "SELECT MIN(cn1.name) AS first_company, MIN(cn2.name) AS second_company, MIN(mi_idx1.info) AS first_rating, MIN(mi_idx2.info) AS second_rating, MIN(t1.title) AS first_movie, MIN(t2.title) AS second_movie\n FROM cat_company_name_1 AS cn1,\n cat_company_name_1 AS cn2,\n cat_info_type_1 AS it1,\n cat_info_type_1 AS it2,\n cat_kind_type_1 AS kt1,\n cat_kind_type_1 AS kt2,\n cat_movie_companies_1 AS mc1,\n cat_movie_companies_1 AS mc2,\n cat_movie_info_idx_1 AS mi_idx1,\n cat_movie_info_idx_1 AS mi_idx2,\n cat_title_1 AS t1,\n cat_title_1 AS t2\n WHERE it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id \nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND mi_idx2.info < '@param5'\nAND t2.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "original_alias": "cn1",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_name_1",
+        "join_tables": [
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_1",
+        "join_tables": [
+          "cat_movie_info_idx_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_1",
+        "join_tables": [
+          "cat_movie_info_idx_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt1",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_kind_type_1",
+        "join_tables": [
+          "cat_title_1"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt2",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_kind_type_1",
+        "join_tables": [
+          "cat_title_1"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ]
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "original_alias": "mi_idx2",
+        "column": "info",
+        "operator": "<",
+        "data_type": "text",
+        "table": "cat_movie_info_idx_1",
+        "join_tables": [
+          "cat_info_type_1",
+          "cat_title_1",
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "it",
+          "t",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "production_year"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id",
+          "t.id = mi_idx.movie_id",
+          "mi_idx.movie_id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "cat_title_1",
+        "min": 1879,
+        "max": 2020,
+        "join_tables": [
+          "cat_movie_info_idx_1",
+          "cat_kind_type_1",
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "cat_title_1",
+        "min": 1879,
+        "max": 2020,
+        "join_tables": [
+          "cat_movie_info_idx_1",
+          "cat_kind_type_1",
+          "cat_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.7",
+        1898,
+        2013
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "2111100000",
+        1907,
+        2016
+      ],
+      [
+        "[se]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "23",
+        1889,
+        1957
+      ],
+      [
+        "[suhh]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.9",
+        1969,
+        2011
+      ],
+      [
+        "[gr]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000121101",
+        1976,
+        1992
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "34083",
+        1988,
+        2013
+      ],
+      [
+        "[suhh]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.7",
+        1900,
+        1997
+      ],
+      [
+        "[br]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.8",
+        1989,
+        2004
+      ],
+      [
+        "[fr]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7.1",
+        1939,
+        2012
+      ],
+      [
+        "[gb]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        ".....15111",
+        1914,
+        1976
+      ],
+      [
+        "[au]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000012211",
+        1931,
+        2008
+      ],
+      [
+        "[it]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "25",
+        1932,
+        2006
+      ],
+      [
+        "[es]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "1..0111210",
+        1958,
+        2016
+      ],
+      [
+        "[gb]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000013210",
+        1895,
+        2014
+      ],
+      [
+        "[sg]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "2806",
+        1980,
+        2013
+      ],
+      [
+        "[suhh]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7137",
+        1915,
+        2008
+      ],
+      [
+        "[nl]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "4.9",
+        1918,
+        2012
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "1149",
+        1954,
+        2012
+      ],
+      [
+        "[nl]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "2.3",
+        1931,
+        2019
+      ],
+      [
+        "[cl]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "1000011001",
+        1915,
+        2013
+      ],
+      [
+        "[br]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7.2",
+        1901,
+        2011
+      ],
+      [
+        "[suhh]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7.7",
+        1953,
+        2017
+      ],
+      [
+        "[pt]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "...0130102",
+        1942,
+        2013
+      ],
+      [
+        "[nl]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        ".....15111",
+        1944,
+        1993
+      ],
+      [
+        "[it]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "7137",
+        1933,
+        2014
+      ],
+      [
+        "[de]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.0",
+        1892,
+        1943
+      ],
+      [
+        "[fr]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000012212",
+        1968,
+        2020
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.7",
+        1899,
+        2007
+      ],
+      [
+        "[ru]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "14",
+        1960,
+        2010
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.4",
+        1929,
+        2014
+      ],
+      [
+        "[gr]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "....1.1.15",
+        1997,
+        2015
+      ],
+      [
+        "[gr]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "11",
+        1916,
+        1986
+      ],
+      [
+        "[hk]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "20",
+        1910,
+        1954
+      ],
+      [
+        "[es]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "8650",
+        1974,
+        2002
+      ],
+      [
+        "[es]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000000122",
+        1990,
+        2012
+      ],
+      [
+        "[cz]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "151",
+        1999,
+        2009
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000121100",
+        1927,
+        2012
+      ],
+      [
+        "[nl]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "9",
+        1943,
+        1990
+      ],
+      [
+        "[se]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "4.9",
+        1987,
+        2009
+      ],
+      [
+        "[se]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "10..010..5",
+        1976,
+        2015
+      ],
+      [
+        "[it]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000012111",
+        1906,
+        2004
+      ],
+      [
+        "[fi]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.2",
+        1918,
+        1992
+      ],
+      [
+        "[hk]",
+        "rating",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "32",
+        1906,
+        2008
+      ],
+      [
+        "[ru]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "34083",
+        1972,
+        2005
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "2.3",
+        1983,
+        1997
+      ],
+      [
+        "[fi]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "5.8",
+        1953,
+        2014
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "20",
+        1916,
+        1975
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "13",
+        1970,
+        2000
+      ],
+      [
+        "[au]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "0000012111",
+        1907,
+        2009
+      ],
+      [
+        "[hk]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "6.0",
+        1926,
+        2016
+      ],
+      [
+        "[suhh]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "movie', 'movie', 'movie', 'movie', 'movie",
+        "20",
+        1895,
+        1991
+      ]
+    ]
+  }
+}

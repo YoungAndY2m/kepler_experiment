@@ -1,0 +1,853 @@
+{
+    "30-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS writer, MIN(t.title) AS complete_violent_movie\nFROM sampled_complete_cast_4 AS cc,\n    sampled_comp_cast_type_4 AS cct1,\n    sampled_comp_cast_type_4 AS cct2,\n    sampled_cast_info_4 AS ci,\n    sampled_info_type_4 AS it1,\n    sampled_info_type_4 AS it2,\n    sampled_keyword_4 AS k,\n    sampled_movie_info_4 AS mi,\n    sampled_movie_info_idx_4 AS mi_idx,\n    sampled_movie_keyword_4 AS mk,\n    sampled_name_4 AS n,\n    sampled_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND t.id = cc.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND ci.movie_id = cc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi.movie_id = cc.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND mi_idx.movie_id = cc.movie_id\nAND mk.movie_id = cc.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND cct1.id = cc.subject_id\nAND cct2.id = cc.status_id\nAND cct1.kind IN ('@param0')\nAND cct2.kind = '@param1'\nAND ci.note IN ('@param2')\nAND it1.info = '@param3'\nAND it2.info = '@param4'\nAND k.keyword IN ('@param5')\nAND mi.info IN ('@param6')\nAND n.gender = '@param7'\nAND t.production_year > @param8;",
+        "predicates": [
+            {
+                "alias": "cct",
+                "original_alias": "cct1",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_comp_cast_type_4",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "sampled_complete_cast_4"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.subject_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "cct",
+                "original_alias": "cct2",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_comp_cast_type_4",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "sampled_complete_cast_4"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.status_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "cc",
+                    "n"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_complete_cast_4",
+                    "sampled_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "ci.movie_id = cc.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "cc",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_cast_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_complete_cast_4",
+                    "sampled_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "mi.movie_id = cc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_name_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "sampled_title_4",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "mi",
+                    "mi_idx",
+                    "ci",
+                    "mk",
+                    "cc"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_cast_info_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_complete_cast_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = cc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "crew', 'complete', 'crew', 'complete', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(ob manager)', '(as Philipe Dean)', '(as Elfi Trieb)', '(Ed''s Chorus)",
+                "weekend gross",
+                "rating",
+                "racism', 'glen-mills-school', 'chase-on-foot', 'maui-hawaii', 'castrato",
+                "$5,135 (USA) (19 October 2003) (16 screens)', 'CAM:Sony DSR-2000', 'USA:25 July 2008', 'Peru:8 October 2003', 'DKK 2,000",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'cast', 'cast', 'complete', 'complete",
+                "complete",
+                "(executive producer)', '(as Anamika)', '(stand-in: Crystal)', '(assistant weapons)', '(forum maintenance)",
+                "weekend gross",
+                "rating",
+                "jealousy', 'cigarette-holder', 'pheromones', 'slave-dealer', 'fetus-in-a-jar",
+                "\u00c2\u00a3379,786 (UK) (26 May 2002) (258 screens)', '\u00c2\u00a346,000', 'Albert Films', 'Try Dongerize!', 'Brazil:15 July 2003",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'cast', 'complete+verified', 'crew', 'complete+verified",
+                "complete",
+                "(executive producer)', '(as Will Espinal)', '(as Two''s Company)', '(as Zelig Barth)', '(as Ben Di Lisi)",
+                "weekend gross",
+                "rating",
+                "cooking', 'newspaper-clipping', 'ninety-something', 'syracuse-new-york', 'hunting-season",
+                "$1,375,767 (USA) (13 April 2003) (216 screens)', 'Dorado, Puerto Rico', 'MET:2294 m', 'Japan:41', '$377,783",
+                "m",
+                2001
+            ],
+            [
+                "cast', 'complete', 'complete+verified', 'complete', 'crew",
+                "complete+verified",
+                "(director of photography)', '(as Taeko Kawada)', '(host material)', '(as Stella Du Bois)', '(as Debra Kay)",
+                "printed media reviews",
+                "votes distribution",
+                "flashback', 'ear-of-corn', 'child-support', 'tang-city-shanghai', 'thumb-sucking",
+                "Burr, Ty. \"Video: Hostage Crisis (C)\". In: \"Entertainment Weekly\" (USA), Vol. 1, Iss. 601, 22 June 2001, Pg. 68, (MG)', 'Frank: Wake up.', '$62,800,000 (USA)', 'Japan:19 March 2004', 'The main event!",
+                "m",
+                1999
+            ],
+            [
+                "crew', 'complete+verified', 'crew', 'complete', 'complete",
+                "complete",
+                "(executive producer)', '(as Steve Buhai)', '(as Rodney)', '(as Spencer Duzz)', '(hair piece)",
+                "weekend gross",
+                "votes distribution",
+                "husband-wife-relationship', 'black-family', 'burgundy', 'latex-condom', 'nose-shot-off",
+                "\u00e2\u0082\u00ac 126,115 (Italy) (22 December 2002) (60 screens)', 'Poland:42', 'Criss, Nancy', 'Belgium:May 2007', 'USA:25 May 2003",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete+verified', 'cast', 'crew",
+                "complete",
+                "(executive producer)', '(as Kristin Bryant)', '(as Ethan Spence)', '(as Jos\u00c3\u00a9 Gayt\u00c3\u00a1n)', '(as Tank)",
+                "opening weekend",
+                "rating",
+                "bra', 'stringer', 'slander', 'butte-falls-oregon', 'wedding-video",
+                "$161,528 (USA) (16 March 2003) (6 screens)', 'Japan:2003', 'USA:7 March 2007', 'CAM:Bolex RX-0', 'USA:44.58",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'crew', 'complete+verified', 'cast', 'cast",
+                "complete",
+                "(executive producer)', '(as Lutchina)', '(as Delfin Delage)', '(Policeman)', '(episode 3.5)",
+                "plot",
+                "votes",
+                "bra', 'vallecas-madrid', 'face-wound', 'health-inspector', 'skating-accident",
+                "A comedy about bending the rules to reach your goal, Bend It Like Beckham explores the world of women''s football, from kick-abouts in the park to freekicks in the Final. Set in Hounslow, West London and Hamburg, the film follows two 18 year olds with their hearts set on a future in professional soccer. Heart-stopping talent doesn''t seem to be enough when your parents want you to hang up your football boots, find a nice boyfriend and learn to cook the perfect chapatti.', '279,000 (Germany)', 'Philippines:102', 'Belgium:17 May 2010', 'Finland:24 May 2006",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'crew', 'crew', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(titles) (as Saint)', '(as Steve Ostro)', '(weapons designer)', '(as Rep. Tom DeLay)",
+                "gross",
+                "votes",
+                "celebration', 'aborigine', 'pool-cue', 'dartmouth-college', 'wronged-wife",
+                "\u00e2\u0082\u00ac 313,718 (Italy) (22 December 2002)', 'USA:3 July 2008', 'UK:4 November 2007', 'South Korea:139', 'Denmark:4 June 2008",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete+verified', 'complete+verified', 'complete+verified",
+                "complete",
+                "(archive footage) (uncredited)', '(as Aldo Baglio)', '(Firefighter)', '(as Irra Verbitsky)', '(script adaptor)",
+                "weekend gross",
+                "rating",
+                "racism', 'closed-mindedness', 'duke-of-windsor', 'kimosabe', 'trail-drive",
+                "$1,074,148 (USA) (1 June 2003) (491 screens)', 'USA:6 July 2002', '$1,265', 'Poland:19 May 2005', 'Cuba:December 2001",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'crew', 'cast', 'complete",
+                "complete",
+                "(executive producer)', '(nucleus director)', '(as Nicoletta)', '(as D. Ivanchenko)', '(as Andr\u00c3\u00a9 Herv\u00c3\u00a9)",
+                "admissions",
+                "votes",
+                "jealousy', 'dc-3', 'last-week', 'factory-whistle', 'return",
+                "31,970 (Netherlands) (31 December 2002)', 'Estonia:152', '8139', 'USA:16 May 2005', 'Prepare to Battle",
+                "m",
+                2001
+            ],
+            [
+                "cast', 'complete', 'complete', 'complete+verified', 'cast",
+                "complete+verified",
+                "(executive producer)', '(as Julie Snow)', '(as Rodrigo N.S.)', '(specialty dancer)', '(as Tom Senderak)",
+                "printed media reviews",
+                "votes",
+                "husband-wife-relationship', 'teenage-detective', 'bronze-age', 'horse-drawn-wagon', 'animal-shelter",
+                "Kriest, Ulrich. \"Lebenszeichen - Proof of Life\". In: \"film dienst\" (Germany), Vol. 54, Iss. 6, 13 March 2001, Pg. 32-33', 'Estonia:22 May 2007', 'INR 2,000,000,000', 'Germany:93', 'Hungary:25 May 2005",
+                "m",
+                1999
+            ],
+            [
+                "crew', 'complete+verified', 'complete', 'complete+verified', 'crew",
+                "complete",
+                "(archive footage) (uncredited)', '(as Dan Skinner)', '(as Tom Watson)', '(as EJ Dionne)', '(trommer)",
+                "weekend gross",
+                "votes distribution",
+                "jealousy', 'buddha-statue', 'tears', 'archduchess', 'domestication",
+                "$144,635 (USA) (14 September 2003) (164 screens)', 'Let the hunt begin!', 'Mexico:25 June 2004', 'India:180', 'Argentina:31",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'cast', 'crew', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(as Nate Bishop)', '(as Barrie Osborne)', '(manager: Queen)', '(security: UK)",
+                "weekend gross",
+                "rating",
+                "racist-insult', 'sidewalk-elevator', 'fax-transmission', 'devotee', 'sabbatical",
+                "\u00c2\u00a3379,786 (UK) (26 May 2002) (258 screens)', 'Finland:6 June 2003', 'Israel:22 July 2003', '16 August 2004 - ?', 'Belgium:5 July 2000",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'crew', 'complete+verified', 'complete+verified",
+                "complete",
+                "(archive footage) (uncredited)', '(as Raffaeli Rizzi)', '(medic coordinator)', '(as Steven Vargo)', '(as Pupo)",
+                "weekend gross",
+                "rating",
+                "punjabi', 'triple-spiral', 'scam', 'african-dance', 'surveyor",
+                "$1,813,118 (USA) (3 August 2003) (1,002 screens)', 'Canada:19 July 2006', 'Svalbard, Norway', 'Ireland:7 July 2008', 'India:1 August 2001",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'cast', 'crew', 'cast', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(as L. Baloun)', '(as Murat Karabey)', '(Julia Red)', '(as Poly Cadsawan)",
+                "weekend gross",
+                "votes",
+                "rubbing-noses', 'military-uniform', 'military-vessel', 'bible-in-hotel', 'fundraiser",
+                "\u00e2\u0082\u00ac 6,448 (Italy) (23 February 2003) (6 screens)', 'Belgium:3 July 2004', 'Japan:14 March 2010', 'Hungary:15 May 2009', 'Germany:136",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'cast', 'crew', 'cast",
+                "complete",
+                "(executive producer)', '(as Kim Sang Yong)', '(as Steven Quezada)', '(In-game Footage)', '(as Zach)",
+                "gross",
+                "rating",
+                "cooking', 'wmd', 'irritating-voice', 'broken-pay-phone', 'bicorne",
+                "\u00e2\u0082\u00ac 1,720,101 (Italy) (12 January 2003)', 'April 2000 -', 'Sweden:6 March 2010', 'Ireland:9', 'USA:24 May 2001",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'complete+verified', 'cast', 'complete",
+                "complete",
+                "(archive footage) (uncredited)', '(as Michie)', '(for: Bob Crockett)', '(as Ljiljana Culev)', '(Tia''s mom)",
+                "weekend gross",
+                "votes",
+                "punjabi', 'auction', 'sugar-beet', 'sexual-assault', 'studio-boss",
+                "$254,167 (India) (25 July 2002)', 'ESP 2,000,000', 'Poland:2 April 2004', 'All Anal!', 'UK:19 December 1999",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'cast', 'complete', 'complete', 'complete+verified",
+                "complete",
+                "(archive footage) (uncredited)', '(as Matt Fox)', '(as Diego Rivera)', '(as Dan Myrhman)', '(as Alissa Levy)",
+                "weekend gross",
+                "rating",
+                "rubbing-noses', 'serj-tankian', 'bobcat', 'respiratory-failure', 'discrimination",
+                "\u00e2\u0082\u00ac 68,535 (Italy) (26 January 2003) (35 screens)', 'Finland:169', 'Spain:4 June 2007', 'Portugal:2 May 2000', 'Spain:88",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'complete', 'cast', 'complete+verified",
+                "complete",
+                "(archive footage) (uncredited)', '(Backing singer)', '(as Imrey Kati)', '(as Four Like Us)', '(Publisher)",
+                "gross",
+                "rating",
+                "locker-room', 'bluff', 'sex-orgy', 'inside-the-womb', 'business-report",
+                "\u00e2\u0082\u00ac 1,934,101 (Italy) (19 January 2003)', 'USA:30 January 2008', 'France:5 July 2007', 'Italy:21 May 2003', 'Serbia:18 July 2006",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'complete+verified', 'crew', 'cast",
+                "complete",
+                "(executive producer)', '(East Side Boys)', '(fixer: Brazil)', '(as Yu. Yanovskaya)', '(as Tony Landy)",
+                "weekend gross",
+                "votes",
+                "interracial-love', 'jewelry', 'pondicherry-india', 'hellchild', 'company-owner",
+                "\u00c2\u00a3839,505 (UK) (5 May 2002) (364 screens)', 'Iceland:70', 'The Princess', 'UAH 3,000,000', 'USA:March 1999",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete+verified', 'crew', 'crew",
+                "complete",
+                "(archive footage) (uncredited)', '(as Uen-ping Juan)', '(as Thomas Scott)', '(as Nicole Bram\u00c3\u00a9)', '(as Carly Thomas)",
+                "gross",
+                "votes",
+                "london-underground', 'planning-a-murder', 'projection-booth', 'dual-wield', 'gesture",
+                "\u00e2\u0082\u00ac 127,643 (Italy) (15 December 2002)', 'Finland:July 2008', '\u00e2\u0082\u00ac 370,000', 'Sex from Russia', 'HKD 20,000",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete', 'crew', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(as Mrs. S. Sparks)', '(as Matt Seitz)', '(as RenoirTuahene)', '(2007-????)",
+                "gross",
+                "votes",
+                "racist-insult', 'army-training', 'bladder', 'gun', 'naturism",
+                "\u00e2\u0082\u00ac 2,070,584 (Italy) (26 January 2003)', 'Spain:30 June 1999', 'Poland:25 May 2002', 'Australia:140', 'UK:6 November 2000",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'crew', 'complete', 'complete",
+                "complete",
+                "(archive footage) (uncredited)', '(as Stu Charno)', '(as Rob Vallier)', '(as Dick King)', '(as Ruan Del Monte)",
+                "weekend gross",
+                "votes distribution",
+                "drink', 'fake', 'full-moon', 'manitou', 'residence",
+                "\u00c2\u00a31,721,146 (UK) (21 April 2002) (386 screens)', 'Brazil:29 May 2004', '$570,000', 'PCS:Lomoscope', '$7,703,656 (UK)",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'complete', 'complete+verified', 'complete+verified",
+                "complete",
+                "(executive producer)', '(balloon pilot)', '(as Heiner Piller)', '(as Zora Banxs)', '(The Videographer)",
+                "weekend gross",
+                "rating",
+                "punjabi', 'honor-among-thieves', 'french-guiana', 'ink-pen', 'spelling-test",
+                "\u00c2\u00a331,652 (UK) (23 June 2002) (48 screens)', 'Kiso-ji, Japan', '\u00c2\u00a9 2003 Maipo Film', 'UK:49', 'Azerbaijan",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'crew', 'complete', 'complete+verified",
+                "complete",
+                "(executive producer)', '(as Josef)', '(as Ko A-sung)', '(as Dawn Ferry)', '(as G.J. Oplaat)",
+                "weekend gross",
+                "rating",
+                "london-underground', 'dna-results', 'encoded-message', 'nightstick', 'alsace",
+                "\u00e2\u0082\u00ac 22,449 (Italy) (9 February 2003) (15 screens)', 'USA:380', 'Kosovo', 'Japan:August 2004', 'Israel:3 March 2006",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete', 'complete+verified', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(as V. Nikulin)', '(as Eileen Baker)', '(as Peter Tambakis)', '(as Jose Rios)",
+                "gross",
+                "votes",
+                "crying', 'normandy-beach', 'mission-briefing', 'long-take', 'chevy-nova",
+                "\u00e2\u0082\u00ac 127,643 (Italy) (15 December 2002)', '$17,000', 'Australia:115', 'INR 35,000,000', 'Denmark:July 2002",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete', 'complete+verified', 'complete",
+                "complete",
+                "(executive producer)', '(as Senta & Daniel)', '(as Takis Veremis)', '(as Miklos Olah)', '(as Dom Flore)",
+                "admissions",
+                "rating",
+                "racism', 'cane-sword', 'aclu', 'holiday-parody', 'pie-in-face",
+                "131,447 (France) (26 November 2002) (230 screens)', 'UK:19 December 2004', 'Finland:18 May 2002', '3:45', 'Japan:24 July 2010",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'crew', 'complete+verified', 'crew",
+                "complete",
+                "(executive producer)', '(as Brad Haight)', '(Reena''s mom)', '(as Kalin Javorov)', '(as Giovanni)",
+                "weekend gross",
+                "votes",
+                "racist-insult', 'little-boy', 'forced-march', 'suicide-by-falling', 'revisionist-tale",
+                "\u00e2\u0082\u00ac 90,439 (Spain) (22 September 2002) (67 screens)', 'INR 120,000,000', 'Belgium:104', 'Spain:02 May 2006', 'MET:2603 m",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete+verified', 'crew', 'cast",
+                "complete",
+                "(executive producer)', '(as Dave McCurley)', '(as Chris Liebe)', '(Hindi version)', '(dramaturgist)",
+                "weekend gross",
+                "votes",
+                "interracial-love', 'listening-to-sex', 'barnard-college', 'impounding-a-car', 'inflated-head",
+                "$1,470,396 (USA) (4 May 2003) (483 screens)', 'Taiwan:26 June 2004', 'Sweden:3 March 2003', 'Belgium:83', 'PCS:Codex",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'complete+verified', 'cast', 'complete+verified",
+                "complete",
+                "(executive producer)', '(as Lanny)', '(as Datarina)', '(as Sonni Stommel)', '(location set: PA)",
+                "weekend gross",
+                "votes",
+                "racist-insult', 'third-world', 'botanist', 'godwin''s-law', 'black-leather",
+                "\u00e2\u0082\u00ac 27,760 (Italy) (2 February 2003) (13 screens)', 'Japan:11 May 2000', 'Portugal:March 2009', 'South Africa:150', '227",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'cast', 'crew', 'complete",
+                "complete",
+                "(archive footage) (uncredited)', '(cook) (uncredited)', '(technical lead)', '(as Helder Costa)', '(as Lauren Jackson)",
+                "weekend gross",
+                "rating",
+                "drinking', 'public-domain', 'homo-erectus', 'eyesperception', 'reunification",
+                "$15,104 (USA) (12 October 2003) (26 screens)', 'USA:14:52', 'USA:24.52', 'PCS:Betamax', 'Hungary:301",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete+verified', 'complete', 'crew",
+                "complete",
+                "(archive footage) (uncredited)', '(as Coni Marino)', '(as Jayla)', '(as Lushous Lopez)', '(as Hans Uwe Bauer)",
+                "weekend gross",
+                "rating",
+                "husband-wife-relationship', 'soiling-pants', 'drip-painting', 'black-hawk', 'chance-meeting",
+                "$1,372,198 (USA) (18 May 2003) (553 screens)', 'PCS:D5', 'MET:7650 m', '29 April 2005 - ?', '\u00e2\u0082\u00ac 2,500,000",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'crew', 'crew', 'complete+verified', 'cast",
+                "complete",
+                "(executive producer)', '(as Chan Tat Chee)', '(as Mitchell Cohen)', '(as Nili Zruya)', '(as Joe Silver)",
+                "weekend gross",
+                "votes",
+                "england', 'slaying', 'pool-hall', 'doppelganger', 'anger",
+                "\u00c2\u00a31,721,146 (UK) (21 April 2002) (386 screens)', 'Ninn Worx', 'Germany:129', 'USA:13 January 2003', 'Crutch LLC",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'complete', 'complete', 'complete",
+                "complete",
+                "(archive footage) (uncredited)', '(wrangler: RV)', '(cashier: China)', '(factual producer)', '(Boston Reporter)",
+                "weekend gross",
+                "votes",
+                "marriage', 'visual-adaptation', 'soft-boiled-egg', 'society', 'tutsi",
+                "\u00c2\u00a32,001,795 (UK) (14 April 2002) (384 screens)', 'Ireland:31 May 2008', '756,526 (Turkey)', 'Malta:24 March 2004', 'MET:2205 m",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'crew', 'cast', 'cast', 'crew",
+                "complete",
+                "(archive footage) (uncredited)', '(as Leslie Walker)', '(medic: New Mexico)', '(seating assistant)', '(as Ron A. Brooks)",
+                "weekend gross",
+                "rating",
+                "burn-injury', 'modern-western', 'cuba', 'blood-and-gore', 'sneak-attack",
+                "$2,247,421 (USA) (26 May 2003) (522 screens)', 'USA:127', 'Taiwan:4 May 2004', 'Shot in 15 days.', 'Israel:23 June 2005",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'cast', 'complete', 'complete",
+                "complete",
+                "(executive producer)', '(as Bill)', '(as Jools Katanyag)', '(makeup artist)', '(as Jun Aves)",
+                "weekend gross",
+                "rating",
+                "racist-insult', 'incestuous-fantasy', 'racing-game', 'lower-kane-cave', 'busy-father",
+                "$1,074,148 (USA) (1 June 2003) (491 screens)', 'USA:20 March 2005', 'Italy:27 July 2004', 'Thimphu, Bhutan', 'Iceland:2 July 2004",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'cast', 'complete', 'complete+verified",
+                "complete",
+                "(executive producer)', '(producer support)', '(registration)', '(as John R. Pepper)', '(as A. Shlyamin)",
+                "taglines",
+                "votes distribution",
+                "england', 'second-coming', 'retro-ballpark', 'anhedonia', 'in-the-line-of-fire",
+                "An Indian girl born to play soccer for England', 'Russia:July 2000', '- (45 days)', 'USA:24 May 2003', 'USA:September 1998",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'crew', 'cast', 'crew', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(as Matt Ryle)', '(as Lauryl Canyon)', '(as Anatoly Gnatuk)', '(as the Buggles)",
+                "opening weekend",
+                "rating",
+                "bra', 'dutch-cinema', 'thriller-filmmaking', 'public-affairs', 'stopover",
+                "\u00e2\u0082\u00ac 90,439 (Spain) (22 September 2002) (67 screens)', 'UK:62', 'Too cool for words', 'Spain:40', '$116,741,558 (USA)",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'crew', 'crew', 'complete",
+                "complete",
+                "(executive producer)', '(as Andrea Jones)', '(as Royce Raul)', '(as KG)', '(as Siren)",
+                "filming dates",
+                "votes",
+                "drink', 'writing-on-wall', 'flag-on-the-moon', 'illegal-worker', 'football-manager",
+                "18 June 2001 - August 2001', 'France:9 May 2003', 'DKK 15,000', 'Greece:27 July 2006', 'Hart Perry",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'crew', 'crew', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(Alcibiades)', '(as Yuna Mikunu)', '(as Billy Marchese)', '(as Viv Albertine)",
+                "weekend gross",
+                "rating",
+                "ethnic-slur', 'potato', 'choke-with-food', 'benedictine', 'tv-pilot",
+                "\u00e2\u0082\u00ac 1,305 (Italy) (23 March 2003) (2 screens)', 'NZD 60', 'Not So Private.', 'JB: POWERSLIDE!', 'Brazil:26 June 2004",
+                "m",
+                2001
+            ],
+            [
+                "cast', 'complete+verified', 'cast', 'crew', 'cast",
+                "complete+verified",
+                "(director of photography)', '(as Milly Ellis)', '(as Reiner Schone)', '(as Jacey Salles)', '(arms supplier)",
+                "quotes",
+                "rating",
+                "rocket-launcher', 'kosovo', 'flashing', 'texas-oil', 'corsican",
+                "Dino: [sarcastically] So basically we just call the army, schedule a battle. How would Wednesday around 3 be for you?', 'China:July 2006', 'NZD 2,400,000', 'Italy:27 April 2002', 'Finland:236",
+                "m",
+                1999
+            ],
+            [
+                "cast', 'cast', 'cast', 'crew', 'complete",
+                "complete+verified",
+                "(written by)', '(as Chad C. Tucker)', '(as James Thalman)', '(as Rose Gacuta)', '(as Kim)",
+                "release dates",
+                "votes distribution",
+                "cocaine', 'mass-killings', 'unknown-son', 'hand-in-mouth', 'book-of-genesis",
+                "Kuwait:27 June 2001', 'Australia:123', 'Spain:21 May 2001', 'France:3 June 2004', 'Austria:3 July 2007",
+                "m",
+                1999
+            ],
+            [
+                "crew', 'complete+verified', 'cast', 'crew', 'complete+verified",
+                "complete",
+                "(archive footage) (uncredited)', '(as Tim Van Patten)', '(as Lily Lixxx)', '(as Saya)', '(promotion writer)",
+                "weekend gross",
+                "rating",
+                "locker-room', 'michigan', 'table-map', 'foot-worship', 'blurred-nudity",
+                "$384,784 (USA) (13 July 2003) (195 screens)', '$13,500,000', 'Colombia:2000', 'UK:23 January 2005', 'France:29",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'cast', 'complete+verified', 'complete+verified', 'crew",
+                "complete",
+                "(archive footage) (uncredited)', '(as Nick Gilhool)', '(as Leora)', '(as Marciya Lau)', '(as Veronica)",
+                "weekend gross",
+                "votes distribution",
+                "rubbing-noses', 'fortune', 'meteor-crash', 'quotable-game', 'yom-kippur-war",
+                "$189,963 (USA) (7 September 2003) (173 screens)', 'Selig, M.D.', 'USA:November 2009', 'India:25 July 2005', 'Norway:10",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'cast', 'crew', 'complete+verified",
+                "complete",
+                "(archive footage) (uncredited)', '(as Tigger)', '(lead user tester)', '(as Ken Botelho)', '(as Memphis)",
+                "mpaa",
+                "votes",
+                "england', 'industrial-accident', 'occult', 'flag-of-finland', 'social-acceptance",
+                "Rated PG-13 for language and sexual content', 'Hong Gai, Vietnam', 'Switzerland:27', '$37,599,643 (UK)', 'Help! (season 7)",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'cast', 'crew', 'complete+verified",
+                "complete",
+                "(executive producer)', '(as A*Teens)', '(as Alix Gitter)', '(as Reyna Brito)', '(game programmer)",
+                "weekend gross",
+                "votes",
+                "rubbing-noses', 'elderly-couple', 'witches''-brew', 'body-rub', 'strangeways-prison",
+                "$254,167 (India) (25 July 2002)', 'India:2 August 2000', '? - 14 March 2006', 'Evil Has Survived', 'Italy:8 August 2004",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'crew', 'complete+verified', 'cast",
+                "complete",
+                "(executive producer)', '(as Stephen Robins)', '(as Jim Hutchison)', '(boxing advisor)', '(as Rong Guang Yu)",
+                "mpaa",
+                "votes distribution",
+                "husband-wife-relationship', '16-inch-gun', 'land-speculator', 'surgical-instrument', 'diapers",
+                "Rated PG-13 for language and sexual content', 'Galician', 'UK:8 June 2002', 'Canada:22 July 2005', 'Make Your Mark.",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'crew', 'crew', 'crew",
+                "complete",
+                "(archive footage) (uncredited)', '(as Jon Axe)', '(as Shree Prada)', '(as Shekhar)', '(Party)",
+                "weekend gross",
+                "rating",
+                "girls''-soccer', 'applying-makeup', 'forged-painting', 'parsi', 'golfinhos",
+                "$161,528 (USA) (16 March 2003) (6 screens)', 'Poland:11 June 2005', 'Sweden:3 May 2001', 'Switzerland:26', 'Finland:12 May 2007",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete+verified', 'crew', 'complete+verified', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(as Chris Berry)', '(drama coach)', '(as Nicholl June)', '(game tester: GRI)",
+                "weekend gross",
+                "votes",
+                "ethnic-slur', 'hell-on-earth', 'creepy-bathroom', '38th-parallel', 'young-lovers",
+                "$655,741 (USA) (30 March 2003) (46 screens)', 'Belize City, Belize', 'Piippola, Finland', 'Japan:3 May 2000', 'Hungary:9 June 2011",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'complete', 'cast', 'complete+verified', 'cast",
+                "complete",
+                "(archive footage) (uncredited)', '(as Edwin Meese)', '(as Larry Maddox)', '(as Maurice Smith)', '(as Fallon Summers)",
+                "weekend gross",
+                "votes distribution",
+                "generation-gap', 'tuning-fork', 'salford', 'opera-glasses', 'bed-ridden",
+                "$223,567 (USA) (27 July 2003) (119 screens)', 'UK:15 June 2004', 'UK:2 February 2007', 'UK:11 June 2007', 'UK:20 August 1999",
+                "m",
+                2001
+            ]
+        ]
+    }
+}

@@ -1,0 +1,1176 @@
+{
+  "19-0": {
+    "query": "SELECT MIN(n.name) AS voicing_actress, MIN(t.title) AS voiced_movie\nFROM sampled_aka_name_1 AS an,\n   sampled_char_name_1 AS chn,\n   sampled_cast_info_1 AS ci,\n   sampled_company_name_1 AS cn,\n   sampled_info_type_1 AS it,\n  sampled_movie_companies_1 AS mc,\n   sampled_movie_info_1 AS mi,\n   sampled_name_1 AS n,\n   sampled_role_type_1 AS rt,\n   sampled_title_1 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mi.movie_id = ci.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND mc.note IS NOT NULL\nAND (mc.note LIKE '@param3' OR mc.note LIKE '@param4')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param5' OR mi.info LIKE '@param6')\nAND n.gender = '@param7'\nAND n.name LIKE '@param8'\nAND rt.role = '@param9'\nAND t.production_year BETWEEN @param10 AND @param11;",
+    "predicates": [
+      {
+        "alias": "ci",
+        "column": "note",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_cast_info_1",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "mi",
+          "n",
+          "rt",
+          "an",
+          "chn"
+        ],
+        "join_tables": [
+          "sampled_title_1",
+          "sampled_movie_companies_1",
+          "sampled_movie_info_1",
+          "sampled_name_1",
+          "sampled_role_type_1",
+          "sampled_aka_name_1",
+          "sampled_char_name_1"
+        ],
+        "join_conditions": [
+          "t.id = ci.movie_id",
+          "mc.movie_id = ci.movie_id",
+          "mi.movie_id = ci.movie_id",
+          "n.id = ci.person_id",
+          "rt.id = ci.role_id",
+          "ci.person_id = an.person_id",
+          "chn.id = ci.person_role_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both",
+          "both",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ],
+          [
+            "gender",
+            "name"
+          ],
+          [
+            "role"
+          ],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_name_1",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_companies_1"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_1",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "sampled_movie_info_1"
+        ],
+        "join_conditions": [
+          "it.id = mi.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_companies_1",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "mi",
+          "cn"
+        ],
+        "join_tables": [
+          "sampled_title_1",
+          "sampled_cast_info_1",
+          "sampled_movie_info_1",
+          "sampled_company_name_1"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "mc.movie_id = ci.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_companies_1",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "mi",
+          "cn"
+        ],
+        "join_tables": [
+          "sampled_title_1",
+          "sampled_cast_info_1",
+          "sampled_movie_info_1",
+          "sampled_company_name_1"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "mc.movie_id = ci.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_info_1",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "ci",
+          "it"
+        ],
+        "join_tables": [
+          "sampled_title_1",
+          "sampled_movie_companies_1",
+          "sampled_cast_info_1",
+          "sampled_info_type_1"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = ci.movie_id",
+          "it.id = mi.info_type_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_movie_info_1",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "ci",
+          "it"
+        ],
+        "join_tables": [
+          "sampled_title_1",
+          "sampled_movie_companies_1",
+          "sampled_cast_info_1",
+          "sampled_info_type_1"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = ci.movie_id",
+          "it.id = mi.info_type_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "gender",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_name_1",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "sampled_cast_info_1",
+          "sampled_aka_name_1"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "n.id = an.person_id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "sampled_name_1",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "sampled_cast_info_1",
+          "sampled_aka_name_1"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "n.id = an.person_id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "rt",
+        "column": "role",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_role_type_1",
+        "join_tables_alias": [
+          "ci"
+        ],
+        "join_tables": [
+          "sampled_cast_info_1"
+        ],
+        "join_conditions": [
+          "rt.id = ci.role_id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "sampled_title_1",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mc",
+          "ci"
+        ],
+        "join_tables": [
+          "sampled_movie_info_1",
+          "sampled_movie_companies_1",
+          "sampled_cast_info_1"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mc.movie_id",
+          "t.id = ci.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "sampled_title_1",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mc",
+          "ci"
+        ],
+        "join_tables": [
+          "sampled_movie_info_1",
+          "sampled_movie_companies_1",
+          "sampled_cast_info_1"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mc.movie_id",
+          "t.id = ci.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      }
+    ],
+    "params": [
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(executive producer)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%DVD%",
+        "%TV%",
+        "%mm%",
+        "%o%",
+        "m",
+        "%Adams%",
+        "actor",
+        1965,
+        1966
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%DVD%",
+        "%o%",
+        "%T%",
+        "m",
+        "%Adams%",
+        "actor",
+        1986,
+        1992
+      ],
+      [
+        "(story editor)', '(voice)', '(executive producer)', '(production assistant)', '(production assistant)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%VHS%",
+        "%M%",
+        "%mm%",
+        "m",
+        "%P%",
+        "actor",
+        1972,
+        1987
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[es]",
+        "release dates",
+        "%DVD%",
+        "%TV%",
+        "%l%",
+        "%l%",
+        "m",
+        "%Ho%",
+        "actor",
+        1990,
+        1991
+      ],
+      [
+        "(producer)', '(producer)', '(voice)', '(uncredited)', '(producer)",
+        "[us]",
+        "release dates",
+        "%i%",
+        "%1966%",
+        "%o%",
+        "%m%",
+        "m",
+        "%Joe%",
+        "actor",
+        1971,
+        1986
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%DVD%",
+        "%West%",
+        "%to%",
+        "%s%",
+        "m",
+        "%Peter%",
+        "actor",
+        1974,
+        1992
+      ],
+      [
+        "(voice)', '(producer)', '(executive producer)', '(producer)', '(producer)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%1981%",
+        "%M%",
+        "%33%",
+        "m",
+        "%G%",
+        "actor",
+        1973,
+        1990
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(written by)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%TV%",
+        "%1985%",
+        "%33%",
+        "%s%",
+        "m",
+        "%Dan%",
+        "actor",
+        1963,
+        1964
+      ],
+      [
+        "(voice director)', '(voice)', '(developed by)', '(producer)', '(creator)",
+        "[us]",
+        "release dates",
+        "%TV%",
+        "%USA%",
+        "%o%",
+        "%care%",
+        "m",
+        "%Lee%",
+        "actor",
+        1975,
+        1990
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%VHS%",
+        "%USA%",
+        "%Copyright%",
+        "%o%",
+        "m",
+        "%Ray%",
+        "actor",
+        1981,
+        1983
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(producer)', '(voice)",
+        "[us]",
+        "countries",
+        "%USA%",
+        "%VHS%",
+        "%K%",
+        "%in%",
+        "m",
+        "%De%",
+        "actor",
+        1963,
+        1992
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%original%",
+        "%USA%",
+        "%C%",
+        "%l%",
+        "m",
+        "%Conrad%",
+        "actor",
+        1961,
+        1987
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(uncredited)', '(executive producer)', '(executive producer)",
+        "[us]",
+        "release dates",
+        "%2004%",
+        "%Brazil%",
+        "%l%",
+        "%OFM%",
+        "m",
+        "%J%",
+        "actor",
+        1966,
+        1970
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "countries",
+        "%DVD%",
+        "%TV%",
+        "%o%",
+        "%shadow%",
+        "m",
+        "%Dan%",
+        "actor",
+        1973,
+        1991
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%1991%",
+        "%r%",
+        "%o%",
+        "m",
+        "%Bob%",
+        "actor",
+        1988,
+        1993
+      ],
+      [
+        "(uncredited)', '(creator)', '(director of photography)', '(creator)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%video%",
+        "%A%",
+        "%is%",
+        "m",
+        "%Hank%",
+        "actor",
+        1986,
+        1989
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "countries",
+        "%1975%",
+        "%VHS%",
+        "%o%",
+        "%A%",
+        "m",
+        "%Ho%",
+        "actor",
+        1974,
+        1992
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%TV%",
+        "%TV%",
+        "%M%",
+        "%1%",
+        "m",
+        "%Robert%",
+        "actor",
+        1968,
+        1986
+      ],
+      [
+        "(producer)', '(uncredited)', '(producer)', '(producer)', '(producer)",
+        "[us]",
+        "release dates",
+        "%1980s%",
+        "%DVD%",
+        "%I%",
+        "%all%",
+        "m",
+        "%Robert%",
+        "actor",
+        1979,
+        1991
+      ],
+      [
+        "(story)', '(screenplay)', '(screenplay)', '(voice)', '(script supervisor)",
+        "[us]",
+        "genres",
+        "%USA%",
+        "%2006%",
+        "%e%",
+        "%o%",
+        "m",
+        "%Blanc%",
+        "actor",
+        1967,
+        1990
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%USA%",
+        "%USA%",
+        "%r%",
+        "%C%",
+        "m",
+        "%J%",
+        "actor",
+        1970,
+        1983
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%1980%",
+        "%USA%",
+        "%N%",
+        "%o%",
+        "m",
+        "%D%",
+        "actor",
+        1978,
+        1987
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%USA%",
+        "%1961%",
+        "%Surround%",
+        "%h%",
+        "m",
+        "%T%",
+        "actor",
+        1990,
+        1990
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(voice)', '(screenplay)', '(script supervisor)",
+        "[us]",
+        "genres",
+        "%TV%",
+        "%2002%",
+        "%l%",
+        "%l%",
+        "m",
+        "%Cummings%",
+        "actor",
+        1992,
+        1992
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(producer)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%DVD%",
+        "%1985%",
+        "%33%",
+        "%o%",
+        "m",
+        "%E%",
+        "actor",
+        1984,
+        1992
+      ],
+      [
+        "(voice)', '(producer)', '(voice)', '(producer)', '(voice)",
+        "[us]",
+        "countries",
+        "%VHS%",
+        "%VHS%",
+        "%n%",
+        "%S%",
+        "m",
+        "%Jim%",
+        "actor",
+        1983,
+        1989
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%1999%",
+        "%USA%",
+        "%K%",
+        "%h%",
+        "m",
+        "%D%",
+        "actor",
+        1986,
+        1990
+      ],
+      [
+        "(executive producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(written by)",
+        "[us]",
+        "genres",
+        "%2007%",
+        "%2005%",
+        "%M%",
+        "%1%",
+        "m",
+        "%D%",
+        "actor",
+        1971,
+        1984
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%TV%",
+        "%USA%",
+        "%1%",
+        "%blood%",
+        "m",
+        "%F%",
+        "actor",
+        1972,
+        1983
+      ],
+      [
+        "(voice)', '(uncredited)', '(writer)', '(uncredited)', '(story)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%1968%",
+        "%mm%",
+        "%l%",
+        "m",
+        "%Bailey%",
+        "actor",
+        1966,
+        1977
+      ],
+      [
+        "(uncredited)', '(producer)', '(executive producer)', '(executive producer)', '(producer)",
+        "[us]",
+        "release dates",
+        "%in%",
+        "%USA%",
+        "%C%",
+        "%RAT%",
+        "m",
+        "%D%",
+        "actor",
+        1962,
+        1988
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%VHS%",
+        "%DVD%",
+        "%o%",
+        "%o%",
+        "m",
+        "%Dan%",
+        "actor",
+        1977,
+        1985
+      ],
+      [
+        "(voice)', '(uncredited)', '(written by)', '(creator)', '(producer)",
+        "[us]",
+        "genres",
+        "%2012%",
+        "%with%",
+        "%l%",
+        "%and%",
+        "m",
+        "%John%",
+        "actor",
+        1984,
+        1993
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%1966%",
+        "%t%",
+        "%m%",
+        "m",
+        "%John%",
+        "actor",
+        1975,
+        1986
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "genres",
+        "%USA%",
+        "%in%",
+        "%N%",
+        "%o%",
+        "m",
+        "%Ho%",
+        "actor",
+        1990,
+        1992
+      ],
+      [
+        "(writer)', '(written by)', '(executive producer)', '(executive producer)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%1986%",
+        "%1%",
+        "%n%",
+        "m",
+        "%Christoph%",
+        "actor",
+        1964,
+        1973
+      ],
+      [
+        "(as Charley Weaver)', '(voice)', '(executive producer)', '(executive producer)', '(voice)",
+        "[us]",
+        "release dates",
+        "%1971%",
+        "%1974%",
+        "%o%",
+        "%s%",
+        "m",
+        "%S%",
+        "actor",
+        1962,
+        1983
+      ],
+      [
+        "(producer)', '(producer)', '(producer)', '(voice)', '(voice)",
+        "[us]",
+        "countries",
+        "%TV%",
+        "%in%",
+        "%E%",
+        "%C%",
+        "m",
+        "%Peter%",
+        "actor",
+        1963,
+        1988
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "genres",
+        "%VHS%",
+        "%association%",
+        "%October%",
+        "%A%",
+        "m",
+        "%Hank%",
+        "actor",
+        1984,
+        1987
+      ],
+      [
+        "(uncredited)', '(executive producer)', '(executive producer)', '(executive producer)', '(uncredited)",
+        "[nl]",
+        "release dates",
+        "%DVD%",
+        "%Colombia%",
+        "%o%",
+        "%o%",
+        "m",
+        "%D%",
+        "actor",
+        1966,
+        1975
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[br]",
+        "release dates",
+        "%TV%",
+        "%VHS%",
+        "%USA%",
+        "%o%",
+        "m",
+        "%Ho%",
+        "actor",
+        1967,
+        1974
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(executive producer)', '(executive producer)', '(executive producer)",
+        "[us]",
+        "release dates",
+        "%VHS%",
+        "%1968%",
+        "%Black%",
+        "%o%",
+        "m",
+        "%Dick%",
+        "actor",
+        1964,
+        1969
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%VHS%",
+        "%VHS%",
+        "%r%",
+        "%o%",
+        "m",
+        "%Ho%",
+        "actor",
+        1977,
+        1992
+      ],
+      [
+        "(archive footage)', '(voice: English version)', '(voice: English version)', '(voice: English version)', '(archive footage)",
+        "[us]",
+        "genres",
+        "%in%",
+        "%TV%",
+        "%l%",
+        "%o%",
+        "m",
+        "%Ho%",
+        "actor",
+        1979,
+        1991
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%VHS%",
+        "%2007%",
+        "%1%",
+        "%o%",
+        "m",
+        "%D%",
+        "actor",
+        1964,
+        1979
+      ],
+      [
+        "(production assistant)', '(creator)', '(voice)', '(creator)', '(creator)",
+        "[us]",
+        "genres",
+        "%with%",
+        "%DVD%",
+        "%35%",
+        "%o%",
+        "m",
+        "%Jim%",
+        "actor",
+        1979,
+        1992
+      ],
+      [
+        "(voice)', '(producer)', '(voice)', '(uncredited)', '(voice)",
+        "[us]",
+        "release dates",
+        "%USA%",
+        "%TV%",
+        "%o%",
+        "%C%",
+        "m",
+        "%Bradford%",
+        "actor",
+        1979,
+        1989
+      ],
+      [
+        "(voice)', '(voice)', '(uncredited)', '(uncredited)', '(producer)",
+        "[us]",
+        "release dates",
+        "%1980%",
+        "%original%",
+        "%mm%",
+        "%l%",
+        "m",
+        "%Don%",
+        "actor",
+        1981,
+        1981
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "release dates",
+        "%Brazil%",
+        "%TV%",
+        "%o%",
+        "%o%",
+        "m",
+        "%Carlos%",
+        "actor",
+        1963,
+        1986
+      ],
+      [
+        "(director of photography)', '(voice)', '(uncredited)', '(director of photography)', '(director of photography)",
+        "[us]",
+        "release dates",
+        "%2007%",
+        "%USA%",
+        "%g%",
+        "%o%",
+        "m",
+        "%D%",
+        "actor",
+        1982,
+        1992
+      ],
+      [
+        "(uncredited)', '(voice)', '(executive producer)', '(uncredited)', '(executive producer)",
+        "[us]",
+        "release dates",
+        "%Brazil%",
+        "%DVD%",
+        "%o%",
+        "%m%",
+        "m",
+        "%William%",
+        "actor",
+        1977,
+        1984
+      ]
+    ]
+  }
+}

@@ -1,0 +1,311 @@
+{
+    "9-0": {
+        "query": "SELECT *\nFROM sampled_aka_name_4 AS an,\n sampled_char_name_4 AS chn,\n sampled_cast_info_4 AS ci,\n sampled_company_name_4 AS cn,\n sampled_movie_companies_4 AS mc,\n sampled_name_4 AS n,\n sampled_role_type_4 AS rt,\n sampled_title_4 AS t\nWHERE ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND ci.movie_id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND n.id = ci.person_id\n AND chn.id = ci.person_role_id\n AND an.person_id = n.id\n AND an.person_id = ci.person_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND mc.note IS NOT NULL \nAND (mc.note LIKE '@param2' OR mc.note LIKE '@param3')\nAND n.gender = '@param4'\nAND n.name LIKE '@param5'\nAND rt.role = '@param6'\nAND t.production_year BETWEEN @param7 AND @param8;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "rt",
+                    "n",
+                    "chn",
+                    "an"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_companies_4",
+                    "sampled_role_type_4",
+                    "sampled_name_4",
+                    "sampled_char_name_4",
+                    "sampled_aka_name_4"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "ci.movie_id = mc.movie_id",
+                    "ci.role_id = rt.id",
+                    "n.id = ci.person_id",
+                    "chn.id = ci.person_role_id",
+                    "an.person_id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "cn"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_cast_info_4",
+                    "sampled_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "cn"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_cast_info_4",
+                    "sampled_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4",
+                    "sampled_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "an.person_id = n.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_name_4",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4",
+                    "sampled_aka_name_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "an.person_id = n.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_role_type_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4"
+                ],
+                "join_conditions": [
+                    "ci.role_id = rt.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "sampled_title_4",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "ci",
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4",
+                    "sampled_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": "<",
+                "data_type": "int",
+                "table": "sampled_title_4",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "ci",
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4",
+                    "sampled_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,1003 @@
+{
+    "22-0": {
+        "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS western_violent_movie\nFROM cat_company_name_4 AS cn,\n   cat_company_type_4 AS ct,\n   cat_info_type_4 AS it1,\n   cat_info_type_4 AS it2,\n   cat_keyword_4 AS k,\n   cat_kind_type_4 AS kt,\n   cat_movie_companies_4 AS mc,\n   cat_movie_info_4 AS mi,\n   cat_movie_info_idx_4 AS mi_idx,\n   cat_movie_keyword_4 AS mk,\n   cat_title_4 AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = mc.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mk.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mc.movie_id\nAND mc.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND ct.id = mc.company_type_id\nAND cn.id = mc.company_id\nAND cn.country_code != '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND kt.kind IN ('@param4')\nAND mc.note NOT LIKE '@param5'\nAND mc.note LIKE '@param6'\nAND mi.info IN ('@param7')\nAND mi_idx.info < '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "!=",
+                "data_type": "text",
+                "table": "cat_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "cat_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_kind_type_4",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "cat_title_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_info_idx_4",
+                    "cat_company_type_4",
+                    "cat_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_info_idx_4",
+                    "cat_company_type_4",
+                    "cat_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_idx_4",
+                    "cat_movie_companies_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "cat_movie_info_idx_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_companies_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_4",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_kind_type_4",
+                    "cat_movie_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_idx_4",
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(co-production)%",
+                "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+                "3.0",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(200%)%",
+                "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "votes",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(Japan)%",
+                "Drama', 'Horror",
+                "8.5",
+                "2010"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(2007)%",
+                "USA', 'America",
+                "8.5",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(200%)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "2008"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(presents)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(theatrical)%",
+                "Horror', 'Thriller",
+                "3.0",
+                "1990"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(200%)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "1950"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(co-production)%",
+                "Horror', 'Thriller",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(VHS)%",
+                "Horror', 'Thriller",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(Japan)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(Japan)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(USA)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(theatrical)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "2005"
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "hero', 'martial-arts', 'hand-to-hand-combat', 'computer-animated-movie",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(France)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "7.0",
+                "1990"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(theatrical)%",
+                "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+                "8.5",
+                "1950"
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(worldwide)%",
+                "Drama', 'Horror', 'Western', 'Family",
+                "8.5",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(VHS)%",
+                "Germany', 'German', 'USA', 'American",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(2007)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+                "7.0",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(co-production)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(co-production)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "2005"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(worldwide)%",
+                "Germany', 'German', 'USA', 'American",
+                "8.5",
+                "2005"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(Japan)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(worldwide)%",
+                "Horror', 'Thriller",
+                "8.5",
+                "1990"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(Japan)%",
+                "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+                "8.5",
+                "2010"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(Japan)%",
+                "Sweden', 'Germany', 'Swedish', 'German",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(Japan)%",
+                "Horror', 'Thriller",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(presents)%",
+                "Drama', 'Horror",
+                "3.0",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(Blu-ray)%",
+                "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+                "7.0",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(worldwide)%",
+                "Sweden', 'Germany', 'Swedish', 'German",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(co-production)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "7.0",
+                "1990"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(France)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "2010"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(200%)%",
+                "USA', 'America",
+                "3.0",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(co-production)%",
+                "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(Japan)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "1990"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(theatrical)%",
+                "Horror', 'Thriller",
+                "8.5",
+                "1990"
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(Blu-ray)%",
+                "Horror', 'Action', 'Sci-Fi', 'Thriller', 'Crime', 'War",
+                "3.5",
+                "1990"
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(worldwide)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(theatrical)%",
+                "Germany', 'German', 'USA', 'American",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(2006)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "7.0",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(worldwide)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+                "3.0",
+                "2005"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(co-production)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(2007)%",
+                "Germany', 'German', 'USA', 'American",
+                "3.0",
+                "2000"
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(worldwide)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(Japan)%",
+                "Horror', 'Thriller",
+                "3.0",
+                "2010"
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(USA)%",
+                "%(France)%",
+                "Drama', 'Horror', 'Western', 'Family",
+                "8.5",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(Blu-ray)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'English",
+                "8.5",
+                "2005"
+            ],
+            [
+                "[pl]",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(France)%",
+                "Horror', 'Thriller",
+                "7.0",
+                "1990"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(co-production)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "7.0",
+                "2000"
+            ],
+            [
+                "[pl]",
+                "countries",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(presents)%",
+                "Germany', 'German', 'USA', 'American",
+                "3.5",
+                "1990"
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "movie', 'tv movie', 'video movie', 'video game",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%(200%)%",
+                "Sweden', 'Norway', 'Germany', 'Denmark', 'Swedish', 'Denish', 'Norwegian', 'German', 'USA', 'American",
+                "8.5",
+                "2005"
+            ]
+        ]
+    }
+}

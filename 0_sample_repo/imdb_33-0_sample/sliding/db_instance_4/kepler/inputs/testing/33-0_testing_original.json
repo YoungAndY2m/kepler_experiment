@@ -1,0 +1,2243 @@
+{
+  "33-0": {
+    "query": "SELECT MIN(cn1.name) AS first_company, MIN(cn2.name) AS second_company, MIN(mi_idx1.info) AS first_rating, MIN(mi_idx2.info) AS second_rating, MIN(t1.title) AS first_movie, MIN(t2.title) AS second_movie\n FROM sampled_company_name_4 AS cn1,\n sampled_company_name_4 AS cn2,\n sampled_info_type_4 AS it1,\n sampled_info_type_4 AS it2,\n sampled_kind_type_4 AS kt1,\n sampled_kind_type_4 AS kt2,\n sampled_movie_companies_4 AS mc1,\n sampled_movie_companies_4 AS mc2,\n sampled_movie_info_idx_4 AS mi_idx1,\n sampled_movie_info_idx_4 AS mi_idx2,\n sampled_title_4 AS t1,\n sampled_title_4 AS t2\n WHERE it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id \nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND mi_idx2.info < '@param5'\nAND t2.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "original_alias": "cn1",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_name_4",
+        "join_tables": [
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables": [
+          "sampled_movie_info_idx_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables": [
+          "sampled_movie_info_idx_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt1",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_kind_type_4",
+        "join_tables": [
+          "sampled_title_4"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt2",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_kind_type_4",
+        "join_tables": [
+          "sampled_title_4"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ]
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "original_alias": "mi_idx2",
+        "column": "info",
+        "operator": "<",
+        "data_type": "text",
+        "table": "sampled_movie_info_idx_4",
+        "join_tables": [
+          "sampled_info_type_4",
+          "sampled_title_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "it",
+          "t",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "production_year"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id",
+          "t.id = mi_idx.movie_id",
+          "mi_idx.movie_id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables": [
+          "sampled_movie_info_idx_4",
+          "sampled_kind_type_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables": [
+          "sampled_movie_info_idx_4",
+          "sampled_kind_type_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[fr]",
+        "votes",
+        "rating",
+        "episode', 'video game', 'tv movie', 'tv series', 'video movie",
+        "movie', 'video game', 'video game', 'video game', 'tv series",
+        "4.9",
+        1999,
+        2003
+      ],
+      [
+        "[dk]",
+        "votes distribution",
+        "rating",
+        "tv series', 'tv movie', 'tv movie', 'tv series', 'episode",
+        "episode', 'video game', 'video movie', 'tv movie', 'episode",
+        "6.9",
+        1998,
+        2006
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "tv movie', 'movie', 'episode', 'tv series', 'tv series",
+        "movie', 'video movie', 'movie', 'video game', 'video movie",
+        "180",
+        2003,
+        2007
+      ],
+      [
+        "[es]",
+        "rating",
+        "votes distribution",
+        "movie', 'episode', 'episode', 'tv movie', 'episode",
+        "episode', 'tv movie', 'episode', 'video movie', 'video game",
+        "...2.62...",
+        1998,
+        2006
+      ],
+      [
+        "[ca]",
+        "votes",
+        "rating",
+        "tv series', 'tv movie', 'video game', 'movie', 'movie",
+        "movie', 'episode', 'episode', 'episode', 'tv series",
+        "4.9",
+        1999,
+        2003
+      ],
+      [
+        "[de]",
+        "rating",
+        "rating",
+        "tv series', 'video game', 'video game', 'video game', 'tv movie",
+        "episode', 'tv movie', 'episode', 'video movie', 'tv series",
+        "7.5",
+        1999,
+        2003
+      ],
+      [
+        "[jp]",
+        "votes",
+        "votes",
+        "episode', 'episode', 'episode', 'tv movie', 'video movie",
+        "tv movie', 'tv series', 'movie', 'video game', 'video game",
+        "326",
+        2001,
+        2006
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes distribution",
+        "episode', 'video movie', 'tv series', 'episode', 'episode",
+        "movie', 'movie', 'video movie', 'episode', 'video game",
+        "1.1.1.11.1",
+        2004,
+        2007
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'episode', 'tv movie', 'tv series",
+        "episode', 'episode', 'tv series', 'video game', 'video game",
+        "0...001222",
+        1998,
+        2005
+      ],
+      [
+        "[ar]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'movie', 'tv movie', 'episode",
+        "movie', 'tv series', 'movie', 'video movie', 'video game",
+        "6.0",
+        1998,
+        2004
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes",
+        "movie', 'tv series', 'episode', 'video game', 'tv movie",
+        "movie', 'video game', 'video game', 'tv series', 'movie",
+        "23",
+        1999,
+        2004
+      ],
+      [
+        "[ie]",
+        "rating",
+        "votes distribution",
+        "episode', 'tv series', 'video movie', 'video movie', 'episode",
+        "movie', 'video game', 'movie', 'tv movie', 'video game",
+        "0001111001",
+        2001,
+        2005
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "votes distribution",
+        "tv series', 'video game', 'video game', 'tv series', 'tv movie",
+        "episode', 'video game', 'tv movie', 'video game', 'video game",
+        "....022200",
+        2000,
+        2007
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'tv movie', 'tv series', 'episode",
+        "movie', 'video movie', 'video movie', 'episode', 'tv movie",
+        "0000111101",
+        2001,
+        2007
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes distribution",
+        "episode', 'tv series', 'episode', 'tv series', 'tv movie",
+        "movie', 'movie', 'video movie', 'tv series', 'episode",
+        "1.1.1.11.1",
+        2001,
+        2007
+      ],
+      [
+        "[hk]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'video game', 'episode', 'movie",
+        "episode', 'tv movie', 'video game', 'tv movie', 'tv series",
+        "6.9",
+        1998,
+        2004
+      ],
+      [
+        "[pt]",
+        "rating",
+        "votes distribution",
+        "movie', 'episode', 'tv series', 'tv series', 'video movie",
+        "tv movie', 'video movie', 'episode', 'video game', 'video game",
+        "0000012101",
+        1998,
+        2005
+      ],
+      [
+        "[ch]",
+        "rating",
+        "votes",
+        "movie', 'episode', 'video game', 'video game', 'episode",
+        "movie', 'tv movie', 'video game', 'episode', 'video movie",
+        "172",
+        2003,
+        2007
+      ],
+      [
+        "[jp]",
+        "rating",
+        "rating",
+        "episode', 'tv movie', 'episode', 'video movie', 'tv series",
+        "episode', 'tv movie', 'episode', 'episode', 'video movie",
+        "5.6",
+        2000,
+        2002
+      ],
+      [
+        "[es]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'tv series', 'episode', 'tv movie",
+        "movie', 'tv movie', 'video movie', 'tv movie', 'tv movie",
+        "4.4",
+        2005,
+        2007
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "rating",
+        "tv series', 'episode', 'video movie', 'video movie', 'video movie",
+        "tv series', 'tv movie', 'movie', 'movie', 'episode",
+        "2.9",
+        2000,
+        2007
+      ],
+      [
+        "[hk]",
+        "votes",
+        "rating",
+        "movie', 'tv movie', 'video game', 'episode', 'tv movie",
+        "tv movie', 'movie', 'episode', 'video movie', 'movie",
+        "1.6",
+        1999,
+        2006
+      ],
+      [
+        "[pt]",
+        "rating",
+        "votes",
+        "movie', 'tv movie', 'video movie', 'episode', 'video game",
+        "movie', 'video movie', 'tv movie', 'movie', 'movie",
+        "34",
+        1999,
+        2003
+      ],
+      [
+        "[de]",
+        "votes",
+        "rating",
+        "episode', 'tv movie', 'episode', 'tv movie', 'video movie",
+        "tv series', 'movie', 'tv movie', 'tv movie', 'video movie",
+        "2.9",
+        2002,
+        2005
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes",
+        "tv movie', 'video movie', 'video movie', 'tv series', 'tv movie",
+        "tv movie', 'video game', 'movie', 'video game', 'video movie",
+        "11",
+        2003,
+        2007
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes distribution",
+        "tv movie', 'video movie', 'episode', 'movie', 'movie",
+        "movie', 'video game', 'tv series', 'video game', 'movie",
+        "0000121100",
+        2002,
+        2005
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "episode', 'movie', 'video game', 'video game', 'episode",
+        "tv series', 'episode', 'video game', 'tv series', 'video movie",
+        "8",
+        1999,
+        2007
+      ],
+      [
+        "[de]",
+        "votes",
+        "rating",
+        "tv movie', 'tv series', 'tv movie', 'episode', 'video movie",
+        "episode', 'video game', 'video game', 'video game', 'video game",
+        "7.8",
+        1998,
+        2004
+      ],
+      [
+        "[ca]",
+        "rating",
+        "rating",
+        "episode', 'tv series', 'tv movie', 'tv movie', 'video game",
+        "tv series', 'episode', 'video movie', 'tv series', 'episode",
+        "4.7",
+        2005,
+        2007
+      ],
+      [
+        "[es]",
+        "votes",
+        "votes",
+        "movie', 'video game', 'video movie', 'tv series', 'video movie",
+        "tv movie', 'movie', 'tv movie', 'tv series', 'video movie",
+        "274",
+        1999,
+        2007
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes",
+        "tv series', 'video movie', 'video game', 'tv series', 'episode",
+        "episode', 'movie', 'tv series', 'movie', 'episode",
+        "518",
+        1999,
+        2007
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv movie', 'movie', 'episode', 'movie', 'video movie",
+        "episode', 'episode', 'video movie', 'movie', 'video game",
+        "7.0",
+        2000,
+        2007
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes distribution",
+        "episode', 'video game', 'video movie', 'movie', 'tv series",
+        "movie', 'tv series', 'video game', 'tv movie', 'video game",
+        "1.1.1.11.1",
+        2001,
+        2006
+      ],
+      [
+        "[dk]",
+        "votes distribution",
+        "votes distribution",
+        "tv series', 'movie', 'video movie', 'video game', 'movie",
+        "tv movie', 'episode', 'video game', 'movie', 'video game",
+        "52..00....",
+        2003,
+        2006
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes distribution",
+        "movie', 'tv series', 'video movie', 'movie', 'tv series",
+        "movie', 'episode', 'tv series', 'video game', 'video game",
+        "1010101010",
+        1998,
+        2006
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes",
+        "movie', 'video game', 'video movie', 'video movie', 'video movie",
+        "movie', 'tv series', 'video movie', 'tv series', 'video movie",
+        "10537",
+        1998,
+        2006
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "votes",
+        "episode', 'video movie', 'tv movie', 'episode', 'movie",
+        "episode', 'video game', 'tv movie', 'tv series', 'tv movie",
+        "69",
+        1999,
+        2003
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "tv movie', 'tv series', 'video movie', 'movie', 'episode",
+        "tv series', 'tv movie', 'tv series', 'tv series', 'tv series",
+        "8",
+        2000,
+        2007
+      ],
+      [
+        "[pt]",
+        "rating",
+        "rating",
+        "movie', 'video game', 'episode', 'video movie', 'movie",
+        "tv movie', 'episode', 'video game', 'episode', 'episode",
+        "2.6",
+        1998,
+        2003
+      ],
+      [
+        "[ca]",
+        "rating",
+        "rating",
+        "episode', 'video game', 'episode', 'video movie', 'video game",
+        "movie', 'video movie', 'video movie', 'video game', 'video game",
+        "8.0",
+        2002,
+        2005
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes distribution",
+        "episode', 'tv movie', 'tv series', 'movie', 'episode",
+        "episode', 'episode', 'tv movie', 'tv series', 'tv series",
+        "......72..",
+        2000,
+        2006
+      ],
+      [
+        "[ch]",
+        "rating",
+        "votes",
+        "movie', 'tv series', 'episode', 'video game', 'tv series",
+        "movie', 'video game', 'movie', 'movie', 'video movie",
+        "32434",
+        1998,
+        2003
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "episode', 'video movie', 'tv movie', 'movie', 'video game",
+        "episode', 'video movie', 'tv movie', 'tv movie', 'video movie",
+        "110",
+        1998,
+        2006
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "episode', 'tv movie', 'tv series', 'tv movie', 'tv series",
+        "episode', 'episode', 'movie', 'episode', 'tv movie",
+        "5.6",
+        1998,
+        2006
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes distribution",
+        "episode', 'movie', 'video game', 'tv series', 'movie",
+        "tv series', 'episode', 'video game', 'movie', 'movie",
+        "11.1...32.",
+        2000,
+        2007
+      ],
+      [
+        "[nl]",
+        "votes distribution",
+        "votes",
+        "episode', 'video movie', 'video game', 'movie', 'episode",
+        "tv movie', 'episode', 'movie', 'tv series', 'episode",
+        "274",
+        1999,
+        2004
+      ],
+      [
+        "[nl]",
+        "votes distribution",
+        "rating",
+        "episode', 'video game', 'tv movie', 'episode', 'episode",
+        "tv series', 'tv movie', 'video movie', 'tv series', 'video movie",
+        "2.9",
+        1998,
+        2007
+      ],
+      [
+        "[nl]",
+        "rating",
+        "votes",
+        "episode', 'tv movie', 'movie', 'video movie', 'video movie",
+        "movie', 'tv series', 'video game', 'tv movie', 'episode",
+        "23",
+        2000,
+        2007
+      ],
+      [
+        "[hk]",
+        "votes",
+        "votes",
+        "movie', 'video movie', 'movie', 'tv movie', 'movie",
+        "movie', 'video movie', 'tv movie', 'tv series', 'tv movie",
+        "6",
+        2003,
+        2006
+      ],
+      [
+        "[it]",
+        "votes distribution",
+        "rating",
+        "movie', 'video movie', 'episode', 'tv movie', 'tv movie",
+        "episode', 'tv movie', 'tv movie', 'episode', 'tv series",
+        "7.7",
+        1999,
+        2001
+      ],
+      [
+        "[hk]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'tv movie', 'tv series', 'video game",
+        "movie', 'episode', 'episode', 'tv series', 'episode",
+        "0001111001",
+        1998,
+        2003
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes distribution",
+        "tv series', 'episode', 'video game', 'video movie', 'video movie",
+        "movie', 'tv series', 'movie', 'tv movie', 'movie",
+        "0001111001",
+        1999,
+        2005
+      ],
+      [
+        "[fr]",
+        "rating",
+        "votes distribution",
+        "episode', 'tv series', 'tv series', 'tv movie', 'tv movie",
+        "episode', 'video movie', 'episode', 'episode', 'video movie",
+        "....001133",
+        1999,
+        2007
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes",
+        "movie', 'tv movie', 'video movie', 'movie', 'tv movie",
+        "episode', 'video movie', 'episode', 'movie', 'movie",
+        "31",
+        2003,
+        2007
+      ],
+      [
+        "[ar]",
+        "rating",
+        "rating",
+        "movie', 'video game', 'movie', 'video game', 'video movie",
+        "episode', 'tv series', 'tv series', 'video movie', 'movie",
+        "7.0",
+        2000,
+        2007
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'video game', 'episode', 'video game",
+        "movie', 'tv series', 'episode', 'episode', 'tv series",
+        "0000122100",
+        1999,
+        2003
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "episode', 'video game', 'tv series', 'video movie', 'episode",
+        "movie', 'episode', 'episode', 'episode', 'video movie",
+        "5.0",
+        1998,
+        2004
+      ],
+      [
+        "[gb]",
+        "rating",
+        "votes distribution",
+        "episode', 'video game', 'video game', 'tv series', 'tv movie",
+        "tv movie', 'tv series', 'movie', 'episode', 'tv series",
+        "0011110001",
+        1998,
+        2005
+      ],
+      [
+        "[gb]",
+        "votes distribution",
+        "votes distribution",
+        "episode', 'tv movie', 'tv series', 'movie', 'tv series",
+        "movie', 'episode', 'episode', 'tv movie', 'video game",
+        "0000012211",
+        2003,
+        2005
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "episode', 'tv movie', 'movie', 'tv movie', 'movie",
+        "episode', 'movie', 'movie', 'tv series', 'video movie",
+        "31",
+        2000,
+        2007
+      ],
+      [
+        "[pt]",
+        "rating",
+        "votes",
+        "movie', 'video game', 'tv movie', 'video movie', 'episode",
+        "movie', 'tv series', 'video game', 'tv series', 'episode",
+        "23",
+        2000,
+        2007
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "tv movie', 'tv movie', 'video game', 'video movie', 'episode",
+        "movie', 'tv series', 'movie', 'tv movie', 'episode",
+        "34",
+        2000,
+        2006
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes",
+        "movie', 'tv movie', 'video movie', 'tv movie', 'episode",
+        "episode', 'video movie', 'tv series', 'movie', 'episode",
+        "99",
+        2001,
+        2006
+      ],
+      [
+        "[gb]",
+        "rating",
+        "rating",
+        "episode', 'tv series', 'video game', 'episode', 'episode",
+        "movie', 'tv movie', 'movie', 'movie', 'movie",
+        "6.0",
+        1998,
+        2002
+      ],
+      [
+        "[nl]",
+        "votes",
+        "votes distribution",
+        "episode', 'video game', 'movie', 'tv movie', 'video movie",
+        "movie', 'tv series', 'episode', 'video movie', 'video game",
+        "1010101010",
+        1998,
+        2004
+      ],
+      [
+        "[pt]",
+        "votes",
+        "rating",
+        "movie', 'video movie', 'video game', 'video game', 'movie",
+        "movie', 'episode', 'video movie', 'episode', 'episode",
+        "5.4",
+        1999,
+        2006
+      ],
+      [
+        "[dk]",
+        "votes distribution",
+        "votes",
+        "tv series', 'video game', 'video game', 'video movie', 'episode",
+        "movie', 'tv movie', 'episode', 'episode', 'movie",
+        "37",
+        1998,
+        2005
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes distribution",
+        "tv movie', 'tv movie', 'video game', 'video movie', 'episode",
+        "episode', 'video game', 'tv series', 'episode', 'video game",
+        "....001133",
+        1998,
+        2007
+      ],
+      [
+        "[ch]",
+        "votes distribution",
+        "rating",
+        "movie', 'video game', 'movie', 'video game', 'tv series",
+        "tv movie', 'tv series', 'tv movie', 'tv series', 'tv series",
+        "2.6",
+        1999,
+        2006
+      ],
+      [
+        "[es]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'tv movie', 'movie', 'movie', 'tv series",
+        "movie', 'episode', 'tv movie', 'tv movie', 'video movie",
+        "1100010001",
+        2004,
+        2007
+      ],
+      [
+        "[fr]",
+        "votes",
+        "votes distribution",
+        "episode', 'tv movie', 'episode', 'movie', 'tv series",
+        "movie', 'tv movie', 'video game', 'video movie', 'video movie",
+        "2..00.0221",
+        1999,
+        2007
+      ],
+      [
+        "[ar]",
+        "votes",
+        "votes distribution",
+        "movie', 'tv series', 'movie', 'episode', 'video game",
+        "tv series', 'tv series', 'video game', 'video movie', 'video game",
+        "11.1...32.",
+        1998,
+        2007
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "movie', 'tv movie', 'video movie', 'episode', 'movie",
+        "movie', 'episode', 'episode', 'tv series', 'episode",
+        "7.2",
+        2000,
+        2005
+      ],
+      [
+        "[hk]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'episode', 'video movie', 'tv movie",
+        "episode', 'video movie', 'movie', 'tv series', 'tv movie",
+        "....001133",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes distribution",
+        "movie', 'video movie', 'video game', 'video game', 'episode",
+        "episode', 'movie', 'movie', 'video game', 'video game",
+        "0000001122",
+        1999,
+        2004
+      ],
+      [
+        "[ca]",
+        "votes",
+        "rating",
+        "episode', 'video game', 'episode', 'tv movie', 'video movie",
+        "episode', 'movie', 'video game', 'tv series', 'tv movie",
+        "8.4",
+        2000,
+        2006
+      ],
+      [
+        "[ch]",
+        "votes distribution",
+        "votes",
+        "movie', 'tv series', 'video movie', 'video movie', 'video movie",
+        "episode', 'episode', 'video game', 'video game', 'tv series",
+        "68",
+        2001,
+        2006
+      ],
+      [
+        "[gb]",
+        "votes distribution",
+        "rating",
+        "episode', 'video movie', 'movie', 'episode', 'episode",
+        "movie', 'video movie', 'movie', 'video game', 'video movie",
+        "5.0",
+        1998,
+        2003
+      ],
+      [
+        "[ie]",
+        "votes distribution",
+        "votes",
+        "episode', 'tv movie', 'movie', 'video movie', 'video movie",
+        "tv series', 'tv series', 'movie', 'episode', 'episode",
+        "12",
+        2001,
+        2007
+      ],
+      [
+        "[es]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'video movie', 'tv movie', 'movie",
+        "episode', 'tv movie', 'movie', 'video movie', 'episode",
+        "518",
+        1998,
+        2001
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "rating",
+        "tv movie', 'episode', 'movie', 'tv series', 'movie",
+        "tv series', 'video movie', 'movie', 'tv movie', 'tv series",
+        "4.7",
+        2003,
+        2007
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "votes distribution",
+        "episode', 'episode', 'video movie', 'video movie', 'tv series",
+        "movie', 'video movie', 'movie', 'video movie', 'video game",
+        "2.0120211.",
+        1999,
+        2001
+      ],
+      [
+        "[fr]",
+        "rating",
+        "votes",
+        "episode', 'episode', 'episode', 'video movie', 'video game",
+        "tv movie', 'video movie', 'movie', 'tv series', 'episode",
+        "11",
+        2004,
+        2006
+      ],
+      [
+        "[ca]",
+        "votes",
+        "rating",
+        "movie', 'movie', 'movie', 'video movie', 'video movie",
+        "episode', 'episode', 'video movie', 'tv series', 'episode",
+        "7.4",
+        2002,
+        2005
+      ],
+      [
+        "[es]",
+        "votes distribution",
+        "votes",
+        "movie', 'episode', 'movie', 'video game', 'episode",
+        "tv movie', 'video movie', 'movie', 'tv series', 'video game",
+        "12",
+        2001,
+        2003
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "episode', 'video movie', 'episode', 'video movie', 'movie",
+        "episode', 'video movie', 'tv series', 'movie', 'video game",
+        "68",
+        1999,
+        2007
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "tv movie', 'video game', 'video movie', 'tv movie', 'movie",
+        "movie', 'video game', 'tv movie', 'episode', 'tv series",
+        "39",
+        2001,
+        2007
+      ],
+      [
+        "[gb]",
+        "votes distribution",
+        "votes",
+        "episode', 'movie', 'movie', 'video movie', 'movie",
+        "movie', 'tv series', 'video game', 'video game', 'movie",
+        "37",
+        1998,
+        2007
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv movie', 'tv movie', 'episode', 'video movie', 'tv series",
+        "episode', 'episode', 'video game', 'video game', 'tv movie",
+        "6.9",
+        1998,
+        2006
+      ],
+      [
+        "[fr]",
+        "votes",
+        "rating",
+        "episode', 'episode', 'episode', 'episode', 'tv movie",
+        "tv movie', 'tv series', 'video game', 'episode', 'tv movie",
+        "4.4",
+        2000,
+        2004
+      ],
+      [
+        "[ar]",
+        "votes distribution",
+        "rating",
+        "movie', 'video movie', 'video movie', 'episode', 'video game",
+        "movie', 'tv series', 'episode', 'movie', 'movie",
+        "5.0",
+        1998,
+        2006
+      ],
+      [
+        "[ar]",
+        "votes",
+        "votes",
+        "movie', 'episode', 'episode', 'tv movie', 'video movie",
+        "episode', 'movie', 'movie', 'tv movie', 'video movie",
+        "99",
+        2001,
+        2005
+      ],
+      [
+        "[dk]",
+        "rating",
+        "votes",
+        "tv series', 'video movie', 'tv series', 'movie', 'video movie",
+        "movie', 'episode', 'video game', 'episode', 'episode",
+        "10537",
+        2000,
+        2007
+      ],
+      [
+        "[fr]",
+        "votes",
+        "rating",
+        "episode', 'tv series', 'movie', 'video game', 'tv series",
+        "episode', 'episode', 'video movie', 'movie', 'video movie",
+        "6.9",
+        1998,
+        2005
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "tv series', 'tv series', 'tv series', 'episode', 'video movie",
+        "episode', 'tv series', 'video movie', 'tv series', 'movie",
+        "31",
+        2003,
+        2007
+      ],
+      [
+        "[de]",
+        "rating",
+        "rating",
+        "tv movie', 'tv movie', 'video game', 'tv series', 'tv series",
+        "movie', 'tv series', 'video movie', 'episode', 'tv movie",
+        "5.4",
+        2004,
+        2007
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes distribution",
+        "episode', 'video movie', 'movie', 'episode', 'tv movie",
+        "episode', 'video movie', 'episode', 'video movie', 'tv movie",
+        "000.002212",
+        1999,
+        2003
+      ],
+      [
+        "[pt]",
+        "votes distribution",
+        "votes",
+        "movie', 'episode', 'episode', 'tv movie', 'video game",
+        "episode', 'video movie', 'movie', 'video game', 'video game",
+        "69",
+        1999,
+        2004
+      ],
+      [
+        "[ca]",
+        "votes",
+        "votes distribution",
+        "tv series', 'video game', 'episode', 'tv series', 'episode",
+        "tv movie', 'video movie', 'tv series', 'video game', 'tv movie",
+        "52..00....",
+        2003,
+        2006
+      ],
+      [
+        "[ie]",
+        "rating",
+        "rating",
+        "episode', 'tv series', 'episode', 'episode', 'movie",
+        "tv series', 'movie', 'episode', 'video game', 'tv movie",
+        "4.7",
+        2001,
+        2007
+      ],
+      [
+        "[gb]",
+        "rating",
+        "rating",
+        "movie', 'video game', 'tv series', 'video game', 'movie",
+        "episode', 'video game', 'movie', 'tv series', 'tv movie",
+        "7.9",
+        1999,
+        2002
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes distribution",
+        "movie', 'episode', 'movie', 'movie', 'video movie",
+        "episode', 'tv movie', 'video game', 'tv movie', 'tv movie",
+        "0000112101",
+        1998,
+        2006
+      ],
+      [
+        "[it]",
+        "votes",
+        "rating",
+        "movie', 'tv series', 'episode', 'video movie', 'movie",
+        "episode', 'tv series', 'tv series', 'tv series', 'video movie",
+        "7.9",
+        1999,
+        2003
+      ],
+      [
+        "[nl]",
+        "rating",
+        "votes",
+        "episode', 'tv movie', 'movie', 'movie', 'video movie",
+        "tv series', 'video game', 'tv movie', 'tv movie', 'movie",
+        "8",
+        2005,
+        2007
+      ],
+      [
+        "[ar]",
+        "votes",
+        "votes",
+        "movie', 'tv movie', 'video movie', 'movie', 'video game",
+        "episode', 'tv series', 'episode', 'video game', 'tv movie",
+        "69",
+        1998,
+        2005
+      ],
+      [
+        "[es]",
+        "votes",
+        "rating",
+        "movie', 'tv series', 'tv movie', 'tv series', 'video movie",
+        "episode', 'video movie', 'video game', 'episode', 'tv series",
+        "7.9",
+        1999,
+        2005
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes distribution",
+        "movie', 'tv movie', 'movie', 'tv movie', 'episode",
+        "tv series', 'tv series', 'tv movie', 'episode', 'video movie",
+        "10.00000.3",
+        1999,
+        2006
+      ],
+      [
+        "[pt]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'video game', 'episode', 'tv movie",
+        "episode', 'tv series', 'video movie', 'video game', 'video movie",
+        "31",
+        1998,
+        2007
+      ],
+      [
+        "[ie]",
+        "rating",
+        "votes distribution",
+        "episode', 'video game', 'movie', 'movie', 'video game",
+        "tv series', 'tv series', 'video game', 'tv series', 'video movie",
+        "3.2.111..1",
+        1999,
+        2007
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "votes",
+        "tv series', 'tv series', 'episode', 'episode', 'tv movie",
+        "tv series', 'video movie', 'tv series', 'episode', 'video game",
+        "12",
+        2001,
+        2007
+      ],
+      [
+        "[ar]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'episode', 'episode', 'tv series",
+        "tv series', 'video movie', 'tv series', 'video movie', 'tv series",
+        "9",
+        1999,
+        2007
+      ],
+      [
+        "[ar]",
+        "votes",
+        "rating",
+        "movie', 'tv movie', 'video movie', 'tv series', 'video movie",
+        "episode', 'video game', 'movie', 'movie', 'tv movie",
+        "7.7",
+        1998,
+        2002
+      ],
+      [
+        "[ch]",
+        "rating",
+        "votes",
+        "movie', 'video movie', 'tv movie', 'tv series', 'episode",
+        "episode', 'tv series', 'video game', 'movie', 'movie",
+        "284",
+        2000,
+        2007
+      ],
+      [
+        "[gb]",
+        "votes distribution",
+        "rating",
+        "movie', 'video game', 'video game', 'movie', 'tv movie",
+        "episode', 'tv series', 'episode', 'video game', 'tv movie",
+        "7.4",
+        2002,
+        2007
+      ],
+      [
+        "[es]",
+        "rating",
+        "votes distribution",
+        "movie', 'episode', 'episode', 'video movie', 'video game",
+        "movie', 'video game', 'tv movie', 'video game', 'tv movie",
+        "0000122100",
+        1998,
+        2002
+      ],
+      [
+        "[nl]",
+        "votes",
+        "rating",
+        "episode', 'video movie', 'movie', 'tv series', 'episode",
+        "tv movie', 'video game', 'tv movie', 'episode', 'movie",
+        "4.4",
+        1999,
+        2007
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "tv movie', 'tv movie', 'tv series', 'episode', 'episode",
+        "movie', 'video movie', 'movie', 'tv movie', 'tv series",
+        "180",
+        2000,
+        2005
+      ],
+      [
+        "[fr]",
+        "rating",
+        "votes distribution",
+        "episode', 'tv series', 'video game', 'tv series', 'video game",
+        "movie', 'video game', 'video movie', 'movie', 'movie",
+        "0000121100",
+        2002,
+        2005
+      ],
+      [
+        "[ie]",
+        "votes",
+        "rating",
+        "episode', 'video game', 'episode', 'tv movie', 'video movie",
+        "tv series', 'tv movie', 'video movie', 'video game', 'tv series",
+        "4.7",
+        2000,
+        2007
+      ],
+      [
+        "[nl]",
+        "rating",
+        "rating",
+        "episode', 'video game', 'tv movie', 'movie', 'episode",
+        "movie', 'video game', 'tv movie', 'episode', 'episode",
+        "4.5",
+        1998,
+        2004
+      ],
+      [
+        "[ch]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'video game', 'video movie', 'video movie",
+        "movie', 'tv series', 'tv movie', 'video movie', 'tv series",
+        "1010101010",
+        1998,
+        2001
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "rating",
+        "tv series', 'episode', 'video movie', 'tv series', 'episode",
+        "episode', 'video game', 'video movie', 'video movie', 'video movie",
+        "7.4",
+        2000,
+        2007
+      ],
+      [
+        "[dk]",
+        "votes",
+        "votes distribution",
+        "tv series', 'tv movie', 'tv series', 'video game', 'episode",
+        "movie', 'tv movie', 'video game', 'episode', 'episode",
+        "0000111101",
+        1999,
+        2005
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "tv movie', 'tv series', 'video game', 'movie', 'video movie",
+        "episode', 'movie', 'tv series', 'movie', 'tv series",
+        "110",
+        1999,
+        2005
+      ],
+      [
+        "[ie]",
+        "rating",
+        "rating",
+        "episode', 'episode', 'movie', 'tv movie', 'movie",
+        "tv series', 'tv series', 'tv movie', 'video movie', 'tv series",
+        "2.9",
+        2001,
+        2005
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "tv movie', 'tv series', 'video game', 'video movie', 'movie",
+        "tv series', 'tv series', 'video movie', 'tv movie', 'tv series",
+        "4.7",
+        1998,
+        2007
+      ],
+      [
+        "[ie]",
+        "votes distribution",
+        "votes",
+        "episode', 'video movie', 'movie', 'movie', 'video game",
+        "movie', 'video movie', 'episode', 'episode', 'tv movie",
+        "23",
+        1998,
+        2005
+      ],
+      [
+        "[nl]",
+        "votes distribution",
+        "votes distribution",
+        "episode', 'tv movie', 'episode', 'tv movie', 'tv series",
+        "movie', 'video game', 'tv series', 'tv series', 'video movie",
+        "0000121100",
+        2003,
+        2005
+      ],
+      [
+        "[ie]",
+        "rating",
+        "rating",
+        "episode', 'episode', 'episode', 'tv movie', 'tv series",
+        "movie', 'tv series', 'movie', 'episode', 'video movie",
+        "1.3",
+        1999,
+        2004
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes distribution",
+        "episode', 'movie', 'video movie', 'tv movie', 'video movie",
+        "episode', 'episode', 'tv series', 'episode', 'video movie",
+        "....001133",
+        1998,
+        2007
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes",
+        "episode', 'episode', 'tv movie', 'tv series', 'tv movie",
+        "episode', 'tv series', 'tv series', 'video game', 'tv movie",
+        "7",
+        1998,
+        2002
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "episode', 'tv movie', 'video movie', 'movie', 'movie",
+        "tv series', 'video movie', 'movie', 'tv series', 'movie",
+        "9",
+        2000,
+        2007
+      ],
+      [
+        "[es]",
+        "rating",
+        "votes distribution",
+        "movie', 'video game', 'episode', 'video game', 'video game",
+        "movie', 'video game', 'tv series', 'video game', 'video game",
+        "1100010001",
+        1998,
+        2007
+      ],
+      [
+        "[ca]",
+        "votes",
+        "votes distribution",
+        "episode', 'episode', 'video movie', 'episode', 'episode",
+        "episode', 'movie', 'episode', 'movie', 'tv movie",
+        "...2.62...",
+        2000,
+        2005
+      ],
+      [
+        "[pt]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'video movie', 'tv series', 'episode",
+        "movie', 'video game', 'video movie', 'tv movie', 'video game",
+        "1100010001",
+        2003,
+        2007
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes distribution",
+        "tv movie', 'episode', 'video game', 'episode', 'movie",
+        "movie', 'movie', 'tv series', 'video movie', 'episode",
+        "0000122100",
+        1999,
+        2001
+      ],
+      [
+        "[pt]",
+        "rating",
+        "votes",
+        "movie', 'tv movie', 'movie', 'tv series', 'tv movie",
+        "movie', 'video movie', 'video game', 'tv movie', 'episode",
+        "8",
+        2002,
+        2005
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes",
+        "episode', 'tv series', 'movie', 'tv movie', 'video game",
+        "episode', 'video movie', 'movie', 'movie', 'video movie",
+        "110",
+        1998,
+        2005
+      ],
+      [
+        "[ch]",
+        "votes",
+        "rating",
+        "movie', 'video movie', 'video movie', 'movie', 'video game",
+        "episode', 'video movie', 'video movie', 'tv series', 'tv series",
+        "8.7",
+        1998,
+        2004
+      ],
+      [
+        "[gb]",
+        "votes",
+        "rating",
+        "episode', 'tv movie', 'video game', 'video game', 'video movie",
+        "movie', 'tv movie', 'tv movie', 'video game', 'episode",
+        "4.9",
+        2001,
+        2005
+      ],
+      [
+        "[nl]",
+        "votes distribution",
+        "votes",
+        "episode', 'video game', 'video game', 'episode', 'episode",
+        "episode', 'video movie', 'episode', 'movie', 'episode",
+        "31",
+        1998,
+        2007
+      ],
+      [
+        "[fr]",
+        "rating",
+        "votes distribution",
+        "episode', 'tv series', 'video game', 'movie', 'tv series",
+        "tv movie', 'movie', 'movie', 'video game', 'tv series",
+        "0011110001",
+        2000,
+        2006
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "tv series', 'movie', 'video game', 'video game', 'video movie",
+        "tv series', 'video game', 'episode', 'video movie', 'video movie",
+        "9",
+        2003,
+        2007
+      ],
+      [
+        "[ie]",
+        "votes distribution",
+        "votes",
+        "episode', 'video movie', 'tv movie', 'tv series', 'movie",
+        "episode', 'video game', 'video movie', 'video movie', 'video game",
+        "518",
+        1999,
+        2002
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "tv movie', 'episode', 'movie', 'video game', 'video movie",
+        "movie', 'episode', 'tv movie', 'episode', 'movie",
+        "34",
+        1998,
+        2002
+      ],
+      [
+        "[de]",
+        "rating",
+        "rating",
+        "tv series', 'tv series', 'video game', 'video game', 'tv movie",
+        "episode', 'episode', 'tv movie', 'video movie', 'movie",
+        "7.9",
+        1999,
+        2004
+      ],
+      [
+        "[ie]",
+        "votes distribution",
+        "votes distribution",
+        "episode', 'tv series', 'tv series', 'video movie', 'video movie",
+        "tv movie', 'video game', 'tv movie', 'tv series', 'video game",
+        "0000012101",
+        2000,
+        2005
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "episode', 'video game', 'movie', 'tv series', 'tv movie",
+        "episode', 'video movie', 'movie', 'movie', 'tv series",
+        "7.4",
+        1999,
+        2004
+      ],
+      [
+        "[ch]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'video game', 'episode', 'tv movie",
+        "movie', 'video movie', 'video game', 'tv movie', 'video game",
+        "1.1.1.11.1",
+        2000,
+        2007
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes",
+        "episode', 'video game', 'video movie', 'tv movie', 'tv movie",
+        "movie', 'video movie', 'tv series', 'video game', 'movie",
+        "180",
+        1998,
+        2006
+      ],
+      [
+        "[gb]",
+        "votes distribution",
+        "rating",
+        "movie', 'episode', 'video game', 'video movie', 'tv movie",
+        "episode', 'tv movie', 'video game', 'tv series', 'movie",
+        "5.6",
+        2000,
+        2003
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "episode', 'movie', 'video game', 'video game', 'tv series",
+        "movie', 'video movie', 'episode', 'movie', 'video game",
+        "6.2",
+        2000,
+        2005
+      ],
+      [
+        "[jp]",
+        "votes distribution",
+        "rating",
+        "episode', 'episode', 'video game', 'tv movie', 'tv movie",
+        "movie', 'tv movie', 'tv movie', 'video game', 'movie",
+        "6.2",
+        2003,
+        2005
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv movie', 'tv movie', 'video game', 'movie', 'video game",
+        "tv series', 'tv movie', 'episode', 'tv series', 'episode",
+        "9",
+        2004,
+        2007
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "rating",
+        "tv series', 'video movie', 'tv series', 'tv series', 'tv movie",
+        "episode', 'tv movie', 'movie', 'episode', 'video game",
+        "8.4",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "episode', 'tv movie', 'video movie', 'tv series', 'movie",
+        "tv movie', 'movie', 'episode', 'episode', 'video game",
+        "2.6",
+        1999,
+        2003
+      ],
+      [
+        "[es]",
+        "votes",
+        "votes",
+        "movie', 'tv series', 'tv movie', 'episode', 'episode",
+        "episode', 'video game', 'tv series', 'video movie', 'tv series",
+        "284",
+        2000,
+        2004
+      ],
+      [
+        "[hk]",
+        "votes",
+        "rating",
+        "movie', 'tv series', 'tv movie', 'tv series', 'video game",
+        "movie', 'tv movie', 'video movie', 'video movie', 'video movie",
+        "7.0",
+        1998,
+        2007
+      ],
+      [
+        "[es]",
+        "votes",
+        "votes",
+        "movie', 'video movie', 'video movie', 'tv movie', 'video movie",
+        "movie', 'tv series', 'video movie', 'video movie', 'video game",
+        "343",
+        2003,
+        2005
+      ],
+      [
+        "[hk]",
+        "votes",
+        "votes distribution",
+        "movie', 'video game', 'episode', 'tv series', 'tv movie",
+        "movie', 'tv movie', 'tv movie', 'tv series', 'video movie",
+        "1100010001",
+        2005,
+        2007
+      ],
+      [
+        "[gb]",
+        "votes",
+        "rating",
+        "episode', 'episode', 'video movie', 'video movie', 'video game",
+        "movie', 'video game', 'video game', 'video game', 'tv series",
+        "5.4",
+        2004,
+        2007
+      ],
+      [
+        "[ar]",
+        "rating",
+        "votes distribution",
+        "movie', 'episode', 'tv series', 'episode', 'movie",
+        "movie', 'video movie', 'tv series', 'movie', 'video movie",
+        "0000111101",
+        2002,
+        2006
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'video movie', 'tv movie', 'episode', 'video game",
+        "episode', 'video game', 'tv movie', 'movie', 'video movie",
+        "7.9",
+        1998,
+        2003
+      ],
+      [
+        "[gb]",
+        "rating",
+        "rating",
+        "movie', 'video game', 'video game', 'video game', 'episode",
+        "episode', 'video game', 'tv series', 'video game', 'movie",
+        "7.0",
+        2001,
+        2007
+      ],
+      [
+        "[pt]",
+        "votes distribution",
+        "rating",
+        "movie', 'tv movie', 'movie', 'tv series', 'episode",
+        "episode', 'video movie', 'video game', 'episode', 'episode",
+        "7.9",
+        1998,
+        2004
+      ],
+      [
+        "[es]",
+        "votes",
+        "votes distribution",
+        "movie', 'video game', 'video movie', 'episode', 'movie",
+        "tv movie', 'tv series', 'movie', 'tv series', 'tv movie",
+        "0000012101",
+        1999,
+        2003
+      ],
+      [
+        "[ar]",
+        "rating",
+        "votes distribution",
+        "movie', 'video game', 'video movie', 'movie', 'video game",
+        "tv movie', 'tv series', 'video movie', 'tv series', 'episode",
+        "52..00....",
+        1998,
+        2006
+      ],
+      [
+        "[pt]",
+        "votes distribution",
+        "rating",
+        "movie', 'tv series', 'video movie', 'episode', 'tv movie",
+        "episode', 'episode', 'tv movie', 'episode', 'movie",
+        "8.7",
+        1998,
+        2003
+      ],
+      [
+        "[pt]",
+        "rating",
+        "rating",
+        "movie', 'tv movie', 'movie', 'episode', 'video game",
+        "movie', 'tv series', 'episode', 'movie', 'video game",
+        "4.4",
+        2002,
+        2007
+      ],
+      [
+        "[ie]",
+        "rating",
+        "votes",
+        "episode', 'video movie', 'video game', 'movie', 'movie",
+        "episode', 'video game', 'movie', 'tv movie', 'episode",
+        "518",
+        1998,
+        2005
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "episode', 'video movie', 'movie', 'video game', 'movie",
+        "episode', 'tv series', 'tv movie', 'tv movie', 'video movie",
+        "33",
+        1999,
+        2003
+      ],
+      [
+        "[ca]",
+        "votes",
+        "rating",
+        "episode', 'video game', 'episode', 'video movie', 'video movie",
+        "movie', 'tv movie', 'tv movie', 'episode', 'episode",
+        "6.2",
+        2000,
+        2007
+      ],
+      [
+        "[fr]",
+        "votes distribution",
+        "votes",
+        "episode', 'movie', 'movie', 'tv movie', 'movie",
+        "movie', 'video movie', 'tv series', 'tv series', 'tv series",
+        "343",
+        2002,
+        2007
+      ],
+      [
+        "[ch]",
+        "votes",
+        "rating",
+        "movie', 'episode', 'video game', 'video game', 'video movie",
+        "episode', 'tv movie', 'tv movie', 'tv series', 'video movie",
+        "7.7",
+        1998,
+        2001
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "episode', 'video movie', 'tv movie', 'video movie', 'video game",
+        "movie', 'episode', 'movie', 'movie', 'movie",
+        "37",
+        1998,
+        2005
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes",
+        "tv series', 'video movie', 'video game', 'tv movie', 'movie",
+        "tv movie', 'tv series', 'tv movie', 'video game', 'movie",
+        "11",
+        2001,
+        2007
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes distribution",
+        "tv movie', 'video movie', 'movie', 'movie', 'video movie",
+        "tv movie', 'movie', 'tv movie', 'video movie', 'episode",
+        "52..00....",
+        2000,
+        2006
+      ],
+      [
+        "[gb]",
+        "votes",
+        "votes",
+        "episode', 'tv series', 'video movie', 'tv series', 'movie",
+        "movie', 'video game', 'tv series', 'movie', 'video movie",
+        "23",
+        2002,
+        2005
+      ],
+      [
+        "[jp]",
+        "votes distribution",
+        "rating",
+        "episode', 'tv movie', 'tv series', 'tv series', 'movie",
+        "episode', 'video game', 'tv movie', 'video movie', 'episode",
+        "7.5",
+        1998,
+        2007
+      ],
+      [
+        "[nl]",
+        "votes",
+        "votes",
+        "episode', 'video game', 'video game', 'tv movie', 'video movie",
+        "movie', 'episode', 'episode', 'tv movie', 'video movie",
+        "343",
+        2000,
+        2007
+      ],
+      [
+        "[hk]",
+        "rating",
+        "votes",
+        "movie', 'video game', 'video game', 'movie', 'video game",
+        "episode', 'movie', 'episode', 'tv movie', 'movie",
+        "5",
+        1998,
+        2004
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "tv movie', 'video game', 'video movie', 'movie', 'episode",
+        "episode', 'movie', 'tv movie', 'tv series', 'episode",
+        "99",
+        2001,
+        2005
+      ],
+      [
+        "[it]",
+        "rating",
+        "votes",
+        "movie', 'tv movie', 'tv movie', 'episode', 'video game",
+        "movie', 'episode', 'tv series', 'episode', 'movie",
+        "23",
+        2002,
+        2006
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes distribution",
+        "episode', 'tv movie', 'movie', 'episode', 'video game",
+        "movie', 'video movie', 'video game', 'movie', 'video movie",
+        "2.0120211.",
+        1999,
+        2004
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "tv movie', 'tv movie', 'video game', 'episode', 'tv movie",
+        "movie', 'video movie', 'tv series', 'tv movie', 'tv series",
+        "10537",
+        1998,
+        2004
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "votes distribution",
+        "tv series', 'episode', 'video movie', 'video game', 'video movie",
+        "episode', 'movie', 'video game', 'tv series', 'video movie",
+        "....001133",
+        1999,
+        2005
+      ],
+      [
+        "[ch]",
+        "votes distribution",
+        "rating",
+        "movie', 'tv movie', 'video game', 'video game', 'video movie",
+        "movie', 'video movie', 'video game', 'tv series', 'video game",
+        "5.0",
+        1998,
+        2005
+      ],
+      [
+        "[dk]",
+        "rating",
+        "rating",
+        "tv series', 'tv movie', 'tv movie', 'tv series', 'tv movie",
+        "episode', 'video game', 'movie', 'movie', 'tv movie",
+        "7.4",
+        1999,
+        2002
+      ],
+      [
+        "[ca]",
+        "rating",
+        "rating",
+        "movie', 'tv movie', 'video game', 'tv movie', 'tv series",
+        "movie', 'episode', 'tv movie', 'movie', 'episode",
+        "1.3",
+        2002,
+        2007
+      ],
+      [
+        "[dk]",
+        "votes",
+        "rating",
+        "tv series', 'tv series', 'video movie', 'movie', 'video game",
+        "tv movie', 'episode', 'movie', 'video game', 'movie",
+        "6.7",
+        1998,
+        2003
+      ],
+      [
+        "[dk]",
+        "rating",
+        "votes",
+        "tv series', 'tv series', 'episode', 'video game', 'video game",
+        "episode', 'episode', 'tv series', 'tv movie', 'movie",
+        "33",
+        2001,
+        2007
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv movie', 'video game', 'tv movie', 'video movie', 'tv series",
+        "episode', 'video game', 'episode', 'tv movie', 'video game",
+        "59",
+        1999,
+        2007
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "rating",
+        "episode', 'episode', 'video movie', 'movie', 'episode",
+        "movie', 'tv series', 'movie', 'episode', 'video movie",
+        "5.0",
+        1999,
+        2006
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes distribution",
+        "episode', 'movie', 'movie', 'tv movie', 'episode",
+        "movie', 'tv series', 'episode', 'video game', 'episode",
+        "2..00.0221",
+        1998,
+        2007
+      ],
+      [
+        "[jp]",
+        "rating",
+        "votes",
+        "episode', 'movie', 'tv movie', 'video movie', 'tv series",
+        "movie', 'tv movie', 'episode', 'tv series', 'movie",
+        "6",
+        2000,
+        2007
+      ],
+      [
+        "[hk]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'movie', 'movie', 'tv movie', 'video game",
+        "tv movie', 'video movie', 'video game', 'video game', 'video game",
+        "0000012101",
+        1998,
+        2003
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "votes distribution",
+        "tv series', 'tv movie', 'video movie', 'tv movie', 'tv movie",
+        "movie', 'video game', 'tv series', 'episode', 'video movie",
+        "0000122100",
+        1999,
+        2003
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes distribution",
+        "tv series', 'video movie', 'video movie', 'movie', 'video game",
+        "movie', 'video movie', 'episode', 'video game', 'video movie",
+        "1.1.1.11.1",
+        2000,
+        2007
+      ],
+      [
+        "[nl]",
+        "votes",
+        "votes",
+        "episode', 'video game', 'tv movie', 'video game', 'tv movie",
+        "movie', 'movie', 'movie', 'video movie', 'tv series",
+        "34",
+        1998,
+        2005
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes distribution",
+        "episode', 'tv movie', 'video game', 'tv series', 'tv series",
+        "movie', 'video game', 'episode', 'tv movie', 'movie",
+        "0000111101",
+        2001,
+        2006
+      ]
+    ]
+  }
+}

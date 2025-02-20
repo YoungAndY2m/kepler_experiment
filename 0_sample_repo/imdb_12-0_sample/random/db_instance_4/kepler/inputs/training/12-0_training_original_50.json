@@ -1,0 +1,765 @@
+{
+  "12-0": {
+    "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS drama_horror_movie\nFROM random_company_name_4 AS cn,\n random_company_type_4 AS ct,\n random_info_type_4 AS it1,\n random_info_type_4 AS it2,\n random_movie_companies_4 AS mc,\n random_movie_info_4 AS mi,\n random_movie_info_idx_4 AS mi_idx,\n random_title_4 AS t\nWHERE t.id = mi.movie_id\n AND t.id = mi_idx.movie_id\n AND mi.info_type_id = it1.id\n AND mi_idx.info_type_id = it2.id\n AND t.id = mc.movie_id\n AND ct.id = mc.company_type_id\n AND cn.id = mc.company_id\n AND mc.movie_id = mi.movie_id\n AND mc.movie_id = mi_idx.movie_id\n AND mi.movie_id = mi_idx.movie_id\nAND cn.country_code = '@param0'\nAND ct.kind = '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info > '@param5'\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "random_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "random_movie_companies_4"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "random_company_type_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "random_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ct.id = mc.company_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "random_info_type_4",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "random_movie_info_4"
+        ],
+        "join_conditions": [
+          "mi.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "random_info_type_4",
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables": [
+          "random_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "mi_idx.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "random_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi_idx"
+        ],
+        "join_tables": [
+          "random_title_4",
+          "random_info_type_4",
+          "random_movie_companies_4",
+          "random_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mi.info_type_id = it.id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "column": "info",
+        "operator": ">",
+        "data_type": "text",
+        "table": "random_movie_info_idx_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "random_title_4",
+          "random_info_type_4",
+          "random_movie_companies_4",
+          "random_movie_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "mi_idx.info_type_id = it.id",
+          "mc.movie_id = mi_idx.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "random_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "random_movie_info_4",
+          "random_movie_info_idx_4",
+          "random_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "random_title_4",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "random_movie_info_4",
+          "random_movie_info_idx_4",
+          "random_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "production companies",
+        "locations",
+        "rating",
+        "BC Place, Vancouver, British Columbia, Canada', 'Sweden:9 June 2012', 'Japan:8 April 1988', 'Poland:10 June 2007', 'Greece:77",
+        "5.2",
+        1992,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "tech info",
+        "votes",
+        "RAT:1.33 : 1', 'UK:20 July 1987', 'UK:24 January 2006', 'UK:1 May 1990', '\u00c2\u00a9 MMIX ABC Studios",
+        "31",
+        1913,
+        2017
+      ],
+      [
+        "[ar]",
+        "distributors",
+        "LD subtitles",
+        "votes distribution",
+        "-', 'Sweden:28 May 1954', 'UK:24 August 1978', 'MET:3100 m', 'USA:5 July 1993",
+        "0111110000",
+        1987,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "USA:15 October 1975', 'Poland:24 July 2005', 'Greece:19 July 2007', 'USA:9 October 2000', 'Brazil:March 2006",
+        "30",
+        1894,
+        2009
+      ],
+      [
+        "[fr]",
+        "distributors",
+        "certificates",
+        "votes distribution",
+        "France:U', 'Norway:1972', '8 February 2012 - ?', 'France:12 June 2010', 'Boise, Idaho, USA",
+        "0000013100",
+        1904,
+        1952
+      ],
+      [
+        "[de]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', '2641', 'LAB:Image Film', 'UK:1 August 1989', 'Buizingen, Belgium",
+        "16",
+        1888,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "color info",
+        "rating",
+        "Color', 'Spain:21 May 1987', 'USA:228', 'USA:18 October 1977', 'Mexico:26 June 2009",
+        "6.3",
+        1921,
+        2009
+      ],
+      [
+        "[ch]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "West Germany', 'Spain:3 August 2000', 'Germany:188', 'USA:24 July 1926', 'France:3 March 2013",
+        "0....2.013",
+        1900,
+        2004
+      ],
+      [
+        "[ar]",
+        "distributors",
+        "LD sound encoding",
+        "votes",
+        "Digital/Analog-CX', 'UK:28 May 1967', 'UK:7 August 2003', 'Canada:20 July 1994', 'UK:8 January 2008",
+        "16147",
+        1891,
+        2001
+      ],
+      [
+        "[br]",
+        "distributors",
+        "certificates",
+        "votes distribution",
+        "Singapore:PG', 'USA:28 March 1978', 'USA:16 October 1976', '0.5', '\u00e2\u0082\u00ac 22,380",
+        "0000023100",
+        1902,
+        1978
+      ],
+      [
+        "[de]",
+        "distributors",
+        "countries",
+        "votes",
+        "Germany', 'Do You Wanna Play?', 'Spain:29 July 1998', 'UK:August 1916', 'UK:22 August 1996",
+        "184",
+        1990,
+        2012
+      ],
+      [
+        "[us]",
+        "distributors",
+        "tech info",
+        "votes distribution",
+        "PCS:Spherical', 'France:August 1908', 'UK:28 August 1997', 'USA:28 January 2010', 'Kuwait:2 May 2001",
+        "0010201000",
+        1908,
+        1947
+      ],
+      [
+        "[de]",
+        "distributors",
+        "certificates",
+        "rating",
+        "Norway:15', 'USA:September 1917', '12356 AS', 'USA:19 August 1983', 'UK:1 August 2010",
+        "6.7",
+        1910,
+        2013
+      ],
+      [
+        "[es]",
+        "distributors",
+        "LD production country",
+        "rating",
+        "USA', 'Turkey:January 1979', 'Australia:37', 'DEM 5,000', 'USA:8 November 2003",
+        "3.9",
+        1927,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "color info",
+        "votes",
+        "Color', '246,367 (France)', 'USA:4 January 1913', 'Hungary:8 May 2002', 'USA:16 July 1919",
+        "115",
+        1971,
+        2016
+      ],
+      [
+        "[de]",
+        "distributors",
+        "runtimes",
+        "rating",
+        "86', 'ARS 4,000', 'USA:7 October 1957', 'ML 105987', 'USA:11 January 1956",
+        "6.6",
+        1942,
+        1983
+      ],
+      [
+        "[es]",
+        "distributors",
+        "mpaa",
+        "votes distribution",
+        "Rated PG-13 for sexual content', '$15,911,000 (UK)', 'Italy:26 May 2006', 'Sweden:7 March 2011', 'Hamburger Hill",
+        "0000012101",
+        1921,
+        2005
+      ],
+      [
+        "[es]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Sci-Fi', 'UK:19 January 1990', 'USA:11 April 1953', '3 February 1989 - ?', 'Iran:1975",
+        "....4....6",
+        1921,
+        2008
+      ],
+      [
+        "[de]",
+        "distributors",
+        "runtimes",
+        "votes",
+        "60', '20 April 1994', '22,000 (France)', 'UK:17 January 1966', 'Mexico:3 April 2010",
+        "184",
+        1920,
+        2010
+      ],
+      [
+        "[hu]",
+        "distributors",
+        "release dates",
+        "rating",
+        "USA:12 April 2012', 'UK:10 November 2006', 'USA:27 April 1917', 'Cameroon', 'India:25 June 2012",
+        "6.7",
+        1946,
+        2017
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "color info",
+        "votes",
+        "Black and White', 'Iceland:9 July 1978', '(None):92', '12 May 2011 -', 'MET:2934 m",
+        "175",
+        1932,
+        1979
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "rating",
+        "Finland:10 June 2008', '$38,328,567 (USA)', 'Germany:11:45', '$206,952 (USA)', 'Mexico:110",
+        "7.4",
+        1999,
+        2013
+      ],
+      [
+        "[nl]",
+        "distributors",
+        "sound mix",
+        "votes distribution",
+        "SDDS', 'UK:22 April 1977', 'UK:23 May 1958', 'Poland:5.40', 'In sexy color",
+        "0000121000",
+        1942,
+        2012
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "tech info",
+        "votes distribution",
+        "PCS:Techniscope', 'UK:12 June 1957', 'CIC', '16 June 2003 - ?', 'UK:29 August 1984",
+        "0000002211",
+        1938,
+        2012
+      ],
+      [
+        "[es]",
+        "distributors",
+        "LD length",
+        "rating",
+        "95', 'Colombia:109', 'ID 3288 MM', 'UK:17 June 2008', 'USA:1 December 1990",
+        "3.9",
+        1941,
+        2013
+      ],
+      [
+        "[ar]",
+        "distributors",
+        "LD language",
+        "votes distribution",
+        "English', '184', 'January 1998', 'USA:7 March 1918', 'UK:5 January 1959",
+        "0111110000",
+        1979,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "locations",
+        "votes distribution",
+        "Midwest Street, Warner Brothers Burbank Studios - 4000 Warner Boulevard, Burbank, California, USA', 'Argentina:69', 'MET:2975 m', 'India:10 April 2002', 'Brazil:9 July 2009",
+        "10.0.102.2",
+        1918,
+        2002
+      ],
+      [
+        "[fr]",
+        "distributors",
+        "certificates",
+        "votes",
+        "France:U', '$60', 'UK:26 November 1967', 'Malnate, Italy', 'UK:8 January 2004",
+        "175",
+        1921,
+        2001
+      ],
+      [
+        "[ar]",
+        "distributors",
+        "LD master format",
+        "votes",
+        "Film', '\"No, Daddy, No!\"', 'Seferihisar, Turkey', 'USA:29 April 1951', 'France:21 June 1939",
+        "16147",
+        1925,
+        2003
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "rating",
+        "Belgium:29 February 2012', 'France:2010', 'Serbia:7 April 2010', 'UK:14 May 1972', 'USA:31 October 2000",
+        "4.4",
+        1908,
+        2015
+      ],
+      [
+        "[gr]",
+        "distributors",
+        "sound mix",
+        "rating",
+        "Ultra Stereo', 'USA:2 March 2013', '\u00e2\u0082\u00ac 000,000', 'Israel:3 June 2004', 'UK:25 November 1968",
+        "5.0",
+        1943,
+        1996
+      ],
+      [
+        "[es]",
+        "distributors",
+        "tech info",
+        "votes",
+        "OFM:35 mm', 'Hungary:21 May 2005', 'Czechoslovakia:1947', 'PCS:Camerascope', 'USA:19 June 1960",
+        "16147",
+        1904,
+        1997
+      ],
+      [
+        "[us]",
+        "distributors",
+        "tech info",
+        "votes",
+        "CAM:Canon EOS 7D', 'USA:31 January 2004', 'USA:30 April 1967', 'France:27 July 1968', 'USA:10 July 1933",
+        "343",
+        1954,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "color info",
+        "rating",
+        "Color', 'Finland:16 May 2005', 'Germany:3 June 1911', 'JAM2FILMS', 'USA:27 July 2008",
+        "7.8",
+        1981,
+        2015
+      ],
+      [
+        "[kr]",
+        "production companies",
+        "certificates",
+        "votes",
+        "Japan:PG12', 'UK:17 June 1991', 'UK:18 February 1972', 'copyright ZDF 2006', 'Spain:22 May 1993",
+        "343",
+        1910,
+        2017
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "tech info",
+        "rating",
+        "RAT:1.37 : 1', '261', 'Slovenia:19', 'Greece:15 June 2006', 'UK:5 October 1971",
+        "6.6",
+        1879,
+        1994
+      ],
+      [
+        "[at]",
+        "distributors",
+        "tech info",
+        "votes distribution",
+        "PFM:35 mm', 'Japan:24 June 2009', 'Czechoslovakia:88', 'Japan:26 July 1991', 'UK:6 November 1996",
+        "0000013100",
+        1925,
+        1997
+      ],
+      [
+        "[ar]",
+        "distributors",
+        "release dates",
+        "votes",
+        "USA:5 November 1993', '1991 MTE, Inc.', 'Finland:19 May 1995', 'UK:29 August 1995', 'Brazil:10 July 2009",
+        "16147",
+        1981,
+        1996
+      ],
+      [
+        "[us]",
+        "distributors",
+        "tech info",
+        "votes",
+        "PFM:35 mm', 'UK:19 April 1958', 'Norway:88', 'Canada:178', 'Macedonia:85",
+        "3174",
+        1916,
+        1996
+      ],
+      [
+        "[de]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "USA', 'USA:22 January 1949', 'Norway:82', 'Sweden:11 June 1957', 'Russia:March 2011",
+        "00..121101",
+        1988,
+        2017
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "sound mix",
+        "votes distribution",
+        "Mono', '$740,000', 'USA:17 March 1910', 'ESP 435,409 (Spain)', 'MET:2363 m",
+        "0000013100",
+        1889,
+        1994
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "LD label",
+        "votes",
+        "CBS FOX', 'Taiwan:19 July 1980', 'Canada:28:20', '$526,805 (USA)', 'Serbia:1 June 2008",
+        "2182",
+        1934,
+        2015
+      ],
+      [
+        "[es]",
+        "distributors",
+        "color info",
+        "rating",
+        "Color', 'Spain:1 April 2003', 'Indonesia:17/atas', 'Canada:3 April 2004', 'Chhattisgarhi",
+        "7.7",
+        1900,
+        2017
+      ],
+      [
+        "[gr]",
+        "distributors",
+        "certificates",
+        "rating",
+        "Iceland:16', 'MET:1400 m', 'Mexico:15 July 2011', 'Mexico:1 June 2008', 'TBA",
+        "5.0",
+        1929,
+        2004
+      ],
+      [
+        "[us]",
+        "production companies",
+        "tech info",
+        "rating",
+        "RAT:1.78 : 1', 'MET:3319 m', '15,457 (Spain)', 'FIM 6,221,785', 'USA:13 January 1959",
+        "8.5",
+        1981,
+        2014
+      ],
+      [
+        "[no]",
+        "distributors",
+        "certificates",
+        "votes",
+        "Australia:M', 'MET:4750 m', 'Germany:47', 'MET:2058.3 m', 'Filmed in 1981.",
+        "5919",
+        1934,
+        2013
+      ],
+      [
+        "[de]",
+        "distributors",
+        "certificates",
+        "votes",
+        "Germany:16', 'UK:20 March 2009', '370', 'Finland:K-7', 'MET:2508 m",
+        "184",
+        1994,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "tech info",
+        "votes",
+        "OFM:35 mm', 'DKK 100,000', 'UK:19 March 1913', 'USA:7 March 1981', 'Spain:21 July 2004",
+        "1668",
+        1906,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "certificates",
+        "rating",
+        "Hungary:18', 'Brazil:2 May 2010', 'UK:28 October 1984', 'UK:27 August 2009', 'MET:1801.98 m",
+        "7.3",
+        1902,
+        2015
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "release dates",
+        "votes distribution",
+        "USA:14 September 2012', 'UK:20 June 1995', 'CBS', 'UK:75', 'Italy:October 2006",
+        "0000012100",
+        1952,
+        2016
+      ]
+    ]
+  }
+}

@@ -1,0 +1,864 @@
+{
+    "30-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS writer, MIN(t.title) AS complete_violent_movie\nFROM sampled_complete_cast_4 AS cc,\n    sampled_comp_cast_type_4 AS cct1,\n    sampled_comp_cast_type_4 AS cct2,\n    sampled_cast_info_4 AS ci,\n    sampled_info_type_4 AS it1,\n    sampled_info_type_4 AS it2,\n    sampled_keyword_4 AS k,\n    sampled_movie_info_4 AS mi,\n    sampled_movie_info_idx_4 AS mi_idx,\n    sampled_movie_keyword_4 AS mk,\n    sampled_name_4 AS n,\n    sampled_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND t.id = cc.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND ci.movie_id = cc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi.movie_id = cc.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND mi_idx.movie_id = cc.movie_id\nAND mk.movie_id = cc.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND cct1.id = cc.subject_id\nAND cct2.id = cc.status_id\nAND cct1.kind IN ('@param0')\nAND cct2.kind = '@param1'\nAND ci.note IN ('@param2')\nAND it1.info = '@param3'\nAND it2.info = '@param4'\nAND k.keyword IN ('@param5')\nAND mi.info IN ('@param6')\nAND n.gender = '@param7'\nAND t.production_year > @param8;",
+        "predicates": [
+            {
+                "alias": "cct",
+                "original_alias": "cct1",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_comp_cast_type_4",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "sampled_complete_cast_4"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.subject_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "cct",
+                "original_alias": "cct2",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_comp_cast_type_4",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "sampled_complete_cast_4"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.status_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "cc",
+                    "n"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_complete_cast_4",
+                    "sampled_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "ci.movie_id = cc.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "cc",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_cast_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_complete_cast_4",
+                    "sampled_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "mi.movie_id = cc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_name_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "sampled_title_4",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "mi",
+                    "mi_idx",
+                    "ci",
+                    "mk",
+                    "cc"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_cast_info_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_complete_cast_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = cc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(producer)', '(executive producer)', '(executive producer)', '(producer)', '(executive producer)",
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Spanish', 'Drama', 'Drama', 'UK', 'Drama",
+                "m",
+                2005
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(production accountant)', '(associate producer)', '(location manager)', '(archive footage)', '(associate producer)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA', 'USA', 'English', 'USA', 'English",
+                "m",
+                2004
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(executive producer)', '(uncredited)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "genres",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Comedy', 'Comedy', 'Drama', 'Spanish', 'UK",
+                "m",
+                2001
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "genres",
+                "votes",
+                "oral-sex', 'homosexual', 'love', 'oral-sex', 'homosexual",
+                "Short', 'USA', 'Short', 'Short', 'USA",
+                "m",
+                2003
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "votes",
+                "american-hero', 'mite', 'notice-of-eviction', 'suicide', 'reference-to-william-howard-taft",
+                "USA', 'English', 'English', 'USA', 'USA",
+                "m",
+                2002
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(associate producer)', '(writer)', '(associate producer)', '(production assistant)', '(writer)",
+                "countries",
+                "top 250 rank",
+                "murder', 'non-fiction', 'nudity', 'oral-sex', 'homosexual",
+                "UK', 'UK', 'UK', 'UK', 'UK",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(supervising producer)', '(script supervisor)', '(uncredited)', '(production coordinator)', '(uncredited)",
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "CAM:Arriflex 435 ES, Zeiss Ultra Prime Lenses', 'The horse ridden by Bors (''Ray Winstone (I)'' (qv)) in the film is the same horse that was ridden by Maximus (''Russell Crowe'' (qv)) in _Gladiator (2000)_ (qv).', 'Japan:11 December 2004', 'Lithuania:5 September 2003', 'Documentary",
+                "m",
+                2004
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "votes",
+                "love', 'male-nudity', 'based-on-novel', 'homosexual', 'love",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2000
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2003
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Short', 'Short', 'USA', 'USA', 'USA",
+                "m",
+                2000
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(uncredited)', '(production assistant)', '(production assistant)', '(uncredited)', '(production assistant)",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2000
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "votes distribution",
+                "homosexual', 'anal-sex', 'male-nudity', 'number-in-title', 'love",
+                "Comedy', 'PFM:35 mm', 'UK', 'Dolby Digital', 'PFM:35 mm",
+                "m",
+                2005
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(producer)', '(writer)', '(voice)', '(voice)', '(voice)",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2005
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(writer)', '(voice)', '(voice)', '(writer)', '(voice)",
+                "genres",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Short', 'Drama', 'Color', 'Spanish', 'Short",
+                "m",
+                2004
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(production assistant)', '(writer)', '(production assistant)', '(production assistant)', '(writer)",
+                "genres",
+                "votes distribution",
+                "nudity', 'murder', 'anal-sex', 'oral-sex', 'love",
+                "Drama', 'USA', 'Color', 'Short', 'USA",
+                "m",
+                2005
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(uncredited)', '(uncredited)', '(executive producer)', '(executive producer)', '(uncredited)",
+                "genres",
+                "top 250 rank",
+                "female-nudity', 'independent-film', 'independent-film', 'female-nudity', 'independent-film",
+                "Drama', 'Germany', 'Germany', 'German', 'USA:R",
+                "m",
+                2004
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "countries",
+                "top 250 rank",
+                "independent-film', 'independent-film', 'independent-film', 'female-nudity', 'female-nudity",
+                "USA', 'USA', 'Color', 'Drama', 'English",
+                "m",
+                2000
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "countries",
+                "votes distribution",
+                "nudity', 'based-on-novel', 'oral-sex', 'male-nudity', 'anal-sex",
+                "USA', 'UK', 'English', 'USA', 'English",
+                "m",
+                2003
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(executive producer)', '(executive producer)', '(producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "UK', 'UK', 'UK', 'UK', 'UK",
+                "m",
+                2001
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "top 250 rank",
+                "independent-film', 'female-nudity', 'independent-film', 'independent-film', 'independent-film",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2000
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "genres",
+                "votes distribution",
+                "male-nudity', 'nudity', 'love', 'male-nudity', 'non-fiction",
+                "RAT:1.85 : 1', 'RAT:1.85 : 1', 'Comedy', 'USA:R', 'Comedy",
+                "m",
+                2005
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(set production assistant)', '(line producer)', '(line producer)', '(set production assistant)', '(production assistant) (uncredited)",
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Short', 'USA', 'Short', 'USA', 'Short",
+                "m",
+                2005
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Dolby Digital', 'PFM:35 mm', 'Drama', 'PFM:35 mm', 'OFM:35 mm",
+                "m",
+                2000
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Comedy', 'Spanish', 'UK', 'Spanish', 'Documentary",
+                "m",
+                2005
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "countries",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "USA', 'English', 'USA', 'English', 'USA",
+                "m",
+                2000
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(voice)', '(producer)', '(voice)', '(writer)', '(writer)",
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "Drama', 'Drama', 'Drama', 'Color', 'Drama",
+                "m",
+                2005
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(executive producer)', '(executive producer)', '(voice)', '(executive producer)', '(executive producer)",
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2005
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "genres",
+                "votes",
+                "female-nudity', 'female-nudity', 'independent-film', 'female-nudity', 'female-nudity",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "m",
+                2001
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(co-executive producer)', '(co-executive producer)', '(production accountant)', '(production coordinator)', '(location manager)",
+                "countries",
+                "votes distribution",
+                "burning-car', 'sitting-in-a-tree', 'orion-the-constellation', 'chocolate-kisses-candy', 'tin-man",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2005
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Short', 'USA', 'USA', 'USA', 'Short",
+                "m",
+                2005
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(co-executive producer)', '(associate producer)', '(voice: English version)', '(archive footage)', '(co-executive producer)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2001
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "English', 'Documentary', 'PFM:35 mm', 'USA', 'English",
+                "m",
+                1999
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "top 250 rank",
+                "oral-sex', 'number-in-title', 'nudity', 'love', 'based-on-novel",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2001
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(production accountant)', '(script supervisor)', '(co-executive producer)', '(creator)', '(creator)",
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Color', 'Color', 'Color', 'USA', 'English",
+                "m",
+                2002
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "genres",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "SDDS', 'Romance', 'Stereo', 'Crime', 'Singapore:PG",
+                "m",
+                2003
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(uncredited)', '(producer)', '(associate producer)', '(production assistant)', '(producer)",
+                "genres",
+                "votes",
+                "based-on-novel', 'anal-sex', 'love', 'anal-sex', 'nudity",
+                "Short', 'Drama', 'Drama', 'Drama', 'Drama",
+                "m",
+                2003
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "English', 'USA', 'English', 'English', 'English",
+                "m",
+                2003
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(associate producer)', '(assistant location manager)', '(production accountant)', '(production accountant)', '(written by)",
+                "genres",
+                "rating",
+                "homosexual', 'nudity', 'non-fiction', 'anal-sex', 'oral-sex",
+                "Color', 'USA', 'Drama', 'Color', 'USA",
+                "m",
+                2003
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete",
+                "(producer)', '(production assistant)', '(producer)', '(production assistant)', '(producer)",
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Documentary', 'Comedy', 'Drama', 'Drama', 'Spanish",
+                "m",
+                2004
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "votes distribution",
+                "independent-film', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "English', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2000
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(producer)', '(producer)', '(executive producer)', '(executive producer)', '(producer)",
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Short', 'USA', 'Short', 'USA', 'USA",
+                "m",
+                2004
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(producer)', '(executive producer)', '(producer)', '(executive producer)', '(producer)",
+                "genres",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'independent-film', 'female-nudity', 'female-nudity",
+                "RAT:1.85 : 1', 'USA:R', 'Comedy', 'Comedy', 'USA:R",
+                "m",
+                2003
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)', '(executive producer)",
+                "countries",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'independent-film', 'female-nudity', 'independent-film",
+                "UK', 'UK', 'UK', 'UK', 'UK",
+                "m",
+                2004
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(executive producer)', '(executive producer)', '(producer)', '(producer)', '(producer)",
+                "countries",
+                "votes distribution",
+                "costume-character', 'death-of-cast-member', 'loot', 'revolutionary-organization', 'computer-nerd",
+                "USA', 'USA', 'Short', 'USA', 'Short",
+                "m",
+                2000
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(production accountant)', '(production accountant)', '(script supervisor)', '(location manager)', '(set production assistant)",
+                "countries",
+                "rating",
+                "band-director', 'radio-singer', 'crab', 'car-hit-by-a-train', 'pet-rescue",
+                "USA', 'English', 'English', 'USA', 'English",
+                "m",
+                2003
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(writer)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+                "countries",
+                "votes distribution",
+                "love', 'male-nudity', 'based-on-novel', 'anal-sex', 'male-nudity",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2004
+            ],
+            [
+                "crew', 'crew', 'crew', 'crew', 'crew",
+                "complete+verified",
+                "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "UK', 'UK', 'UK', 'UK', 'UK",
+                "m",
+                2000
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(producer)', '(uncredited)', '(associate producer)', '(associate producer)', '(producer)",
+                "countries",
+                "rating",
+                "long-title', 'barnes-and-noble-bookstore', 'dead-sister', 'moral-principles', 'chick-flick",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "m",
+                2004
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete+verified",
+                "(producer)', '(voice)', '(voice)', '(voice)', '(uncredited)",
+                "genres",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'female-nudity', 'independent-film', 'female-nudity",
+                "Finland:K-15', 'Canada:14A', 'Crime', 'Documentary', 'Argentina:13",
+                "m",
+                2004
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(production assistant)', '(producer)', '(production assistant)', '(producer)', '(production assistant)",
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "Comedy', 'PFM:35 mm', 'Documentary', 'UK', 'Dolby Digital",
+                "m",
+                1999
+            ],
+            [
+                "cast', 'cast', 'cast', 'cast', 'cast",
+                "complete",
+                "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+                "genres",
+                "rating",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'independent-film",
+                "USA', 'Short', 'USA', 'Short', 'USA",
+                "m",
+                2002
+            ]
+        ]
+    }
+}

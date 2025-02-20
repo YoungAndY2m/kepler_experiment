@@ -1,0 +1,157 @@
+{
+    "16-0": {
+        "query": "SELECT MIN(an.name) AS cool_actor_pseudonym, MIN(t.title) AS series_named_after_char\nFROM sampled_aka_name_1 AS an,\n   sampled_cast_info_1 AS ci,\n   sampled_company_name_1 AS cn,\n   sampled_keyword_1 AS k,\n   sampled_movie_companies_1 AS mc,\n   sampled_movie_keyword_1 AS mk,\n   sampled_name_1 AS n,\n   sampled_title_1 AS t\nWHERE an.person_id = n.id\nAND n.id = ci.person_id\nAND ci.movie_id = t.id\nAND t.id = mk.movie_id\nAND mk.keyword_id = k.id\nAND t.id = mc.movie_id\nAND mc.company_id = cn.id\nAND an.person_id = ci.person_id\nAND ci.movie_id = mc.movie_id\nAND ci.movie_id = mk.movie_id\nAND mc.movie_id = mk.movie_id\nAND cn.country_code = '@param0'\nAND k.keyword = '@param1'\nAND t.episode_nr >= @param2\nAND t.episode_nr < @param3;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_keyword_1",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_1"
+                ],
+                "join_conditions": [
+                    "mk.keyword_id = k.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "episode_nr",
+                "operator": ">=",
+                "data_type": "int",
+                "table": "sampled_title_1",
+                "min": 1,
+                "max": 91821,
+                "join_tables_alias": [
+                    "ci",
+                    "mk",
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_1",
+                    "sampled_movie_keyword_1",
+                    "sampled_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mk.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "episode_nr",
+                "operator": "<",
+                "data_type": "int",
+                "table": "sampled_title_1",
+                "min": 1,
+                "max": 91821,
+                "join_tables_alias": [
+                    "ci",
+                    "mk",
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_1",
+                    "sampled_movie_keyword_1",
+                    "sampled_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mk.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [],
+                    [],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[de]",
+                "character-name-in-title",
+                "5",
+                "100"
+            ],
+            [
+                "[us]",
+                "sequel",
+                "5",
+                "100"
+            ],
+            [
+                "[us]",
+                "character-name-in-title",
+                "50",
+                "100"
+            ],
+            [
+                "[us]",
+                "character-name-in-title",
+                "5",
+                "100"
+            ],
+            [
+                "[de]",
+                "sequel",
+                "5",
+                "100"
+            ],
+            [
+                "[nl]",
+                "character-name-in-title",
+                "5",
+                "100"
+            ]
+        ]
+    }
+}

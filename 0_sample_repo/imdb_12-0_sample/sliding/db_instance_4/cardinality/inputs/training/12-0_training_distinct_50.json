@@ -1,0 +1,765 @@
+{
+  "12-0": {
+    "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS drama_horror_movie\nFROM sampled_company_name_4 AS cn,\n sampled_company_type_4 AS ct,\n sampled_info_type_4 AS it1,\n sampled_info_type_4 AS it2,\n sampled_movie_companies_4 AS mc,\n sampled_movie_info_4 AS mi,\n sampled_movie_info_idx_4 AS mi_idx,\n sampled_title_4 AS t\nWHERE t.id = mi.movie_id\n AND t.id = mi_idx.movie_id\n AND mi.info_type_id = it1.id\n AND mi_idx.info_type_id = it2.id\n AND t.id = mc.movie_id\n AND ct.id = mc.company_type_id\n AND cn.id = mc.company_id\n AND mc.movie_id = mi.movie_id\n AND mc.movie_id = mi_idx.movie_id\n AND mi.movie_id = mi_idx.movie_id\nAND cn.country_code = '@param0'\nAND ct.kind = '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info > '@param5'\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_type_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ct.id = mc.company_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4"
+        ],
+        "join_conditions": [
+          "mi.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables": [
+          "sampled_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "mi_idx.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi_idx"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_info_type_4",
+          "sampled_movie_companies_4",
+          "sampled_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mi.info_type_id = it.id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "column": "info",
+        "operator": ">",
+        "data_type": "text",
+        "table": "sampled_movie_info_idx_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "sampled_title_4",
+          "sampled_info_type_4",
+          "sampled_movie_companies_4",
+          "sampled_movie_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "mi_idx.info_type_id = it.id",
+          "mc.movie_id = mi_idx.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4",
+          "sampled_movie_info_idx_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "sampled_movie_info_4",
+          "sampled_movie_info_idx_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'Short', 'USA', 'USA",
+        "0000012101",
+        2001,
+        2003
+      ],
+      [
+        "[fr]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Short', 'USA', 'USA', 'Short",
+        "7",
+        2001,
+        2006
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "votes",
+        "English', 'English', 'Short', 'USA', 'English",
+        "7.7",
+        2005,
+        2005
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "10",
+        2002,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "release dates",
+        "rating",
+        "Czech Republic:7 July 2003', 'The genetics lab that Uncle Charlie sends Toblat''s DNA sample to is called NAMFLOW LABORATORIES. Spell NAMFLOW backwards and you get WOLFMAN.', 'Japan:September 2006', 'Nina Horaczek: The defense attorney wanted to test the translator''s German, so he asked him if he was a *sworn* translator, and the translator didn''t understand that. There were quite a few articles in the daily press because it was so absurd that a court translator, who is required to be a sworn translator, didn''t even know what \"sworn\" meant. So it came out that he wasn''t a sworn translator - or he probably would have known the word - but he was only sworn in after the fact and had been translating without having taken the oath.', 'ILS 4,000",
+        "5.1",
+        2002,
+        2005
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "6.7",
+        2001,
+        2003
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Comedy', 'UK', 'Comedy', 'UK",
+        "5",
+        1999,
+        2002
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Short', 'Short', 'Short', 'Short",
+        "6.5",
+        2005,
+        2006
+      ],
+      [
+        "[jp]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Spanish', 'Spanish', 'Spanish', 'Spanish",
+        "0000012211",
+        2004,
+        2006
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "rating",
+        "Drama', 'Documentary', 'Short', 'UK', 'Spanish",
+        "13",
+        2004,
+        2005
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "rating",
+        "Color', 'Color', 'USA', 'Color', 'Color",
+        "481",
+        2005,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Documentary', 'Short', 'Short', 'USA', 'USA",
+        "18",
+        2002,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "UK', 'Documentary', 'Comedy', 'Comedy', 'Spanish",
+        "18",
+        2000,
+        2000
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Comedy', 'UK', 'Comedy', 'Comedy', 'Documentary",
+        "5.6",
+        2003,
+        2004
+      ],
+      [
+        "[za]",
+        "distributors",
+        "genres",
+        "rating",
+        "Drama', 'Drama', 'PFM:35 mm', 'PFM:35 mm', 'Drama",
+        "6.4",
+        2002,
+        2003
+      ],
+      [
+        "[id]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'English', 'English', 'Color', 'Color",
+        "5.9",
+        2000,
+        2003
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "English', 'English', 'USA', 'USA', 'English",
+        ".....22.24",
+        1999,
+        2002
+      ],
+      [
+        "[ca]",
+        "production companies",
+        "countries",
+        "rating",
+        "English', 'Color', 'Color', 'USA', 'USA",
+        "7.4",
+        2001,
+        2003
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "genres",
+        "rating",
+        "PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'Drama",
+        "6.8",
+        2006,
+        2006
+      ],
+      [
+        "[de]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "23",
+        2002,
+        2006
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "0000012211",
+        2000,
+        2003
+      ],
+      [
+        "[fr]",
+        "distributors",
+        "release dates",
+        "votes",
+        "''Jackie Chan (I)'' (qv) was offered the role of the King but turned it down.', 'Take one 300 pound simpleton, give him delusions of grandeur that make him believe he is a master Ninja, and you have Fabe (''Michael Q. Schmidt'' (qv))... clueless, and usually harmless. When Fabe learns from bartender Frank (''Petey Pablizzle'' (qv)) that Tyrone (''Mike Lynn (II)'' (qv)), the diminutive bouncer at his favorite watering hole is being let go, he decides that THAT is the career move for him. But Tyrone has other ideas and never liked Fabe anyway. Meanwhile, bar seat-warmer John (''Anthony Scavone'' (qv)) has his own plans for becoming the new bouncer, and they do not include Fabe. When their three worlds collide, the results give us a little bit more than we might have expected.', 'Peacemaker Productions and producer Dimitri William Moore bring you Commitment, writer-director Brian McQuery''s tale of infidelity. Lauren Ryland stars as the needy girlfriend who goes to her boyfriend''s house to pick him up for a big night out, only to be confronted by his wife, played by Jenni Sumerak. The wife knows about their affair, but wants answers that the girlfriend does not want to give. She tries to play dumb and find out what the wife knows, but that doesn''t get her very far. Soon, their confrontation reaches a boiling point. And then the girlfriend makes a shocking discovery. Commitment was filmed on location in Western Springs, Illinois with a Chicago cast and crew.', '$14,387 (USA) (9 December 2001) (37 screens)', 'Hong Kong:11 April 2006",
+        "7.5",
+        2003,
+        2006
+      ],
+      [
+        "[ca]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'USA', 'USA', 'USA', 'USA",
+        "5.8",
+        2003,
+        2006
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'English', 'Color', 'USA",
+        "7",
+        2006,
+        2006
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Documentary', 'Documentary', 'Comedy', 'Documentary",
+        "6",
+        1999,
+        2002
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA:2005', 'Short', 'UK', 'Short', 'USA:2004",
+        "10",
+        2005,
+        2005
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "votes",
+        "OFM:35 mm', 'OFM:35 mm', 'Short', 'Documentary', 'Short",
+        "7.7",
+        2006,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "English', 'Color', 'Color', 'English', 'Short",
+        "6",
+        2003,
+        2003
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "Documentary', 'Spanish', 'Documentary', 'Documentary', 'UK",
+        "9",
+        2001,
+        2005
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "rating",
+        "English', 'USA', 'Short', 'Color', 'Color",
+        "12",
+        2003,
+        2005
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "rating",
+        "Comedy', 'Documentary', 'Documentary', 'Documentary', 'Documentary",
+        "6.0",
+        2002,
+        2004
+      ],
+      [
+        "[ca]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'Short', 'USA', 'Short', 'Short",
+        "1461",
+        1999,
+        2001
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "rating",
+        "PFM:35 mm', 'Drama', 'Drama', 'Drama', 'PFM:35 mm",
+        "7",
+        2003,
+        2004
+      ],
+      [
+        "[de]",
+        "production companies",
+        "genres",
+        "votes",
+        "PFM:35 mm', 'Drama', 'Drama', 'PFM:35 mm', 'Drama",
+        "6.3",
+        2003,
+        2003
+      ],
+      [
+        "[de]",
+        "production companies",
+        "genres",
+        "rating",
+        "English', 'Drama', 'English', 'Documentary', 'Drama",
+        "5.5",
+        2002,
+        2006
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "English', 'English', 'English', 'English', 'USA",
+        "6.4",
+        2003,
+        2004
+      ],
+      [
+        "[de]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "4.6",
+        2002,
+        2003
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "7",
+        2000,
+        2001
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "votes",
+        "USA', 'Short', 'Short', 'Short', 'USA",
+        "5.4",
+        2005,
+        2005
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA', 'English', 'English', 'Short', 'USA",
+        "6.7",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "OFM:35 mm', 'OFM:35 mm', 'Documentary', 'Dolby Digital', 'UK",
+        "7.7",
+        2003,
+        2003
+      ],
+      [
+        "[ca]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'English', 'English",
+        "8",
+        2000,
+        2001
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "release dates",
+        "rating",
+        "Southern California, California, USA', 'Netherlands:7 August 2003', '$3,500,000', '\u00c2\u00a341,692,598 (UK) (19 August 2001)', 'RAT:1.33 : 1",
+        "5",
+        2002,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'English', 'English', 'USA', 'USA",
+        "6.4",
+        2001,
+        2004
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "7.5",
+        2003,
+        2005
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "votes",
+        "Comedy', 'Spanish', 'Comedy', 'Comedy', 'UK",
+        "10",
+        2003,
+        2005
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "English', 'English', 'USA', 'English', 'English",
+        "6.8",
+        2004,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'USA', 'Color', 'English', 'USA",
+        "7",
+        2005,
+        2005
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "7",
+        2004,
+        2006
+      ],
+      [
+        "[fr]",
+        "distributors",
+        "genres",
+        "votes",
+        "Drama', 'PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm",
+        "6.7",
+        2000,
+        2005
+      ]
+    ]
+  }
+}

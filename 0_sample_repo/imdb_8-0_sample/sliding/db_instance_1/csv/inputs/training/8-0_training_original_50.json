@@ -1,0 +1,685 @@
+{
+    "8-0": {
+        "query": "SELECT MIN(an.name) AS actress_pseudonym, MIN(t.title) AS japanese_movie_dubbed\nFROM sampled_aka_name_1 AS an,\n sampled_cast_info_1 AS ci,\n sampled_company_name_1 AS cn,\n sampled_movie_companies_1 AS mc,\n sampled_name_1 AS n,\n sampled_role_type_1 AS rt,\n sampled_title_1 AS t\nWHERE an.person_id = n.id\n AND n.id = ci.person_id\n AND ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND an.person_id = ci.person_id\n AND ci.movie_id = mc.movie_id\nAND ci.note = '@param0'\nAND cn.country_code = '@param1'\nAND mc.note LIKE '@param2'\nAND mc.note NOT LIKE '@param3'\nAND n.name LIKE '@param4'\nAND n.name NOT LIKE '@param5'\nAND rt.role = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_cast_info_1",
+                "join_tables_alias": [
+                    "n",
+                    "t",
+                    "rt",
+                    "an",
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_name_1",
+                    "sampled_title_1",
+                    "sampled_role_type_1",
+                    "sampled_aka_name_1",
+                    "sampled_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "ci.movie_id = t.id",
+                    "ci.role_id = rt.id",
+                    "an.person_id = ci.person_id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "name"
+                    ],
+                    [],
+                    [
+                        "role"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_movie_companies_1",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_title_1",
+                    "sampled_company_name_1",
+                    "sampled_cast_info_1"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "sampled_movie_companies_1",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_title_1",
+                    "sampled_company_name_1",
+                    "sampled_cast_info_1"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_name_1",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_aka_name_1",
+                    "sampled_cast_info_1"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "sampled_name_1",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_aka_name_1",
+                    "sampled_cast_info_1"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_role_type_1",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_1"
+                ],
+                "join_conditions": [
+                    "ci.role_id = rt.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(voice)",
+                "[us]",
+                "%(VHS)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%Y%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(USA)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "H%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(Blu-ray)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%R%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(Blu-ray)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%K%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(USA)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "F%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(USA)%",
+                "B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(Blu-ray)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "H%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[nl]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "D%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%Downey%Robert%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(presents)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[jp]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%D%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(USA)%",
+                "G%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(USA)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "D%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(Blu-ray)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "H%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(2006)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%T%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "J%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%Yo%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(VHS)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%H%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(theatrical)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "J%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(VHS)%",
+                "%(USA)%",
+                "%C%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "D%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(presents)%",
+                "%(USA)%",
+                "A%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(theatrical)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "C%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(worldwide)%",
+                "%(USA)%",
+                "%M%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(2006)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "A%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(worldwide)%",
+                "%(USA)%",
+                "%G%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(VHS)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%N%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(presents)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "G%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(presents)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%I%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(presents)%",
+                "%(USA)%",
+                "F%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(USA)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "E%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%Tim%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(presents)%",
+                "%(USA)%",
+                "A%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(USA)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "D%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(presents)%",
+                "%(USA)%",
+                "%F%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(VHS)%",
+                "%(USA)%",
+                "C%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(USA)%",
+                "%A%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[jp]",
+                "%(Blu-ray)%",
+                "%(USA)%",
+                "%B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(2006)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(worldwide)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%A%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%Downey%Robert%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(200%)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(VHS)%",
+                "%(USA)%",
+                "K%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[jp]",
+                "%(theatrical)%",
+                "%(USA)%",
+                "%Yo%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(2006)%",
+                "%(USA)%",
+                "B%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[de]",
+                "%(VHS)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%P%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%(worldwide)%",
+                "%(USA)%",
+                "%Z%",
+                "%Yu%",
+                "actor"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%(USA)%",
+                "%(as Metro-Goldwyn-Mayer Pictures)%",
+                "%M%",
+                "%Yu%",
+                "actor"
+            ]
+        ]
+    }
+}

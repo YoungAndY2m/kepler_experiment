@@ -1,0 +1,743 @@
+{
+  "33-0": {
+    "query": "SELECT MIN(cn1.name) AS first_company, MIN(cn2.name) AS second_company, MIN(mi_idx1.info) AS first_rating, MIN(mi_idx2.info) AS second_rating, MIN(t1.title) AS first_movie, MIN(t2.title) AS second_movie\n FROM sampled_company_name_4 AS cn1,\n sampled_company_name_4 AS cn2,\n sampled_info_type_4 AS it1,\n sampled_info_type_4 AS it2,\n sampled_kind_type_4 AS kt1,\n sampled_kind_type_4 AS kt2,\n sampled_movie_companies_4 AS mc1,\n sampled_movie_companies_4 AS mc2,\n sampled_movie_info_idx_4 AS mi_idx1,\n sampled_movie_info_idx_4 AS mi_idx2,\n sampled_title_4 AS t1,\n sampled_title_4 AS t2\n WHERE it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id \nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND mi_idx2.info < '@param5'\nAND t2.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "original_alias": "cn1",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_name_4",
+        "join_tables": [
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables": [
+          "sampled_movie_info_idx_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_4",
+        "join_tables": [
+          "sampled_movie_info_idx_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt1",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_kind_type_4",
+        "join_tables": [
+          "sampled_title_4"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt2",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_kind_type_4",
+        "join_tables": [
+          "sampled_title_4"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ]
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "original_alias": "mi_idx2",
+        "column": "info",
+        "operator": "<",
+        "data_type": "text",
+        "table": "sampled_movie_info_idx_4",
+        "join_tables": [
+          "sampled_info_type_4",
+          "sampled_title_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "it",
+          "t",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "production_year"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id",
+          "t.id = mi_idx.movie_id",
+          "mi_idx.movie_id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "sampled_movie_info_idx_4",
+          "sampled_kind_type_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "sampled_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "sampled_movie_info_idx_4",
+          "sampled_kind_type_4",
+          "sampled_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "3.5",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "tv series','episode",
+        "8.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "3.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "top 250 rank",
+        "rating",
+        "movie",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "tv series','episode",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie",
+        "movie', 'episode",
+        "8.5",
+        "2005",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "8.5",
+        "1990",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "movie', 'episode",
+        "7.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "8.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[jp]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "8.5",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "3.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "8.5",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "3.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "bottom 10 rank",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "8.5",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "8.5",
+        "2000",
+        "2005"
+      ],
+      [
+        "[ru]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "8.5",
+        "1990",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "8.5",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "3.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "8.5",
+        "2005",
+        "2014"
+      ],
+      [
+        "[jp]",
+        "rating",
+        "votes",
+        "movie",
+        "movie', 'episode",
+        "8.5",
+        "1950",
+        "2000"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "tv series','episode",
+        "8.5",
+        "1950",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "tv series','episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[jp]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "8.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "3.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[de]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "3.5",
+        "1950",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "top 250 rank",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "8.5",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie",
+        "tv series",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[ru]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "top 250 rank",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "bottom 10 rank",
+        "votes",
+        "movie",
+        "tv series','episode",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "3.0",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "8.5",
+        "2000",
+        "2010"
+      ]
+    ]
+  }
+}

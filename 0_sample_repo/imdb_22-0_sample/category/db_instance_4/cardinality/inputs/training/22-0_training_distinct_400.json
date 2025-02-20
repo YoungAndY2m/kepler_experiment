@@ -1,0 +1,1003 @@
+{
+    "22-0": {
+        "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS western_violent_movie\nFROM cat_company_name_4 AS cn,\n   cat_company_type_4 AS ct,\n   cat_info_type_4 AS it1,\n   cat_info_type_4 AS it2,\n   cat_keyword_4 AS k,\n   cat_kind_type_4 AS kt,\n   cat_movie_companies_4 AS mc,\n   cat_movie_info_4 AS mi,\n   cat_movie_info_idx_4 AS mi_idx,\n   cat_movie_keyword_4 AS mk,\n   cat_title_4 AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = mc.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mk.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mc.movie_id\nAND mc.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND ct.id = mc.company_type_id\nAND cn.id = mc.company_id\nAND cn.country_code != '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND kt.kind IN ('@param4')\nAND mc.note NOT LIKE '@param5'\nAND mc.note LIKE '@param6'\nAND mi.info IN ('@param7')\nAND mi_idx.info < '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "!=",
+                "data_type": "text",
+                "table": "cat_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "cat_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "cat_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "cat_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_kind_type_4",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "cat_title_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_info_idx_4",
+                    "cat_company_type_4",
+                    "cat_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mi_idx",
+                    "ct",
+                    "cn"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_info_idx_4",
+                    "cat_company_type_4",
+                    "cat_company_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mk.movie_id = mc.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "ct.id = mc.company_type_id",
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cat_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_idx_4",
+                    "cat_movie_companies_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "cat_movie_info_idx_4",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "cat_title_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_4",
+                    "cat_movie_companies_4",
+                    "cat_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "cat_title_4",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_kind_type_4",
+                    "cat_movie_info_4",
+                    "cat_movie_keyword_4",
+                    "cat_movie_info_idx_4",
+                    "cat_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "sex', 'sex', 'hardcore', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%VHS%",
+                "%2006%",
+                "Documentary', 'Documentary', 'USA:X', 'Documentary', 'USA:X",
+                "7",
+                1997
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "sex', 'sex', 'hardcore', 'hardcore', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2006%",
+                "%DVD%",
+                "USA', 'Adult', 'USA', 'Adult', 'USA",
+                "7",
+                1999
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'female-nudity', 'nudity', 'female-nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%DVD%",
+                "Color', 'Adult', 'English', 'English', 'Adult",
+                "7",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "hardcore', 'hardcore', 'sex', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2009%",
+                "%DVD%",
+                "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+                "5",
+                1998
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%The%",
+                "%worldwide%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "8",
+                2003
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "sex', 'sex', 'hardcore', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%DVD%",
+                "USA:X', 'English', 'Adult', 'USA', 'English",
+                "5",
+                2005
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2008%",
+                "%2009%",
+                "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+                "35",
+                1985
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "sex', 'hardcore', 'sex', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%USA%",
+                "Color', 'Color', 'Color', 'Short', 'English",
+                "21",
+                1987
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2009%",
+                "%worldwide%",
+                "USA', 'Color', 'English', 'Color', 'English",
+                "5",
+                2008
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "sex', 'hardcore', 'hardcore', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%worldwide%",
+                "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+                "6.5",
+                1995
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "female-nudity', 'nudity', 'nudity', 'anal-sex', 'female-nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%media%",
+                "%worldwide%",
+                "Short', 'Adult', 'USA', 'Short', 'Color",
+                "8",
+                2005
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "female-nudity', 'oral-sex', 'female-nudity', 'nudity', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%releaser%",
+                "Adult', 'Adult', 'Adult', 'Short', 'Adult",
+                "9",
+                1999
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "hardcore', 'hardcore', 'hardcore', 'sex', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%Middle%",
+                "%2006%",
+                "English', 'USA', 'Adult', 'Color', 'English",
+                "5",
+                1988
+            ],
+            [
+                "[us]",
+                "release dates",
+                "votes",
+                "anal-sex', 'nudity', 'nudity', 'anal-sex', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%video%",
+                "%worldwide%",
+                "USA:2007', 'English', 'Adult', 'Adult', 'USA:2007",
+                "7.5",
+                1994
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "oral-sex', 'anal-sex', 'anal-sex', 'female-nudity', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2011%",
+                "%DVD%",
+                "USA', 'Adult', 'Adult', 'Adult', 'Adult",
+                "4.6",
+                2006
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "sex', 'hardcore', 'sex', 'hardcore', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%with%",
+                "%DVD%",
+                "Color', 'Color', 'USA', 'USA', 'Color",
+                "9",
+                2010
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "sex', 'sex', 'hardcore', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2010%",
+                "%DVD%",
+                "Documentary', 'Adult', 'Documentary', 'Color', 'Adult",
+                "7.3",
+                2006
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'hardcore', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%DVD%",
+                "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+                "14",
+                2006
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "female-military-officer', 'abandoned-library', 'unity', 'door-broken-down', 'bullet",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2000%",
+                "%worldwide%",
+                "USA:2003', 'Color', 'Adult', 'Short', 'Color",
+                "5.5",
+                1986
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "female-nudity', 'anal-sex', 'nudity', 'anal-sex', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%2009%",
+                "USA', 'Adult', 'USA', 'USA:2004', 'USA",
+                "6",
+                1982
+            ],
+            [
+                "[de]",
+                "countries",
+                "votes",
+                "nudity', 'oral-sex', 'nudity', 'nudity', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%owners%",
+                "%worldwide%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "9",
+                2002
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "sex', 'hardcore', 'sex', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%2002%",
+                "USA', 'Color', 'Color', 'English', 'USA",
+                "8",
+                2001
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "anal-sex', 'female-nudity', 'nudity', 'anal-sex', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2008%",
+                "%DVD%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                2005
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "oral-sex', 'female-nudity', 'nudity', 'anal-sex', 'female-nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%2007%",
+                "English', 'USA', 'USA', 'USA', 'Color",
+                "8",
+                2005
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "oral-sex', 'nudity', 'oral-sex', 'oral-sex', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%worldwide%",
+                "%VHS%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "9",
+                1965
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%worldwide%",
+                "Color', 'Adult', 'Color', 'Color', 'USA",
+                "6.7",
+                2007
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "female-nudity', 'anal-sex', 'female-nudity', 'nudity', 'female-nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%DVD%",
+                "Color', 'Color', 'USA', 'English', 'USA",
+                "6.7",
+                1995
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "nudity', 'oral-sex', 'oral-sex', 'female-nudity', 'female-nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%Sweden%",
+                "%USA%",
+                "USA', 'Adult', 'English', 'English', 'USA",
+                "6.2",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "hardcore', 'sex', 'hardcore', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%worldwide%",
+                "USA', 'Adult', 'USA', 'Color', 'USA",
+                "3.1",
+                2005
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "sex', 'hardcore', 'hardcore', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2003%",
+                "%2009%",
+                "Documentary', 'Drama', 'Short', 'USA', 'Adult",
+                "7",
+                2001
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "anal-sex', 'anal-sex', 'anal-sex', 'female-nudity', 'female-nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%s%",
+                "Short', 'Color', 'Color', 'English', 'Adult",
+                "6.2",
+                2000
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "nudity', 'female-nudity', 'female-nudity', 'oral-sex', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%Cinema%",
+                "%VHS%",
+                "Short', 'Color', 'Adult', 'Adult', 'Color",
+                "6.8",
+                2003
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "anal-sex', 'female-nudity', 'anal-sex', 'oral-sex', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%France%",
+                "%worldwide%",
+                "USA', 'Color', 'English', 'Adult', 'Adult",
+                "3.7",
+                2005
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "sex', 'hardcore', 'sex', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%worldwide%",
+                "%2009%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "11",
+                1990
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "hardcore', 'sex', 'sex', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%DVD%",
+                "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+                "10",
+                2001
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "oral-sex', 'nudity', 'female-nudity', 'anal-sex', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%USA%",
+                "USA', 'English', 'Color', 'English', 'Adult",
+                "6.1",
+                1995
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "sex', 'hardcore', 'sex', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%USA%",
+                "%DVD%",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "42......02",
+                2006
+            ],
+            [
+                "[jp]",
+                "countries",
+                "rating",
+                "sex', 'hardcore', 'sex', 'hardcore', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%Netherlands%",
+                "%worldwide%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.6",
+                1986
+            ],
+            [
+                "[se]",
+                "countries",
+                "votes",
+                "flesh-eating-zombie', 'telekinesis', 'lives-with-mother', 'boston-terrier', 'blonde-asian",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%2008%",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6",
+                2005
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "female-nudity', 'nudity', 'nudity', 'female-nudity', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2008%",
+                "%worldwide%",
+                "Adult', 'Adult', 'English', 'English', 'Adult",
+                "7.3",
+                2005
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "nudity', 'anal-sex', 'nudity', 'oral-sex', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%worldwide%",
+                "%DVD%",
+                "Documentary', 'Documentary', 'Documentary', 'USA:X', 'USA:X",
+                "7",
+                2007
+            ],
+            [
+                "[fi]",
+                "genres",
+                "votes",
+                "female-nudity', 'anal-sex', 'nudity', 'oral-sex', 'anal-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%worldwide%",
+                "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+                "3.8",
+                1987
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "nudity', 'oral-sex', 'anal-sex', 'oral-sex', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2006%",
+                "%DVD%",
+                "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+                "4.9",
+                1992
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "nudity', 'oral-sex', 'anal-sex', 'oral-sex', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2007%",
+                "%DVD%",
+                "Adult', 'USA', 'Adult', 'Adult', 'Adult",
+                "11",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "nudity', 'oral-sex', 'nudity', 'nudity', 'nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%Bridge%",
+                "%2006%",
+                "USA', 'Adult', 'Adult', 'English', 'Color",
+                "7",
+                1994
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "sex', 'hardcore', 'sex', 'sex', 'hardcore",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%2006%",
+                "%worldwide%",
+                "USA:X', 'Documentary', 'USA:X', 'USA:X', 'Documentary",
+                "9",
+                2003
+            ],
+            [
+                "[us]",
+                "genres",
+                "votes",
+                "oral-sex', 'oral-sex', 'oral-sex', 'nudity', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%worldwide%",
+                "%2007%",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "5",
+                1986
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "oral-sex', 'female-nudity', 'oral-sex', 'nudity', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%worldwide%",
+                "%2010%",
+                "USA', 'Adult', 'Adult', 'English', 'Adult",
+                "9",
+                1988
+            ],
+            [
+                "[us]",
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'sex', 'sex', 'sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%DVD%",
+                "%worldwide%",
+                "Color', 'USA:2010', 'USA', 'English', 'Color",
+                "5.8",
+                2004
+            ],
+            [
+                "[us]",
+                "genres",
+                "rating",
+                "nudity', 'oral-sex', 'oral-sex', 'female-nudity', 'oral-sex",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%worldwide%",
+                "%DVD%",
+                "Documentary', 'Documentary', 'Documentary', 'USA:X', 'USA:X",
+                "5",
+                2005
+            ],
+            [
+                "[us]",
+                "countries",
+                "rating",
+                "anal-sex', 'anal-sex', 'nudity', 'oral-sex', 'female-nudity",
+                "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+                "%VHS%",
+                "%2011%",
+                "USA', 'Adult', 'English', 'English', 'English",
+                "7.6",
+                2005
+            ]
+        ]
+    }
+}

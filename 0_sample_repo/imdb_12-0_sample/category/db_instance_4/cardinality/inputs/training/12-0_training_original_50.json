@@ -1,0 +1,765 @@
+{
+  "12-0": {
+    "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS drama_horror_movie\nFROM cat_company_name_4 AS cn,\n cat_company_type_4 AS ct,\n cat_info_type_4 AS it1,\n cat_info_type_4 AS it2,\n cat_movie_companies_4 AS mc,\n cat_movie_info_4 AS mi,\n cat_movie_info_idx_4 AS mi_idx,\n cat_title_4 AS t\nWHERE t.id = mi.movie_id\n AND t.id = mi_idx.movie_id\n AND mi.info_type_id = it1.id\n AND mi_idx.info_type_id = it2.id\n AND t.id = mc.movie_id\n AND ct.id = mc.company_type_id\n AND cn.id = mc.company_id\n AND mc.movie_id = mi.movie_id\n AND mc.movie_id = mi_idx.movie_id\n AND mi.movie_id = mi_idx.movie_id\nAND cn.country_code = '@param0'\nAND ct.kind = '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info > '@param5'\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_name_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_type_4",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "ct.id = mc.company_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "cat_movie_info_4"
+        ],
+        "join_conditions": [
+          "mi.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables": [
+          "cat_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "mi_idx.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_movie_info_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi_idx"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_info_type_4",
+          "cat_movie_companies_4",
+          "cat_movie_info_idx_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mi.info_type_id = it.id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "column": "info",
+        "operator": ">",
+        "data_type": "text",
+        "table": "cat_movie_info_idx_4",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "cat_title_4",
+          "cat_info_type_4",
+          "cat_movie_companies_4",
+          "cat_movie_info_4"
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "mi_idx.info_type_id = it.id",
+          "mc.movie_id = mi_idx.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_info_4",
+          "cat_movie_info_idx_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "cat_movie_info_4",
+          "cat_movie_info_idx_4",
+          "cat_movie_companies_4"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[ro]",
+        "distributors",
+        "genres",
+        "rating",
+        "Documentary', 'USA:X', 'USA:X', 'Documentary', 'USA:X",
+        "5.5",
+        2002,
+        2009
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'Documentary', 'Documentary', 'USA:X",
+        "10",
+        1999,
+        2012
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "English', 'Color', 'USA', 'USA', 'USA",
+        "7",
+        1990,
+        2013
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'Documentary', 'USA:X', 'Documentary', 'USA:X",
+        "6.2",
+        1994,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "4.8",
+        1998,
+        2007
+      ],
+      [
+        "[de]",
+        "distributors",
+        "release dates",
+        "votes",
+        "Imagine what it would be like to watch a film that has just been washed up to the shore. The Splendour Of The Heavens is an exploration of an exotic somewhat familiar, yet not explained place in Space and Time. The camera follows an asteroid that enters the atmosphere of an abandoned planet and unleashes a mysterious energy. This energy is not one of Life but of History and Memory, functioning as a metaphor for the ''end of progress'' as understood by the Western Society.', 'USA:64', 'Faith meet Culture, Culture meet Faith', 'Spain:27 February 2004', 'The collection is almost complete",
+        "14",
+        1999,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "Color', 'English', 'Color', 'English', 'USA",
+        "5",
+        2004,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'USA:X', 'Documentary', 'USA:X', 'Documentary",
+        "7",
+        1993,
+        1999
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        2005,
+        2007
+      ],
+      [
+        "[jp]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'English', 'Drama', 'Darkman: Be careful - he bites! [detonates explosives rigged on remote controlled rat, destroying Durant''s car with him in it]', 'USA:3 December 2000",
+        "13",
+        1994,
+        1994
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "10",
+        1993,
+        2004
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Documentary', 'USA:X', 'USA:X', 'Documentary', 'Documentary",
+        "5",
+        1999,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', 'English', 'Adult', 'Short', 'Adult",
+        "8",
+        1993,
+        2012
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "English', 'Color', 'English', 'USA', 'USA",
+        "00.0002211",
+        1996,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "5.7",
+        1983,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Documentary', 'Documentary', 'English', 'Short",
+        "011..0...4",
+        1974,
+        1998
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "5.5",
+        2004,
+        2005
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "English', 'English', 'USA', 'English', 'Color",
+        "19",
+        2003,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "USA:2007', 'Short', 'Adult', 'USA', 'USA",
+        "8",
+        2009,
+        2010
+      ],
+      [
+        "[us]",
+        "distributors",
+        "release dates",
+        "votes",
+        "[after Alex and Madison arrive back at the hotel room late]::Harrison: It is 12:15am. How late does that make them Judy?::Judy: Precisely 72 minutes past curfew.::Alex: If we were back home, we''d be 45 minutes early!::Judy: Nice try.', 'Angela Gunn', 'Hungary:6 April 2012', 'Victor, Idaho, USA', 'Great Sand Dunes National Monument, Mosca, Colorado, USA",
+        "6.0",
+        1990,
+        2013
+      ],
+      [
+        "[ch]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'USA:X', 'USA:X', 'Documentary', 'Documentary",
+        "3.4",
+        2003,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'Adult', 'Adult', 'Color', 'Color",
+        "0.0.2.0114",
+        1996,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'Color', 'USA', 'USA', 'Color",
+        "7",
+        2004,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Documentary', 'USA:2009', 'English', 'Drama', 'USA",
+        "7",
+        1994,
+        2009
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "rating",
+        "USA', 'USA:2005', 'Adult', 'English', 'USA",
+        "9",
+        2007,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'Color', 'Color', 'Color', 'USA",
+        "5",
+        1994,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "10",
+        2006,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "UK', 'Three friends decide to try to make S&M films but their distributor is unhappy with the product and drops them. Desperate for money, Max makes a deal to shoot a rare kind of film for a large amount of money. A snuff film. Afterwards grisly things begin to happen to anyone involved.', 'New York City, New York, USA', 'USA:2009', 'The script originally featured an actual Bloody Mary who, when summoned by the mirror game, rose from the depths of the lake to murder the characters one by one. Director Robert Wilson decided that it would be more interesting if the evil force was never seen, but instead could manifest itself in any one of the old friends gathered at the cabin, thus making the film more a creepy paranoia piece and less a supernatural slasher film. However, many film websites still make reference to the film''s original (and now incorrect) synopsis.",
+        "11",
+        2012,
+        2013
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "7.4",
+        1997,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "8",
+        2005,
+        2006
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "12",
+        2009,
+        2012
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'Color', 'English', 'Color', 'Color",
+        "5",
+        2004,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "release dates",
+        "votes",
+        "As hot redheads go, Russian adult star Vicca ignites the hottest fire by far.', 'Kersten, Sander. \"Bluf!\". In: \"FHM\" (Holland), Arno Kantelberg, 22 December 2010, Pg. 2, (MG)', 'USA:1 November 1989', 'USA:1 August 1983', 'USA:1 May 2008",
+        "5",
+        2008,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "9",
+        1994,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "Color', 'USA', 'Color', 'Color', 'USA:X",
+        "9",
+        2004,
+        2009
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'Documentary', 'USA:X', 'Documentary', 'Documentary",
+        "5",
+        2007,
+        2007
+      ],
+      [
+        "[be]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'Color', 'USA', 'English', 'English",
+        "6",
+        1987,
+        1999
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "24",
+        1998,
+        2004
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'English', 'USA', 'USA",
+        "10",
+        2005,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "Adult', 'English', 'Adult', 'Color', 'USA",
+        "5.6",
+        1978,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Documentary', 'USA:X', 'Documentary', 'USA:X', 'USA:X",
+        "7",
+        1996,
+        2000
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Adult', 'Adult', 'Adult', 'Adult', 'Adult",
+        "7",
+        2003,
+        2004
+      ],
+      [
+        "[ro]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'Color', 'Adult', 'Short', 'Color",
+        "12",
+        2005,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "USA:X', 'USA:X', 'Documentary', 'Documentary', 'Documentary",
+        "5.8",
+        1998,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Adult', 'English', 'English', 'Adult', 'Adult",
+        "8",
+        1970,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "English', 'Color', 'USA', 'USA', 'Color",
+        "3.5",
+        2007,
+        2012
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6.2",
+        2000,
+        2011
+      ],
+      [
+        "[nl]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "7.2",
+        2002,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "9",
+        2005,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Documentary', 'USA:X', 'USA:X', 'USA:X', 'USA:X",
+        "13",
+        1986,
+        2008
+      ]
+    ]
+  }
+}

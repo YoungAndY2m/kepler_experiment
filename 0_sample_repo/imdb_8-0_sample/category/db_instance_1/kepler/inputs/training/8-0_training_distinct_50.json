@@ -1,0 +1,685 @@
+{
+    "8-0": {
+        "query": "SELECT MIN(an.name) AS actress_pseudonym, MIN(t.title) AS japanese_movie_dubbed\nFROM cat_aka_name_1 AS an,\n cat_cast_info_1 AS ci,\n cat_company_name_1 AS cn,\n cat_movie_companies_1 AS mc,\n cat_name_1 AS n,\n cat_role_type_1 AS rt,\n cat_title_1 AS t\nWHERE an.person_id = n.id\n AND n.id = ci.person_id\n AND ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND an.person_id = ci.person_id\n AND ci.movie_id = mc.movie_id\nAND ci.note = '@param0'\nAND cn.country_code = '@param1'\nAND mc.note LIKE '@param2'\nAND mc.note NOT LIKE '@param3'\nAND n.name LIKE '@param4'\nAND n.name NOT LIKE '@param5'\nAND rt.role = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_cast_info_1",
+                "join_tables_alias": [
+                    "n",
+                    "t",
+                    "rt",
+                    "an",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_name_1",
+                    "cat_title_1",
+                    "cat_role_type_1",
+                    "cat_aka_name_1",
+                    "cat_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "ci.movie_id = t.id",
+                    "ci.role_id = rt.id",
+                    "an.person_id = ci.person_id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "name"
+                    ],
+                    [],
+                    [
+                        "role"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_company_name_1",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "cat_movie_companies_1"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_1",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_company_name_1",
+                    "cat_cast_info_1"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "cat_movie_companies_1",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_title_1",
+                    "cat_company_name_1",
+                    "cat_cast_info_1"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "cat_name_1",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_aka_name_1",
+                    "cat_cast_info_1"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "cat_name_1",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_aka_name_1",
+                    "cat_cast_info_1"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cat_role_type_1",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cat_cast_info_1"
+                ],
+                "join_conditions": [
+                    "ci.role_id = rt.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(co-producer)",
+                "[us]",
+                "%(%",
+                "%i%",
+                "%o%",
+                "%r%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%S%",
+                "%?%",
+                "%S%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[gb]",
+                "%a%",
+                "%o%",
+                "%u%",
+                "%a%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[ar]",
+                "%3%",
+                "%l%",
+                "%,%",
+                "%M%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[es]",
+                "%2%",
+                "%n%",
+                "%s%",
+                "%K%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%)%",
+                "%r%",
+                "%h%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(director of photography)",
+                "[jp]",
+                "%h%",
+                "%J%",
+                "%i%",
+                "%l%",
+                "cinematographer"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%i%",
+                "%e%",
+                "%u%",
+                "%m%",
+                "actor"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%a%",
+                "%U%",
+                "%C%",
+                "%a%",
+                "producer"
+            ],
+            [
+                "(screenplay)",
+                "[us]",
+                "%0%",
+                "%l%",
+                "%A%",
+                "%j%",
+                "writer"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%D%",
+                "%a%",
+                "%m%",
+                "%c%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%A%",
+                "%l%",
+                "%,%",
+                "%o%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%2%",
+                "%,%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[br]",
+                "%(%",
+                "%0%",
+                "%''%",
+                "%J%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%t%",
+                "%r%",
+                "%,%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%i%",
+                "%1%",
+                "%a%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%A%",
+                "%2%",
+                "%k%",
+                "%v%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[de]",
+                "%r%",
+                "%D%",
+                "%o%",
+                "%a%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%r%",
+                "%e%",
+                "%n%",
+                "%t%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[ar]",
+                "%n%",
+                "%a%",
+                "%s%",
+                "%k%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%S%",
+                "%0%",
+                "%C%",
+                "%a%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%e%",
+                "%t%",
+                "%b%",
+                "%M%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%(%",
+                "%H%",
+                "%s%",
+                "%h%",
+                "actor"
+            ],
+            [
+                "(helicopter pilot) (uncredited)",
+                "[us]",
+                "%(%",
+                "%9%",
+                "%u%",
+                "%s%",
+                "miscellaneous crew"
+            ],
+            [
+                "(story)",
+                "[us]",
+                "%r%",
+                "%t%",
+                "%h%",
+                "%a%",
+                "writer"
+            ],
+            [
+                "(written by)",
+                "[us]",
+                "%9%",
+                "%D%",
+                "%r%",
+                "%H%",
+                "writer"
+            ],
+            [
+                "(uncredited)",
+                "[se]",
+                "%8%",
+                "%i%",
+                "%d%",
+                "%l%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[jp]",
+                "%a%",
+                "%p%",
+                "%n%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(director of photography)",
+                "[us]",
+                "%(%",
+                "%0%",
+                "%k%",
+                "%s%",
+                "cinematographer"
+            ],
+            [
+                "(executive producer)",
+                "[es]",
+                "%p%",
+                "%l%",
+                "%l%",
+                "%n%",
+                "producer"
+            ],
+            [
+                "(archive footage) (uncredited)",
+                "[de]",
+                "%D%",
+                "%r%",
+                "%n%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(executive producer) (uncredited)",
+                "[us]",
+                "%(%",
+                "%0%",
+                "%i%",
+                "%o%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%(%",
+                "%D%",
+                "%n%",
+                "%i%",
+                "producer"
+            ],
+            [
+                "(archive footage) (uncredited)",
+                "[se]",
+                "%e%",
+                "%D%",
+                "%r%",
+                "%H%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%)%",
+                "%1%",
+                "%h%",
+                "%i%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[pt]",
+                "%u%",
+                "%e%",
+                "%C%",
+                "%y%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%(%",
+                "%D%",
+                "%n%",
+                "%h%",
+                "producer"
+            ],
+            [
+                "(story)",
+                "[us]",
+                "%1%",
+                "%7%",
+                "%B%",
+                "%b%",
+                "writer"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%p%",
+                "%e%",
+                "%T%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[hk]",
+                "%e%",
+                "%v%",
+                "%m%",
+                "%n%",
+                "actor"
+            ],
+            [
+                "(executive producer)",
+                "[de]",
+                "%)%",
+                "%l%",
+                "%e%",
+                "%K%",
+                "producer"
+            ],
+            [
+                "(puppeteer)",
+                "[gb]",
+                "%)%",
+                "%0%",
+                "%E%",
+                "%r%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%(%",
+                "%1%",
+                "%t%",
+                "%o%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%9%",
+                "%B%",
+                "%.%",
+                "director"
+            ],
+            [
+                "(voice)",
+                "[ph]",
+                "%)%",
+                "%l%",
+                "%a%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%H%",
+                "%9%",
+                "%C%",
+                "%a%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%i%",
+                "%9%",
+                "%G%",
+                "%u%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%l%",
+                "%a%",
+                "%,%",
+                "%u%",
+                "actor"
+            ],
+            [
+                "(aerial coordinator/pilot)",
+                "[us]",
+                "%A%",
+                "%V%",
+                "%H%",
+                "%g%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[sg]",
+                "%)%",
+                "%c%",
+                "%n%",
+                "%B%",
+                "actor"
+            ]
+        ]
+    }
+}

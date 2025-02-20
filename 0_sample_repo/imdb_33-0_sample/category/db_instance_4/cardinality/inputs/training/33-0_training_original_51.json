@@ -1,0 +1,753 @@
+{
+  "33-0": {
+    "query": "SELECT MIN(cn1.name) AS first_company, MIN(cn2.name) AS second_company, MIN(mi_idx1.info) AS first_rating, MIN(mi_idx2.info) AS second_rating, MIN(t1.title) AS first_movie, MIN(t2.title) AS second_movie\n FROM cat_company_name_4 AS cn1,\n cat_company_name_4 AS cn2,\n cat_info_type_4 AS it1,\n cat_info_type_4 AS it2,\n cat_kind_type_4 AS kt1,\n cat_kind_type_4 AS kt2,\n cat_movie_companies_4 AS mc1,\n cat_movie_companies_4 AS mc2,\n cat_movie_info_idx_4 AS mi_idx1,\n cat_movie_info_idx_4 AS mi_idx2,\n cat_title_4 AS t1,\n cat_title_4 AS t2\n WHERE it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id \nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND mi_idx2.info < '@param5'\nAND t2.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "original_alias": "cn1",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_company_name_4",
+        "join_tables": [
+          "cat_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables": [
+          "cat_movie_info_idx_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "cat_info_type_4",
+        "join_tables": [
+          "cat_movie_info_idx_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt1",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_kind_type_4",
+        "join_tables": [
+          "cat_title_4"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt2",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cat_kind_type_4",
+        "join_tables": [
+          "cat_title_4"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ]
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "original_alias": "mi_idx2",
+        "column": "info",
+        "operator": "<",
+        "data_type": "text",
+        "table": "cat_movie_info_idx_4",
+        "join_tables": [
+          "cat_info_type_4",
+          "cat_title_4",
+          "cat_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "it",
+          "t",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "production_year"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id",
+          "t.id = mi_idx.movie_id",
+          "mi_idx.movie_id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "cat_movie_info_idx_4",
+          "cat_kind_type_4",
+          "cat_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "cat_title_4",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "cat_movie_info_idx_4",
+          "cat_kind_type_4",
+          "cat_movie_companies_4"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "9",
+        2006,
+        2007
+      ],
+      [
+        "[eg]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "9",
+        1988,
+        2010
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        1996,
+        2010
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes distribution",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "9",
+        2002,
+        2005
+      ],
+      [
+        "[bn]",
+        "rating",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.9",
+        1998,
+        2008
+      ],
+      [
+        "[ma]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6",
+        2007,
+        2014
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "8",
+        2005,
+        2005
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        2004,
+        2015
+      ],
+      [
+        "[dk]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "8",
+        2010,
+        2010
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "4.5",
+        1996,
+        2004
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "8",
+        1985,
+        2002
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.6",
+        1994,
+        2009
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes distribution",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "3.8",
+        2007,
+        2007
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "5.2",
+        1998,
+        2000
+      ],
+      [
+        "[bn]",
+        "rating",
+        "votes distribution",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        ".050..02.0",
+        2007,
+        2014
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        2000,
+        2012
+      ],
+      [
+        "[ru]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "8",
+        2002,
+        2006
+      ],
+      [
+        "[pl]",
+        "votes",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "9",
+        1993,
+        2006
+      ],
+      [
+        "[hk]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "13",
+        2005,
+        2009
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "3.4",
+        1999,
+        2000
+      ],
+      [
+        "[es]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "5",
+        1994,
+        2005
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "5",
+        1930,
+        1997
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.0",
+        2002,
+        2006
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.6",
+        1993,
+        2012
+      ],
+      [
+        "[mx]",
+        "votes",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6",
+        2004,
+        2008
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "4.9",
+        2003,
+        2005
+      ],
+      [
+        "[se]",
+        "rating",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.0",
+        1998,
+        2001
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        2004,
+        2014
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.8",
+        2007,
+        2008
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "5",
+        1999,
+        2009
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.1",
+        1979,
+        2010
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "11",
+        1999,
+        2005
+      ],
+      [
+        "[uy]",
+        "votes",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.9",
+        2006,
+        2008
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "5.6",
+        2006,
+        2012
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes distribution",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "3.0",
+        1998,
+        2003
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes distribution",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "10",
+        2005,
+        2008
+      ],
+      [
+        "[hn]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        2009,
+        2010
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "11",
+        2000,
+        2001
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        1970,
+        1997
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "2...11...4",
+        1983,
+        1995
+      ],
+      [
+        "[gi]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.6",
+        2010,
+        2012
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "6.8",
+        2005,
+        2005
+      ],
+      [
+        "[rs]",
+        "votes",
+        "votes distribution",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "23",
+        2003,
+        2008
+      ],
+      [
+        "[gi]",
+        "votes",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "9",
+        1995,
+        2002
+      ],
+      [
+        "[dk]",
+        "rating",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        2002,
+        2008
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "8",
+        2006,
+        2008
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "11",
+        2000,
+        2005
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7",
+        1990,
+        1995
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "5.5",
+        1978,
+        2014
+      ],
+      [
+        "[do]",
+        "votes",
+        "rating",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "8",
+        1992,
+        2000
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "video movie', 'video movie', 'video movie', 'video movie', 'video movie",
+        "7.5",
+        2001,
+        2008
+      ]
+    ]
+  }
+}

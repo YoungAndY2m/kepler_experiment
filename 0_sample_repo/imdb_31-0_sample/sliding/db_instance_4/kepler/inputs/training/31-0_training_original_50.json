@@ -1,0 +1,677 @@
+{
+    "31-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS writer, MIN(t.title) AS violent_liongate_movie\nFROM sampled_cast_info_4 AS ci,\n    sampled_company_name_4 AS cn,\n    sampled_info_type_4 AS it1,\n    sampled_info_type_4 AS it2,\n    sampled_keyword_4 AS k,\n    sampled_movie_companies_4 AS mc,\n    sampled_movie_info_4 AS mi,\n    sampled_movie_info_idx_4 AS mi_idx,\n    sampled_movie_keyword_4 AS mk,\n    sampled_name_4 AS n,\n    sampled_title_4 AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND t.id = mc.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND ci.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi.movie_id = mc.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND mi_idx.movie_id = mc.movie_id\nAND mk.movie_id = mc.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND cn.id = mc.company_id\nAND ci.note IN ('@param0')\nAND cn.name LIKE '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND k.keyword IN ('@param4')\nAND mi.info IN ('@param5')\nAND n.gender = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_cast_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "n"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_movie_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_movie_companies_4",
+                    "sampled_name_4"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "sampled_company_name_4",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "sampled_movie_companies_4"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_info_type_4",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "sampled_movie_info_idx_4"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_keyword_4",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "sampled_movie_keyword_4"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "sampled_movie_info_4",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "sampled_title_4",
+                    "sampled_cast_info_4",
+                    "sampled_movie_info_idx_4",
+                    "sampled_movie_keyword_4",
+                    "sampled_movie_companies_4",
+                    "sampled_info_type_4"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "sampled_name_4",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "sampled_cast_info_4"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(uncredited)', '(as Lilly Forgach)', '(as Iain McDonald)', '(as Nicol)', '(as Eddie Sorie)",
+                "%t%",
+                "gross",
+                "rating",
+                "apartment', 'medical-traction', 'bar-at-the-beach', 'giving-away-a-child', 'volleyball-player",
+                "$12,878,237 (USA) (22 October 2000)', 'USA:2 November 1999', 'Alejo: Are you God?', 'UK:29 November 2003', 'Spain:14 April 2000",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as Destiny Cyrus)', '(as Sam Lung)', '(as Chris J. Kelly)', '(monitor wrangler)",
+                "%E%",
+                "trivia",
+                "rating",
+                "miscegenation', 'british-convoy', 'kurt-cobain', 'king-penguin', 'burning-a-document",
+                "The movie was floating around the studio for six years, and at one time ''Sean Penn (I)'' (qv) was set to direct with ''Robert De Niro'' (qv) to star.', 'V2 Cinema [br]', 'UK:15 December 2008', 'UK:9 August 2004', 'CAM:Fujica ZC1000",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as R.M. Bonzon)', '(as Peter McLean)', '(as Staci Harper)', '(as Jeffrey Reyes)",
+                "%r%",
+                "opening weekend",
+                "votes",
+                "cut-arm', 'soviet-military', 'bianchi', 'name-calling', 'psychoanalyst",
+                "$9,585 (Iceland) (15 October 2000) (2 screens)', 'Bulgaria:20', 'China:8 May 2001', 'Italy:36', 'Spain:1 April 2007",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as Sienna)', '(K19)', '(as Teresa Reilly)', '(as Jenny McArther)",
+                "%t%",
+                "trivia",
+                "votes",
+                "sex-on-couch', 'pink-hair', 'quick-stop', 'baccarat', 'breaking-into-a-car",
+                "In the rockumentary _Lemmy (2010)_ (qv), during a conversation in a bar with Motorhead lead singer Lemmy, ''Billy Bob Thornton'' (qv) states that he was paid half a million dollars to appear in this movie, and after it became a big box office success, he subsequently received a check in the mail for a further 2 million dollars.', 'Panama:14 May 2004', 'UK:21 May 2006', 'No one is safe', 'Addict Films",
+                "m"
+            ],
+            [
+                "(written by)', '(Firefighter)', '(as Irra Verbitsky)', '(script adaptor)', '(as Breno)",
+                "%n%",
+                "trivia",
+                "votes",
+                "dressing-gown', 'knife-handle', 'safe-deposit', 'taxidermied-animal', 'historical-artifact",
+                "The movie was named as one of \"The 20 Most Overrated Movies of All Time\" by Premiere.', 'UK:12 May 2005', 'Sweden:June 2000', 'Poland:5 June 2003', 'Japan:2007",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Judy Foorman)', '(story & concept)', '(as Sourabh Shukla)', '(systems lead)",
+                "%e%",
+                "color info",
+                "votes",
+                "dressing-gown', 'jiffy-lock-bag', 'george-whitman', 'hiroshima-japan', 'traffic-accident",
+                "Color', 'Poland:15 July 2004', 'CAM:Arriflex 35 III', '1,15', 'Italy:20 May 2001",
+                "m"
+            ],
+            [
+                "(uncredited)', '(Audi provider)', '(as Julie Snow)', '(as Rodrigo N.S.)', '(specialty dancer)",
+                "%o%",
+                "gross",
+                "votes",
+                "apartment', 'teenage-detective', 'bronze-age', 'horse-drawn-wagon', 'animal-shelter",
+                "$15,158,169 (USA) (29 October 2000)', 'Estonia:22 May 2007', 'INR 2,000,000,000', 'Germany:93', 'Hungary:25 May 2005",
+                "m"
+            ],
+            [
+                "(written by)', '(as Bridget Hodson)', '(as Andrew Hallett)', '(as J\u00c3\u00b6rg Herning)', '(line tester)",
+                "%n%",
+                "release dates",
+                "votes distribution",
+                "suicide', 'lumberman', 'burial-ground', 'diolacton', 'electronic-tango",
+                "Philippines:19 June 2002', 'India:February 2001', 'Japan:16 May 2004', 'USA:327', '23 October 2002 -",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Taylor Raine)', '(as Steve Lawrence)', '(as Wai-kwong Lo)', '(datacine operator)",
+                "%C%",
+                "goofs",
+                "rating",
+                "christianity', 'hen', 'golpe', 'green-onion', 'granger-texas",
+                "CONT: When Maya and Peter meet for the first time, the word processor screen on his laptop repeatedly changes. The screen alternates between a whole-page layout and split-page depending on the shot.', 'Let''s Dance!', 'Argentina:73', 'UK:30 December 2005', 'MET:1100 m",
+                "m"
+            ],
+            [
+                "(uncredited)', '(stand in: Margene)', '(weapons supplier)', '(as Zora Banx)', '(as Samoth)",
+                "%p%",
+                "release dates",
+                "votes distribution",
+                "interracial-relationship', 'cataclysm', 'mo\u00c3\u00afse', 'ovum', 'woman-soldier",
+                "UK:7 June 2002', 'USA:10 April 2008', 'Australia:104', 'Taiwan:4 June 2006', 'Sheri Lawrence",
+                "m"
+            ],
+            [
+                "(written by)', '(as Jos\u00c3\u00a9 Yenque)', '(written by) (2009)', '(caretaker: studio)', '(as TC)",
+                "%d%",
+                "release dates",
+                "votes",
+                "dressing-gown', 'doc-holliday', 'pulfrich-effect', 'checking-heartbeat', 'missing-mother",
+                "Estonia:24 May 2002', 'France:14 July 2005', '\u00c2\u00a9 ZDF 2006', 'Canada:13:45', '\u00e2\u0082\u00ac 4,700,000",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as Madjid Bouali)', '(vet: Kenya)', '(episodes 2-30)', '(as Alistair Duff)",
+                "%r%",
+                "printed media reviews",
+                "votes",
+                "oxygen-tank', 'turkish-bath', 'cocaine', 'burmese-army', 'flooded-room",
+                "Kenny, Glenn. \"Reviews: Monster''s Ball (***)\". In: \"Premiere\" (USA), Vol. 15, Iss. 4, January 2002, Pg. 20, (MG)', 'No new world', '14.5', 'Poland:12 June 2003', 'Shot in 3 days.",
+                "m"
+            ],
+            [
+                "(screenplay)', '(as Frederic Lane)', '(as Zabrina)', '(as Lili Thai)', '(as Katie Keane)",
+                "%f%",
+                "weekend gross",
+                "votes",
+                "crucifix', 'hollywood-legend', 'christian-horror', 'attempted-rape', 'queen-isabella",
+                "$7,954,766 (USA) (15 October 2000) (1,970 screens)', 'Japan:2003', '- 12 August 2003', '? - 12 March 2001', 'Anthony Singleton",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Kianna Dior)', '(as Tim Mikulla)', '(manual designer)', '(as Mads Brunum)",
+                "%m%",
+                "countries",
+                "votes",
+                "interracial-sex', 'nike', 'hitting-a-woman', 'chemical-engineer', 'tryout",
+                "USA', 'Sweden:7 June 2007', 'Russia:April 2006', 'UK:13 July 2001', 'TS Albatros",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Kamaal Fareed)', '(Pooja''s uncle)', '(as D.J. Pooh)', '(as Greg Bello)",
+                "%n%",
+                "trivia",
+                "rating",
+                "buttocks', 'altruism', 'flower-vendor', 'cockroach', 'texas-hill-country",
+                "The movie was named as one of \"The 20 Most Overrated Movies of All Time\" by Premiere.', 'USA:01 June 2010', 'Taiwan:13 May 2004', 'CHF 250', 'New Zealand:100",
+                "m"
+            ],
+            [
+                "(co-producer)', '(infermiere)', '(Florian Kiel)', '(as Der Rabe)', '(as Marja)",
+                "%n%",
+                "trivia",
+                "votes distribution",
+                "crying', 'radio-luxemburg', 'imbecility', 'romcom', 'friend-overseas",
+                "The French title of this movie literally translates as ''In the shadow of hate''.', 'UK:8 October 2002', 'Romania:180', 'Canada:3 May 2003', 'A Border-town Fable",
+                "m"
+            ],
+            [
+                "(written by)', '(script provider)', '(as Dave McConnell)', '(as Ruth Kelly MP)', '(as Mary Mcdonnell)",
+                "%n%",
+                "trivia",
+                "votes distribution",
+                "generation-gap', 'child-exploitation', 'surreal-video', 'cesspool', 'status-quo",
+                "The part ultimately played by ''Sean Combs (II)'' (qv) was initially offered to ''Jeffrey Wright (I)'' (qv) and ''Don Cheadle'' (qv).', 'UK:16 January 2000', 'Mexico:4 June 2004', '1996 - 2004', 'Brazil:8 June 2004",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Martin Sage)', '(as John Beshara)', '(as Rachel Blake)', '(as Joan A. Barjau)",
+                "%n%",
+                "release dates",
+                "rating",
+                "hate', 'eu-politics', 'ghost-in-the-shell', 'orca', 'chastity-belt",
+                "Germany:8 February 2002', 'Settimarte S.r.l.', 'Hydra, Greece', 'Missing Hikers', 'Bolivia",
+                "m"
+            ],
+            [
+                "(written by)', '(as Nophan Boonyai)', '(as Oswald)', '(as Magnus Kj\u00c3\u00a6r)', '(as Doni Alamsyah)",
+                "%G%",
+                "trivia",
+                "rating",
+                "sex-on-couch', 'nuclear-waste', 'glam', 'shamrock', 'aclu",
+                "The movie was floating around the studio for six years, and at one time ''Sean Penn (I)'' (qv) was set to direct with ''Robert De Niro'' (qv) to star.', 'USA:14 January 2005', 'UK:15 December 2008', 'Japan:23 June 2011', 'Australia:20",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Cat)', '(safety spotter)', '(as Nick Kemplan)', '(Jewel De''Nyle)",
+                "%t%",
+                "release dates",
+                "votes",
+                "bullet-hole', 'annihilation', 'overdue-bill', 'sweeping', 'gates-of-paradise",
+                "Greece:5 April 2002', 'Spain:95', 'Russia:13 May 2004', 'Croatia:7 July 2005', 'France:10 July 2006",
+                "m"
+            ],
+            [
+                "(story)', '(as Murphy)', '(as Sacha Kollich)', '(as Yu. Osipenko)', '(as Tittus Steel)",
+                "%u%",
+                "genres",
+                "votes distribution",
+                "christianity', 'roofer', 'together', 'courgette', 'male-vomiting",
+                "Drama', 'Namibia:15 May 2005', 'UK:18 November 2000', 'Japan:24 May 2004', 'Titus Software",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as JoJo)', '(as Lawrence Roxas)', '(as Joseph Stabb)', '(Sky One presenter)",
+                "%i%",
+                "trivia",
+                "votes distribution",
+                "death', 'carpool', 'hamster', 't.g.i.f.', 'farm-machinery",
+                "The French title of this movie literally translates as ''In the shadow of hate''.', 'USA:1 February 2003', 'Brazil:12 June 2003', '- February 2000', 'Poland:10 June 1999",
+                "m"
+            ],
+            [
+                "(dispatcher)', '(as Baccara)', '(as Matt Kent)', '(as P.Chetverenko)', '(as Suresh Tupe)",
+                "%m%",
+                "admissions",
+                "votes distribution",
+                "code', 'bitten', 'fbi-investigation', 'dysphasia', 'full-body-paralysis",
+                "874,381 (Spain) (10 August 2002)', 'Spain:11 May 2004', 'Austria:60', 'Hungary:7 May 2010', 'Sweden:25 May 2004",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as A1)', '(as Julie Sanford)', '(as Patrick S. Fry)', '(original script)",
+                "%i%",
+                "release dates",
+                "votes distribution",
+                "african-american', 'karate-kid', 'suntan', 'drag-artist', 'signal-flare",
+                "Germany:8 February 2002', 'MET:3051 m', '$3,400,000', 'Spain:18 April 2004', 'India:24 March 2006",
+                "m"
+            ],
+            [
+                "(uncredited)', '(dialect director)', '(head of sales)', '(as Manmouji)', '(as Parker Jay)",
+                "%c%",
+                "gross",
+                "votes",
+                "flashback', 'hurricane-katrina', 'potato', 'drive-thru', 'murder-of-stranger",
+                "$16,358,063 (USA) (5 November 2000)', 'USA:24''10\"', 'CAM:Canon Optura', 'Italy:22 May 2005', '2,946,968 (UK)",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as L.Gromov)', '(as Pretender)', '(as Volha)', '(as Hunter Varnum)",
+                "%d%",
+                "release dates",
+                "votes distribution",
+                "crying', 'pun', 'anti-aircraft-gun', 'consultant-surgeon', 'crutch",
+                "Switzerland:7 March 2002', 'Russia:29 May 2003', 'UK:18 November 1999', 'Brazil:12 May 2006', 'Italy:80",
+                "m"
+            ],
+            [
+                "(uncredited)', '(present-day)', '(as Darryl Foster)', '(60 yo)', '(as Eddy Ryan)",
+                "%m%",
+                "gross",
+                "votes distribution",
+                "interview', 'starfish-costume', 'german-army', 'polo', 'british-colonial",
+                "$16,358,063 (USA) (5 November 2000)', 'France:91', 'Russia:45', '6:59', 'USA:18:48",
+                "m"
+            ],
+            [
+                "(director of photography)', '(as Melodi Fortman)', '(as Ted Stevens)', '(as Kat)', '(as Maxx Blacc)",
+                "%r%",
+                "gross",
+                "rating",
+                "brother-brother-relationship', 'party-goer', 'museumsinsel-berlin', 'choking', 'black-lesbian",
+                "$12,878,237 (USA) (22 October 2000)', 'Japan:150', 'Egypt:8 July 2000', 'Chile:2 April 2004', 'Russia:7 July 2003",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Conny Hammer)', '(puppetry)', '(as R.E.M.)', '(as Mia Copia)",
+                "%l%",
+                "release dates",
+                "rating",
+                "invalid', 'gnostic', 'baseball-news', 'archaic', 'shaved-chest",
+                "Brazil:April 2002', 'AUD 292,500', '$16,195 (Jamaica)', 'France:24 June 2002', '$1,234,567",
+                "m"
+            ],
+            [
+                "(uncredited)', '(pepper necklace)', '(Priya''s mom)', '(as Andy Black)', '(as Eve Eden)",
+                "%t%",
+                "printed media reviews",
+                "votes",
+                "racial-tension', 'fire-eating', 'chicago-t-shirt', 'catholicism', 'phantom-lake",
+                "Schwarzbaum, Lisa. \"Fling Blade (B-)\". In: \"Entertainment Weekly\" (USA), Vol. 1, Iss. 636, 25 January 2002, Pg. 73-74, (MG)', 'Visiware', 'Jiskefet BV', 'USA:175', 'Japan:February 2000",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as \u00c3\u0085sa Karlin)', '(fla set-up)', '(as Skip Pitts)', '(as Tume Uusitalo)",
+                "%)%",
+                "essays",
+                "votes",
+                "whiskey', 'wanting-to-elope', 'tatar', 'eeg', 'cheese-whiz",
+                "Karger, Dave. \"The Executioner''s Song\". In: \"Entertainment Weekly\" (USA), Vol. 1, Iss. 625, 16 November 2001, Pg. 72-74, (MG)', 'Canada:126', 'USA:7 May 2000', 'Berezina, Belarus', 'UK:March 2005",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as Rainer Adler)', '(as ''Billy'' MOP)', '(Medium)', '(cook: Mr. Freeman)",
+                "%a%",
+                "release dates",
+                "votes",
+                "plastic-spoon', 'eye-test', 'lying-in-the-street', 'meteorology', 'pondicherry-india",
+                "Belgium:20 March 2002', '\"Bring Them Home\" .', 'Brazil:140', 'AUD 900,000', 'Sweden:152",
+                "m"
+            ],
+            [
+                "(dispatcher)', '(producer: Xebec)', '(as O.Chechenev)', '(as Peter Howarth)', '(as Kevin Lamont)",
+                "%o%",
+                "opening weekend",
+                "votes",
+                "apartment', 'nude-jumping', 'aramaic', 'flying-toy', 'riding-the-rails",
+                "$7,954,766 (USA) (15 October 2000) (1,970 screens)', 'Hungary:44', 'Oscar Qvale', 'USA:13 April 2006', 'Japan:6 March 2000",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(video \"Loser\")', '(as Diego Manrique)', '(as V. Troshin)', '(as Judith)",
+                "%n%",
+                "release dates",
+                "rating",
+                "crying', 'bridge-painting', 'social-activism', 'stores', 'amritsar-massacre",
+                "UK:7 June 2002', 'Lesvos, Greece', 'Sweden:14 May 1999', 'Canada:7 July 1999', 'Japan:69",
+                "m"
+            ],
+            [
+                "(uncredited)', '(Cabin Stewardess)', '(as Ann Cassin)', '(as Lisa Garside)', '(master editor)",
+                "%i%",
+                "gross",
+                "votes",
+                "flashback', 'reading-a-script', 'flaming-lips', 'broken-violin', 'water-canteen",
+                "\u00c2\u00a3398,457 (UK) (21 January 2001)', 'UK:3 November 2002', 'Ireland:1 May 2005', 'UK:5 November 2001', 'USA:17 April 2005",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as DJ Babu)', '(standards)', '(truck operator)', '(as N-Ice)",
+                "%s%",
+                "trivia",
+                "rating",
+                "controversy', 'head', 'drink-as-title', 'reformation', 'climbing-fence",
+                "The movie was named as one of \"The 20 Most Overrated Movies of All Time\" by Premiere.', 'Canada:1 July 2007', 'Shot in 20 days.', '$920,000', 'USA:7:50",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Pascal Hutton)', '(as Hannak)', '(as Eydie Gorme)', '(as Annie Domme)",
+                "%u%",
+                "trivia",
+                "rating",
+                "bullet-hole', 'ex-roommate', 'sister-sister-fight', 'trade-show', 'frame-up",
+                "The movie was named as one of \"The 20 Most Overrated Movies of All Time\" by Premiere.', 'Peru:21 March 2002', 'Hungary:August 2006', 'Mexico:1999', 'Serbia:3 April 2003",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Russian Kathy)', '(as Avy)', '(v-spot editor)', '(as John C. Scott)",
+                "%e%",
+                "gross",
+                "votes distribution",
+                "interview', 'great-white-shark', 'asia', 'jogger', 'cell-phone",
+                "$16,713,802 (USA) (12 November 2000)', '- 22 April 2001', 'Norway:6 March 2001', 'PHP 6,000,000', 'Ash: Come get some.",
+                "m"
+            ],
+            [
+                "(co-producer)', '(as Nautica (I))', '(as Uta Rachov)', '(as Elsa Kikoine)', '(as Santi)",
+                "%d%",
+                "release dates",
+                "votes distribution",
+                "buttocks', 'saturday-morning', 'loire-river', 'grazier', 'spilled-paint",
+                "Russia:14 March 2002', 'Denmark:21 May 2005', 'Austria:5', 'soandbrad', 'UK:10 April 2005",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Lauryl Canyon)', '(as Anatoly Gnatuk)', '(as the Buggles)', '(as Dr Susan Jebb)",
+                "%n%",
+                "release dates",
+                "rating",
+                "coffee', 'sexual-predator', 'rhythm-game', '36-hour-time-span', 'carp",
+                "Spain:5 April 2002', 'Carlos Sagadia', 'Mexico:16 July 2007', '$11,000', 'Belgium:16 May 2011",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Dallas Teague)', '(as V. Golubenko)', '(intern) (2003)', '(as Pim Fortuijn)",
+                "%m%",
+                "gross",
+                "rating",
+                "brother-brother-relationship', 'psycho-sensual', 'hit-song', 'fake-disease', 'breast-electrode",
+                "\u00c2\u00a3217,276 (UK) (14 January 2001)', 'Israel:June 2000', 'MYR 100,000', 'USA:26 July 2004', 'USA:31 July 2001",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Leon South)', '(Frankie)', '(as Gaurav Kapur)', '(as Constanza)",
+                "%E%",
+                "release dates",
+                "votes",
+                "racism', 'intertitle', 'pirate-ship', 'ideology', 'urinating-on-face",
+                "Philippines:19 June 2002', 'Peru:19 July 2001', 'Evolve or die.', 'South Africa:48', 'Argentina:114",
+                "m"
+            ],
+            [
+                "(story)', '(as Lyz Glick Best)', '(as Danilo Tabbita)', '(as Brooke April)', '(as James Hobby)",
+                "%C%",
+                "locations",
+                "rating",
+                "crucifix', 'subversion', 'neo-nazism', 'gun-fu', 'punch-drunk",
+                "New York City, New York, USA', 'Belgium:4 May 2010', 'France:12 June 2007', 'Israel:13 July 2001', 'USA:28",
+                "m"
+            ],
+            [
+                "(co-producer)', '(pilot: helicopter)', '(as Kim Porcelli)', '(as Jorge Benjor)', '(london office)",
+                "%i%",
+                "release dates",
+                "votes distribution",
+                "sex-on-couch', 'sap', 'cleavage', 'based-on-comic-book', 'i.-o.-u.",
+                "UK:7 June 2002', 'Georgian', 'Kigali, Rwanda', 'Germany:August 2007', 'UK:5 July 2007",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as Chad Cosgrove)', '(as Fabrizio)', '(as Sarah Wheeler)', '(as Brian Stuebe)",
+                "%t%",
+                "release dates",
+                "votes",
+                "racism', 'strangeways-prison', 'hainaut', 'bicarbonate-of-soda', 'eating-a-dog",
+                "Norway:31 May 2002', 'Italy:8 August 2004', 'TransVision Films', 'UK:45', 'Belgium:67",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as George Gatsov)', '(as Wow Nikki)', '(stage planner)', '(as Agust\u00c3\u00adn Leiva)",
+                "%n%",
+                "release dates",
+                "votes",
+                "crying', 'cart-racing', 'guignol', 'schutzstaffel', 'reporter-heroine",
+                "Israel:6 June 2002', 'You buy! You die!', 'Italy:14 July 2000', 'Arslankoy, Turkey', 'Japan:1 June 2000",
+                "m"
+            ],
+            [
+                "(executive producer)', '(as Louis Jardim)', '(as Ewen McIntosh)', '(agent: Jarowskij)', '(as Mel B)",
+                "%i%",
+                "weekend gross",
+                "rating",
+                "interview', 'river-guide', 'diner', 'spoiled-child', 'potty-training",
+                "$621,615 (USA) (5 November 2000) (947 screens)', 'Italy:27 May 2007', 'CAD 3,300', 'Deutschland', 'UK:2 July 2003",
+                "m"
+            ],
+            [
+                "(as Matt Chess\u00c3\u00a9)', '(as 911)', '(as Jiri Zikes)', '(as Lurdes Barba)', '(as Kristen Lorenz)",
+                "%e%",
+                "trivia",
+                "votes",
+                "racial-hatred', 'chocolate-sauce', 'corn-syrup', 'designtex', 'navy-ship",
+                "''Angela Bassett'' (qv) purportedly turned down the role of Leticia, stating \"I wasn''t going to be a prostitute on film...\" However, Lions Gate Production President ''Michael Paseornek'' (qv) and the film''s producer ''Lee Daniels (I)'' (qv) rebut Bassett stating that she was never even offered the role, and was already committed to another film.', 'Iquitos, Peru', 'USA:12 June 2002', 'MET:3009 m', 'Lehi, Utah, USA",
+                "m"
+            ],
+            [
+                "(written by)', '(as Milenna)', '(as Jan Filipensky)', '(as Danny Miller)', '(as Amanda Stern)",
+                "%)%",
+                "release dates",
+                "votes distribution",
+                "interracial-relationship', 'chess-grandmaster', 'latin-phrase', 'unable-to-conceive', 'diabetic-child",
+                "Portugal:15 March 2002', 'Colombia:14', 'South Africa:17', 'Romania:June 2006', 'UK:89",
+                "m"
+            ],
+            [
+                "(written by)', '(as Jhon Alex Toro)', '(present day)', '(as Kelsy Waye)', '(as Hannu Nurmio)",
+                "%o%",
+                "release dates",
+                "votes distribution",
+                "strong-sexual-content', 'nibbles', 'bird-nest', 'female-companion', 'malloys",
+                "Mexico:12 April 2002', 'USA:14 October 1999', 'Denmark:7 May 2007', 'Lakeside, Ohio, USA', 'Canada:2002",
+                "m"
+            ]
+        ]
+    }
+}

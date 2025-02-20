@@ -1,0 +1,743 @@
+{
+  "33-0": {
+    "query": "SELECT MIN(cn1.name) AS first_company, MIN(cn2.name) AS second_company, MIN(mi_idx1.info) AS first_rating, MIN(mi_idx2.info) AS second_rating, MIN(t1.title) AS first_movie, MIN(t2.title) AS second_movie\n FROM sampled_company_name_1 AS cn1,\n sampled_company_name_1 AS cn2,\n sampled_info_type_1 AS it1,\n sampled_info_type_1 AS it2,\n sampled_kind_type_1 AS kt1,\n sampled_kind_type_1 AS kt2,\n sampled_movie_companies_1 AS mc1,\n sampled_movie_companies_1 AS mc2,\n sampled_movie_info_idx_1 AS mi_idx1,\n sampled_movie_info_idx_1 AS mi_idx2,\n sampled_title_1 AS t1,\n sampled_title_1 AS t2\n WHERE it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id \nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND mi_idx2.info < '@param5'\nAND t2.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "original_alias": "cn1",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_company_name_1",
+        "join_tables": [
+          "sampled_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_1",
+        "join_tables": [
+          "sampled_movie_info_idx_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "sampled_info_type_1",
+        "join_tables": [
+          "sampled_movie_info_idx_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt1",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_kind_type_1",
+        "join_tables": [
+          "sampled_title_1"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt2",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "sampled_kind_type_1",
+        "join_tables": [
+          "sampled_title_1"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ]
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "original_alias": "mi_idx2",
+        "column": "info",
+        "operator": "<",
+        "data_type": "text",
+        "table": "sampled_movie_info_idx_1",
+        "join_tables": [
+          "sampled_info_type_1",
+          "sampled_title_1",
+          "sampled_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "it",
+          "t",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "production_year"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id",
+          "t.id = mi_idx.movie_id",
+          "mi_idx.movie_id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "sampled_title_1",
+        "min": 1879,
+        "max": 2020,
+        "join_tables": [
+          "sampled_movie_info_idx_1",
+          "sampled_kind_type_1",
+          "sampled_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "sampled_title_1",
+        "min": 1879,
+        "max": 2020,
+        "join_tables": [
+          "sampled_movie_info_idx_1",
+          "sampled_kind_type_1",
+          "sampled_movie_companies_1"
+        ],
+        "join_tables_alias": [
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[ca]",
+        "rating",
+        "votes",
+        "tv series', 'tv series', 'episode', 'video movie', 'movie",
+        "movie', 'video game', 'movie', 'tv movie', 'episode",
+        "99",
+        1973,
+        1978
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "video movie', 'video movie', 'tv movie', 'tv movie', 'tv series",
+        "episode', 'tv movie', 'movie', 'tv movie', 'video game",
+        "6.6",
+        1960,
+        1973
+      ],
+      [
+        "[br]",
+        "rating",
+        "rating",
+        "movie', 'episode', 'tv series', 'tv movie', 'episode",
+        "video movie', 'video movie', 'movie', 'tv movie', 'video movie",
+        "3.9",
+        1967,
+        1992
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'video game', 'tv series', 'video game', 'video game",
+        "movie', 'video movie', 'video game', 'episode', 'tv movie",
+        "0..0013200",
+        1961,
+        1968
+      ],
+      [
+        "[es]",
+        "votes distribution",
+        "rating",
+        "movie', 'video movie', 'tv series', 'episode', 'tv movie",
+        "tv movie', 'tv movie', 'tv movie', 'video game', 'video movie",
+        "4.7",
+        1973,
+        1978
+      ],
+      [
+        "[br]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'video game', 'tv series', 'movie', 'video game",
+        "tv series', 'video game', 'episode', 'episode', 'video game",
+        "10021000.1",
+        1979,
+        1993
+      ],
+      [
+        "[ph]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'tv series', 'tv movie', 'tv movie', 'episode",
+        "movie', 'video game', 'video movie', 'tv series', 'tv series",
+        "0000001212",
+        1961,
+        1975
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "episode', 'tv series', 'video movie', 'tv movie', 'tv series",
+        "movie', 'movie', 'video game', 'tv series', 'video movie",
+        "4.0",
+        1960,
+        1993
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes",
+        "episode', 'video game', 'movie', 'episode', 'episode",
+        "tv movie', 'video game', 'episode', 'movie', 'movie",
+        "75",
+        1977,
+        1993
+      ],
+      [
+        "[ca]",
+        "votes",
+        "votes distribution",
+        "tv series', 'episode', 'movie', 'video game', 'video game",
+        "tv series', 'episode', 'tv series', 'video game', 'episode",
+        "0000000124",
+        1967,
+        1993
+      ],
+      [
+        "[de]",
+        "votes",
+        "rating",
+        "tv movie', 'tv series', 'movie', 'movie', 'tv series",
+        "movie', 'tv series', 'episode', 'movie', 'tv series",
+        "1.7",
+        1970,
+        1985
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "rating",
+        "tv movie', 'episode', 'video movie', 'video game', 'video game",
+        "episode', 'tv series', 'video game', 'episode', 'episode",
+        "7.7",
+        1972,
+        1992
+      ],
+      [
+        "[fr]",
+        "rating",
+        "rating",
+        "tv series', 'movie', 'video game', 'video movie', 'movie",
+        "movie', 'episode', 'tv movie', 'tv movie', 'video game",
+        "5.9",
+        1968,
+        1992
+      ],
+      [
+        "[ph]",
+        "rating",
+        "votes distribution",
+        "movie', 'movie', 'video movie', 'video movie', 'episode",
+        "episode', 'video movie', 'tv series', 'episode', 'tv series",
+        ".0.0011211",
+        1970,
+        1991
+      ],
+      [
+        "[fr]",
+        "votes",
+        "votes",
+        "movie', 'tv series', 'tv series', 'video movie', 'tv series",
+        "movie', 'tv movie', 'tv series', 'video game', 'tv movie",
+        "13",
+        1977,
+        1994
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes distribution",
+        "movie', 'video game', 'episode', 'video movie', 'video movie",
+        "tv series', 'video game', 'episode', 'episode', 'tv movie",
+        "3.....1..5",
+        1960,
+        1989
+      ],
+      [
+        "[it]",
+        "votes",
+        "votes distribution",
+        "movie', 'episode', 'video movie', 'movie', 'video game",
+        "tv series', 'tv series', 'episode', 'tv series', 'tv series",
+        "10021000.1",
+        1976,
+        1993
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "rating",
+        "movie', 'movie', 'movie', 'tv series', 'movie",
+        "movie', 'movie', 'video game', 'tv movie', 'episode",
+        "5.0",
+        1960,
+        1974
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes distribution",
+        "tv movie', 'episode', 'tv series', 'tv series', 'episode",
+        "tv movie', 'video movie', 'tv movie', 'movie', 'video game",
+        "0011121000",
+        1960,
+        1992
+      ],
+      [
+        "[de]",
+        "votes",
+        "votes",
+        "movie', 'video movie', 'episode', 'episode', 'movie",
+        "episode', 'tv movie', 'episode', 'tv movie', 'tv series",
+        "65",
+        1972,
+        1984
+      ],
+      [
+        "[it]",
+        "rating",
+        "votes",
+        "movie', 'tv series', 'movie', 'video game', 'tv movie",
+        "movie', 'movie', 'movie', 'video game', 'video movie",
+        "233",
+        1961,
+        1963
+      ],
+      [
+        "[us]",
+        "votes",
+        "votes distribution",
+        "movie', 'video game', 'tv series', 'tv series', 'episode",
+        "movie', 'video game', 'tv movie', 'video game', 'video game",
+        "0000121000",
+        1963,
+        1986
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "tv movie', 'episode', 'video movie', 'episode', 'tv series",
+        "episode', 'video movie', 'video game', 'movie', 'video game",
+        "7.1",
+        1972,
+        1994
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'video movie', 'tv movie', 'episode', 'episode",
+        "movie', 'episode', 'tv movie', 'episode', 'video movie",
+        "6.9",
+        1967,
+        1986
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "movie', 'episode', 'episode', 'video movie', 'video game",
+        "episode', 'video movie', 'movie', 'tv series', 'episode",
+        "7.1",
+        1986,
+        1991
+      ],
+      [
+        "[fr]",
+        "rating",
+        "rating",
+        "movie', 'video game', 'video movie', 'tv series', 'video movie",
+        "tv movie', 'movie', 'tv movie', 'tv series', 'video movie",
+        "4.4",
+        1964,
+        1993
+      ],
+      [
+        "[ph]",
+        "votes distribution",
+        "votes",
+        "movie', 'video game', 'video game', 'tv series', 'tv series",
+        "movie', 'movie', 'tv movie', 'video game', 'video movie",
+        "146",
+        1963,
+        1986
+      ],
+      [
+        "[au]",
+        "votes",
+        "rating",
+        "movie', 'tv movie', 'tv series', 'movie', 'movie",
+        "movie', 'video game', 'tv movie', 'tv movie', 'episode",
+        "6.9",
+        1965,
+        1975
+      ],
+      [
+        "[ph]",
+        "votes",
+        "votes",
+        "movie', 'movie', 'video game', 'video movie', 'movie",
+        "tv movie', 'tv series', 'video game', 'episode', 'video game",
+        "13",
+        1969,
+        1994
+      ],
+      [
+        "[it]",
+        "votes distribution",
+        "rating",
+        "movie', 'video movie', 'tv movie', 'tv movie', 'tv series",
+        "tv series', 'video movie', 'video game', 'episode', 'movie",
+        "3.8",
+        1973,
+        1992
+      ],
+      [
+        "[us]",
+        "rating",
+        "rating",
+        "video movie', 'video game', 'episode', 'video movie', 'video movie",
+        "movie', 'movie', 'video game', 'video movie', 'video movie",
+        "6.9",
+        1968,
+        1983
+      ],
+      [
+        "[br]",
+        "rating",
+        "rating",
+        "movie', 'video game', 'movie', 'movie', 'video game",
+        "movie', 'tv series', 'video game', 'tv series', 'video movie",
+        "4.9",
+        1963,
+        1993
+      ],
+      [
+        "[de]",
+        "rating",
+        "rating",
+        "tv movie', 'tv movie', 'video movie', 'tv series', 'episode",
+        "movie', 'tv series', 'tv movie', 'movie', 'video movie",
+        "7.0",
+        1964,
+        1987
+      ],
+      [
+        "[ph]",
+        "votes",
+        "rating",
+        "movie', 'tv movie', 'video movie', 'episode', 'episode",
+        "tv movie', 'video movie', 'tv series', 'tv series', 'episode",
+        "4.8",
+        1981,
+        1994
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv movie', 'tv movie', 'tv movie', 'tv movie', 'video game",
+        "tv movie', 'movie', 'video game', 'tv series', 'tv movie",
+        "8",
+        1960,
+        1982
+      ],
+      [
+        "[fr]",
+        "votes",
+        "votes distribution",
+        "movie', 'movie', 'episode', 'tv movie', 'episode",
+        "episode', 'episode', 'tv series', 'video movie', 'movie",
+        "0.011401.0",
+        1983,
+        1992
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes distribution",
+        "episode', 'episode', 'movie', 'tv movie', 'video movie",
+        "episode', 'movie', 'video movie', 'tv series', 'movie",
+        "0.011401.0",
+        1978,
+        1989
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes distribution",
+        "video movie', 'video game', 'tv series', 'tv movie', 'movie",
+        "movie', 'video game', 'episode', 'movie', 'video movie",
+        "00011.1.12",
+        1967,
+        1991
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "votes distribution",
+        "video movie', 'video game', 'video game', 'tv series', 'tv movie",
+        "movie', 'video game', 'tv movie', 'video game', 'video game",
+        "0011111000",
+        1962,
+        1973
+      ],
+      [
+        "[es]",
+        "votes distribution",
+        "rating",
+        "movie', 'video movie', 'tv movie', 'tv movie', 'tv movie",
+        "movie', 'tv movie', 'tv movie', 'tv series', 'tv movie",
+        "7.6",
+        1961,
+        1980
+      ],
+      [
+        "[de]",
+        "votes distribution",
+        "votes",
+        "movie', 'movie', 'video movie', 'movie', 'tv movie",
+        "movie', 'video game', 'episode', 'video movie', 'episode",
+        "13",
+        1974,
+        1992
+      ],
+      [
+        "[fr]",
+        "rating",
+        "votes",
+        "movie', 'video movie', 'video movie', 'tv series', 'video movie",
+        "episode', 'tv series', 'video movie', 'episode', 'video game",
+        "535",
+        1983,
+        1993
+      ],
+      [
+        "[au]",
+        "votes",
+        "rating",
+        "movie', 'tv movie', 'video game', 'tv movie', 'movie",
+        "episode', 'video game', 'video movie', 'video movie', 'tv series",
+        "8.0",
+        1972,
+        1993
+      ],
+      [
+        "[ca]",
+        "votes distribution",
+        "rating",
+        "tv series', 'video game', 'tv movie', 'tv movie', 'video movie",
+        "movie', 'movie', 'tv series', 'tv movie', 'video game",
+        "7.7",
+        1960,
+        1979
+      ],
+      [
+        "[br]",
+        "votes distribution",
+        "votes",
+        "movie', 'tv movie', 'tv movie', 'tv movie', 'tv movie",
+        "tv series', 'tv series', 'episode', 'video movie', 'tv series",
+        "9",
+        1962,
+        1978
+      ],
+      [
+        "[it]",
+        "votes distribution",
+        "votes distribution",
+        "movie', 'video movie', 'episode', 'video game', 'tv series",
+        "tv series', 'episode', 'video game', 'episode', 'tv series",
+        "3.....1..5",
+        1964,
+        1990
+      ],
+      [
+        "[de]",
+        "rating",
+        "rating",
+        "movie', 'movie', 'video movie', 'movie', 'tv movie",
+        "movie', 'tv series', 'tv movie', 'video game', 'movie",
+        "1.7",
+        1962,
+        1978
+      ],
+      [
+        "[us]",
+        "votes distribution",
+        "rating",
+        "video movie', 'movie', 'tv series', 'video movie', 'tv movie",
+        "tv movie', 'tv series', 'tv series', 'video movie', 'episode",
+        "7.6",
+        1972,
+        1991
+      ],
+      [
+        "[fr]",
+        "votes distribution",
+        "votes distribution",
+        "tv series', 'tv series', 'episode', 'video game', 'tv movie",
+        "tv series', 'tv series', 'episode', 'video game', 'tv movie",
+        "3.....1..5",
+        1975,
+        1991
+      ],
+      [
+        "[ca]",
+        "rating",
+        "votes",
+        "tv series', 'movie', 'tv series', 'video game', 'episode",
+        "movie', 'tv movie', 'video movie', 'movie', 'video game",
+        "233",
+        1961,
+        1990
+      ]
+    ]
+  }
+}
