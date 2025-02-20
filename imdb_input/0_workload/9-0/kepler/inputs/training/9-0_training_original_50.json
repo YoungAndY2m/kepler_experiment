@@ -1,0 +1,863 @@
+{
+    "9-0": {
+        "query": "SELECT MIN(an.name) AS alternative_name, MIN(chn.name) AS character_name, MIN(t.title) AS movie\nFROM aka_name AS an,\n char_name AS chn,\n cast_info AS ci,\n company_name AS cn,\n movie_companies AS mc,\n name AS n,\n role_type AS rt,\n title AS t\nWHERE ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND ci.movie_id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND n.id = ci.person_id\n AND chn.id = ci.person_role_id\n AND an.person_id = n.id\n AND an.person_id = ci.person_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND mc.note IS NOT NULL \nAND (mc.note LIKE '@param2' OR mc.note LIKE '@param3')\nAND n.gender = '@param4'\nAND n.name LIKE '@param5'\nAND rt.role = '@param6'\nAND t.production_year BETWEEN @param7 AND @param8;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cast_info",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "rt",
+                    "n",
+                    "chn",
+                    "an"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_companies",
+                    "role_type",
+                    "name",
+                    "char_name",
+                    "aka_name"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "ci.movie_id = mc.movie_id",
+                    "ci.role_id = rt.id",
+                    "n.id = ci.person_id",
+                    "chn.id = ci.person_role_id",
+                    "an.person_id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "movie_companies",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "cn"
+                ],
+                "join_tables": [
+                    "title",
+                    "cast_info",
+                    "company_name"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "movie_companies",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "cn"
+                ],
+                "join_tables": [
+                    "title",
+                    "cast_info",
+                    "company_name"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [
+                        "note"
+                    ],
+                    [
+                        "country_code"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "aka_name"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "an.person_id = n.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "aka_name"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "an.person_id = n.id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "role_type",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "ci.role_id = rt.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "ci",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": "<",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "ci",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(uncredited)', '(as Fab 5 Freddie)', '(as Oscar Kesse)', '(as Alan Deloin)', '(as Rupert Seidl)",
+                "[de]",
+                "%)%",
+                "%m%",
+                "f",
+                "%a%",
+                "actress",
+                1960,
+                2004
+            ],
+            [
+                "(uncredited)', '(as Henry Sanders)', '(as Gary van Orman)', '(as Butt Kaser)', '(as Dan Shulman)",
+                "[hu]",
+                "%u%",
+                "%)%",
+                "m",
+                "%,%",
+                "actor",
+                1933,
+                2020
+            ],
+            [
+                "(uncredited)', '(as Village People)', '(as Mirek Woitch)', '(as Denise Ryland)', '(1964-1968)",
+                "[hu]",
+                "%1%",
+                "%(%",
+                "m",
+                "%a%",
+                "actor",
+                1904,
+                2017
+            ],
+            [
+                "(voice)', '(as Glen Bang)', '(as Thomas Crown)', '(as Edward Acuff)', '(as Kurt F. Loder)",
+                "[ca]",
+                "%n%",
+                "%p%",
+                "m",
+                "%m%",
+                "actor",
+                1989,
+                2013
+            ],
+            [
+                "(as Ghalla Ben Ali)', '(as Jir\u00c3\u00b4 Tamiya)', '(as Ron Berglass)', '(as Robert Crean)', '(as Steward West)",
+                "[de]",
+                "%c%",
+                "%(%",
+                "f",
+                "%l%",
+                "actress",
+                1963,
+                2019
+            ],
+            [
+                "(uncredited)', '(as Manuel Lopez)', '(as Barbara Tebben)', '(2343)', '(as Michel Krasna)",
+                "[us]",
+                "%0%",
+                "%9%",
+                "m",
+                "%o%",
+                "actor",
+                1924,
+                2014
+            ],
+            [
+                "(uncredited)', '(as Milt Brown)', '(as Callam Rainey)', '(as Henry R. Sokal)', '(as Matt Hawkins)",
+                "[us]",
+                "%V%",
+                "%(%",
+                "m",
+                "%e%",
+                "actor",
+                1892,
+                1987
+            ],
+            [
+                "(as Joe Kelly)', '(as Stephan Fung)', '(as P. Belair)', '(as Corinne Reboud)', '(as Los Planetas)",
+                "[ca]",
+                "%2%",
+                "%(%",
+                "m",
+                "%,%",
+                "actor",
+                1953,
+                2019
+            ],
+            [
+                "(archive footage)', '(as Hollai Kamilla)', '(as A. Lichtenfeld)', '(as Asami Urano)', '(as Omar Echeriff)",
+                "[us]",
+                "%U%",
+                "%l%",
+                "m",
+                "%a%",
+                "actor",
+                1972,
+                1987
+            ],
+            [
+                "(as Mar\u00c3\u00ada Eugenia Mieres)', '(intro music)', '(assistant: Schain)', '(as Rageh Omar)', '(as Toni Hallaran)",
+                "[fr]",
+                "%h%",
+                "%)%",
+                "f",
+                "%,%",
+                "actress",
+                1890,
+                2017
+            ],
+            [
+                "(uncredited)', '(runner) (2000)', '(as Lana Semil)', '(as Claire Dyer)', '(as Lina Maryan)",
+                "[at]",
+                "%h%",
+                "%9%",
+                "m",
+                "%s%",
+                "actor",
+                1922,
+                1972
+            ],
+            [
+                "(voice)', '(as Franke Hughes)', '(as Beverly Owen)', '(as Jim Shoulders)', '(news coordinator)",
+                "[jp]",
+                "%(%",
+                "%2%",
+                "f",
+                "%k%",
+                "actress",
+                1969,
+                2017
+            ],
+            [
+                "(as Tarra M. Riggs)', '(sports clearances)', '(as Jazmine Antico)', '(Corbiel)', '(as Lykke Scheur)",
+                "[us]",
+                "%)%",
+                "%(%",
+                "f",
+                "%,%",
+                "actress",
+                1985,
+                2011
+            ],
+            [
+                "(The Who)', '(as Rose Dias)', '(as Zez\u00c3\u00a9 Mota)', '(as Sepp Thalmaier)', '(as Tommy Shirley)",
+                "[gb]",
+                "%t%",
+                "%)%",
+                "m",
+                "%o%",
+                "actor",
+                1957,
+                2004
+            ],
+            [
+                "(uncredited)', '(as Bob Steveson)', '(11 godina)', '(as Marcus Kelly)', '(as Sam Gelfman)",
+                "[ph]",
+                "%h%",
+                "%e%",
+                "m",
+                "%J%",
+                "actor",
+                2007,
+                2019
+            ],
+            [
+                "(uncredited)', '(as Ivan Mosjukine)', '(as Tam\u00c3\u00a1s Ferkay)', '(as Rafa Puerto)', '(as Chris Hodson)",
+                "[ca]",
+                "%9%",
+                "%i%",
+                "m",
+                "%o%",
+                "actor",
+                1941,
+                2014
+            ],
+            [
+                "(uncredited)', '(as Tamara Bass)', '(as Jason Reynolds)', '(as Iv\u00c3\u00a1n Bunin)', '(as Maria Berganza)",
+                "[us]",
+                "%D%",
+                "%(%",
+                "m",
+                "%E%",
+                "actor",
+                1968,
+                2020
+            ],
+            [
+                "(uncredited)', '(as Sofa Basirzada)', '(as William Dana)', '(as Emilio Falcon)', '(as Chani Sabati)",
+                "[us]",
+                "%t%",
+                "%i%",
+                "m",
+                "%i%",
+                "actor",
+                1890,
+                1992
+            ],
+            [
+                "(voice) (uncredited)', '(as Noel Nelis)', '(segment \"1915\")', '(as Phyllis Diller)', '(as Long)",
+                "[us]",
+                "%\"%",
+                "%l%",
+                "m",
+                "%o%",
+                "actor",
+                1920,
+                2010
+            ],
+            [
+                "(as Nicolas Jasso)', '(as Doug Huebner)', '(as Imre Kamondy)', '(runner: Sabaudia)', '(1968-1971)",
+                "[ar]",
+                "%4%",
+                "%)%",
+                "m",
+                "%N%",
+                "actor",
+                1920,
+                2003
+            ],
+            [
+                "(archive footage)', '(development group)', '(as Johnnie Crear)', '(as Chandra Debi)', '(as Brad Pedersen)",
+                "[us]",
+                "%d%",
+                "%l%",
+                "m",
+                "%e%",
+                "actor",
+                1976,
+                2020
+            ],
+            [
+                "(uncredited)', '(as Jenn M)', '(Core)', '(as Brian Burkhart)', '(as The Grassroots)",
+                "[nl]",
+                "%)%",
+                "%r%",
+                "f",
+                "%r%",
+                "actress",
+                1974,
+                2017
+            ],
+            [
+                "(as Debra Mcgrath)', '(as J.C. Achilles)', '(as Brittany Bouck)', '(as Jose T. Chavez)', '(le bel officier)",
+                "[us]",
+                "%9%",
+                "%(%",
+                "f",
+                "%e%",
+                "actress",
+                1910,
+                2014
+            ],
+            [
+                "(archive footage) (uncredited)', '(Munish''s mom)', '(news feature)', '(as Merrit Yohnkas)', '(as Union Station)",
+                "[nl]",
+                "%a%",
+                "%a%",
+                "m",
+                "%K%",
+                "actor",
+                1955,
+                2007
+            ],
+            [
+                "(archive footage)', '(as Wzrd)', '(as Debbie Copaken)', '(as F\u00c3\u00bczy S\u00c3\u00a1ra)', '(as Ron Sparks Jr.)",
+                "[us]",
+                "%9%",
+                "%(%",
+                "m",
+                "%i%",
+                "actor",
+                1980,
+                2019
+            ],
+            [
+                "(scenes deleted) (uncredited)', '(lead game tester)', '(as La Iaia)', '(as Pasi Sepp\u00c3\u00a4nen)', '(as Damie Aldave)",
+                "[us]",
+                "%A%",
+                "%A%",
+                "f",
+                "%a%",
+                "actress",
+                1917,
+                2010
+            ],
+            [
+                "(voice)', '(as Kiss)', '(as Andrew Scot)', '(aged 13-17)', '(1984-1986/1989)",
+                "[es]",
+                "%0%",
+                "%(%",
+                "m",
+                "%i%",
+                "actor",
+                2011,
+                2014
+            ],
+            [
+                "(archive footage)', '(as Robert Ylagan)', '(as Carlos Vilan)', '(cast sequester)', '(as Dimitrieff)",
+                "[de]",
+                "%n%",
+                "%9%",
+                "f",
+                "%,%",
+                "actress",
+                1949,
+                2008
+            ],
+            [
+                "(uncredited)', '(as Jose Sauceda)', '(as Willy P. Egger)', '(as Kevin Manning)', '(as Rev. John Smid)",
+                "[br]",
+                "%H%",
+                "%)%",
+                "m",
+                "%F%",
+                "actor",
+                1896,
+                2001
+            ],
+            [
+                "(as Raymond Gerome)', '(as The Wild Man)', '(as Samatha Mcleod)', '(as Myrtle Rischel)', '(as David Hue)",
+                "[nl]",
+                "%(%",
+                "%s%",
+                "m",
+                "%n%",
+                "actor",
+                1896,
+                1980
+            ],
+            [
+                "(uncredited)', '(as Eric A. Payne)', '(as Antonio Losada)', '(as Twisted Sister)', '(owner: Indy)",
+                "[ca]",
+                "%s%",
+                "%i%",
+                "f",
+                "%E%",
+                "actress",
+                1995,
+                2017
+            ],
+            [
+                "(archive footage)', '(as Guar\u00c3\u00a1)', '(as M. Karyova)', '(as The Muppets)', '(as Thony Maky)",
+                "[nl]",
+                "%m%",
+                "%s%",
+                "m",
+                "%L%",
+                "actor",
+                1946,
+                2015
+            ],
+            [
+                "(as Red Schwartz)', '(as Vasya Krivun)', '(as Robert Stadler)', '(as Bill Acquaviva)', '(also written by)",
+                "[us]",
+                "%9%",
+                "%S%",
+                "m",
+                "%c%",
+                "actor",
+                1986,
+                2004
+            ],
+            [
+                "(uncredited)', '(as Chunky Panday)', '(as L\u00c3\u00a9o Messe)', '(as Al Green)', '(as J.M. Mart\u00c3\u00adn)",
+                "[hu]",
+                "%0%",
+                "%a%",
+                "m",
+                "%m%",
+                "actor",
+                1917,
+                2016
+            ],
+            [
+                "(uncredited)', '(Shyam Lal''s wife)', '(as Scott Baker)', '(Trolley)', '(as John Byrnes)",
+                "[de]",
+                "%)%",
+                "%a%",
+                "m",
+                "%y%",
+                "actor",
+                1989,
+                2017
+            ],
+            [
+                "(rumored)', '(as Anne Spavin)', '(as P. Fomenko)', '(1961-1995)', '(as Stan Sessums)",
+                "[us]",
+                "%(%",
+                "%a%",
+                "m",
+                "%a%",
+                "actor",
+                1941,
+                2016
+            ],
+            [
+                "(segment \"The Missing Ingredient\")', '(as Aleana Ferrari)', '(as La Tita)', '(as Theresa Hall)', '(as Mody Mod)",
+                "[us]",
+                "%c%",
+                "%d%",
+                "f",
+                "%o%",
+                "actress",
+                1922,
+                1996
+            ],
+            [
+                "(uncredited)', '(as Anne Bennett)', '(as V. Bochkaryov)', '(as Tabby Hansen)', '(as Alex Hinojo)",
+                "[us]",
+                "%i%",
+                "%i%",
+                "f",
+                "%l%",
+                "actress",
+                1964,
+                1989
+            ],
+            [
+                "(uncredited)', '(as Ram Singh)', '(as Al J. Ohlson)', '(as Dr. Jorge Sosa)', '(as Maud de Mestay)",
+                "[de]",
+                "%y%",
+                "%a%",
+                "m",
+                "%s%",
+                "actor",
+                1897,
+                1992
+            ],
+            [
+                "(uncredited)', '(text: oratorium)', '(as Aaron Wilcoxxx)', '(as Frank Wells)', '(as Amy Berger)",
+                "[at]",
+                "%r%",
+                "%a%",
+                "m",
+                "%a%",
+                "actor",
+                1922,
+                1993
+            ],
+            [
+                "(uncredited)', '(24 episodes)', '(as Jane Lee)', '(writer: NRK)', '(as Hugh Rodham)",
+                "[us]",
+                "%i%",
+                "%e%",
+                "m",
+                "%r%",
+                "actor",
+                1929,
+                1961
+            ],
+            [
+                "(uncredited)', '(as Jos\u00c3\u00a9 Castels)', '(Miss May 1995)', '(as Greg Grande)', '(as Kyklop)",
+                "[de]",
+                "%m%",
+                "%3%",
+                "m",
+                "%r%",
+                "actor",
+                1934,
+                1997
+            ],
+            [
+                "(as Kim Young-Chul)', '(as Costa Skouras)', '(advisor: aquagym)', '(as Arvy Viduya)', '(as Phillip Dean)",
+                "[au]",
+                "%)%",
+                "%l%",
+                "m",
+                "%K%",
+                "actor",
+                1922,
+                2006
+            ],
+            [
+                "(voice)', '(caterer: Thailand)', '(as Sande Drews)', '(as G. Farmanyants)', '(as Frank Apitz)",
+                "[de]",
+                "%)%",
+                "%l%",
+                "m",
+                "%h%",
+                "actor",
+                1951,
+                1997
+            ],
+            [
+                "(uncredited)', '(as Christin Ford)', '(as S. Vrbick\u00c3\u00a1)', '(as Mike Goodenir)', '(Esther Johnson)",
+                "[ar]",
+                "%t%",
+                "%(%",
+                "m",
+                "%t%",
+                "actor",
+                1933,
+                2005
+            ],
+            [
+                "(scenes deleted)', '(as V\u00c3\u00adta Cern\u00c3\u00bd)', '(as King Roberts)', '(as Vernon Vinni)', '(NYPD)",
+                "[us]",
+                "%S%",
+                "%0%",
+                "m",
+                "%,%",
+                "actor",
+                1904,
+                1965
+            ],
+            [
+                "(uncredited)', '(as Phil Fagan)', '(as Heather Wilde)', '(as Nani Gim\u00c3\u00a9nez)', '(Homicide Squad)",
+                "[fi]",
+                "%1%",
+                "%a%",
+                "m",
+                "%i%",
+                "actor",
+                1995,
+                2014
+            ],
+            [
+                "(uncredited)', '(as Carly Bush)', '(as Ian Donnolly)', '(as M. Staroburov)', '(as B. Lyaush)",
+                "[gr]",
+                "%t%",
+                "%t%",
+                "f",
+                "%i%",
+                "actress",
+                1958,
+                2014
+            ],
+            [
+                "(as Norman J. Grant)', '(as Jack Gilyard)', '(as Toto Mignone)', '(as Gluecifer)', '(road movies team)",
+                "[br]",
+                "%(%",
+                "%D%",
+                "m",
+                "%a%",
+                "actor",
+                1890,
+                2006
+            ],
+            [
+                "(segment \"They''re Creeping Up On You\")', '(as Alfred Ward)', '(as Fabrizio Ferri)', '(as Dr Marta Balla)', '(as Bob Ayers)",
+                "[us]",
+                "%n%",
+                "%o%",
+                "m",
+                "%a%",
+                "actor",
+                1977,
+                2019
+            ]
+        ]
+    }
+}

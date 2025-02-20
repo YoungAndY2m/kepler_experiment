@@ -1,0 +1,709 @@
+{
+    "11-0": {
+        "query": "SELECT MIN(cn.name) AS from_company, MIN(lt.link) AS movie_link_type, MIN(t.title) AS non_polish_sequel_movie\nFROM company_name AS cn,\n company_type AS ct,\n keyword AS k,\n link_type AS lt,\n movie_companies AS mc,\n movie_keyword AS mk,\n movie_link AS ml,\n title AS t\nWHERE lt.id = ml.link_type_id\n AND ml.movie_id = t.id\n AND t.id = mk.movie_id\n AND mk.keyword_id = k.id\n AND t.id = mc.movie_id\n AND mc.company_type_id = ct.id\n AND mc.company_id = cn.id\n AND ml.movie_id = mk.movie_id\n AND ml.movie_id = mc.movie_id\n AND mk.movie_id = mc.movie_id\nAND cn.country_code != '@param0'\nAND (cn.name LIKE '@param1' OR cn.name LIKE '@param2')\nAND ct.kind = '@param3'\nAND k.keyword = '@param4'\nAND lt.link LIKE '@param5'\nAND mc.note IS NULL\nAND t.production_year BETWEEN @param6 AND @param7;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "!=",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "ct",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "company_type",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "mc.company_type_id = ct.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "=",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "mk.keyword_id = k.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "lt",
+                "column": "link",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "link_type",
+                "join_tables_alias": [
+                    "ml"
+                ],
+                "join_tables": [
+                    "movie_link"
+                ],
+                "join_conditions": [
+                    "lt.id = ml.link_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "ml",
+                    "mk",
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_link",
+                    "movie_keyword",
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "ml.movie_id = t.id",
+                    "t.id = mk.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": "<",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "ml",
+                    "mk",
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_link",
+                    "movie_keyword",
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "ml.movie_id = t.id",
+                    "t.id = mk.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [],
+                    [],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[us]",
+                "%L%",
+                "%i%",
+                "production companies",
+                "number-in-title",
+                "%e%",
+                1942,
+                2020
+            ],
+            [
+                "[jp]",
+                "%i%",
+                "%u%",
+                "production companies",
+                "utopia-quest",
+                "%s%",
+                1992,
+                2004
+            ],
+            [
+                "[ch]",
+                "%c%",
+                "%z%",
+                "production companies",
+                "criminal",
+                "%p%",
+                1908,
+                1997
+            ],
+            [
+                "[us]",
+                "%n%",
+                "%e%",
+                "production companies",
+                "thief",
+                "%e%",
+                1916,
+                1973
+            ],
+            [
+                "[jp]",
+                "%o%",
+                "%n%",
+                "production companies",
+                "corpse",
+                "%o%",
+                1991,
+                2008
+            ],
+            [
+                "[us]",
+                "%D%",
+                "%T%",
+                "production companies",
+                "explosion",
+                "%f%",
+                1966,
+                2015
+            ],
+            [
+                "[us]",
+                "%e%",
+                "%n%",
+                "production companies",
+                "superhero",
+                "%r%",
+                1904,
+                2020
+            ],
+            [
+                "[jp]",
+                "%o%",
+                "%o%",
+                "production companies",
+                "headband",
+                "%f%",
+                1973,
+                2014
+            ],
+            [
+                "[us]",
+                "%o%",
+                "%t%",
+                "production companies",
+                "love",
+                "%a%",
+                1925,
+                2016
+            ],
+            [
+                "[gb]",
+                "%i%",
+                "%s%",
+                "production companies",
+                "black-comedy",
+                "%l%",
+                1902,
+                2008
+            ],
+            [
+                "[us]",
+                "%S%",
+                "%n%",
+                "production companies",
+                "spacecraft",
+                "%o%",
+                1999,
+                2015
+            ],
+            [
+                "[us]",
+                "%i%",
+                "%n%",
+                "production companies",
+                "stabbed-to-death",
+                "%s%",
+                1916,
+                2014
+            ],
+            [
+                "[us]",
+                "%b%",
+                "%n%",
+                "production companies",
+                "one-word-title",
+                "%d%",
+                1912,
+                2003
+            ],
+            [
+                "[ca]",
+                "%n%",
+                "%T%",
+                "distributors",
+                "nagging",
+                "%e%",
+                1963,
+                2019
+            ],
+            [
+                "[us]",
+                "%M%",
+                "%e%",
+                "production companies",
+                "headache",
+                "%o%",
+                1925,
+                2013
+            ],
+            [
+                "[ca]",
+                "%T%",
+                "%V%",
+                "distributors",
+                "masked-hero",
+                "%o%",
+                1899,
+                2010
+            ],
+            [
+                "[us]",
+                "%l%",
+                "%B%",
+                "production companies",
+                "spacecraft",
+                "%e%",
+                1972,
+                2008
+            ],
+            [
+                "[ca]",
+                "%s%",
+                "%u%",
+                "production companies",
+                "computer",
+                "%l%",
+                1950,
+                2002
+            ],
+            [
+                "[nl]",
+                "%t%",
+                "%u%",
+                "production companies",
+                "tv-mini-series",
+                "%f%",
+                1953,
+                1999
+            ],
+            [
+                "[us]",
+                "%l%",
+                "%o%",
+                "production companies",
+                "singing-contest",
+                "%o%",
+                1915,
+                2015
+            ],
+            [
+                "[it]",
+                "%s%",
+                "%n%",
+                "production companies",
+                "death",
+                "%i%",
+                1959,
+                2017
+            ],
+            [
+                "[us]",
+                "%l%",
+                "%s%",
+                "production companies",
+                "one-word-title",
+                "%f%",
+                1945,
+                1975
+            ],
+            [
+                "[us]",
+                "%A%",
+                "%t%",
+                "distributors",
+                "new-york-city",
+                "%n%",
+                1920,
+                2020
+            ],
+            [
+                "[us]",
+                "%m%",
+                "%r%",
+                "production companies",
+                "character-name-in-title",
+                "%d%",
+                1932,
+                1994
+            ],
+            [
+                "[gb]",
+                "%g%",
+                "%t%",
+                "production companies",
+                "robot-as-menace",
+                "%n%",
+                1984,
+                2019
+            ],
+            [
+                "[us]",
+                "%l%",
+                "%i%",
+                "production companies",
+                "explosion",
+                "%e%",
+                1946,
+                2015
+            ],
+            [
+                "[jp]",
+                "%z%",
+                "%o%",
+                "production companies",
+                "wakizashi",
+                "%e%",
+                1988,
+                2015
+            ],
+            [
+                "[us]",
+                "%v%",
+                "%i%",
+                "production companies",
+                "adoption",
+                "%i%",
+                1992,
+                2006
+            ],
+            [
+                "[us]",
+                "%n%",
+                "%r%",
+                "production companies",
+                "haunted-house",
+                "%p%",
+                1971,
+                2016
+            ],
+            [
+                "[se]",
+                "%i%",
+                "%n%",
+                "distributors",
+                "diary",
+                "%l%",
+                1938,
+                2007
+            ],
+            [
+                "[us]",
+                "%t%",
+                "%i%",
+                "production companies",
+                "court",
+                "%o%",
+                1944,
+                2014
+            ],
+            [
+                "[gb]",
+                "%e%",
+                "%k%",
+                "production companies",
+                "investigation",
+                "%o%",
+                1983,
+                2010
+            ],
+            [
+                "[au]",
+                "%r%",
+                "%c%",
+                "production companies",
+                "prison-break",
+                "%e%",
+                1921,
+                2009
+            ],
+            [
+                "[us]",
+                "%s%",
+                "%e%",
+                "production companies",
+                "combat-casualty",
+                "%d%",
+                1925,
+                2012
+            ],
+            [
+                "[us]",
+                "%t%",
+                "%o%",
+                "production companies",
+                "question-in-title",
+                "%o%",
+                1958,
+                2011
+            ],
+            [
+                "[us]",
+                "%o%",
+                "%a%",
+                "production companies",
+                "cliffhanger",
+                "%e%",
+                1971,
+                2010
+            ],
+            [
+                "[gb]",
+                "%V%",
+                "%k%",
+                "production companies",
+                "tragedy",
+                "%w%",
+                1925,
+                2019
+            ],
+            [
+                "[us]",
+                "%n%",
+                "%l%",
+                "production companies",
+                "friendship",
+                "%e%",
+                1986,
+                2001
+            ],
+            [
+                "[gb]",
+                "%e%",
+                "%o%",
+                "production companies",
+                "interracial-relationship",
+                "%i%",
+                1890,
+                2009
+            ],
+            [
+                "[it]",
+                "%r%",
+                "%a%",
+                "production companies",
+                "drunkenness",
+                "%s%",
+                1962,
+                2020
+            ],
+            [
+                "[jp]",
+                "%k%",
+                "%s%",
+                "production companies",
+                "animal-that-acts-human",
+                "%n%",
+                1923,
+                2009
+            ],
+            [
+                "[ca]",
+                "%a%",
+                "%l%",
+                "production companies",
+                "conspiracy",
+                "%e%",
+                1942,
+                2008
+            ],
+            [
+                "[us]",
+                "%V%",
+                "%&%",
+                "production companies",
+                "character-calls-female-\"sir\"",
+                "%o%",
+                1970,
+                2009
+            ],
+            [
+                "[jp]",
+                "%G%",
+                "%o%",
+                "production companies",
+                "bomb",
+                "%e%",
+                1989,
+                2009
+            ],
+            [
+                "[us]",
+                "%o%",
+                "%t%",
+                "production companies",
+                "painting",
+                "%t%",
+                1910,
+                2013
+            ],
+            [
+                "[us]",
+                "%l%",
+                "%G%",
+                "production companies",
+                "actor-playing-multiple-roles",
+                "%r%",
+                1916,
+                2011
+            ],
+            [
+                "[us]",
+                "%o%",
+                "%c%",
+                "production companies",
+                "spoof",
+                "%f%",
+                1888,
+                2020
+            ],
+            [
+                "[us]",
+                "%o%",
+                "%r%",
+                "distributors",
+                "transformation",
+                "%e%",
+                1957,
+                2001
+            ],
+            [
+                "[us]",
+                "%s%",
+                "%P%",
+                "production companies",
+                "sitcom",
+                "%r%",
+                1904,
+                1999
+            ],
+            [
+                "[ca]",
+                "%n%",
+                "%s%",
+                "production companies",
+                "dinosaur",
+                "%f%",
+                1949,
+                2004
+            ]
+        ]
+    }
+}

@@ -1,0 +1,686 @@
+{
+    "14-0": {
+        "query": "SELECT *\nFROM info_type AS it1,\n   info_type AS it2,\n   keyword AS k,\n   kind_type AS kt,\n   movie_info AS mi,\n   movie_info_idx AS mi_idx,\n   movie_keyword AS mk,\n   title AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND it1.info = '@param0'\nAND it2.info = '@param1'\nAND k.keyword IN ('@param2')\nAND kt.kind = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info < '@param5'\nAND t.production_year > @param6;",
+        "predicates": [
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "movie_info"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "kind_type",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "title"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "movie_info_idx",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "movie_info_idx",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "movie_info",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "kind_type",
+                    "movie_info",
+                    "movie_keyword",
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "genres",
+                "rating",
+                "death', 'blood', 'police', 'nudity', 'father-daughter-relationship",
+                "movie",
+                "PCS:Spherical', 'PCS:Spherical', 'Comedy', 'PCS:Spherical', 'Comedy",
+                "7.2",
+                1901
+            ],
+            [
+                "countries",
+                "votes",
+                "husband-wife-relationship', 'bare-breasts', 'family-relationships', 'dog', 'anal-sex",
+                "episode",
+                "USA', 'USA', 'English', 'English', 'Color",
+                "67687",
+                1976
+            ],
+            [
+                "countries",
+                "rating",
+                "subdural-haemorrhage', 'bored', 'singing', 'savmart', 'town-council-meeting",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.4",
+                2007
+            ],
+            [
+                "genres",
+                "rating",
+                "number-in-title', 'revenge', 'revenge', 'family-relationships', 'number-in-title",
+                "episode",
+                "English', 'Color', 'USA', 'English', 'Short",
+                "6.4",
+                1976
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "12', 'Short', 'UK:15', 'Romance', 'RAT:1.37 : 1",
+                "13",
+                1999
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'based-on-novel', 'independent-film",
+                "episode",
+                "Foreign-release prints ran one reel longer than the American version, and included a scene in which the Boys travel to the Laurel mansion by train.', 'UK:August 2001', '13 February 1991', 'Comedy', '$34,940 (USA) (26 August 2001) (87 screens)",
+                "4.8",
+                1985
+            ],
+            [
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "OFM:35 mm', 'Drama', 'Drama', 'Drama', '-",
+                "9",
+                1992
+            ],
+            [
+                "genres",
+                "rating",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'independent-film', 'based-on-novel",
+                "episode",
+                "RAT:1.33 : 1', 'Drama', 'PFM:35 mm', 'Black and White', 'RAT:1.33 : 1",
+                "8.0",
+                1997
+            ],
+            [
+                "countries",
+                "rating",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'based-on-novel",
+                "episode",
+                "English', 'USA', 'English', 'USA', 'USA",
+                "6.7",
+                2002
+            ],
+            [
+                "countries",
+                "rating",
+                "female-nudity', 'murder', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "USA', 'Color', 'PFM:35 mm', 'Short', 'USA",
+                "7",
+                2004
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "USA', 'Color', 'Color', 'Color', 'Color",
+                "3.7",
+                2009
+            ],
+            [
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "8",
+                2001
+            ],
+            [
+                "countries",
+                "votes",
+                "independent-film', 'independent-film', 'based-on-novel', 'independent-film', 'independent-film",
+                "episode",
+                "Black and White', 'Color', 'USA', 'Black and White', 'PFM:35 mm",
+                "5.7",
+                1994
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'murder', 'murder",
+                "episode",
+                "English', 'PFM:35 mm', 'Color', 'USA', 'PFM:35 mm",
+                "7.5",
+                1990
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "independent-film', 'based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "Color', 'Color', 'English', 'USA', 'PFM:35 mm",
+                "6",
+                2000
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'murder', 'murder', 'female-nudity', 'female-nudity",
+                "episode",
+                "Drama', '-', '-', '-', 'Drama",
+                "6",
+                1929
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'based-on-novel', 'independent-film', 'based-on-novel', 'independent-film",
+                "video movie",
+                "OFM:35 mm', 'OFM:35 mm', '-', '-', 'Drama",
+                "9",
+                2007
+            ],
+            [
+                "countries",
+                "votes",
+                "murder', 'murder', 'murder', 'murder', 'murder",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7.7",
+                1998
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "mission-statement', 'dancing-caterpillar', 'swinger', 'austro-hungarian-empire', 'candelaria-massacre",
+                "movie",
+                "English', 'USA', 'Drama', 'English', 'Short",
+                "9",
+                1998
+            ],
+            [
+                "genres",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "USA:9 January 1989', 'Dolby', 'MISC: On the movie case, there is a typo. It says \"Now they are one the run...\" It should say *on* the run.', 'Biography', 'English",
+                "7.1",
+                1995
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "10",
+                1985
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "UK', 'Silent', 'Documentary', 'UK', 'PCS:Spherical",
+                "7.5",
+                2001
+            ],
+            [
+                "countries",
+                "rating",
+                "number-in-title', 'death', 'tv-mini-series', 'bare-chested-male', 'number-in-title",
+                "episode",
+                "PCS:Spherical', 'USA', 'Short', 'Color', 'Comedy",
+                "7.1",
+                1965
+            ],
+            [
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6",
+                2007
+            ],
+            [
+                "genres",
+                "rating",
+                "toy-van', 'kure-beach-north-carolina', 'important-guest', 'government-spending', 'press-conference",
+                "tv movie",
+                "Color', 'Short', 'English', 'PFM:35 mm', 'Comedy",
+                "5",
+                1962
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "PFM:35 mm', 'Drama', 'Mono', 'Black and White', 'PFM:35 mm",
+                ".1.2..1111",
+                1942
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'female-nudity', 'female-nudity', 'murder', 'female-nudity",
+                "movie",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "9",
+                2004
+            ],
+            [
+                "countries",
+                "votes",
+                "love', 'death', 'father-son-relationship', 'surrealism', 'one-word-title",
+                "episode",
+                "English', 'USA', 'Color', 'Color', 'USA",
+                "7.8",
+                2012
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Color', 'Comedy', 'Silent', 'Comedy', 'USA",
+                "4.7",
+                1938
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "0...1.0321",
+                2005
+            ],
+            [
+                "genres",
+                "votes",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'independent-film', 'independent-film",
+                "tv series",
+                "Drama', 'OFM:35 mm', 'English', 'USA', 'PFM:35 mm",
+                "5.7",
+                1964
+            ],
+            [
+                "genres",
+                "votes",
+                "nudity', 'non-fiction', 'surrealism', 'father-son-relationship', 'surrealism",
+                "episode",
+                "Mono', 'OFM:35 mm', 'Drama', 'Drama', 'RAT:1.33 : 1",
+                "6.8",
+                1956
+            ],
+            [
+                "countries",
+                "votes",
+                "male-nudity', 'bare-chested-male', 'oral-sex', 'dog', 'oral-sex",
+                "episode",
+                "Color', 'Short', 'Color', 'Short', 'USA",
+                "7",
+                2007
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "movie",
+                "RAT:1.33 : 1', 'Documentary', 'RAT:1.33 : 1', 'Silent', 'Color",
+                "5.6",
+                2002
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "oral-sex', 'violence', 'revenge', 'bare-breasts', 'sequel",
+                "movie",
+                "Silent', 'UK', 'PCS:Spherical', 'Comedy', 'Comedy",
+                "0000012211",
+                1959
+            ],
+            [
+                "genres",
+                "votes",
+                "violence', 'anal-sex', 'bare-breasts', 'family-relationships', 'father-daughter-relationship",
+                "episode",
+                "UK', 'Dolby Surround', 'Movie', 'Dolby Digital', 'Thriller",
+                "16",
+                1912
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5.9",
+                2009
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'female-nudity', 'murder', 'murder",
+                "movie",
+                "Short', 'English', 'Color', 'English', 'Short",
+                "6.2",
+                1891
+            ],
+            [
+                "countries",
+                "rating",
+                "violence', 'police', 'family-relationships', 'husband-wife-relationship', 'police",
+                "episode",
+                "English', 'USA', 'Color', 'USA', 'USA",
+                "5",
+                1984
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "movie",
+                "English', 'USA', 'Color', 'Color', 'USA",
+                "8",
+                1970
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'murder', 'female-nudity', 'murder', 'female-nudity",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.0",
+                2001
+            ],
+            [
+                "countries",
+                "rating",
+                "family-relationships', 'bare-chested-male', 'revenge', 'sequel', 'anal-sex",
+                "episode",
+                "PFM:35 mm', 'Color', 'PFM:35 mm', 'PFM:35 mm', 'USA",
+                "5.3",
+                2008
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'murder",
+                "episode",
+                "PFM:35 mm', 'Short', 'UK', 'Drama', 'Color",
+                "8",
+                1973
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "USA', 'Short', 'Drama', 'PFM:35 mm', 'USA",
+                "4.8",
+                1972
+            ],
+            [
+                "countries",
+                "votes",
+                "based-on-novel', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "episode",
+                "USA', 'Black and White', 'Short', 'USA', 'OFM:35 mm",
+                "9",
+                2004
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'murder', 'murder",
+                "episode",
+                "UK', 'PCS:Spherical', 'Documentary', 'Silent', 'PCS:Spherical",
+                "7",
+                1994
+            ],
+            [
+                "countries",
+                "rating",
+                "husband-wife-relationship', 'surrealism', 'bare-breasts', 'sequel', 'father-son-relationship",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7",
+                1924
+            ],
+            [
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'OFM:35 mm', 'PFM:35 mm', 'Black and White', 'Color",
+                "9",
+                2002
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "English', 'English', 'USA', 'Color', 'Color",
+                "6",
+                2005
+            ],
+            [
+                "countries",
+                "rating",
+                "based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel', 'independent-film",
+                "movie",
+                "OFM:35 mm', 'USA', 'PFM:35 mm', 'Drama', 'USA",
+                "6.7",
+                2003
+            ]
+        ]
+    }
+}

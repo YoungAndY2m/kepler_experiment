@@ -1,0 +1,830 @@
+{
+    "33-0": {
+        "query": "SELECT *\n FROM company_name AS cn1,\n company_name AS cn2,\n info_type AS it1,\n info_type AS it2,\n kind_type AS kt1,\n kind_type AS kt2,\n link_type AS lt,\n movie_companies AS mc1,\n movie_companies AS mc2,\n movie_info_idx AS mi_idx1,\n movie_info_idx AS mi_idx2,\n movie_link AS ml,\n title AS t1,\n title AS t2\n WHERE lt.id = ml.link_type_id \nAND t1.id = ml.movie_id \nAND t2.id = ml.linked_movie_id \nAND it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id\nAND ml.movie_id = mi_idx1.movie_id\nAND ml.movie_id = mc1.movie_id\nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND ml.linked_movie_id = mi_idx2.movie_id\nAND ml.linked_movie_id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND lt.link IN ('@param5')\nAND mi_idx2.info < '@param6'\nAND t2.production_year BETWEEN @param7 AND @param8;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "original_alias": "cn1",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables_column": [
+                    []
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables_column": [
+                    []
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ]
+            },
+            {
+                "alias": "kt",
+                "original_alias": "kt1",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "kind_type",
+                "join_tables": [
+                    "title"
+                ],
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables_column": [
+                    []
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ]
+            },
+            {
+                "alias": "kt",
+                "original_alias": "kt2",
+                "column": "kind",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "kind_type",
+                "join_tables": [
+                    "title"
+                ],
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ]
+            },
+            {
+                "alias": "lt",
+                "column": "link",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "link_type",
+                "join_tables": [
+                    "movie_link"
+                ],
+                "join_tables_alias": [
+                    "ml"
+                ],
+                "join_tables_column": [
+                    []
+                ],
+                "join_conditions": [
+                    "lt.id = ml.link_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "original_alias": "mi_idx2",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "movie_info_idx",
+                "join_tables": [
+                    "info_type",
+                    "title",
+                    "movie_link",
+                    "movie_companies"
+                ],
+                "join_tables_alias": [
+                    "it",
+                    "t",
+                    "ml",
+                    "mc"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    []
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id",
+                    "t.id = mi_idx.movie_id",
+                    "ml.linked_movie_id = mi_idx.movie_id",
+                    "mi_idx.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ]
+            },
+            {
+                "alias": "t",
+                "original_alias": "t2",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables": [
+                    "movie_link",
+                    "movie_info_idx",
+                    "kind_type",
+                    "movie_companies"
+                ],
+                "join_tables_alias": [
+                    "ml",
+                    "mi_idx",
+                    "kt",
+                    "mc"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "kind"
+                    ],
+                    []
+                ],
+                "join_conditions": [
+                    "t.id = ml.linked_movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "kt.id = t.kind_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both",
+                    "l"
+                ]
+            },
+            {
+                "alias": "t",
+                "original_alias": "t2",
+                "column": "production_year",
+                "operator": "<",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables": [
+                    "movie_link",
+                    "movie_info_idx",
+                    "kind_type",
+                    "movie_companies"
+                ],
+                "join_tables_alias": [
+                    "ml",
+                    "mi_idx",
+                    "kt",
+                    "mc"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "kind"
+                    ],
+                    []
+                ],
+                "join_conditions": [
+                    "t.id = ml.linked_movie_id",
+                    "t.id = mi_idx.movie_id",
+                    "kt.id = t.kind_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both",
+                    "l"
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[it]",
+                "votes",
+                "rating",
+                "tv series', 'episode', 'episode', 'tv series', 'video movie",
+                "tv movie', 'tv movie', 'video game', 'tv movie', 'tv series",
+                "featured in', 'remake of', 'edited into', 'version of', 'referenced in",
+                "4.1",
+                1981,
+                2006
+            ],
+            [
+                "[us]",
+                "votes",
+                "rating",
+                "tv series', 'tv movie', 'video movie', 'tv movie', 'video movie",
+                "episode', 'tv mini series', 'tv mini series', 'episode', 'movie",
+                "spoofed in', 'version of', 'edited into', 'edited from', 'features",
+                "7.8",
+                1977,
+                2003
+            ],
+            [
+                "[ch]",
+                "rating",
+                "votes distribution",
+                "tv series', 'movie', 'video movie', 'video game', 'tv mini series",
+                "movie', 'episode', 'tv series', 'tv mini series', 'movie",
+                "referenced in', 'unknown link', 'edited from', 'referenced in', 'edited from",
+                "0000012211",
+                1958,
+                2012
+            ],
+            [
+                "[us]",
+                "rating",
+                "votes distribution",
+                "episode', 'episode', 'movie', 'tv mini series', 'tv series",
+                "movie', 'video game', 'tv series', 'episode', 'episode",
+                "references', 'spin off from', 'featured in', 'referenced in', 'remade as",
+                "0000012201",
+                1907,
+                2015
+            ],
+            [
+                "[dk]",
+                "votes distribution",
+                "votes",
+                "tv series', 'video game', 'tv mini series', 'movie', 'tv mini series",
+                "episode', 'movie', 'video movie', 'tv mini series', 'tv movie",
+                "referenced in', 'spoofs', 'followed by', 'edited from', 'edited from",
+                "564",
+                1938,
+                2017
+            ],
+            [
+                "[de]",
+                "votes",
+                "rating",
+                "tv series', 'video game', 'movie', 'video movie', 'tv movie",
+                "episode', 'episode', 'video game', 'tv movie', 'movie",
+                "referenced in', 'unknown link', 'followed by', 'edited into', 'similar to",
+                "8.7",
+                1919,
+                2011
+            ],
+            [
+                "[us]",
+                "votes",
+                "votes",
+                "tv series', 'tv series', 'video game', 'video movie', 'movie",
+                "tv series', 'tv series', 'episode', 'movie', 'video game",
+                "spin off', 'follows', 'features', 'remake of', 'unknown link",
+                "40",
+                1955,
+                2010
+            ],
+            [
+                "[pl]",
+                "votes distribution",
+                "votes distribution",
+                "tv series', 'episode', 'tv mini series', 'episode', 'tv movie",
+                "tv series', 'episode', 'tv mini series', 'episode', 'movie",
+                "version of', 'spin off', 'followed by', 'edited from', 'spoofs",
+                "4....1..03",
+                1954,
+                2019
+            ],
+            [
+                "[us]",
+                "votes distribution",
+                "votes distribution",
+                "tv series', 'movie', 'movie', 'tv series', 'tv series",
+                "episode', 'movie', 'episode', 'movie', 'video movie",
+                "referenced in', 'followed by', 'edited into', 'spin off from', 'referenced in",
+                "0000012201",
+                1955,
+                2013
+            ],
+            [
+                "[ar]",
+                "votes",
+                "top 250 rank",
+                "tv series', 'video movie', 'tv series', 'video game', 'tv mini series",
+                "movie', 'episode', 'tv mini series', 'video game', 'tv movie",
+                "references', 'remade as', 'features', 'referenced in', 'spin off from",
+                "237",
+                1939,
+                1985
+            ],
+            [
+                "[br]",
+                "votes",
+                "votes",
+                "tv series', 'tv movie', 'video movie', 'video game', 'video game",
+                "tv series', 'video game', 'tv mini series', 'tv mini series', 'video game",
+                "version of', 'remade as', 'referenced in', 'followed by', 'followed by",
+                "28",
+                1970,
+                2015
+            ],
+            [
+                "[us]",
+                "rating",
+                "votes",
+                "tv series', 'tv series', 'video movie', 'episode', 'video game",
+                "movie', 'tv movie', 'tv series', 'tv mini series', 'movie",
+                "referenced in', 'featured in', 'followed by', 'version of', 'edited from",
+                "2767",
+                1879,
+                2008
+            ],
+            [
+                "[hu]",
+                "rating",
+                "votes",
+                "episode', 'tv series', 'tv movie', 'video movie', 'video game",
+                "tv series', 'tv mini series', 'tv mini series', 'video game', 'tv mini series",
+                "references', 'spoofed in', 'featured in', 'featured in', 'features",
+                "53591",
+                1915,
+                2003
+            ],
+            [
+                "[vn]",
+                "votes distribution",
+                "votes distribution",
+                "tv series', 'movie', 'episode', 'movie', 'movie",
+                "tv movie', 'tv mini series', 'tv movie', 'episode', 'video game",
+                "referenced in', 'spoofed in', 'edited from', 'referenced in', 'followed by",
+                "00.0001113",
+                1927,
+                2020
+            ],
+            [
+                "[nl]",
+                "votes distribution",
+                "votes",
+                "tv series', 'movie', 'tv series', 'tv movie', 'tv series",
+                "tv movie', 'video movie', 'tv series', 'episode', 'video movie",
+                "featured in', 'follows', 'follows', 'similar to', 'similar to",
+                "58",
+                1940,
+                2010
+            ],
+            [
+                "[fi]",
+                "votes distribution",
+                "votes",
+                "tv series', 'tv mini series', 'video game', 'tv series', 'video game",
+                "episode', 'tv series', 'video movie', 'tv movie', 'movie",
+                "referenced in', 'edited into', 'remade as', 'spoofed in', 'similar to",
+                "63",
+                1929,
+                2015
+            ],
+            [
+                "[gb]",
+                "votes",
+                "votes distribution",
+                "tv series', 'episode', 'video game', 'episode', 'tv movie",
+                "tv series', 'tv series', 'tv movie', 'tv movie', 'video game",
+                "version of', 'similar to', 'version of', 'referenced in', 'spin off",
+                "0000012111",
+                1909,
+                2015
+            ],
+            [
+                "[us]",
+                "votes distribution",
+                "votes",
+                "tv series', 'tv mini series', 'tv series', 'video game', 'tv series",
+                "episode', 'video movie', 'episode', 'movie', 'movie",
+                "spoofed in', 'features', 'edited from', 'similar to', 'remake of",
+                "628",
+                1909,
+                2011
+            ],
+            [
+                "[us]",
+                "votes",
+                "votes",
+                "tv series', 'tv series', 'movie', 'tv movie', 'movie",
+                "movie', 'tv mini series', 'video movie', 'video movie', 'video movie",
+                "featured in', 'spoofed in', 'featured in', 'spoofed in', 'follows",
+                "19191",
+                1902,
+                2002
+            ],
+            [
+                "[us]",
+                "votes",
+                "rating",
+                "episode', 'movie', 'episode', 'movie', 'video game",
+                "tv movie', 'tv mini series', 'video movie', 'video game', 'movie",
+                "remade as', 'remake of', 'version of', 'remade as', 'version of",
+                "7.0",
+                1888,
+                2013
+            ],
+            [
+                "[tw]",
+                "rating",
+                "votes",
+                "tv series', 'video movie', 'video game', 'tv series', 'tv mini series",
+                "movie', 'video movie', 'video movie', 'tv movie', 'tv mini series",
+                "referenced in', 'references', 'follows', 'followed by', 'spoofed in",
+                "1122",
+                1977,
+                2013
+            ],
+            [
+                "[ca]",
+                "rating",
+                "votes",
+                "tv series', 'movie', 'tv movie', 'tv mini series', 'movie",
+                "episode', 'tv movie', 'movie', 'tv movie', 'movie",
+                "referenced in', 'follows', 'follows', 'references', 'follows",
+                "77",
+                1953,
+                2015
+            ],
+            [
+                "[us]",
+                "votes distribution",
+                "rating",
+                "tv series', 'tv mini series', 'episode', 'video game', 'tv movie",
+                "tv series', 'video movie', 'tv movie', 'movie', 'tv movie",
+                "spin off', 'unknown link', 'follows', 'unknown link', 'spin off from",
+                "5.5",
+                1984,
+                2014
+            ],
+            [
+                "[us]",
+                "votes distribution",
+                "votes",
+                "tv series', 'video movie', 'video movie', 'tv mini series', 'video movie",
+                "tv series', 'episode', 'tv series', 'movie', 'tv mini series",
+                "follows', 'edited into', 'remake of', 'edited from', 'remake of",
+                "558",
+                1905,
+                1995
+            ],
+            [
+                "[de]",
+                "votes",
+                "votes distribution",
+                "tv series', 'video game', 'episode', 'video movie', 'episode",
+                "tv series', 'video game', 'tv series', 'tv mini series', 'tv mini series",
+                "followed by', 'similar to', 'follows', 'spin off', 'spoofed in",
+                "00.0001113",
+                1892,
+                2019
+            ],
+            [
+                "[vn]",
+                "votes distribution",
+                "rating",
+                "tv series', 'movie', 'video game', 'video movie', 'video game",
+                "episode', 'movie', 'tv mini series', 'tv mini series', 'tv series",
+                "spoofed in', 'spoofs', 'references', 'unknown link', 'followed by",
+                "5.9",
+                1941,
+                2017
+            ],
+            [
+                "[us]",
+                "rating",
+                "votes distribution",
+                "tv series', 'tv movie', 'video movie', 'video movie', 'tv mini series",
+                "episode', 'tv series', 'tv movie', 'movie', 'movie",
+                "spoofed in', 'similar to', 'featured in', 'spoofs', 'referenced in",
+                "..11.1..15",
+                1991,
+                2002
+            ],
+            [
+                "[ca]",
+                "votes",
+                "votes",
+                "tv series', 'video game', 'episode', 'tv series', 'tv movie",
+                "episode', 'tv series', 'video game', 'episode', 'episode",
+                "referenced in', 'featured in', 'referenced in', 'remade as', 'remake of",
+                "17",
+                1985,
+                2014
+            ],
+            [
+                "[us]",
+                "votes distribution",
+                "votes distribution",
+                "tv series', 'video game', 'video movie', 'tv movie', 'episode",
+                "video movie', 'episode', 'tv movie', 'movie', 'movie",
+                "referenced in', 'spin off', 'remake of', 'remade as', 'features",
+                "0...012112",
+                1931,
+                2005
+            ],
+            [
+                "[us]",
+                "rating",
+                "votes",
+                "tv series', 'video movie', 'video game', 'tv movie', 'episode",
+                "episode', 'video movie', 'episode', 'episode', 'tv series",
+                "referenced in', 'featured in', 'spin off', 'remade as', 'references",
+                "59",
+                1971,
+                2014
+            ],
+            [
+                "[id]",
+                "votes",
+                "rating",
+                "tv series', 'tv movie', 'tv movie', 'video movie', 'tv series",
+                "movie', 'tv series', 'episode', 'episode', 'tv mini series",
+                "referenced in', 'spin off from', 'spin off from', 'follows', 'spoofed in",
+                "6.6",
+                1942,
+                2009
+            ],
+            [
+                "[it]",
+                "votes",
+                "votes distribution",
+                "tv series', 'movie', 'video game', 'video game', 'tv mini series",
+                "movie', 'episode', 'tv movie', 'video game', 'tv series",
+                "referenced in', 'unknown link', 'spoofs', 'spin off', 'unknown link",
+                "1..0.00015",
+                1908,
+                2013
+            ],
+            [
+                "[vn]",
+                "votes",
+                "votes distribution",
+                "tv series', 'movie', 'video movie', 'tv series', 'episode",
+                "episode', 'video game', 'movie', 'episode', 'tv movie",
+                "referenced in', 'unknown link', 'similar to', 'referenced in', 'spoofed in",
+                "00...01301",
+                1920,
+                2017
+            ],
+            [
+                "[jp]",
+                "votes",
+                "rating",
+                "tv series', 'tv movie', 'tv movie', 'tv series', 'video game",
+                "movie', 'video movie', 'tv series', 'tv movie', 'episode",
+                "referenced in', 'spin off', 'similar to', 'spin off from', 'featured in",
+                "6.8",
+                1941,
+                1991
+            ],
+            [
+                "[hu]",
+                "votes",
+                "votes distribution",
+                "tv series', 'tv movie', 'tv mini series', 'movie', 'video game",
+                "tv series', 'episode', 'video game', 'tv mini series', 'tv mini series",
+                "version of', 'edited into', 'version of', 'followed by', 'referenced in",
+                "00000211.1",
+                1892,
+                2007
+            ],
+            [
+                "[it]",
+                "votes",
+                "rating",
+                "tv series', 'tv movie', 'video movie', 'video movie', 'video movie",
+                "episode', 'episode', 'video movie', 'episode', 'tv movie",
+                "referenced in', 'referenced in', 'spin off', 'edited into', 'references",
+                "7.5",
+                1919,
+                2009
+            ],
+            [
+                "[gr]",
+                "votes distribution",
+                "rating",
+                "tv series', 'video game', 'tv movie', 'movie', 'movie",
+                "movie', 'episode', 'tv series', 'episode', 'episode",
+                "referenced in', 'unknown link', 'follows', 'referenced in', 'spin off",
+                "5.4",
+                1949,
+                2007
+            ],
+            [
+                "[gb]",
+                "votes",
+                "votes",
+                "episode', 'movie', 'tv mini series', 'tv mini series', 'tv mini series",
+                "movie', 'video game', 'video movie', 'tv mini series', 'movie",
+                "features', 'references', 'featured in', 'references', 'referenced in",
+                "37654",
+                1926,
+                1986
+            ],
+            [
+                "[nl]",
+                "rating",
+                "rating",
+                "tv series', 'tv movie', 'tv mini series', 'tv mini series', 'movie",
+                "episode', 'episode', 'episode', 'tv movie', 'video movie",
+                "featured in', 'featured in', 'similar to', 'spin off', 'spin off from",
+                "6.1",
+                1908,
+                2017
+            ],
+            [
+                "[ng]",
+                "rating",
+                "rating",
+                "tv series', 'tv series', 'episode', 'episode', 'tv mini series",
+                "episode', 'video movie', 'tv movie', 'episode', 'video game",
+                "referenced in', 'spoofed in', 'spoofed in', 'remake of', 'spin off",
+                "4.9",
+                1913,
+                2008
+            ],
+            [
+                "[de]",
+                "votes",
+                "rating",
+                "tv series', 'tv mini series', 'video movie', 'tv movie', 'video game",
+                "episode', 'video game', 'tv mini series', 'movie', 'episode",
+                "referenced in', 'remake of', 'follows', 'features', 'follows",
+                "8.1",
+                1971,
+                2010
+            ],
+            [
+                "[se]",
+                "rating",
+                "rating",
+                "episode', 'tv series', 'movie', 'episode', 'video movie",
+                "tv series', 'episode', 'tv mini series', 'video game', 'tv movie",
+                "references', 'spin off from', 'spoofs', 'spin off', 'spoofs",
+                "3.3",
+                1973,
+                2013
+            ],
+            [
+                "[us]",
+                "rating",
+                "rating",
+                "tv series', 'tv mini series', 'tv series', 'tv movie', 'video movie",
+                "video movie', 'movie', 'video game', 'movie', 'episode",
+                "followed by', 'edited from', 'referenced in', 'featured in', 'unknown link",
+                "6.3",
+                1928,
+                2020
+            ],
+            [
+                "[de]",
+                "rating",
+                "votes",
+                "episode', 'movie', 'tv mini series', 'movie', 'video game",
+                "tv series', 'episode', 'tv series', 'video movie', 'tv series",
+                "references', 'referenced in', 'edited from', 'similar to', 'features",
+                "4011",
+                1951,
+                2004
+            ],
+            [
+                "[br]",
+                "votes distribution",
+                "rating",
+                "tv series', 'tv mini series', 'tv series', 'episode', 'video movie",
+                "episode', 'video game', 'tv series', 'video movie', 'tv series",
+                "referenced in', 'referenced in', 'features', 'unknown link', 'references",
+                "8.7",
+                1968,
+                2012
+            ],
+            [
+                "[jp]",
+                "rating",
+                "votes",
+                "tv series', 'tv series', 'video game', 'video game', 'tv movie",
+                "video movie', 'movie', 'video game', 'tv mini series', 'video movie",
+                "spoofed in', 'remade as', 'unknown link', 'edited into', 'remake of",
+                "26",
+                1961,
+                2015
+            ],
+            [
+                "[us]",
+                "rating",
+                "rating",
+                "episode', 'tv mini series', 'movie', 'movie', 'episode",
+                "movie', 'tv mini series', 'movie', 'tv movie', 'video movie",
+                "remake of', 'featured in', 'spin off', 'spin off', 'remake of",
+                "8.2",
+                1927,
+                1960
+            ],
+            [
+                "[ph]",
+                "rating",
+                "votes",
+                "tv series', 'tv series', 'episode', 'video game', 'tv mini series",
+                "tv series', 'tv mini series', 'tv movie', 'movie', 'video movie",
+                "followed by', 'featured in', 'references', 'followed by', 'remade as",
+                "1885",
+                1959,
+                2020
+            ],
+            [
+                "[il]",
+                "votes distribution",
+                "votes distribution",
+                "tv series', 'movie', 'episode', 'tv series', 'tv movie",
+                "episode', 'episode', 'episode', 'episode', 'movie",
+                "referenced in', 'featured in', 'references', 'unknown link', 'referenced in",
+                "20001011.0",
+                1938,
+                2007
+            ],
+            [
+                "[ee]",
+                "rating",
+                "votes distribution",
+                "tv series', 'video movie', 'episode', 'tv movie', 'tv mini series",
+                "tv movie', 'video game', 'video movie', 'episode', 'video game",
+                "referenced in', 'referenced in', 'spoofs', 'spoofs', 'version of",
+                "2.2..1.101",
+                1951,
+                2011
+            ]
+        ]
+    }
+}

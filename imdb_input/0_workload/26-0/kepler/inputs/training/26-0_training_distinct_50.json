@@ -1,0 +1,814 @@
+{
+    "26-0": {
+        "query": "SELECT *\nFROM complete_cast AS cc,\n   comp_cast_type AS cct1,\n   comp_cast_type AS cct2,\n   char_name AS chn,\n   cast_info AS ci,\n   info_type AS it2,\n   keyword AS k,\n   kind_type AS kt,\n   movie_info_idx AS mi_idx,\n   movie_keyword AS mk,\n   name AS n,\n   title AS t\nWHERE kt.id = t.kind_id\nAND t.id = mk.movie_id\nAND t.id = ci.movie_id\nAND t.id = cc.movie_id\nAND t.id = mi_idx.movie_id\nAND mk.movie_id = ci.movie_id\nAND mk.movie_id = cc.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND ci.movie_id = cc.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND cc.movie_id = mi_idx.movie_id\nAND chn.id = ci.person_role_id\nAND n.id = ci.person_id\nAND k.id = mk.keyword_id\nAND cct1.id = cc.subject_id\nAND cct2.id = cc.status_id\nAND it2.id = mi_idx.info_type_id\nAND cct1.kind = '@param0'\nAND cct2.kind LIKE '@param1'\nAND chn.name IS NOT NULL\nAND (chn.name LIKE '@param2' OR chn.name LIKE '@param3')\nAND it2.info = '@param4'\nAND k.keyword IN ('@param5')\nAND kt.kind = '@param6'\nAND mi_idx.info > '@param7'\nAND t.production_year > @param8;",
+        "predicates": [
+            {
+                "alias": "cct",
+                "original_alias": "cct1",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "comp_cast_type",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "complete_cast"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.subject_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "cct",
+                "original_alias": "cct2",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "comp_cast_type",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "complete_cast"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.status_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "chn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "char_name",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "chn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "char_name",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "kind_type",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "title"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": ">",
+                "data_type": "text",
+                "table": "movie_info_idx",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "ci",
+                    "cc",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "cast_info",
+                    "complete_cast",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "cc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "kt",
+                    "mk",
+                    "ci",
+                    "cc",
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "kind_type",
+                    "movie_keyword",
+                    "cast_info",
+                    "complete_cast",
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mk.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = cc.movie_id",
+                    "t.id = mi_idx.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "cast",
+                "complete",
+                "%u%",
+                "%y%",
+                "votes distribution",
+                "graveyard', 'pretend-lover', 'speed-trial', 'cannon-salute', 'dyer",
+                "movie",
+                "0000002311",
+                2006
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%e%",
+                "%t%",
+                "votes distribution",
+                "hell''s-kitchen-manhattan-new-york-city', 'no-female-character', 'shiv', 'the-color-brown', 'music-arranger",
+                "movie",
+                "0000002311",
+                1930
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%e%",
+                "votes",
+                "janitor', 'dantien-tantien', 'aluminum-powder', 'higher-heights', 'bioport",
+                "movie",
+                "116618",
+                2005
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%t%",
+                "%T%",
+                "rating",
+                "lynch-mob', 'sherlock-holmes', 'crushed-by-snake', 'golden-retriever', 'eating-raw-fish",
+                "movie",
+                "5.9",
+                1937
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%r%",
+                "%r%",
+                "rating",
+                "social-decay', 'lifeboat', 'russian-politics', 'video-magazine', 'genie-in-a-bottle",
+                "movie",
+                "7.2",
+                1978
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%e%",
+                "%D%",
+                "rating",
+                "chase', 'william-wordsworth', 'king-henry-iv', 'car-factory', 'biopic",
+                "movie",
+                "5.7",
+                2000
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%d%",
+                "%d%",
+                "rating",
+                "based-on-comic-book', 'athlete', 'radio-telescope', 'stolen-goods', 'profit-motive",
+                "movie",
+                "5.9",
+                2008
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%u%",
+                "%a%",
+                "votes distribution",
+                "based-on-novel', 'french-book', 'two-males-in-bed', 'tony-the-horse', 'dredging",
+                "movie",
+                "1000011101",
+                1984
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%2%",
+                "%s%",
+                "votes",
+                "telephone', 'rich-wife', 'first-stars', 'our-lady-of-f\u00c3\u00a1tima', 'waking-with-a-cane",
+                "movie",
+                "366",
+                1936
+            ],
+            [
+                "cast",
+                "complete",
+                "%a%",
+                "%o%",
+                "votes",
+                "heir', 'teresa-manganiello', 'lump-on-one''s-head', 'corset-making', 'ceausescu",
+                "movie",
+                "127",
+                1947
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%C%",
+                "%J%",
+                "rating",
+                "emperor', 'running-over-a-dog', 'muslim-rebel', 'computer-chatroom', 'plastic-toy",
+                "movie",
+                "7.3",
+                1952
+            ],
+            [
+                "cast",
+                "complete",
+                "%v%",
+                "%a%",
+                "votes distribution",
+                "warrior', 'youth-programme', 'necrophilia', 'third-ear', 'childhood-obesity",
+                "movie",
+                "1011110001",
+                2008
+            ],
+            [
+                "cast",
+                "complete",
+                "%e%",
+                "%y%",
+                "votes",
+                "pocket-knife', 'gift', 'scores', 'napkin-drawing', 'hedwig",
+                "movie",
+                "204",
+                1938
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%c%",
+                "%s%",
+                "votes distribution",
+                "speech', 'romantic-kiss', 'erotic-graffiti', 'attacked-by-an-ant', 'organ-playing",
+                "movie",
+                "0000122100",
+                2002
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%e%",
+                "%p%",
+                "rating",
+                "cafeteria', 'inmates', 'choir-practice', 'native-hawaiian', 'red-moon",
+                "movie",
+                "7.7",
+                1973
+            ],
+            [
+                "cast",
+                "complete",
+                "%u%",
+                "%N%",
+                "votes distribution",
+                "pianist', 'milkshake', 'carnival-midway', 'bloody-fingerprint', 'starched-shirt",
+                "movie",
+                "0000002311",
+                2004
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%e%",
+                "%f%",
+                "rating",
+                "sex', 'orator', 'dog-sled-chase', 'taking-a-photograph', 'acid-trip",
+                "movie",
+                "6.1",
+                1930
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%l%",
+                "%l%",
+                "votes",
+                "las-vegas-nevada', 'lamborghini', 'communist-leader', 'suburban', 'lloyd-kaufman",
+                "movie",
+                "10582",
+                1976
+            ],
+            [
+                "cast",
+                "complete",
+                "%n%",
+                "%D%",
+                "rating",
+                "family-reunion', 'playful-torture', 'topsoil', 'benzene', 'collapse-of-a-town",
+                "movie",
+                "4.4",
+                2001
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%r%",
+                "%J%",
+                "votes",
+                "u.s.-navy', 'dog-sled-chase', 'possessed-animal', 'pyromania', 'typhoon-omar",
+                "movie",
+                "140145",
+                1985
+            ],
+            [
+                "cast",
+                "complete",
+                "%l%",
+                "%e%",
+                "rating",
+                "russian-soldier', 'oasis', 'making-of', 'woodcut', 'economic-inequality",
+                "movie",
+                "6.6",
+                1962
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%k%",
+                "%w%",
+                "rating",
+                "actor', 'snoozer-the-dog', 'columbine', 'moment-in-eternity', 'film-scratch",
+                "movie",
+                "6.8",
+                1987
+            ],
+            [
+                "cast",
+                "complete",
+                "%.%",
+                "%G%",
+                "rating",
+                "patrolman', 'animated-lips', 'beach-fight', 'psychiatric-care', 'sex-in-morgue",
+                "movie",
+                "6.3",
+                1943
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%S%",
+                "%n%",
+                "votes distribution",
+                "art-museum', 'fist-fighter', 'guns-of-the-west', 'wedding-vow', 'holding-therapy",
+                "movie",
+                "0000123100",
+                1945
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%e%",
+                "%M%",
+                "votes distribution",
+                "activism', 'hawker', 'wire-pyramid', 'spirit-doll', 'maui-hawaii",
+                "movie",
+                "0000001321",
+                1994
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%b%",
+                "%P%",
+                "votes distribution",
+                "heroin', 'memory-cell', 'war-relics', 'security-checkpoint', 'danger-after-danger",
+                "movie",
+                "0000001212",
+                1992
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%T%",
+                "%y%",
+                "votes",
+                "sports-car', 'strait', 'nonconsumated-sex', 'call-in-show', 'dog-monster",
+                "movie",
+                "6344",
+                1977
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%w%",
+                "%n%",
+                "votes distribution",
+                "suspect', 'orienteering', 'dinner-with-parents', 'cilia', 'tour-of-duty",
+                "movie",
+                "0000001221",
+                1942
+            ],
+            [
+                "cast",
+                "complete",
+                "%n%",
+                "%e%",
+                "votes distribution",
+                "league-of-nations', 'pope-leo-x', 'modification', 'purple', 'martian-canal",
+                "movie",
+                "1000111000",
+                1942
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%n%",
+                "%I%",
+                "rating",
+                "secret-identity', 'stabbed-in-the-back', 'imitating-a-horse', 'whodunit', 'revival-meeting",
+                "movie",
+                "5.7",
+                2003
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%d%",
+                "%a%",
+                "votes distribution",
+                "streetcar', 'motoyama-japan', 'butterfly-pin', 'tractor-trailer', 'sexton-blake",
+                "movie",
+                "0001211000",
+                1972
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%h%",
+                "%T%",
+                "votes",
+                "money', 'nsaid', 'meeting-on-line', 'swiss-roll', 'airliner-fire",
+                "movie",
+                "3515",
+                2000
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%o%",
+                "%r%",
+                "rating",
+                "undercover-agent', 'calling-a-dog', 'falling-from-train', 'autographing-book', 'buckley",
+                "movie",
+                "6.6",
+                1945
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%n%",
+                "%t%",
+                "votes distribution",
+                "reference-to-christopher-columbus', 'suffering', 'body-in-fridge', 'compact-mirror', 'mass-burial",
+                "movie",
+                "0000002311",
+                1930
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%E%",
+                "%c%",
+                "rating",
+                "mother-daughter-relationship', 'rubber-snake', 'bulgaria', 'clowning', 'static-shock",
+                "movie",
+                "3.9",
+                1990
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%e%",
+                "%o%",
+                "votes distribution",
+                "musician', 'wright-brothers', 'tv-news-announcer', 'medical-illustrator', 'love-heals",
+                "movie",
+                "0000321000",
+                1936
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%i%",
+                "%r%",
+                "votes distribution",
+                "red-herring', 'death-of-a-horse', 'opthalmologist', 'honda-accord', 'ore-crusher",
+                "movie",
+                "0000012211",
+                1960
+            ],
+            [
+                "cast",
+                "complete",
+                "%c%",
+                "%r%",
+                "rating",
+                "decapitation', 'damsel', 'doc-yak-series', 'okoge', 'fake-person-in-bed",
+                "movie",
+                "8.0",
+                1977
+            ],
+            [
+                "cast",
+                "complete",
+                "%e%",
+                "%a%",
+                "votes distribution",
+                "film-within-a-film', 'genomic-imprinting', 'blocked-chimney', 'adopted-nephew', 'suicide-bomber",
+                "movie",
+                "0000012101",
+                2003
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%a%",
+                "rating",
+                "husband-kills-wife', 'garter', 'soviet-annexation', 'boston-hockey', 'nature-symphony",
+                "movie",
+                "7.7",
+                1949
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%r%",
+                "%f%",
+                "votes distribution",
+                "extramarital-affair', 'female-physician', 'commendation', 'thigh-boo', 'lawn-hockey",
+                "movie",
+                "0000123000",
+                1946
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%D%",
+                "%o%",
+                "rating",
+                "buggy', 'shaved-vagina', 'shirt', 'lamb-of-god', 'lenz",
+                "movie",
+                "8.1",
+                1952
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%r%",
+                "%r%",
+                "votes distribution",
+                "corruption', '2210s', 't1000', 'made-for-internet', 'contested-will",
+                "movie",
+                "0000032000",
+                1938
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%F%",
+                "%n%",
+                "votes distribution",
+                "stenographer', 'gang-banger', 'wiping-ass', 'beat-em-up', 'clinical-depression",
+                "movie",
+                "0000002321",
+                1935
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%e%",
+                "%L%",
+                "rating",
+                "bar-fight', 'homeric-greece', 'the-wall', 'aerialist', 'hearing-exam",
+                "movie",
+                "7.7",
+                1938
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%i%",
+                "%o%",
+                "votes",
+                "angel', 'villa', 'furnish', 'v-1-rocket', '47-ronin",
+                "movie",
+                "34083",
+                1991
+            ],
+            [
+                "crew",
+                "complete",
+                "%e%",
+                "%Y%",
+                "votes distribution",
+                "threatened-with-knife', 'click', 'hit-with-a-breast', 'lithosphere', 'minister-of-culture",
+                "movie",
+                "0001111000",
+                1997
+            ],
+            [
+                "cast",
+                "complete",
+                "%e%",
+                "%r%",
+                "votes",
+                "volcanic-ash', 'on-court-interview', 'sexual-mores', 'burying-dead-animal', 'tradition-bites",
+                "movie",
+                "177729",
+                2008
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%r%",
+                "%T%",
+                "votes",
+                "wolf-whistle', 'string-trick', 'preteenage-witch', 'fencing-jewels', 'estrangement",
+                "movie",
+                "276649",
+                2001
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%n%",
+                "%e%",
+                "rating",
+                "storm', 'consulate', 'lantern-fishing', 'spurious-lawsuit', 'crazed-producer",
+                "movie",
+                "6.8",
+                1929
+            ]
+        ]
+    }
+}

@@ -1,0 +1,2035 @@
+{
+    "8-0": {
+        "query": "SELECT MIN(an.name) AS actress_pseudonym, MIN(t.title) AS japanese_movie_dubbed\nFROM aka_name AS an,\n cast_info AS ci,\n company_name AS cn,\n movie_companies AS mc,\n name AS n,\n role_type AS rt,\n title AS t\nWHERE an.person_id = n.id\n AND n.id = ci.person_id\n AND ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND an.person_id = ci.person_id\n AND ci.movie_id = mc.movie_id\nAND ci.note = '@param0'\nAND cn.country_code = '@param1'\nAND mc.note LIKE '@param2'\nAND mc.note NOT LIKE '@param3'\nAND n.name LIKE '@param4'\nAND n.name NOT LIKE '@param5'\nAND rt.role = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "=",
+                "data_type": "text",
+                "table": "cast_info",
+                "join_tables_alias": [
+                    "n",
+                    "t",
+                    "rt",
+                    "an",
+                    "mc"
+                ],
+                "join_tables": [
+                    "name",
+                    "title",
+                    "role_type",
+                    "aka_name",
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "ci.movie_id = t.id",
+                    "ci.role_id = rt.id",
+                    "an.person_id = ci.person_id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "name"
+                    ],
+                    [],
+                    [
+                        "role"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "movie_companies",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "title",
+                    "company_name",
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "mc",
+                "column": "note",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "movie_companies",
+                "join_tables_alias": [
+                    "t",
+                    "cn",
+                    "ci"
+                ],
+                "join_tables": [
+                    "title",
+                    "company_name",
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "t.id = mc.movie_id",
+                    "mc.company_id = cn.id",
+                    "ci.movie_id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "country_code"
+                    ],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "aka_name",
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "NOT LIKE",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "an",
+                    "ci"
+                ],
+                "join_tables": [
+                    "aka_name",
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "an.person_id = n.id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "role_type",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "ci.role_id = rt.id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(uncredited)",
+                "[fr]",
+                "%a%",
+                "%r%",
+                "%c%",
+                "%o%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[de]",
+                "%)%",
+                "%0%",
+                "%e%",
+                "%i%",
+                "actress"
+            ],
+            [
+                "(script supervisor)",
+                "[de]",
+                "%t%",
+                "%2%",
+                "%o%",
+                "%s%",
+                "miscellaneous crew"
+            ],
+            [
+                "(assistant producer)",
+                "[fr]",
+                "%)%",
+                "%a%",
+                "%,%",
+                "%h%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%(%",
+                "%S%",
+                "%h%",
+                "%n%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%w%",
+                "%,%",
+                "%y%",
+                "actor"
+            ],
+            [
+                "(publicist)",
+                "[gr]",
+                "%G%",
+                "%0%",
+                "%a%",
+                "%S%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[de]",
+                "%V%",
+                "%e%",
+                "%H%",
+                "%h%",
+                "actor"
+            ],
+            [
+                "(first assistant accountant)",
+                "[de]",
+                "%y%",
+                "%-%",
+                "%p%",
+                "%u%",
+                "miscellaneous crew"
+            ],
+            [
+                "(facilities manager)",
+                "[hu]",
+                "%2%",
+                "%V%",
+                "%n%",
+                "%l%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production assistant) (uncredited)",
+                "[us]",
+                "%s%",
+                "%w%",
+                "%a%",
+                "%n%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production assistant)",
+                "[jp]",
+                "%T%",
+                "%2%",
+                "%W%",
+                "%e%",
+                "miscellaneous crew"
+            ],
+            [
+                "(voice performer)",
+                "[us]",
+                "%a%",
+                "%d%",
+                "%C%",
+                "%r%",
+                "miscellaneous crew"
+            ],
+            [
+                "(producer)",
+                "[ru]",
+                "%(%",
+                "%w%",
+                "%s%",
+                "%o%",
+                "producer"
+            ],
+            [
+                "(script supervisor)",
+                "[nl]",
+                "%(%",
+                "%i%",
+                "%p%",
+                "%r%",
+                "miscellaneous crew"
+            ],
+            [
+                "(set production assistant)",
+                "[us]",
+                "%e%",
+                "%r%",
+                "%a%",
+                "%n%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[fr]",
+                "%2%",
+                "%0%",
+                "%,%",
+                "%s%",
+                "actor"
+            ],
+            [
+                "(production secretary)",
+                "[gb]",
+                "%t%",
+                "%s%",
+                "%y%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(location manager)",
+                "[ar]",
+                "%D%",
+                "%2%",
+                "%a%",
+                "%P%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[at]",
+                "%A%",
+                "%l%",
+                "%e%",
+                "%n%",
+                "actress"
+            ],
+            [
+                "(production assistant) (uncredited)",
+                "[au]",
+                "%t%",
+                "%r%",
+                "%e%",
+                "%u%",
+                "miscellaneous crew"
+            ],
+            [
+                "(assistant production office coordinator)",
+                "[de]",
+                "%0%",
+                "%r%",
+                "%,%",
+                "%E%",
+                "miscellaneous crew"
+            ],
+            [
+                "(associate producer)",
+                "[nl]",
+                "%(%",
+                "%0%",
+                "%R%",
+                "%e%",
+                "producer"
+            ],
+            [
+                "(production assistant)",
+                "[gr]",
+                "%e%",
+                "%c%",
+                "%t%",
+                "%e%",
+                "miscellaneous crew"
+            ],
+            [
+                "(location manager)",
+                "[gb]",
+                "%e%",
+                "%a%",
+                "%h%",
+                "%l%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production lawyer: Zentropa administration)",
+                "[it]",
+                "%2%",
+                "%3%",
+                "%a%",
+                "%i%",
+                "miscellaneous crew"
+            ],
+            [
+                "(set production assistant)",
+                "[ch]",
+                "%w%",
+                "%e%",
+                "%n%",
+                "%t%",
+                "miscellaneous crew"
+            ],
+            [
+                "(voice) (uncredited)",
+                "[us]",
+                "%(%",
+                "%0%",
+                "%r%",
+                "%s%",
+                "actor"
+            ],
+            [
+                "(production assistant: second unit)",
+                "[de]",
+                "%i%",
+                "%e%",
+                "%g%",
+                "%w%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[co]",
+                "%l%",
+                "%b%",
+                "%m%",
+                "%R%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[de]",
+                "%)%",
+                "%e%",
+                "%s%",
+                "%Y%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[es]",
+                "%(%",
+                "%c%",
+                "%e%",
+                "%B%",
+                "actor"
+            ],
+            [
+                "(location assistant)",
+                "[us]",
+                "%a%",
+                "%2%",
+                "%e%",
+                "%i%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[au]",
+                "%)%",
+                "%l%",
+                "%C%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[au]",
+                "%t%",
+                "%u%",
+                "%u%",
+                "%n%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%S%",
+                "%D%",
+                "%g%",
+                "%h%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[hk]",
+                "%2%",
+                "%n%",
+                "%,%",
+                "%d%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%A%",
+                "%0%",
+                "%u%",
+                "%o%",
+                "actor"
+            ],
+            [
+                "(archive footage) (uncredited)",
+                "[us]",
+                "%)%",
+                "%9%",
+                "%l%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[kr]",
+                "%r%",
+                "%1%",
+                "%J%",
+                "%s%",
+                "actress"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%(%",
+                "%U%",
+                "%o%",
+                "%h%",
+                "producer"
+            ],
+            [
+                "(screenplay)",
+                "[us]",
+                "%)%",
+                "%?%",
+                "%r%",
+                "%,%",
+                "writer"
+            ],
+            [
+                "(voice: English version)",
+                "[sg]",
+                "%0%",
+                "%m%",
+                "%M%",
+                "%n%",
+                "actor"
+            ],
+            [
+                "(writer)",
+                "[de]",
+                "%r%",
+                "%a%",
+                "%g%",
+                "%e%",
+                "writer"
+            ],
+            [
+                "(location scout) (uncredited)",
+                "[us]",
+                "%h%",
+                "%i%",
+                "%,%",
+                "%P%",
+                "miscellaneous crew"
+            ],
+            [
+                "(executive producer) (uncredited)",
+                "[us]",
+                "%)%",
+                "%h%",
+                "%e%",
+                "%m%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[fi]",
+                "%c%",
+                "%r%",
+                "%n%",
+                "%A%",
+                "actress"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%o%",
+                "%d%",
+                "%m%",
+                "actor"
+            ],
+            [
+                "(location scout) (uncredited)",
+                "[se]",
+                "%d%",
+                "%9%",
+                "%D%",
+                "%e%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production assistant)",
+                "[us]",
+                "%)%",
+                "%D%",
+                "%P%",
+                "%A%",
+                "miscellaneous crew"
+            ],
+            [
+                "(associate producer)",
+                "[us]",
+                "%d%",
+                "%2%",
+                "%s%",
+                "%i%",
+                "producer"
+            ],
+            [
+                "(production accountant)",
+                "[au]",
+                "%s%",
+                "%9%",
+                "%t%",
+                "%L%",
+                "miscellaneous crew"
+            ],
+            [
+                "(director of photography)",
+                "[us]",
+                "%0%",
+                "%U%",
+                "%a%",
+                "%e%",
+                "cinematographer"
+            ],
+            [
+                "(screenplay)",
+                "[de]",
+                "%e%",
+                "%a%",
+                "%r%",
+                "%s%",
+                "writer"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%i%",
+                "%l%",
+                "%n%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%i%",
+                "%o%",
+                "%l%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(key assistant location manager) (uncredited)",
+                "[us]",
+                "%(%",
+                "%H%",
+                "%A%",
+                "%r%",
+                "miscellaneous crew"
+            ],
+            [
+                "(assistant to producers)",
+                "[us]",
+                "%)%",
+                "%D%",
+                "%,%",
+                "%h%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production auditor)",
+                "[es]",
+                "%i%",
+                "%p%",
+                "%o%",
+                "%c%",
+                "miscellaneous crew"
+            ],
+            [
+                "(producer)",
+                "[de]",
+                "%)%",
+                "%0%",
+                "%e%",
+                "%a%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[mx]",
+                "%e%",
+                "%t%",
+                "%F%",
+                "%e%",
+                "actress"
+            ],
+            [
+                "(supervising producer)",
+                "[us]",
+                "%)%",
+                "%9%",
+                "%i%",
+                "%\u00a8%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[fi]",
+                "%2%",
+                "%6%",
+                "%g%",
+                "%.%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[nl]",
+                "%(%",
+                "%r%",
+                "%r%",
+                "%h%",
+                "actress"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%s%",
+                "%e%",
+                "%o%",
+                "%v%",
+                "actor"
+            ],
+            [
+                "(story)",
+                "[ph]",
+                "%s%",
+                "%0%",
+                "%t%",
+                "%J%",
+                "writer"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%)%",
+                "%A%",
+                "%y%",
+                "%L%",
+                "actress"
+            ],
+            [
+                "(uncredited)",
+                "[au]",
+                "%1%",
+                "%i%",
+                "%,%",
+                "%T%",
+                "actor"
+            ],
+            [
+                "(also archive footage)",
+                "[de]",
+                "%9%",
+                "%t%",
+                "%n%",
+                "%,%",
+                "actress"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%9%",
+                "%8%",
+                "%i%",
+                "%t%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%n%",
+                "%a%",
+                "%y%",
+                "%l%",
+                "actor"
+            ],
+            [
+                "(assistant accountant)",
+                "[us]",
+                "%s%",
+                "%c%",
+                "%c%",
+                "%u%",
+                "miscellaneous crew"
+            ],
+            [
+                "(screenplay)",
+                "[us]",
+                "%)%",
+                "%U%",
+                "%a%",
+                "%G%",
+                "writer"
+            ],
+            [
+                "(continuity)",
+                "[gb]",
+                "%)%",
+                "%a%",
+                "%i%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(executive producer)",
+                "[fr]",
+                "%9%",
+                "%c%",
+                "%s%",
+                "%h%",
+                "producer"
+            ],
+            [
+                "(location manager)",
+                "[fr]",
+                "%r%",
+                "%V%",
+                "%o%",
+                "%t%",
+                "miscellaneous crew"
+            ],
+            [
+                "(voice: English version)",
+                "[us]",
+                "%a%",
+                "%o%",
+                "%H%",
+                "%t%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[fi]",
+                "%r%",
+                "%c%",
+                "%a%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[at]",
+                "%h%",
+                "%l%",
+                "%n%",
+                "%d%",
+                "actor"
+            ],
+            [
+                "(supervising director)",
+                "[gb]",
+                "%K%",
+                "%s%",
+                "%y%",
+                "%h%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%l%",
+                "%A%",
+                "%g%",
+                "%v%",
+                "actress"
+            ],
+            [
+                "(written by)",
+                "[gb]",
+                "%M%",
+                "%E%",
+                "%k%",
+                "%J%",
+                "writer"
+            ],
+            [
+                "(uncredited)",
+                "[ar]",
+                "%l%",
+                "%c%",
+                "%d%",
+                "%r%",
+                "actor"
+            ],
+            [
+                "(script supervisor)",
+                "[us]",
+                "%8%",
+                "%U%",
+                "%t%",
+                "%P%",
+                "miscellaneous crew"
+            ],
+            [
+                "(producer)",
+                "[in]",
+                "%0%",
+                "%I%",
+                "%a%",
+                "%s%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%A%",
+                "%V%",
+                "%e%",
+                "%,%",
+                "producer"
+            ],
+            [
+                "(archive footage)",
+                "[nl]",
+                "%2%",
+                "%6%",
+                "%e%",
+                "%W%",
+                "actor"
+            ],
+            [
+                "(script supervisor)",
+                "[ar]",
+                "%(%",
+                "%a%",
+                "%e%",
+                "%M%",
+                "miscellaneous crew"
+            ],
+            [
+                "(continuity)",
+                "[gb]",
+                "%7%",
+                "%t%",
+                "%a%",
+                "%s%",
+                "miscellaneous crew"
+            ],
+            [
+                "(line producer)",
+                "[es]",
+                "%e%",
+                "%u%",
+                "%e%",
+                "%m%",
+                "producer"
+            ],
+            [
+                "(set production assistant)",
+                "[de]",
+                "%(%",
+                "%D%",
+                "%M%",
+                "%e%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[dk]",
+                "%D%",
+                "%V%",
+                "%n%",
+                "%g%",
+                "actor"
+            ],
+            [
+                "(director of photography)",
+                "[se]",
+                "%(%",
+                "%9%",
+                "%k%",
+                "%x%",
+                "cinematographer"
+            ],
+            [
+                "(uncredited)",
+                "[es]",
+                "%H%",
+                "%V%",
+                "%n%",
+                "%s%",
+                "actor"
+            ],
+            [
+                "(location assistant)",
+                "[ar]",
+                "%(%",
+                "%2%",
+                "%i%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(second assistant accountant)",
+                "[us]",
+                "%-%",
+                "%5%",
+                "%g%",
+                "%e%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%s%",
+                "%y%",
+                "%h%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%2%",
+                "%d%",
+                "%n%",
+                "actor"
+            ],
+            [
+                "(costumes: women)",
+                "[fr]",
+                "%(%",
+                "%0%",
+                "%e%",
+                "%r%",
+                "costume designer"
+            ],
+            [
+                "(assistant location manager) (uncredited)",
+                "[gb]",
+                "%0%",
+                "%2%",
+                "%n%",
+                "%h%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production assistant) (uncredited)",
+                "[us]",
+                "%o%",
+                "%-%",
+                "%t%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(accounts trainee)",
+                "[gr]",
+                "%r%",
+                "%D%",
+                "%h%",
+                "%n%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[at]",
+                "%)%",
+                "%t%",
+                "%o%",
+                "%m%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%H%",
+                "%l%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(production assistant) (uncredited)",
+                "[de]",
+                "%c%",
+                "%1%",
+                "%y%",
+                "%B%",
+                "miscellaneous crew"
+            ],
+            [
+                "(executive producer)",
+                "[de]",
+                "%a%",
+                "%l%",
+                "%J%",
+                "%t%",
+                "producer"
+            ],
+            [
+                "(screenplay)",
+                "[cz]",
+                "%i%",
+                "%u%",
+                "%k%",
+                "%o%",
+                "writer"
+            ],
+            [
+                "(title designer)",
+                "[us]",
+                "%(%",
+                "%e%",
+                "%m%",
+                "%l%",
+                "miscellaneous crew"
+            ],
+            [
+                "(story)",
+                "[ph]",
+                "%)%",
+                "%1%",
+                "%p%",
+                "%e%",
+                "writer"
+            ],
+            [
+                "(executive producer)",
+                "[nl]",
+                "%V%",
+                "%l%",
+                "%T%",
+                "%F%",
+                "producer"
+            ],
+            [
+                "(story)",
+                "[us]",
+                "%)%",
+                "%9%",
+                "%g%",
+                "%S%",
+                "writer"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%)%",
+                "%6%",
+                "%h%",
+                "%o%",
+                "producer"
+            ],
+            [
+                "(location scout)",
+                "[ae]",
+                "%l%",
+                "%m%",
+                "%a%",
+                "%l%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%5%",
+                "%e%",
+                "%,%",
+                "%l%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%D%",
+                "%0%",
+                "%o%",
+                "%s%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%1%",
+                "%S%",
+                "%r%",
+                "%y%",
+                "producer"
+            ],
+            [
+                "(executive producer)",
+                "[es]",
+                "%)%",
+                "%F%",
+                "%n%",
+                "%V%",
+                "producer"
+            ],
+            [
+                "(production secretary)",
+                "[us]",
+                "%l%",
+                "%0%",
+                "%n%",
+                "%t%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%s%",
+                "%N%",
+                "%d%",
+                "%t%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%e%",
+                "%r%",
+                "%l%",
+                "%h%",
+                "composer"
+            ],
+            [
+                "(uncredited)",
+                "[fr]",
+                "%F%",
+                "%c%",
+                "%i%",
+                "%C%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%5%",
+                "%e%",
+                "%a%",
+                "actor"
+            ],
+            [
+                "(screen play)",
+                "[us]",
+                "%V%",
+                "%0%",
+                "%o%",
+                "%m%",
+                "writer"
+            ],
+            [
+                "(runner) (uncredited)",
+                "[us]",
+                "%a%",
+                "%i%",
+                "%l%",
+                "%n%",
+                "miscellaneous crew"
+            ],
+            [
+                "(technical consultant)",
+                "[us]",
+                "%2%",
+                "%w%",
+                "%n%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[ca]",
+                "%c%",
+                "%t%",
+                "%a%",
+                "%t%",
+                "actress"
+            ],
+            [
+                "(associate producer)",
+                "[gb]",
+                "%K%",
+                "%V%",
+                "%o%",
+                "%h%",
+                "producer"
+            ],
+            [
+                "(executive producer)",
+                "[us]",
+                "%)%",
+                "%1%",
+                "%s%",
+                "%i%",
+                "producer"
+            ],
+            [
+                "(assistant production coordinator)",
+                "[nl]",
+                "%(%",
+                "%u%",
+                "%L%",
+                "%e%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%(%",
+                "%l%",
+                "%D%",
+                "%l%",
+                "actor"
+            ],
+            [
+                "(production executive: Infinity)",
+                "[us]",
+                "%(%",
+                "%9%",
+                "%o%",
+                "%R%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production assistant)",
+                "[au]",
+                "%s%",
+                "%D%",
+                "%e%",
+                "%L%",
+                "miscellaneous crew"
+            ],
+            [
+                "(associate producer)",
+                "[us]",
+                "%)%",
+                "%c%",
+                "%,%",
+                "%n%",
+                "producer"
+            ],
+            [
+                "(set production assistant)",
+                "[tw]",
+                "%(%",
+                "%h%",
+                "%,%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[mx]",
+                "%t%",
+                "%x%",
+                "%a%",
+                "%b%",
+                "actress"
+            ],
+            [
+                "(producer)",
+                "[us]",
+                "%6%",
+                "%l%",
+                "%d%",
+                "%k%",
+                "producer"
+            ],
+            [
+                "(co-producer)",
+                "[gb]",
+                "%V%",
+                "%s%",
+                "%l%",
+                "%S%",
+                "producer"
+            ],
+            [
+                "(executive producer)",
+                "[be]",
+                "%a%",
+                "%e%",
+                "%e%",
+                "%s%",
+                "producer"
+            ],
+            [
+                "(executive producer)",
+                "[fr]",
+                "%9%",
+                "%n%",
+                "%i%",
+                "%w%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[pe]",
+                "%e%",
+                "%4%",
+                "%h%",
+                "%,%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[fi]",
+                "%t%",
+                "%9%",
+                "%B%",
+                "%D%",
+                "producer"
+            ],
+            [
+                "(uncredited)",
+                "[nl]",
+                "%1%",
+                "%n%",
+                "%e%",
+                "%t%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%(%",
+                "%i%",
+                "%m%",
+                "%o%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%e%",
+                "%R%",
+                "%b%",
+                "actor"
+            ],
+            [
+                "(assistant to producers)",
+                "[ca]",
+                "%C%",
+                "%D%",
+                "%n%",
+                "%e%",
+                "miscellaneous crew"
+            ],
+            [
+                "(production assistant)",
+                "[us]",
+                "%0%",
+                "%a%",
+                "%a%",
+                "%n%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[gr]",
+                "%)%",
+                "%e%",
+                "%,%",
+                "%J%",
+                "actor"
+            ],
+            [
+                "(production assistant)",
+                "[de]",
+                "%r%",
+                "%y%",
+                "%o%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[pa]",
+                "%(%",
+                "%E%",
+                "%e%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[de]",
+                "%r%",
+                "%i%",
+                "%F%",
+                "%k%",
+                "producer"
+            ],
+            [
+                "(screenplay and adaptation)",
+                "[fr]",
+                "%t%",
+                "%m%",
+                "%e%",
+                "%F%",
+                "writer"
+            ],
+            [
+                "(voice) (uncredited)",
+                "[fi]",
+                "%F%",
+                "%1%",
+                "%J%",
+                "%s%",
+                "actor"
+            ],
+            [
+                "(producer)",
+                "[gb]",
+                "%p%",
+                "%d%",
+                "%T%",
+                "%B%",
+                "producer"
+            ],
+            [
+                "(written by)",
+                "[us]",
+                "%)%",
+                "%S%",
+                "%e%",
+                "%l%",
+                "writer"
+            ],
+            [
+                "(armourer)",
+                "[gb]",
+                "%t%",
+                "%0%",
+                "%r%",
+                "%G%",
+                "miscellaneous crew"
+            ],
+            [
+                "(co-producer)",
+                "[hu]",
+                "%n%",
+                "%l%",
+                "%,%",
+                "%a%",
+                "producer"
+            ],
+            [
+                "(associate producer)",
+                "[jp]",
+                "%p%",
+                "%D%",
+                "%,%",
+                "%e%",
+                "producer"
+            ],
+            [
+                "(voice)",
+                "[fi]",
+                "%(%",
+                "%n%",
+                "%a%",
+                "%r%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%A%",
+                "%S%",
+                "%u%",
+                "%K%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%H%",
+                "%?%",
+                "%L%",
+                "%d%",
+                "actress"
+            ],
+            [
+                "(written by)",
+                "[us]",
+                "%9%",
+                "%S%",
+                "%R%",
+                "%D%",
+                "writer"
+            ],
+            [
+                "(script supervisor)",
+                "[fi]",
+                "%V%",
+                "%0%",
+                "%n%",
+                "%o%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%c%",
+                "%r%",
+                "%o%",
+                "%r%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%(%",
+                "%9%",
+                "%D%",
+                "%l%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%)%",
+                "%v%",
+                "%o%",
+                "%H%",
+                "actor"
+            ],
+            [
+                "(adr loop group)",
+                "[br]",
+                "%)%",
+                "%t%",
+                "%o%",
+                "%s%",
+                "miscellaneous crew"
+            ],
+            [
+                "(archive footage)",
+                "[gb]",
+                "%2%",
+                "%C%",
+                "%o%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(helicopter pilot)",
+                "[nl]",
+                "%l%",
+                "%h%",
+                "%,%",
+                "%b%",
+                "miscellaneous crew"
+            ],
+            [
+                "(key set production assistant) (uncredited)",
+                "[us]",
+                "%(%",
+                "%r%",
+                "%d%",
+                "%a%",
+                "miscellaneous crew"
+            ],
+            [
+                "(script supervisor)",
+                "[es]",
+                "%t%",
+                "%9%",
+                "%D%",
+                "%t%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[de]",
+                "%)%",
+                "%1%",
+                "%M%",
+                "%r%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%1%",
+                "%t%",
+                "%i%",
+                "%k%",
+                "actor"
+            ],
+            [
+                "(script supervisor)",
+                "[ae]",
+                "%a%",
+                "%4%",
+                "%G%",
+                "%m%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%(%",
+                "%i%",
+                "%,%",
+                "%D%",
+                "actor"
+            ],
+            [
+                "(archive footage)",
+                "[us]",
+                "%9%",
+                "%d%",
+                "%,%",
+                "%r%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%5%",
+                "%A%",
+                "%l%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(associate producer)",
+                "[us]",
+                "%V%",
+                "%w%",
+                "%,%",
+                "%H%",
+                "producer"
+            ],
+            [
+                "(continuity)",
+                "[gr]",
+                "%e%",
+                "%9%",
+                "%r%",
+                "%l%",
+                "miscellaneous crew"
+            ],
+            [
+                "(producer)",
+                "[fr]",
+                "%t%",
+                "%1%",
+                "%d%",
+                "%S%",
+                "producer"
+            ],
+            [
+                "(voice)",
+                "[jp]",
+                "%1%",
+                "%n%",
+                "%\u00b4%",
+                "%y%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[de]",
+                "%r%",
+                "%y%",
+                "%R%",
+                "%l%",
+                "actress"
+            ],
+            [
+                "(production assistant)",
+                "[br]",
+                "%l%",
+                "%2%",
+                "%t%",
+                "%K%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[es]",
+                "%V%",
+                "%S%",
+                "%,%",
+                "%e%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%U%",
+                "%V%",
+                "%n%",
+                "%g%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[fr]",
+                "%)%",
+                "%u%",
+                "%e%",
+                "%i%",
+                "actor"
+            ],
+            [
+                "(executive producer)",
+                "[ca]",
+                "%a%",
+                "%n%",
+                "%y%",
+                "%g%",
+                "producer"
+            ],
+            [
+                "(voice)",
+                "[us]",
+                "%n%",
+                "%e%",
+                "%e%",
+                "%h%",
+                "actress"
+            ],
+            [
+                "(double) (uncredited)",
+                "[us]",
+                "%s%",
+                "%V%",
+                "%y%",
+                "%l%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[es]",
+                "%(%",
+                "%i%",
+                "%m%",
+                "%o%",
+                "actor"
+            ],
+            [
+                "(voice)",
+                "[jp]",
+                "%D%",
+                "%r%",
+                "%,%",
+                "%r%",
+                "actress"
+            ],
+            [
+                "(executive producer)",
+                "[jp]",
+                "%(%",
+                "%a%",
+                "%c%",
+                "%n%",
+                "producer"
+            ],
+            [
+                "(producer)",
+                "[de]",
+                "%)%",
+                "%6%",
+                "%o%",
+                "%l%",
+                "producer"
+            ],
+            [
+                "(assistant production coordinator)",
+                "[us]",
+                "%i%",
+                "%t%",
+                "%,%",
+                "%o%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[fi]",
+                "%)%",
+                "%a%",
+                "%S%",
+                "%o%",
+                "actor"
+            ],
+            [
+                "(craft service)",
+                "[us]",
+                "%a%",
+                "%1%",
+                "%,%",
+                "%n%",
+                "miscellaneous crew"
+            ],
+            [
+                "(script supervisor: second unit)",
+                "[us]",
+                "%a%",
+                "%g%",
+                "%e%",
+                "%E%",
+                "miscellaneous crew"
+            ],
+            [
+                "(location scout) (uncredited)",
+                "[us]",
+                "%t%",
+                "%s%",
+                "%a%",
+                "%k%",
+                "miscellaneous crew"
+            ],
+            [
+                "(continuity supervisor)",
+                "[ar]",
+                "%(%",
+                "%D%",
+                "%a%",
+                "%r%",
+                "miscellaneous crew"
+            ],
+            [
+                "(uncredited)",
+                "[fr]",
+                "%a%",
+                "%3%",
+                "%e%",
+                "%n%",
+                "actor"
+            ],
+            [
+                "(uncredited)",
+                "[us]",
+                "%w%",
+                "%V%",
+                "%D%",
+                "%C%",
+                "actor"
+            ]
+        ]
+    }
+}
