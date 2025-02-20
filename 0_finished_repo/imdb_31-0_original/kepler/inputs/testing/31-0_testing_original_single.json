@@ -1,0 +1,236 @@
+{
+    "31-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS writer, MIN(t.title) AS violent_liongate_movie\nFROM cast_info AS ci,\n    company_name AS cn,\n    info_type AS it1,\n    info_type AS it2,\n    keyword AS k,\n    movie_companies AS mc,\n    movie_info AS mi,\n    movie_info_idx AS mi_idx,\n    movie_keyword AS mk,\n    name AS n,\n    title AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND t.id = mc.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND ci.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi.movie_id = mc.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND mi_idx.movie_id = mc.movie_id\nAND mk.movie_id = mc.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND cn.id = mc.company_id\nAND ci.note IN ('@param0')\nAND cn.name LIKE '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND k.keyword IN ('@param4')\nAND mi.info IN ('@param5')\nAND n.gender = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cast_info",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "n"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_info",
+                    "movie_info_idx",
+                    "movie_keyword",
+                    "movie_companies",
+                    "name"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "movie_info"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "cast_info",
+                    "movie_info_idx",
+                    "movie_keyword",
+                    "movie_companies",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(uncredited)', '(location caterer)', '(as Beny Corbett)', '(as Timothy Lane)', '(as Lt. Pete Estis)",
+                "%i%",
+                "tech info",
+                "votes distribution",
+                "bisexual-woman', 'open-air-model-pass', 'male-in-a-shower', 'closed-doors', 'kicking",
+                "LAB:DeLuxe, USA', 'France:June 1997', 'UK:29 June 1983', 'Waves of passion!', 'Japan:14 May 1975",
+                "m"
+            ]
+        ]
+    }
+}

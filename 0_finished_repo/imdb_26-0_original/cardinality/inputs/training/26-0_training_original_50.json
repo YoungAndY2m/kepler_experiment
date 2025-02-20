@@ -1,0 +1,814 @@
+{
+    "26-0": {
+        "query": "SELECT MIN(chn.name) AS character_name, MIN(mi_idx.info) AS rating, MIN(n.name) AS playing_actor, MIN(t.title) AS complete_hero_movie\nFROM complete_cast AS cc,\n   comp_cast_type AS cct1,\n   comp_cast_type AS cct2,\n   char_name AS chn,\n   cast_info AS ci,\n   info_type AS it2,\n   keyword AS k,\n   kind_type AS kt,\n   movie_info_idx AS mi_idx,\n   movie_keyword AS mk,\n   name AS n,\n   title AS t\nWHERE kt.id = t.kind_id\nAND t.id = mk.movie_id\nAND t.id = ci.movie_id\nAND t.id = cc.movie_id\nAND t.id = mi_idx.movie_id\nAND mk.movie_id = ci.movie_id\nAND mk.movie_id = cc.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND ci.movie_id = cc.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND cc.movie_id = mi_idx.movie_id\nAND chn.id = ci.person_role_id\nAND n.id = ci.person_id\nAND k.id = mk.keyword_id\nAND cct1.id = cc.subject_id\nAND cct2.id = cc.status_id\nAND it2.id = mi_idx.info_type_id\nAND cct1.kind = '@param0'\nAND cct2.kind LIKE '@param1'\nAND chn.name IS NOT NULL\nAND (chn.name LIKE '@param2' OR chn.name LIKE '@param3')\nAND it2.info = '@param4'\nAND k.keyword IN ('@param5')\nAND kt.kind = '@param6'\nAND mi_idx.info > '@param7'\nAND t.production_year > @param8;",
+        "predicates": [
+            {
+                "alias": "cct",
+                "original_alias": "cct1",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "comp_cast_type",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "complete_cast"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.subject_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "cct",
+                "original_alias": "cct2",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "comp_cast_type",
+                "join_tables_alias": [
+                    "cc"
+                ],
+                "join_tables": [
+                    "complete_cast"
+                ],
+                "join_conditions": [
+                    "cct.id = cc.status_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "chn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "char_name",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "chn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "char_name",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "kind_type",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "title"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": ">",
+                "data_type": "text",
+                "table": "movie_info_idx",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "ci",
+                    "cc",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "cast_info",
+                    "complete_cast",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "cc.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "kt",
+                    "mk",
+                    "ci",
+                    "cc",
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "kind_type",
+                    "movie_keyword",
+                    "cast_info",
+                    "complete_cast",
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mk.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = cc.movie_id",
+                    "t.id = mi_idx.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "crew",
+                "complete",
+                "%Mother%",
+                "%Host%",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "6.9",
+                1961
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%s%",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "23",
+                1893
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%Host%",
+                "%Himself%",
+                "rating",
+                "female-nudity', 'female-nudity', 'female-nudity', 'murder', 'female-nudity",
+                "episode",
+                "6.4",
+                1954
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%Himself%",
+                "%s%",
+                "votes",
+                "based-on-novel', 'independent-film', 'independent-film', 'based-on-novel', 'independent-film",
+                "episode",
+                "0000002311",
+                1894
+            ],
+            [
+                "cast",
+                "complete",
+                "%m%",
+                "%Micky%",
+                "rating",
+                "murder', 'murder', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "5.3",
+                2011
+            ],
+            [
+                "crew",
+                "complete",
+                "%Host%",
+                "%s%",
+                "rating",
+                "female-nudity', 'murder', 'murder', 'murder', 'female-nudity",
+                "tv series",
+                "5.0",
+                1989
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%m%",
+                "rating",
+                "murder', 'female-nudity', 'female-nudity', 'murder', 'female-nudity",
+                "episode",
+                "6.6",
+                2002
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%Crowe%",
+                "votes distribution",
+                "revenge', 'death', 'non-fiction', 'blood', 'family-relationships",
+                "movie",
+                "20",
+                1945
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%Himself%",
+                "%at%",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "0000122100",
+                1983
+            ],
+            [
+                "crew",
+                "complete",
+                "%Le%",
+                "%s%",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "6140",
+                1983
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%Himself%",
+                "%s%",
+                "rating",
+                "murder', 'murder', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "0.00111010",
+                1965
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%Host%",
+                "%s%",
+                "votes",
+                "one-word-title', 'bare-chested-male', 'oral-sex', 'tv-mini-series', 'father-son-relationship",
+                "episode",
+                "6.3",
+                1968
+            ],
+            [
+                "cast",
+                "complete",
+                "%Himself%",
+                "%s%",
+                "rating",
+                "revenge', 'revenge', 'tv-mini-series', 'tv-mini-series', 'number-in-title",
+                "movie",
+                "25",
+                2011
+            ],
+            [
+                "crew",
+                "complete",
+                "%l%",
+                "%Hang%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "16",
+                2007
+            ],
+            [
+                "crew",
+                "complete",
+                "%m%",
+                "%s%",
+                "rating",
+                "ostrich', 'the-color-pink', 'beans', 'redfern', 'northwestern-china",
+                "episode",
+                "5",
+                1956
+            ],
+            [
+                "crew",
+                "complete",
+                "%man%",
+                "%Bikini%",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "10",
+                1998
+            ],
+            [
+                "cast",
+                "complete",
+                "%Assistant%",
+                "%Wood%",
+                "rating",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'independent-film', 'independent-film",
+                "episode",
+                "4.0",
+                1991
+            ],
+            [
+                "cast",
+                "complete",
+                "%Estefan\u00c3\u00ada%",
+                "%party%",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "6.8",
+                1987
+            ],
+            [
+                "cast",
+                "complete",
+                "%Lapointe%",
+                "%Himself%",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "6.4",
+                1965
+            ],
+            [
+                "crew",
+                "complete",
+                "%Himself%",
+                "%Host%",
+                "rating",
+                "family-relationships', 'violence', 'revenge', 'number-in-title', 'dog",
+                "episode",
+                "6.4",
+                1981
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%l%",
+                "%Room%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "00.030.1.1",
+                2006
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%m%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "3.1",
+                2003
+            ],
+            [
+                "cast",
+                "complete",
+                "%Abe%",
+                "%Mr%",
+                "rating",
+                "murder', 'murder', 'female-nudity', 'female-nudity', 'female-nudity",
+                "movie",
+                "6.7",
+                1990
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%Himself%",
+                "%Shuichi%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "movie",
+                "14",
+                1966
+            ],
+            [
+                "cast",
+                "complete",
+                "%l%",
+                "%s%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "6.3",
+                1910
+            ],
+            [
+                "cast",
+                "complete",
+                "%l%",
+                "%m%",
+                "votes",
+                "police', 'male-nudity', 'one-word-title', 'tv-mini-series', 'nudity",
+                "episode",
+                "7.1",
+                1888
+            ],
+            [
+                "crew",
+                "complete",
+                "%l%",
+                "%m%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "7",
+                1951
+            ],
+            [
+                "cast",
+                "complete",
+                "%1%",
+                "%s%",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "7",
+                1953
+            ],
+            [
+                "crew",
+                "complete",
+                "%m%",
+                "%h%",
+                "votes",
+                "bare-chested-male', 'one-word-title', 'bare-chested-male', 'surrealism', 'male-nudity",
+                "episode",
+                "35",
+                1896
+            ],
+            [
+                "crew",
+                "complete+verified",
+                "%l%",
+                "%Store%",
+                "rating",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "4.7",
+                1971
+            ],
+            [
+                "cast",
+                "complete",
+                "%m%",
+                "%Master%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "6.5",
+                1955
+            ],
+            [
+                "cast",
+                "complete",
+                "%Mrs%",
+                "%Risk%",
+                "votes",
+                "based-on-novel', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "episode",
+                "6",
+                2000
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%Pump%",
+                "rating",
+                "female-nudity', 'murder', 'female-nudity', 'female-nudity', 'murder",
+                "movie",
+                "6.2",
+                1980
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%l%",
+                "%Host%",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "0000001321",
+                1990
+            ],
+            [
+                "crew",
+                "complete",
+                "%Himself%",
+                "%Celesta%",
+                "rating",
+                "murder', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "7",
+                1995
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%m%",
+                "%Ballard%",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "11",
+                1992
+            ],
+            [
+                "cast",
+                "complete",
+                "%l%",
+                "%m%",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "15",
+                1994
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%El%",
+                "%Himself%",
+                "rating",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'independent-film",
+                "movie",
+                "6",
+                1982
+            ],
+            [
+                "cast",
+                "complete",
+                "%Olori%",
+                "%s%",
+                "rating",
+                "friendship', 'violence', 'non-fiction', 'blood', 'father-son-relationship",
+                "episode",
+                "24",
+                1994
+            ],
+            [
+                "crew",
+                "complete",
+                "%Slaven%",
+                "%s%",
+                "votes",
+                "zip-up-plastic-bag', 'canadian-football-league', 'palladium', 'public-housing', 'southampton-new-york",
+                "episode",
+                "0000002211",
+                1999
+            ],
+            [
+                "cast",
+                "complete",
+                "%m%",
+                "%Host%",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "7.4",
+                2006
+            ],
+            [
+                "cast",
+                "complete",
+                "%Himself%",
+                "%s%",
+                "votes",
+                "refusing-to-collaborate', 'building-project', 'car-bomb', 'postcard', 'z-car",
+                "episode",
+                "6.0",
+                1980
+            ],
+            [
+                "cast",
+                "complete",
+                "%Escort%",
+                "%Claus%",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'murder', 'murder",
+                "episode",
+                "4.7",
+                2003
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%Himself%",
+                "%m%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "000.122010",
+                2007
+            ],
+            [
+                "cast",
+                "complete",
+                "%Bill%",
+                "%Control%",
+                "rating",
+                "based-on-novel', 'independent-film', 'based-on-novel', 'independent-film', 'based-on-novel",
+                "episode",
+                "6.8",
+                2000
+            ],
+            [
+                "cast",
+                "complete+verified",
+                "%Himself%",
+                "%m%",
+                "votes",
+                "murder', 'female-nudity', 'murder', 'murder', 'murder",
+                "episode",
+                "13",
+                1956
+            ],
+            [
+                "cast",
+                "complete",
+                "%Host%",
+                "%Himself%",
+                "rating",
+                "surrealism', 'police', 'non-fiction', 'father-son-relationship', 'bare-chested-male",
+                "episode",
+                "6",
+                2011
+            ],
+            [
+                "crew",
+                "complete",
+                "%l%",
+                "%Himself%",
+                "votes",
+                "android', 'toddler', 'woman-smothered', 'shower-room', 'disguised-as-a-teacher",
+                "movie",
+                "....3013..",
+                2007
+            ],
+            [
+                "crew",
+                "complete",
+                "%Dupreux%",
+                "%alter%",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "movie",
+                "0000012210",
+                1997
+            ],
+            [
+                "crew",
+                "complete",
+                "%l%",
+                "%t%",
+                "rating",
+                "female-nudity', 'murder', 'murder', 'murder', 'murder",
+                "episode",
+                "0000121100",
+                1903
+            ]
+        ]
+    }
+}

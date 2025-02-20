@@ -1,0 +1,863 @@
+{
+  "9-0": {
+    "query": "SELECT MIN(an.name) AS alternative_name, MIN(chn.name) AS character_name, MIN(t.title) AS movie\nFROM aka_name AS an,\n char_name AS chn,\n cast_info AS ci,\n company_name AS cn,\n movie_companies AS mc,\n name AS n,\n role_type AS rt,\n title AS t\nWHERE ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND ci.movie_id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND n.id = ci.person_id\n AND chn.id = ci.person_role_id\n AND an.person_id = n.id\n AND an.person_id = ci.person_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND mc.note IS NOT NULL \nAND (mc.note LIKE '@param2' OR mc.note LIKE '@param3')\nAND n.gender = '@param4'\nAND n.name LIKE '@param5'\nAND rt.role = '@param6'\nAND t.production_year BETWEEN @param7 AND @param8;",
+    "predicates": [
+      {
+        "alias": "ci",
+        "column": "note",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cast_info",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "rt",
+          "n",
+          "chn",
+          "an"
+        ],
+        "join_tables": [
+          "title",
+          "movie_companies",
+          "role_type",
+          "name",
+          "char_name",
+          "aka_name"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "ci.movie_id = mc.movie_id",
+          "ci.role_id = rt.id",
+          "n.id = ci.person_id",
+          "chn.id = ci.person_role_id",
+          "an.person_id = ci.person_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "role"
+          ],
+          [
+            "gender",
+            "name"
+          ],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "movie_companies",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "cn"
+        ],
+        "join_tables": [
+          "title",
+          "cast_info",
+          "company_name"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "ci.movie_id = mc.movie_id",
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "movie_companies",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "cn"
+        ],
+        "join_tables": [
+          "title",
+          "cast_info",
+          "company_name"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "ci.movie_id = mc.movie_id",
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "gender",
+        "operator": "=",
+        "data_type": "text",
+        "table": "name",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "cast_info",
+          "aka_name"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "an.person_id = n.id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "name",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "cast_info",
+          "aka_name"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "an.person_id = n.id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "rt",
+        "column": "role",
+        "operator": "=",
+        "data_type": "text",
+        "table": "role_type",
+        "join_tables_alias": [
+          "ci"
+        ],
+        "join_tables": [
+          "cast_info"
+        ],
+        "join_conditions": [
+          "ci.role_id = rt.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ci",
+          "mc"
+        ],
+        "join_tables": [
+          "cast_info",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ci",
+          "mc"
+        ],
+        "join_tables": [
+          "cast_info",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      }
+    ],
+    "params": [
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(worldwide)%",
+        "%(co-production)%",
+        "f",
+        "%L%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(200%)%",
+        "f",
+        "%S%",
+        "actress",
+        "1950",
+        "2014"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(worldwide)%",
+        "f",
+        "%Z%",
+        "actress",
+        "1950",
+        "1995"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(worldwide)%",
+        "%(presents)%",
+        "m",
+        "%R%",
+        "actor",
+        "1990",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(2006)%",
+        "%(co-production)%",
+        "m",
+        "%C%",
+        "actress",
+        "2005",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[jp]",
+        "%(2006)%",
+        "%(co-production)%",
+        "f",
+        "%I%",
+        "actress",
+        "1950",
+        "1984"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(worldwide)%",
+        "%(200%)%",
+        "m",
+        "%N%",
+        "actor",
+        "1990",
+        "2000"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(Blu-ray)%",
+        "%(presents)%",
+        "f",
+        "S%",
+        "actress",
+        "2005",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(presents)%",
+        "%(VHS)%",
+        "f",
+        "L%",
+        "actress",
+        "2000",
+        "2005"
+      ],
+      [
+        "(voice)', '(voice) (uncredited)', '(voice: English version)",
+        "[de]",
+        "%(presents)%",
+        "%(worldwide)%",
+        "f",
+        "%E%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(Japan)%",
+        "%(2007)%",
+        "f",
+        "L%",
+        "actress",
+        "1990",
+        "2008"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(2007)%",
+        "m",
+        "C%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[nl]",
+        "%(Japan)%",
+        "%(200%)%",
+        "f",
+        "%Ang%",
+        "actress",
+        "2005",
+        "2008"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(worldwide)%",
+        "%(200%)%",
+        "f",
+        "%N%",
+        "actress",
+        "2000",
+        "2007"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(200%)%",
+        "%(VHS)%",
+        "f",
+        "%S%",
+        "actress",
+        "2000",
+        "2014"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(co-production)%",
+        "f",
+        "%L%",
+        "actress",
+        "2000",
+        "2014"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(200%)%",
+        "%(VHS)%",
+        "m",
+        "G%",
+        "actor",
+        "2010",
+        "2015"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(presents)%",
+        "%(co-production)%",
+        "m",
+        "Z%",
+        "actor",
+        "2009",
+        "2015"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(co-production)%",
+        "%(200%)%",
+        "f",
+        "%Ang%",
+        "actress",
+        "1950",
+        "2014"
+      ],
+      [
+        "(voice)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(200%)%",
+        "%(VHS)%",
+        "f",
+        "I%",
+        "actress",
+        "1990",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(co-production)%",
+        "%(USA)%",
+        "f",
+        "%P%",
+        "actress",
+        "2005",
+        "2014"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(2006)%",
+        "%(presents)%",
+        "m",
+        "I%",
+        "actor",
+        "2000",
+        "2014"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(200%)%",
+        "%(co-production)%",
+        "f",
+        "Y%",
+        "actress",
+        "2005",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(worldwide)%",
+        "%(Japan)%",
+        "f",
+        "N%",
+        "actress",
+        "1950",
+        "1984"
+      ],
+      [
+        "(voice)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(theatrical)%",
+        "%(2006)%",
+        "f",
+        "%Yo%",
+        "actress",
+        "2000",
+        "2014"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(France)%",
+        "%(co-production)%",
+        "f",
+        "%W%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(200%)%",
+        "f",
+        "%Tim%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(co-production)%",
+        "%(2006)%",
+        "f",
+        "Q%",
+        "actress",
+        "1990",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[de]",
+        "%(200%)%",
+        "%(co-production)%",
+        "f",
+        "%C%",
+        "actress",
+        "2005",
+        "2015"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(presents)%",
+        "%(2006)%",
+        "f",
+        "%D%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(VHS)%",
+        "%(Blu-ray)%",
+        "m",
+        "%C%",
+        "actress",
+        "2005",
+        "2015"
+      ],
+      [
+        "(voice)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(Blu-ray)%",
+        "%(200%)%",
+        "f",
+        "J%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(co-production)%",
+        "%(theatrical)%",
+        "f",
+        "Z%",
+        "actress",
+        "2009",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(Japan)%",
+        "%(USA)%",
+        "f",
+        "Z%",
+        "actress",
+        "1950",
+        "1984"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(200%)%",
+        "%(Blu-ray)%",
+        "f",
+        "O%",
+        "actress",
+        "1990",
+        "2008"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(worldwide)%",
+        "%(presents)%",
+        "f",
+        "Q%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[ru]",
+        "%(200%)%",
+        "%(worldwide)%",
+        "m",
+        "%J%",
+        "actor",
+        "2000",
+        "2008"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(200%)%",
+        "%(France)%",
+        "f",
+        "%Angel%",
+        "actress",
+        "2000",
+        "2007"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(2006)%",
+        "%(USA)%",
+        "f",
+        "M%",
+        "actress",
+        "2005",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(worldwide)%",
+        "%(theatrical)%",
+        "f",
+        "%V%",
+        "actress",
+        "2000",
+        "2005"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(2006)%",
+        "%(200%)%",
+        "f",
+        "L%",
+        "actress",
+        "2005",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(VHS)%",
+        "%(France)%",
+        "f",
+        "D%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(France)%",
+        "f",
+        "%Angel%",
+        "actress",
+        "2005",
+        "2007"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(Blu-ray)%",
+        "%(worldwide)%",
+        "f",
+        "%V%",
+        "actress",
+        "2010",
+        "2015"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[jp]",
+        "%(200%)%",
+        "%(France)%",
+        "f",
+        "Q%",
+        "actress",
+        "2005",
+        "2015"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(Blu-ray)%",
+        "f",
+        "%Angel%",
+        "actress",
+        "1950",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(VHS)%",
+        "%(USA)%",
+        "f",
+        "K%",
+        "actress",
+        "2000",
+        "2015"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(USA)%",
+        "%(Japan)%",
+        "f",
+        "%Ang%",
+        "actress",
+        "1990",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+        "[jp]",
+        "%(VHS)%",
+        "%(USA)%",
+        "f",
+        "P%",
+        "actress",
+        "2000",
+        "2010"
+      ],
+      [
+        "(voice)', '(voice) (uncredited)', '(voice: English version)",
+        "[us]",
+        "%(Blu-ray)%",
+        "%(2006)%",
+        "f",
+        "S%",
+        "actress",
+        "1990",
+        "2015"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,2462 @@
+{
+  "21-0": {
+    "query": "SELECT MIN(cn.name) AS company_name, MIN(lt.link) AS link_type, MIN(t.title) AS western_follow_up\nFROM company_name AS cn,\n   company_type AS ct,\n   keyword AS k,\n   link_type AS lt,\n   movie_companies AS mc,\n   movie_info AS mi,\n   movie_keyword AS mk,\n   movie_link AS ml,\n   title AS t\nWHERE lt.id = ml.link_type_id\nAND ml.movie_id = t.id\nAND t.id = mk.movie_id\nAND mk.keyword_id = k.id\nAND t.id = mc.movie_id\nAND mc.company_type_id = ct.id\nAND mc.company_id = cn.id\nAND mi.movie_id = t.id\nAND ml.movie_id = mk.movie_id\nAND ml.movie_id = mc.movie_id\nAND mk.movie_id = mc.movie_id\nAND ml.movie_id = mi.movie_id\nAND mk.movie_id = mi.movie_id\nAND mc.movie_id = mi.movie_id\nAND cn.country_code != '@param0'\nAND (cn.name LIKE '@param1' OR cn.name LIKE '@param2')\nAND ct.kind = '@param3'\nAND k.keyword = '@param4'\nAND lt.link LIKE '@param5'\nAND mc.note IS NULL\nAND mi.info IN ('@param6')\nAND t.production_year BETWEEN @param7 AND @param8;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "!=",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_type",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_type_id = ct.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "k",
+        "column": "keyword",
+        "operator": "=",
+        "data_type": "text",
+        "table": "keyword",
+        "join_tables_alias": [
+          "mk"
+        ],
+        "join_tables": [
+          "movie_keyword"
+        ],
+        "join_conditions": [
+          "mk.keyword_id = k.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "lt",
+        "column": "link",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "link_type",
+        "join_tables_alias": [
+          "ml"
+        ],
+        "join_tables": [
+          "movie_link"
+        ],
+        "join_conditions": [
+          "lt.id = ml.link_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "movie_info",
+        "join_tables_alias": [
+          "t",
+          "ml",
+          "mk",
+          "mc"
+        ],
+        "join_tables": [
+          "title",
+          "movie_link",
+          "movie_keyword",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mi.movie_id = t.id",
+          "ml.movie_id = mi.movie_id",
+          "mk.movie_id = mi.movie_id",
+          "mc.movie_id = mi.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "l",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ml",
+          "mk",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "movie_link",
+          "movie_keyword",
+          "movie_companies",
+          "movie_info"
+        ],
+        "join_conditions": [
+          "ml.movie_id = t.id",
+          "t.id = mk.movie_id",
+          "t.id = mc.movie_id",
+          "mi.movie_id = t.id"
+        ],
+        "left_or_right": [
+          "l",
+          "l",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [],
+          [],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ml",
+          "mk",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "movie_link",
+          "movie_keyword",
+          "movie_companies",
+          "movie_info"
+        ],
+        "join_conditions": [
+          "ml.movie_id = t.id",
+          "t.id = mk.movie_id",
+          "t.id = mc.movie_id",
+          "mi.movie_id = t.id"
+        ],
+        "left_or_right": [
+          "l",
+          "l",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [],
+          [],
+          [],
+          [
+            "info"
+          ]
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[fr]",
+        "%Film%",
+        "%Warner%",
+        "distributors",
+        "violence",
+        "%of%",
+        "Sci-Fi', 'Australia:M', 'Crime', 'UK', 'RAT:1.78 : 1",
+        1942,
+        2007
+      ],
+      [
+        "[md]",
+        "%BBC%",
+        "%Film%",
+        "distributors",
+        "character-name-in-title",
+        "%t%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1934,
+        2007
+      ],
+      [
+        "[fr]",
+        "%Films%",
+        "%Video%",
+        "distributors",
+        "based-on-novel",
+        "%e%",
+        "English', 'English', 'English', 'English', 'English",
+        1880,
+        2006
+      ],
+      [
+        "[sr]",
+        "%Company%",
+        "%Broadcasting%",
+        "production companies",
+        "number-in-title",
+        "%t%",
+        "Mono', 'Black and White', 'Drama', 'Drama', 'Black and White",
+        1987,
+        2005
+      ],
+      [
+        "[us]",
+        "%British%",
+        "%Warner%",
+        "production companies",
+        "character-name-in-title",
+        "%referenced%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1989,
+        2000
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%Corporation%",
+        "distributors",
+        "sex",
+        "%featured%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1912,
+        2012
+      ],
+      [
+        "[us]",
+        "%TV%",
+        "%Columbia%",
+        "distributors",
+        "character-name-in-title",
+        "%followed%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1956,
+        2006
+      ],
+      [
+        "[us]",
+        "%Corporation%",
+        "%Universal%",
+        "production companies",
+        "character-name-in-title",
+        "%of%",
+        "OFM:Video', 'OFM:35 mm', 'Australia:M', 'Sci-Fi', 'Reality-TV",
+        1908,
+        2007
+      ],
+      [
+        "[ag]",
+        "%Corporation%",
+        "%Jes\u00c3\u00bas%",
+        "distributors",
+        "friendship",
+        "%t%",
+        "English', 'Color', 'Color', 'Color', 'English",
+        1980,
+        2004
+      ],
+      [
+        "[us]",
+        "%Productions%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        2009,
+        2017
+      ],
+      [
+        "[na]",
+        "%CBN%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "Comedy', 'Black and White', 'Black and White', 'Comedy', 'Comedy",
+        1919,
+        1980
+      ],
+      [
+        "[yucs]",
+        "%Company%",
+        "%Warner%",
+        "production companies",
+        "sex",
+        "%e%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1994,
+        2009
+      ],
+      [
+        "[fr]",
+        "%BBC%",
+        "%System%",
+        "production companies",
+        "love",
+        "%t%",
+        "Sweden:15', 'UK', 'Short', 'Dolby Digital', 'Short",
+        1959,
+        2011
+      ],
+      [
+        "[gb]",
+        "%Company%",
+        "%CBS%",
+        "production companies",
+        "character-name-in-title",
+        "%referenced%",
+        "English', 'Color', 'English', 'English', 'Color",
+        1904,
+        2007
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%Corporation%",
+        "production companies",
+        "sex",
+        "%e%",
+        "Color', 'Color', 'Short', 'USA', 'Color",
+        2003,
+        2013
+      ],
+      [
+        "[us]",
+        "%ABC%",
+        "%Broadcasting%",
+        "production companies",
+        "tv-mini-series",
+        "%t%",
+        "English', 'English', 'English', 'USA', 'USA",
+        2000,
+        2009
+      ],
+      [
+        "[us]",
+        "%System%",
+        "%Broadcasting%",
+        "distributors",
+        "character-name-in-title",
+        "%of%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1973,
+        2008
+      ],
+      [
+        "[us]",
+        "%British%",
+        "%BBC%",
+        "distributors",
+        "murder",
+        "%l%",
+        "Black and White', 'Black and White', 'PCS:Spherical', 'Comedy', 'PCS:Spherical",
+        1963,
+        2011
+      ],
+      [
+        "[us]",
+        "%Corporation%",
+        "%Fr\u00c3\u00a8res%",
+        "distributors",
+        "sex",
+        "%in%",
+        "Color', 'USA', 'Short', 'Documentary', 'Color",
+        1974,
+        2003
+      ],
+      [
+        "[de]",
+        "%Company%",
+        "%Corporation%",
+        "distributors",
+        "surrealism",
+        "%from%",
+        "Color', 'English', 'Color', 'English', 'Color",
+        1990,
+        2014
+      ],
+      [
+        "[us]",
+        "%Company%",
+        "%Entertainment%",
+        "production companies",
+        "sex",
+        "%l%",
+        "Comedy', 'Comedy', 'Comedy', 'Comedy', 'Comedy",
+        1960,
+        2006
+      ],
+      [
+        "[us]",
+        "%British%",
+        "%Columbia%",
+        "distributors",
+        "character-name-in-title",
+        "%by%",
+        "English', 'Short', 'USA', 'Color', 'Color",
+        1977,
+        2011
+      ],
+      [
+        "[rw]",
+        "%Warner%",
+        "%Company%",
+        "production companies",
+        "based-on-novel",
+        "%of%",
+        "Stereo', '-', '-', 'Comedy', 'Comedy",
+        1975,
+        2010
+      ],
+      [
+        "[fr]",
+        "%Kuo%",
+        "%American%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "Drama', 'Drama', 'USA', 'Color', 'English",
+        1973,
+        2005
+      ],
+      [
+        "[de]",
+        "%Film%",
+        "%CBS%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "English', 'Color', 'Color', 'English', 'Color",
+        1964,
+        2007
+      ],
+      [
+        "[us]",
+        "%20th%",
+        "%Company%",
+        "production companies",
+        "character-name-in-title",
+        "%in%",
+        "Mono', 'Mono', 'Mono', 'Mono', 'Mono",
+        1968,
+        2004
+      ],
+      [
+        "[fr]",
+        "%Warner%",
+        "%American%",
+        "production companies",
+        "number-in-title",
+        "%in%",
+        "RAT:1.85 : 1', 'UK', 'RAT:1.85 : 1', 'Dolby Digital', 'Dolby Digital",
+        1990,
+        2008
+      ],
+      [
+        "[us]",
+        "%NBC%",
+        "%Broadcasting%",
+        "production companies",
+        "based-on-novel",
+        "%in%",
+        "-', 'Drama', '-', 'OFM:35 mm', '-",
+        1952,
+        1985
+      ],
+      [
+        "[dz]",
+        "%Broadcasting%",
+        "%CBS%",
+        "distributors",
+        "independent-film",
+        "%by%",
+        "Color', 'Color', 'Color', 'English', 'Color",
+        1915,
+        1998
+      ],
+      [
+        "[lc]",
+        "%American%",
+        "%Filmworks%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "Stereo', '-', '-', 'Stereo', 'Stereo",
+        1994,
+        2003
+      ],
+      [
+        "[py]",
+        "%British%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%featured%",
+        "PFM:35 mm', '60', 'Reality-TV', 'Australia:PG', 'UK",
+        1901,
+        2005
+      ],
+      [
+        "[gb]",
+        "%System%",
+        "%Video%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "USA', 'USA', 'English', 'English', 'USA",
+        1972,
+        2000
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%Television%",
+        "production companies",
+        "sequel",
+        "%in%",
+        "Reality-TV', 'OFM:Video', 'PFM:Video', 'RAT:1.78 : 1', '30",
+        1920,
+        2009
+      ],
+      [
+        "[gb]",
+        "%Broadcasting%",
+        "%NBC%",
+        "production companies",
+        "sex",
+        "%t%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1999,
+        2000
+      ],
+      [
+        "[kz]",
+        "%Broadcasting%",
+        "%Home%",
+        "distributors",
+        "tv-mini-series",
+        "%edited%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1965,
+        2005
+      ],
+      [
+        "[ni]",
+        "%Broadcasting%",
+        "%Company%",
+        "production companies",
+        "sex",
+        "%featured%",
+        "English', 'English', 'English', 'English', 'English",
+        1997,
+        2011
+      ],
+      [
+        "[gb]",
+        "%American%",
+        "%NFB%",
+        "distributors",
+        "character-name-in-title",
+        "%referenced%",
+        "Color', 'USA', 'Short', 'Color', 'Short",
+        1995,
+        2002
+      ],
+      [
+        "[us]",
+        "%Video%",
+        "%Television%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "Movie', 'Action', 'Sweden:15', 'UK', 'CLV",
+        1975,
+        2016
+      ],
+      [
+        "[us]",
+        "%BBC%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%featured%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1947,
+        1993
+      ],
+      [
+        "[gd]",
+        "%Film%",
+        "%ABS%",
+        "production companies",
+        "independent-film",
+        "%e%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1995,
+        2012
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%Entertainment%",
+        "production companies",
+        "female-nudity",
+        "%version%",
+        "English', 'Color', 'English', 'USA', 'Color",
+        1984,
+        2006
+      ],
+      [
+        "[eg]",
+        "%Television%",
+        "%e%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "Stereo', 'Comedy', 'Stereo', 'Comedy', 'Comedy",
+        1982,
+        1992
+      ],
+      [
+        "[bg]",
+        "%Home%",
+        "%Broadcasting%",
+        "production companies",
+        "based-on-novel",
+        "%in%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1958,
+        2010
+      ],
+      [
+        "[je]",
+        "%Video%",
+        "%BBC%",
+        "distributors",
+        "tv-mini-series",
+        "%featured%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1978,
+        2006
+      ],
+      [
+        "[fr]",
+        "%BBC%",
+        "%Indianapolis%",
+        "production companies",
+        "based-on-novel",
+        "%featured%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1961,
+        1994
+      ],
+      [
+        "[us]",
+        "%Film%",
+        "%Broadcasting%",
+        "production companies",
+        "based-on-novel",
+        "%in%",
+        "Drama', 'OFM:35 mm', 'OFM:35 mm', 'Drama', '-",
+        1968,
+        2010
+      ],
+      [
+        "[ci]",
+        "%Board%",
+        "%Warner%",
+        "distributors",
+        "character-name-in-title",
+        "%followed%",
+        "Documentary', 'English', 'USA', 'RAT:16:9 HD', 'OFM:35 mm",
+        1915,
+        2008
+      ],
+      [
+        "[de]",
+        "%ABC%",
+        "%YLE%",
+        "distributors",
+        "character-name-in-title",
+        "%referenced%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1994,
+        2012
+      ],
+      [
+        "[py]",
+        "%Warner%",
+        "%Home%",
+        "production companies",
+        "character-name-in-title",
+        "%by%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1977,
+        2001
+      ],
+      [
+        "[cl]",
+        "%Path\u00c3\u00a9%",
+        "%American%",
+        "distributors",
+        "based-on-novel",
+        "%e%",
+        "Comedy', 'PCS:Spherical', 'Black and White', 'PCS:Spherical', 'Black and White",
+        1908,
+        2005
+      ],
+      [
+        "[fr]",
+        "%System%",
+        "%Broadcasting%",
+        "distributors",
+        "character-name-in-title",
+        "%version%",
+        "Mono', 'Mono', 'Mono', 'Mono', 'Mono",
+        1891,
+        2008
+      ],
+      [
+        "[fr]",
+        "%American%",
+        "%Broadcasting%",
+        "production companies",
+        "sex",
+        "%by%",
+        "English', 'English', 'English', 'English', 'English",
+        1976,
+        2007
+      ],
+      [
+        "[vi]",
+        "%Columbia%",
+        "%Company%",
+        "distributors",
+        "dog",
+        "%in%",
+        "-', 'Stereo', 'Stereo', 'Stereo', 'Comedy",
+        1996,
+        2007
+      ],
+      [
+        "[fr]",
+        "%Broadcasting%",
+        "%The%",
+        "production companies",
+        "sex",
+        "%as%",
+        "English', 'English', 'English', 'English', 'English",
+        1967,
+        2011
+      ],
+      [
+        "[lv]",
+        "%Warner%",
+        "%System%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1990,
+        2014
+      ],
+      [
+        "[je]",
+        "%ABC%",
+        "%Broadcasting%",
+        "production companies",
+        "sex",
+        "%featured%",
+        "Color', 'Color', 'English', 'English', 'English",
+        1914,
+        2005
+      ],
+      [
+        "[us]",
+        "%ABC%",
+        "%Warner%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "English', 'Color', 'English', 'Color', 'Color",
+        1959,
+        1992
+      ],
+      [
+        "[tm]",
+        "%Home%",
+        "%Broadcasting%",
+        "production companies",
+        "murder",
+        "%t%",
+        "English', 'English', 'English', 'Color', 'Color",
+        1966,
+        1997
+      ],
+      [
+        "[de]",
+        "%Broadcasting%",
+        "%Warner%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "English', 'English', 'English', 'English', 'English",
+        1960,
+        2004
+      ],
+      [
+        "[de]",
+        "%Warner%",
+        "%C%",
+        "distributors",
+        "sex",
+        "%of%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1971,
+        2009
+      ],
+      [
+        "[cu]",
+        "%National%",
+        "%B%",
+        "production companies",
+        "character-name-in-title",
+        "%of%",
+        "-', 'Stereo', 'Comedy', 'Stereo', 'Comedy",
+        1944,
+        2007
+      ],
+      [
+        "[no]",
+        "%Productions%",
+        "%System%",
+        "production companies",
+        "character-name-in-title",
+        "%by%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1969,
+        1984
+      ],
+      [
+        "[us]",
+        "%Company%",
+        "%British%",
+        "distributors",
+        "character-name-in-title",
+        "%in%",
+        "PFM:35 mm', 'Short', 'OFM:35 mm', 'English', 'OFM:35 mm",
+        1967,
+        2013
+      ],
+      [
+        "[gb]",
+        "%Film%",
+        "%Zweites%",
+        "production companies",
+        "sex",
+        "%t%",
+        "Color', 'Color', 'Color', 'English', 'Color",
+        1995,
+        2011
+      ],
+      [
+        "[tl]",
+        "%Company%",
+        "%National%",
+        "production companies",
+        "dog",
+        "%in%",
+        "OFM:35 mm', '-', 'Drama', 'Drama', '-",
+        1979,
+        2005
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%Video%",
+        "distributors",
+        "character-name-in-title",
+        "%in%",
+        "Color', 'Color', 'English', 'English', 'English",
+        1985,
+        2009
+      ],
+      [
+        "[gn]",
+        "%General%",
+        "%Corporation%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "Color', 'USA', 'English', 'Color', 'USA",
+        1925,
+        1995
+      ],
+      [
+        "[cshh]",
+        "%Home%",
+        "%British%",
+        "distributors",
+        "sex",
+        "%by%",
+        "English', 'English', 'English', 'English', 'English",
+        1971,
+        2017
+      ],
+      [
+        "[at]",
+        "%Warner%",
+        "%Company%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "English', 'English', 'English', 'English', 'English",
+        1919,
+        1986
+      ],
+      [
+        "[us]",
+        "%ABC%",
+        "%British%",
+        "production companies",
+        "police",
+        "%e%",
+        "Short', 'English', 'Color', 'USA', 'USA",
+        1972,
+        2003
+      ],
+      [
+        "[kw]",
+        "%Path\u00c3\u00a9%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "PCS:Spherical', 'PCS:Spherical', 'Black and White', 'PCS:Spherical', 'Black and White",
+        1960,
+        2009
+      ],
+      [
+        "[de]",
+        "%Hammer%",
+        "%Broadcasting%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "Color', 'English', 'Color', 'Color', 'English",
+        1893,
+        2014
+      ],
+      [
+        "[cd]",
+        "%CBS%",
+        "%American%",
+        "distributors",
+        "based-on-novel",
+        "%e%",
+        "Color', 'English', 'Color', 'English', 'English",
+        1977,
+        2004
+      ],
+      [
+        "[an]",
+        "%Corporation%",
+        "%Film%",
+        "production companies",
+        "violence",
+        "%l%",
+        "Silent', 'Documentary', 'RAT:1.33 : 1', 'English', 'USA",
+        1952,
+        2010
+      ],
+      [
+        "[fr]",
+        "%Sony%",
+        "%ABC%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "English', 'English', 'Color', 'English', 'English",
+        1999,
+        2017
+      ],
+      [
+        "[us]",
+        "%American%",
+        "%Corporation%",
+        "production companies",
+        "sex",
+        "%version%",
+        "Drama', 'Mono', 'Drama', 'Mono', 'Mono",
+        1939,
+        2002
+      ],
+      [
+        "[us]",
+        "%Company%",
+        "%TV%",
+        "production companies",
+        "female-nudity",
+        "%of%",
+        "English', 'English', 'English', 'Color', 'Color",
+        1947,
+        2002
+      ],
+      [
+        "[gb]",
+        "%Video%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%in%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1998,
+        2006
+      ],
+      [
+        "[fr]",
+        "%Film%",
+        "%Broadcasting%",
+        "distributors",
+        "character-name-in-title",
+        "%l%",
+        "PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'OFM:35 mm', 'PFM:35 mm",
+        1955,
+        1983
+      ],
+      [
+        "[de]",
+        "%Columbia%",
+        "%Broadcasting%",
+        "distributors",
+        "sex",
+        "%t%",
+        "English', 'Color', 'Color', 'Color', 'Color",
+        1894,
+        1999
+      ],
+      [
+        "[gb]",
+        "%CBS%",
+        "%Video%",
+        "distributors",
+        "murder",
+        "%e%",
+        "Color', 'Documentary', 'English', 'Color', 'Silent",
+        1977,
+        2008
+      ],
+      [
+        "[cg]",
+        "%American%",
+        "%Broadcasting%",
+        "distributors",
+        "character-name-in-title",
+        "%of%",
+        "USA', 'Drama', 'Drama', 'Color', 'USA",
+        1972,
+        1976
+      ],
+      [
+        "[us]",
+        "%BBC%",
+        "%British%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "Comedy', 'Stereo', '-', 'Stereo', '-",
+        1924,
+        1975
+      ],
+      [
+        "[sv]",
+        "%Bertram%",
+        "%Television%",
+        "distributors",
+        "character-name-in-title",
+        "%version%",
+        "Stereo', '-', 'Comedy', '-', 'Comedy",
+        1994,
+        2010
+      ],
+      [
+        "[fr]",
+        "%and%",
+        "%NBC%",
+        "production companies",
+        "female-nudity",
+        "%in%",
+        "Short', 'English', 'USA', 'Color', 'Short",
+        1999,
+        2014
+      ],
+      [
+        "[de]",
+        "%Warner%",
+        "%Corporation%",
+        "production companies",
+        "based-on-novel",
+        "%e%",
+        "NTSC', '12', 'RAT:1.33 : 1', 'Romance', 'Dolby Digital",
+        1972,
+        1992
+      ],
+      [
+        "[im]",
+        "%CBN%",
+        "%Zweites%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "Comedy', 'Documentary', 'Black and White', 'Short', 'English",
+        1982,
+        2004
+      ],
+      [
+        "[gb]",
+        "%Home%",
+        "%American%",
+        "production companies",
+        "number-in-title",
+        "%of%",
+        "-', 'Stereo', '-', 'Comedy', 'Comedy",
+        2002,
+        2003
+      ],
+      [
+        "[de]",
+        "%Warner%",
+        "%Broadcasting%",
+        "production companies",
+        "family-relationships",
+        "%featured%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1910,
+        2000
+      ],
+      [
+        "[pt]",
+        "%National%",
+        "%Broadcasting%",
+        "distributors",
+        "murder",
+        "%l%",
+        "Comedy', '-', 'Short', 'RAT:1.33 : 1', 'Short",
+        1950,
+        1983
+      ],
+      [
+        "[tj]",
+        "%Networks%",
+        "%Warner%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "Short', 'Color', 'English', 'Drama', 'Color",
+        2002,
+        2008
+      ],
+      [
+        "[de]",
+        "%Company%",
+        "%CBS%",
+        "distributors",
+        "character-name-in-title",
+        "%version%",
+        "Mono', 'Mono', 'Mono', 'Mono', 'Mono",
+        1942,
+        2012
+      ],
+      [
+        "[us]",
+        "%National%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "Black and White', 'Black and White', 'Black and White', 'Comedy', 'PCS:Spherical",
+        1955,
+        2019
+      ],
+      [
+        "[in]",
+        "%of%",
+        "%TV%",
+        "production companies",
+        "sex",
+        "%featured%",
+        "Black and White', '30', 'Sci-Fi', 'Action', 'Australia:PG",
+        1992,
+        2007
+      ],
+      [
+        "[bt]",
+        "%Pictures%",
+        "%British%",
+        "production companies",
+        "murder",
+        "%e%",
+        "USA', 'English', 'Short', 'English', 'English",
+        1998,
+        2005
+      ],
+      [
+        "[de]",
+        "%Warner%",
+        "%Columbia%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1934,
+        1999
+      ],
+      [
+        "[fr]",
+        "%Company%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%by%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1897,
+        2000
+      ],
+      [
+        "[no]",
+        "%Corporation%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%followed%",
+        "Color', 'Drama', 'Color', 'Drama', 'USA",
+        1966,
+        2011
+      ],
+      [
+        "[jp]",
+        "%System%",
+        "%British%",
+        "production companies",
+        "character-name-in-title",
+        "%l%",
+        "UK', 'Silent', 'Documentary', 'RAT:1.85 : 1', 'Stereo",
+        1954,
+        1963
+      ],
+      [
+        "[kg]",
+        "%Home%",
+        "%CBS%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1900,
+        2001
+      ],
+      [
+        "[us]",
+        "%Corporation%",
+        "%Warner%",
+        "production companies",
+        "murder",
+        "%version%",
+        "Color', 'Color', 'English', 'English', 'Color",
+        1930,
+        2002
+      ],
+      [
+        "[il]",
+        "%Home%",
+        "%British%",
+        "production companies",
+        "sex",
+        "%l%",
+        "CLV', 'RAT:1.85 : 1', 'RAT:1.37 : 1', 'Sweden:15', 'Dolby Digital",
+        1966,
+        2008
+      ],
+      [
+        "[us]",
+        "%General%",
+        "%Company%",
+        "production companies",
+        "sex",
+        "%of%",
+        "USA', 'USA', 'English', 'English', 'English",
+        1938,
+        2015
+      ],
+      [
+        "[am]",
+        "%ABC%",
+        "%CBS%",
+        "production companies",
+        "sex",
+        "%referenced%",
+        "English', 'English', 'English', 'English', 'English",
+        1998,
+        2014
+      ],
+      [
+        "[gb]",
+        "%Company%",
+        "%Film%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1999,
+        2011
+      ],
+      [
+        "[ao]",
+        "%Broadcasting%",
+        "%Film%",
+        "production companies",
+        "sex",
+        "%in%",
+        "Color', 'English', 'Color', 'Color', 'Color",
+        1975,
+        2017
+      ],
+      [
+        "[lc]",
+        "%Warner%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "English', 'English', 'Color', 'Color', 'Color",
+        1940,
+        2008
+      ],
+      [
+        "[fr]",
+        "%Television%",
+        "%Warner%",
+        "distributors",
+        "non-fiction",
+        "%version%",
+        "Stereo', 'Stereo', '-', 'Stereo', 'Comedy",
+        1971,
+        2006
+      ],
+      [
+        "[de]",
+        "%Warner%",
+        "%Baltimore%",
+        "production companies",
+        "character-name-in-title",
+        "%referenced%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1888,
+        2013
+      ],
+      [
+        "[is]",
+        "%Television%",
+        "%Company%",
+        "distributors",
+        "character-name-in-title",
+        "%version%",
+        "English', 'Short', 'Short', 'Short', 'Short",
+        2002,
+        2006
+      ],
+      [
+        "[de]",
+        "%National%",
+        "%C%",
+        "production companies",
+        "death",
+        "%in%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1966,
+        2012
+      ],
+      [
+        "[fr]",
+        "%N\u00c3\u00b6ggerath%",
+        "%BBC%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1969,
+        2008
+      ],
+      [
+        "[kz]",
+        "%Film%",
+        "%Home%",
+        "production companies",
+        "non-fiction",
+        "%of%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1969,
+        2012
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%CBS%",
+        "production companies",
+        "husband-wife-relationship",
+        "%in%",
+        "Color', 'English', 'English', 'Color', 'Color",
+        1936,
+        1993
+      ],
+      [
+        "[gi]",
+        "%S%",
+        "%Home%",
+        "production companies",
+        "character-name-in-title",
+        "%in%",
+        "RAT:1.33 : 1', 'RAT:1.33 : 1', 'RAT:1.33 : 1', 'Mono', 'RAT:1.33 : 1",
+        2004,
+        2008
+      ],
+      [
+        "[bh]",
+        "%Fr\u00c3\u00a8res%",
+        "%Corporation%",
+        "distributors",
+        "murder",
+        "%t%",
+        "English', 'Color', 'USA', 'English', 'English",
+        1977,
+        1991
+      ],
+      [
+        "[de]",
+        "%Home%",
+        "%Corporation%",
+        "production companies",
+        "sex",
+        "%t%",
+        "Color', 'English', 'Color', 'English', 'English",
+        1901,
+        1994
+      ],
+      [
+        "[de]",
+        "%Company%",
+        "%Broadcasting%",
+        "production companies",
+        "sex",
+        "%t%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1976,
+        2019
+      ],
+      [
+        "[de]",
+        "%Broadcasting%",
+        "%Video%",
+        "production companies",
+        "based-on-novel",
+        "%e%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1929,
+        1999
+      ],
+      [
+        "[pe]",
+        "%American%",
+        "%Warner%",
+        "distributors",
+        "based-on-novel",
+        "%of%",
+        "Black and White', 'Mono', 'Black and White', 'Black and White', 'Mono",
+        1972,
+        2008
+      ],
+      [
+        "[de]",
+        "%Video%",
+        "%CBS%",
+        "production companies",
+        "character-name-in-title",
+        "%in%",
+        "-', 'PCS:Spherical', 'RAT:1.33 : 1', 'Comedy', 'PCS:Spherical",
+        1994,
+        2005
+      ],
+      [
+        "[us]",
+        "%Corporation%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%in%",
+        "Color', 'Color', 'English', 'English', 'Color",
+        1922,
+        1973
+      ],
+      [
+        "[us]",
+        "%Video%",
+        "%Broadcasting%",
+        "production companies",
+        "sex",
+        "%e%",
+        "Color', 'English', 'Color', 'Color', 'English",
+        1898,
+        2011
+      ],
+      [
+        "[ddde]",
+        "%ABC%",
+        "%British%",
+        "production companies",
+        "female-nudity",
+        "%e%",
+        "English', 'Color', 'Color', 'Color', 'English",
+        1975,
+        1994
+      ],
+      [
+        "[ag]",
+        "%Broadcasting%",
+        "%Columbia%",
+        "distributors",
+        "based-on-novel",
+        "%version%",
+        "English', 'Color', 'Color', 'Color', 'Color",
+        1953,
+        2003
+      ],
+      [
+        "[fr]",
+        "%Toshiba%",
+        "%Columbia%",
+        "production companies",
+        "sex",
+        "%e%",
+        "RAT:1.33 : 1', 'Mono', 'Mono', 'RAT:1.33 : 1', 'RAT:1.33 : 1",
+        1970,
+        2008
+      ],
+      [
+        "[fr]",
+        "%Company%",
+        "%British%",
+        "distributors",
+        "character-name-in-title",
+        "%t%",
+        "Color', 'English', 'Color', 'English', 'Color",
+        1984,
+        2012
+      ],
+      [
+        "[ro]",
+        "%CBN%",
+        "%Warner%",
+        "production companies",
+        "character-name-in-title",
+        "%of%",
+        "English', 'Drama', 'Short', 'English', 'USA",
+        2004,
+        2013
+      ],
+      [
+        "[fr]",
+        "%Pictures%",
+        "%Television%",
+        "distributors",
+        "character-name-in-title",
+        "%l%",
+        "PCS:Spherical', 'Black and White', 'PCS:Spherical', 'PCS:Spherical', 'Comedy",
+        1958,
+        2010
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%Gua\u00c3\u00adra%",
+        "distributors",
+        "sex",
+        "%l%",
+        "English', 'Color', 'English', 'Color', 'Color",
+        1986,
+        2008
+      ],
+      [
+        "[gb]",
+        "%Company%",
+        "%U%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1995,
+        1998
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%National%",
+        "distributors",
+        "sex",
+        "%featured%",
+        "60', 'Sci-Fi', 'Singapore:PG', 'Family', 'PFM:35 mm",
+        1948,
+        2007
+      ],
+      [
+        "[fr]",
+        "%BBC%",
+        "%Broadcasting%",
+        "distributors",
+        "sex",
+        "%l%",
+        "English', 'USA', 'USA', 'USA', 'USA",
+        1985,
+        2002
+      ],
+      [
+        "[cl]",
+        "%Warner%",
+        "%Company%",
+        "production companies",
+        "character-name-in-title",
+        "%by%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1992,
+        2010
+      ],
+      [
+        "[us]",
+        "%Brothers%",
+        "%Broadcasting%",
+        "production companies",
+        "murder",
+        "%by%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1995,
+        2011
+      ],
+      [
+        "[pf]",
+        "%CBS%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%followed%",
+        "Color', 'USA', 'Color', 'English', 'USA",
+        1929,
+        2008
+      ],
+      [
+        "[us]",
+        "%NBC%",
+        "%British%",
+        "production companies",
+        "number-in-title",
+        "%in%",
+        "Dolby Digital', 'Thriller', 'RAT:2.35 : 1', 'USA:Approved', 'RAT:1.33 : 1",
+        1969,
+        2003
+      ],
+      [
+        "[gb]",
+        "%Warner%",
+        "%Path\u00c3\u00a9%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "Drama', 'OFM:35 mm', 'OFM:35 mm', '-', 'OFM:35 mm",
+        1998,
+        2002
+      ],
+      [
+        "[gb]",
+        "%Warner%",
+        "%MGM%",
+        "production companies",
+        "sequel",
+        "%in%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1961,
+        2014
+      ],
+      [
+        "[de]",
+        "%CBS%",
+        "%Maek%",
+        "production companies",
+        "character-name-in-title",
+        "%in%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1998,
+        2003
+      ],
+      [
+        "[us]",
+        "%Company%",
+        "%American%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1987,
+        2014
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%British%",
+        "distributors",
+        "character-name-in-title",
+        "%referenced%",
+        "English', 'Color', 'USA', 'Color', 'USA",
+        1954,
+        2000
+      ],
+      [
+        "[sr]",
+        "%American%",
+        "%Home%",
+        "production companies",
+        "independent-film",
+        "%e%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1957,
+        2017
+      ],
+      [
+        "[cu]",
+        "%BBC%",
+        "%Zweites%",
+        "production companies",
+        "sex",
+        "%e%",
+        "Comedy', 'Comedy', '-', 'Stereo', 'Stereo",
+        2001,
+        2006
+      ],
+      [
+        "[tw]",
+        "%Broadcasting%",
+        "%Company%",
+        "distributors",
+        "based-on-novel",
+        "%e%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1963,
+        2003
+      ],
+      [
+        "[cv]",
+        "%F%",
+        "%Universal%",
+        "production companies",
+        "murder",
+        "%referenced%",
+        "-', '-', 'RAT:1.33 : 1', 'Short', 'Comedy",
+        1973,
+        2007
+      ],
+      [
+        "[mu]",
+        "%Corporation%",
+        "%Warner%",
+        "production companies",
+        "blood",
+        "%spoofed%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1911,
+        2008
+      ],
+      [
+        "[de]",
+        "%British%",
+        "%ABC%",
+        "production companies",
+        "based-on-novel",
+        "%e%",
+        "Drama', 'OFM:35 mm', 'OFM:35 mm', '-', 'OFM:35 mm",
+        1964,
+        2004
+      ],
+      [
+        "[gb]",
+        "%Columbia%",
+        "%Home%",
+        "production companies",
+        "sex",
+        "%featured%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1988,
+        2008
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%Films%",
+        "production companies",
+        "based-on-novel",
+        "%l%",
+        "Comedy', 'PCS:Spherical', 'PCS:Spherical', 'PCS:Spherical', 'Comedy",
+        2001,
+        2002
+      ],
+      [
+        "[gb]",
+        "%Warner%",
+        "%Broadcasting%",
+        "production companies",
+        "sex",
+        "%version%",
+        "USA', 'English', 'Color', 'USA', 'Color",
+        1967,
+        2004
+      ],
+      [
+        "[er]",
+        "%British%",
+        "%Video%",
+        "production companies",
+        "based-on-novel",
+        "%in%",
+        "Mono', 'Mono', 'Black and White', 'Drama', 'Drama",
+        1949,
+        2010
+      ],
+      [
+        "[ma]",
+        "%NBC%",
+        "%Company%",
+        "production companies",
+        "number-in-title",
+        "%t%",
+        "Color', 'English', 'English', 'English', 'English",
+        1980,
+        2011
+      ],
+      [
+        "[de]",
+        "%Path\u00c3\u00a9%",
+        "%Pictures%",
+        "distributors",
+        "husband-wife-relationship",
+        "%featured%",
+        "RAT:1.33 : 1', 'RAT:1.33 : 1', 'RAT:1.33 : 1', 'Mono', 'RAT:1.33 : 1",
+        1968,
+        1999
+      ],
+      [
+        "[tw]",
+        "%Broadcasting%",
+        "%National%",
+        "distributors",
+        "character-name-in-title",
+        "%t%",
+        "Color', 'English', 'English', 'English', 'Color",
+        1971,
+        2012
+      ],
+      [
+        "[lc]",
+        "%Corporation%",
+        "%Broadcasting%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1979,
+        2009
+      ],
+      [
+        "[gb]",
+        "%Film%",
+        "%National%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1953,
+        2009
+      ],
+      [
+        "[us]",
+        "%Communications%",
+        "%CBS%",
+        "distributors",
+        "character-name-in-title",
+        "%t%",
+        "30', 'Black and White', 'Drama', 'Action', 'Black and White",
+        1946,
+        2006
+      ],
+      [
+        "[fr]",
+        "%National%",
+        "%CBN%",
+        "distributors",
+        "non-fiction",
+        "%e%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1962,
+        2013
+      ],
+      [
+        "[ru]",
+        "%National%",
+        "%Broadcasting%",
+        "distributors",
+        "based-on-novel",
+        "%by%",
+        "Short', 'RAT:1.33 : 1', 'Short', 'Short', 'RAT:1.33 : 1",
+        1981,
+        2009
+      ],
+      [
+        "[de]",
+        "%American%",
+        "%Staple%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "English', 'English', 'English', 'Color', 'Color",
+        1957,
+        2019
+      ],
+      [
+        "[ga]",
+        "%Company%",
+        "%Pictures%",
+        "production companies",
+        "family-relationships",
+        "%referenced%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1995,
+        2012
+      ],
+      [
+        "[fr]",
+        "%American%",
+        "%Broadcasting%",
+        "production companies",
+        "father-son-relationship",
+        "%in%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1979,
+        2010
+      ],
+      [
+        "[us]",
+        "%Pictures%",
+        "%Lord%",
+        "production companies",
+        "sex",
+        "%of%",
+        "English', 'USA', 'Short', 'Short', 'Drama",
+        1971,
+        2000
+      ],
+      [
+        "[bh]",
+        "%Television%",
+        "%Broadcasting%",
+        "distributors",
+        "sex",
+        "%referenced%",
+        "Color', 'Color', 'Color', 'Color', 'Short",
+        1934,
+        2009
+      ],
+      [
+        "[de]",
+        "%YLE%",
+        "%Film%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "Short', 'Color', 'Color', 'Color', 'USA",
+        2004,
+        2014
+      ],
+      [
+        "[us]",
+        "%ABC%",
+        "%Broadcasting%",
+        "production companies",
+        "independent-film",
+        "%t%",
+        "English', 'English', 'Drama', 'English', 'Drama",
+        1947,
+        1994
+      ],
+      [
+        "[gb]",
+        "%Film%",
+        "%Universal%",
+        "production companies",
+        "based-on-novel",
+        "%version%",
+        "PCS:Spherical', 'PCS:Spherical', 'Comedy', 'Short', 'Comedy",
+        1957,
+        2008
+      ],
+      [
+        "[as]",
+        "%ABC%",
+        "%System%",
+        "production companies",
+        "sex",
+        "%t%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1971,
+        2012
+      ],
+      [
+        "[dk]",
+        "%Video%",
+        "%Company%",
+        "production companies",
+        "female-nudity",
+        "%referenced%",
+        "OFM:35 mm', 'Drama', 'OFM:35 mm', 'OFM:35 mm', 'Drama",
+        1990,
+        2006
+      ],
+      [
+        "[de]",
+        "%ABS%",
+        "%British%",
+        "production companies",
+        "character-name-in-title",
+        "%referenced%",
+        "RAT:1.33 : 1', 'Mono', 'RAT:1.33 : 1', 'Mono', 'RAT:1.33 : 1",
+        1940,
+        2013
+      ],
+      [
+        "[gb]",
+        "%Company%",
+        "%Fox%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "Black and White', 'Black and White', 'Comedy', 'Black and White', 'Black and White",
+        2003,
+        2007
+      ],
+      [
+        "[us]",
+        "%TV%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%of%",
+        "USA', 'USA', 'English', 'USA', 'USA",
+        1993,
+        2012
+      ],
+      [
+        "[us]",
+        "%BBC%",
+        "%Films%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "English', 'English', 'English', 'English', 'Color",
+        1985,
+        2006
+      ],
+      [
+        "[au]",
+        "%Boyana%",
+        "%Broadcasting%",
+        "distributors",
+        "sex",
+        "%e%",
+        "USA', 'English', 'USA', 'Drama', 'English",
+        1952,
+        2008
+      ],
+      [
+        "[us]",
+        "%Broadcasting%",
+        "%American%",
+        "production companies",
+        "character-name-in-title",
+        "%in%",
+        "Short', 'English', 'Color', 'Color', 'USA",
+        1911,
+        1968
+      ],
+      [
+        "[cshh]",
+        "%BBC%",
+        "%American%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        "English', 'English', 'Color', 'English', 'English",
+        1967,
+        2014
+      ],
+      [
+        "[fr]",
+        "%Broadcasting%",
+        "%NBC%",
+        "distributors",
+        "independent-film",
+        "%e%",
+        "English', 'English', 'English', 'English', 'English",
+        1949,
+        2007
+      ],
+      [
+        "[fr]",
+        "%Company%",
+        "%Home%",
+        "production companies",
+        "character-name-in-title",
+        "%l%",
+        "Mono', 'Mono', 'Mono', 'Mono', 'Mono",
+        1980,
+        2015
+      ],
+      [
+        "[gb]",
+        "%Warner%",
+        "%Universal%",
+        "distributors",
+        "character-name-in-title",
+        "%by%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1915,
+        1996
+      ],
+      [
+        "[fr]",
+        "%ABC%",
+        "%N%",
+        "production companies",
+        "murder",
+        "%in%",
+        "USA', 'English', 'English', 'Color', 'Color",
+        1967,
+        2010
+      ],
+      [
+        "[us]",
+        "%Columbia%",
+        "%BBC%",
+        "production companies",
+        "love",
+        "%in%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        2002,
+        2007
+      ],
+      [
+        "[gw]",
+        "%BBC%",
+        "%Home%",
+        "production companies",
+        "murder",
+        "%t%",
+        "Color', 'Color', 'Color', 'Color', 'English",
+        1907,
+        1999
+      ],
+      [
+        "[mm]",
+        "%Television%",
+        "%Home%",
+        "production companies",
+        "husband-wife-relationship",
+        "%t%",
+        "Color', 'English', 'Color', 'Color', 'English",
+        1975,
+        2009
+      ],
+      [
+        "[us]",
+        "%Galerija%",
+        "%British%",
+        "production companies",
+        "murder",
+        "%l%",
+        "Reality-TV', 'UK', 'Family', 'Drama', 'Sci-Fi",
+        1958,
+        2008
+      ],
+      [
+        "[cy]",
+        "%Productions%",
+        "%ABC%",
+        "production companies",
+        "character-name-in-title",
+        "%followed%",
+        "OFM:35 mm', 'OFM:35 mm', 'PFM:35 mm', 'OFM:35 mm', 'OFM:35 mm",
+        1929,
+        1993
+      ],
+      [
+        "[us]",
+        "%CBS%",
+        "%Corporation%",
+        "production companies",
+        "tv-mini-series",
+        "%in%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1938,
+        2004
+      ],
+      [
+        "[de]",
+        "%Broadcasting%",
+        "%CBS%",
+        "production companies",
+        "murder",
+        "%in%",
+        "Color', 'Color', 'Color', 'Color', 'Color",
+        1990,
+        2008
+      ],
+      [
+        "[fr]",
+        "%Bros%",
+        "%Warner%",
+        "production companies",
+        "character-name-in-title",
+        "%referenced%",
+        "PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm', 'PFM:35 mm",
+        1985,
+        2011
+      ],
+      [
+        "[de]",
+        "%Broadcasting%",
+        "%Fr\u00c3\u00a8res%",
+        "distributors",
+        "independent-film",
+        "%l%",
+        "60', 'Singapore:PG', 'UK', 'Black and White', 'OFM:Video",
+        1968,
+        1986
+      ],
+      [
+        "[es]",
+        "%ABS%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%t%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1974,
+        2014
+      ],
+      [
+        "[br]",
+        "%Television%",
+        "%Company%",
+        "production companies",
+        "surrealism",
+        "%featured%",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        1975,
+        1999
+      ],
+      [
+        "[us]",
+        "%Video%",
+        "%n%",
+        "production companies",
+        "murder",
+        "%of%",
+        "Drama', '-', 'Drama', '-', 'OFM:35 mm",
+        1987,
+        2003
+      ],
+      [
+        "[us]",
+        "%Corporation%",
+        "%t%",
+        "distributors",
+        "character-name-in-title",
+        "%t%",
+        "Comedy', 'Black and White', 'Comedy', 'Comedy', 'Comedy",
+        1988,
+        2011
+      ],
+      [
+        "[to]",
+        "%20th%",
+        "%Warner%",
+        "production companies",
+        "murder",
+        "%l%",
+        "Action', 'Drama', 'Sci-Fi', 'Sci-Fi', '60",
+        1928,
+        2008
+      ],
+      [
+        "[gb]",
+        "%Company%",
+        "%American%",
+        "production companies",
+        "friendship",
+        "%in%",
+        "USA', 'Drama', 'Color', 'English', 'Short",
+        1974,
+        2004
+      ],
+      [
+        "[de]",
+        "%Company%",
+        "%Video%",
+        "production companies",
+        "father-son-relationship",
+        "%in%",
+        "English', 'English', 'English', 'English', 'English",
+        1978,
+        2003
+      ],
+      [
+        "[fr]",
+        "%Broadcasting%",
+        "%System%",
+        "distributors",
+        "love",
+        "%t%",
+        "-', '-', '-', 'Comedy', 'Comedy",
+        1937,
+        2010
+      ],
+      [
+        "[gd]",
+        "%Company%",
+        "%Fernsehen%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        "English', 'Color', 'English', 'English', 'English",
+        1995,
+        2004
+      ],
+      [
+        "[fr]",
+        "%Video%",
+        "%TV%",
+        "production companies",
+        "sex",
+        "%t%",
+        "Family', 'Family', 'Family', 'Drama', 'Crime",
+        1961,
+        2010
+      ]
+    ]
+  }
+}

@@ -1,0 +1,677 @@
+{
+    "31-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS writer, MIN(t.title) AS violent_liongate_movie\nFROM cast_info AS ci,\n    company_name AS cn,\n    info_type AS it1,\n    info_type AS it2,\n    keyword AS k,\n    movie_companies AS mc,\n    movie_info AS mi,\n    movie_info_idx AS mi_idx,\n    movie_keyword AS mk,\n    name AS n,\n    title AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND t.id = mc.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND ci.movie_id = mc.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi.movie_id = mc.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND mi_idx.movie_id = mc.movie_id\nAND mk.movie_id = mc.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND cn.id = mc.company_id\nAND ci.note IN ('@param0')\nAND cn.name LIKE '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND k.keyword IN ('@param4')\nAND mi.info IN ('@param5')\nAND n.gender = '@param6';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cast_info",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "n"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_info",
+                    "movie_info_idx",
+                    "movie_keyword",
+                    "movie_companies",
+                    "name"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "ci.movie_id = mc.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "movie_info"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "mc",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "cast_info",
+                    "movie_info_idx",
+                    "movie_keyword",
+                    "movie_companies",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "mi.movie_id = mc.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(production assistant)', '(as Theo Nicholas)', '(as John Stone)', '(as Hall Gibson)', '(as Jason Weter)",
+                "%P%",
+                "certificates",
+                "votes distribution",
+                "tribute', 'chicken-costume', 'crying-girl', 'forced-vacation', 'hero-as-criminal",
+                "Singapore:PG', 'Spain:December 1994', 'MET:2702.02 m', 'UK:3 November 1994', 'Austria:8 May 2005",
+                "f"
+            ],
+            [
+                "(location assistant: New York) (as Dwayne A. Smith)', '(as Greger)', '(as Helen Ko)', '(as Will Hoppins)', '(as Sparkler)",
+                "%a%",
+                "LD master format",
+                "votes distribution",
+                "murder', 'female-wrestling', 'tiffany', 'srebrenica', 'immature-adults",
+                "Film', 'PLTES 34071', 'Italy:6 May 2013', 'Austria:2 July 1971', 'USA:16 October 2008",
+                "m"
+            ],
+            [
+                "(additional location assistant)', '(as Jamie Bailey)', '(as Zsann\u00c3\u00a9 Pitta)', '(as Luis Morett)', '(Hach\u00c3\u00ads)",
+                "%n%",
+                "release dates",
+                "votes",
+                "tragic-villain', 'inspirational', 'horse-groom', 'portable-ultrasound', 'power-of-redemption",
+                "South Korea:19 July 2012', 'Japan:4 August 1978', 'Bolivia:16 May 2002', 'Italy:2 April 1992', 'UK:4 February 1979",
+                "m"
+            ],
+            [
+                "(voice)', '(as Albert Swanson)', '( The Hitman )', '(as Silvi@ P@v)', '(autos)",
+                "%m%",
+                "tech info",
+                "votes distribution",
+                "heroism', 'shojo', 'match', 'bacterium', 'tabu-search",
+                "PFM:35 mm', 'India:July 2009', 'Veyo, Utah, USA', 'Denmark:25 May 2004', 'MET:3064.75 m",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Jesus Genis)', '(as Phil Andrew)', '(as V. Basner)', '(as Ashley Drane)",
+                "%t%",
+                "release dates",
+                "rating",
+                "night-cityscape', 'waterhole', 'painter''s-palet', 'albino', 'second-home",
+                "Slovenia:26 July 2012', 'Estonia:102', '22 May 1902 -', 'A film about guts.', 'FFR 22,500,000",
+                "f"
+            ],
+            [
+                "(location manager) (uncredited)', '(as Suet Yin Wong)', '(as Bill Berg)', '(as J. Maliniak)', '(as Vicky Williams)",
+                "%W%",
+                "screenplay-teleplay",
+                "rating",
+                "murder', 'czech-tv', 'trombo', 'electrical-wiring', 'black-lace-mantilla",
+                "Garland, Alex. \"28 Days Later\". (London), Faber, 2002, Pg. x, 116, (BK), ISBN-10: 0571216536', 'Saiki, Ohita, Japan', 'Egypt:27 March 1999', 'Lebanon, Ohio, USA', '28 July 1986 - ?",
+                "m"
+            ],
+            [
+                "(production assistant)', '(as Jean Shen)', '(as Sophia Madonna)', '(as Martin Vincze)', '(as Jeff Licon)",
+                "%r%",
+                "release dates",
+                "votes",
+                "shotgun', 'clean-water-act', 'genovese-family', 'real-madrid', 'necklace-yanked-off",
+                "Germany:26 July 2012', 'Belgium:1970', 'ML 106171', '2002 Yoga Zone LLC', 'UK:19 June 1975",
+                "m"
+            ],
+            [
+                "(production assistant)', '(as Robert Casey)', '(as Grant Laramy)', '(as Phil Terry)', '(as Mr. Jack)",
+                "%u%",
+                "goofs",
+                "votes",
+                "warlord', 'grinding-teeth', 'nape-of-neck', 'hill-station', 'finback-whale",
+                "FAIR: In \"Batman Begins\" Lucius Fox says about the Batsuit: \"This sucker will stop a knife.\" In \"The Dark Knight Rises\", Batman gets stabbed. However, in \"The Dark Knight\", Fox gives Batman a new suit that makes him more agile but also \"more vulnerable to knives and gunfire\". If Batman kept his old suit, it''s likely that the knife would''ve been less effective.', 'Austria:1 July 2009', 'Chile:13 May 2012', 'Canada:31 May 1995', 'Italy:24 April 1992",
+                "f"
+            ],
+            [
+                "(production assistant)', '(as Bob Karnes)', '(text)', '(as Raaj Rani)', '(as Cheik Doukoure)",
+                "%c%",
+                "release dates",
+                "rating",
+                "title-at-the-end', 'peripeteia', 'yellow-tulip', 'imf', 'ikaria",
+                "Czech Republic:26 July 2012', 'Romania:1996', 'UK:22 July 1966', 'Canada:5 June 1968', 'Malaysia:8 May 2008",
+                "f"
+            ],
+            [
+                "(production assistant)', '(BND chief)', '(China Barbi)', '(Rana''s son)', '(Hippie #2)",
+                "%i%",
+                "quotes",
+                "votes distribution",
+                "orphan', 'carson-grant', 'hyperinflation', 'dragonfly', 'noir-archetype",
+                "Selina Kyle: Shrimp balls?', 'Air Force One', 'CHF 1,200,000', 'Brazil:7 June 2013', 'This is art, baby!",
+                "f"
+            ],
+            [
+                "(production assistant)', '(as Stuart Nedd)', '(as David Latt)', '(as Ed Guardino)', '(18 ans)",
+                "%y%",
+                "goofs",
+                "votes",
+                "police-officer-killed', 'making-bed', 'building-design', 'vampire-teeth', 'adult-student",
+                "PLOT: SPOILER: Daggett''s plan for hijacking Wayne''s company could not have happened. Not only would it be fairly evident that Wayne was not on the trading floor that day, the fact that a terrorist had seized control of the Stock Exchange and hacked into their network would have cancelled all trading that occurred that day and called any trades that went through into question.', 'Brazil:81', 'No Static At All!', 'Italy:9 March 2004', '90,622 (France)",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Il Moro)', '(as N. Gushchina)', '(wild sentry)', '(as Benjamin Lux)",
+                "%p%",
+                "tech info",
+                "votes distribution",
+                "land-grab', 'homer''s-odyssey', 'intent-to-kill', 'voice-actor', 'polished-surface",
+                "MET:1553 m', 'USA:6 October 1986', 'Austria:17 May 2010', 'Japan:24 min.', 'NOK 9,000",
+                "m"
+            ],
+            [
+                "(location assistant)', '(as Stuart Goldman)', '(as Shabir Masani)', '(as Ant Koegh)', '(as Jenifer Love)",
+                "%u%",
+                "release dates",
+                "votes distribution",
+                "police-officer-killed', 'young-conductor', 'asian-wedding', 'rescued-by-dog', 'combine-the-machine",
+                "Hungary:26 July 2012', '12 April 2010 - ?', 'France:11 June 2002', 'UK:12 July 2013', 'USA:24 October 1939",
+                "m"
+            ],
+            [
+                "(location assistant)', '(story \"Driftwood\")', '(as Nik Schodel)', '(Kimmy''s Secretary)', '(stand-in: Graham)",
+                "%c%",
+                "tech info",
+                "rating",
+                "snow', 'cherry-orchard', 'lesbian-erotica', 'plyometrics', 'cuckoo-in-the-nest",
+                "OFM:65 mm', 'Chile:Y7', 'UK:1 January 2014', 'France:8 June 2011', '\u00c2\u00a3450",
+                "m"
+            ],
+            [
+                "(medic)', '(as Guy Empey)', '(as ERA)', '(as Roland McLoed)', '(as Aaron Landon)",
+                "%e%",
+                "quotes",
+                "votes",
+                "title-at-the-end', 'cruz-de-tejada', 'eden-north-carolina', 'jotunheimen-norway', 'time-lock",
+                "Selina Kyle: [the Congressman has just been shot in the leg] Keep some pressure on that, darling.::Congressman: Call me.', 'MET:2833 m', '...Wake up.', 'Denmark:8 July 1966', '51",
+                "m"
+            ],
+            [
+                "(production assistant)', '(as T. Rymaryova)', '(as ''Elliot'')', '(as Frederick Way)', '(as Micheal Gaunt)",
+                "%P%",
+                "tech info",
+                "rating",
+                "necklace', 'pet-ferret', 'john-barleycorn', 'swearing-off-liquor', 'tsunami",
+                "CAM:IMAX MSM 9802, Hasselblad and Mamiya Lenses', 'UK:22 January 1995', '1038-85', 'ARS 3,400', 'Brazil:18 July 2010",
+                "m"
+            ],
+            [
+                "(production assistant)', '(as Mitzuko)', '(as Linda Johnson)', '(as Lucinda)', '(as Katy Fisher)",
+                "%L%",
+                "certificates",
+                "rating",
+                "murder', 'breaking-egg', 'demetra', 'mutual-suspicion', 'south-jersey",
+                "Germany:12', 'Norway:12 June 2011', 'It''s beyond belief!', 'Hungary:5 July 1979', 'ID 5068",
+                "f"
+            ],
+            [
+                "(uncredited)', '(voice) (as Sahil)', '(as Abo Takeshi)', '(as Maria Russo)', '(researcher) (1960)",
+                "%t%",
+                "sound mix",
+                "votes distribution",
+                "reservation', 'basket-weaving', 'modification', 'lost-world', 'suicide-hotline",
+                "Mono', 'PCS:Pancroscope', 'MET:1,923.30 m', 'MET:3166 m', 'UK:23 May 1971",
+                "m"
+            ],
+            [
+                "(production assistant)', '(as Tony Foutz)', '(US sequences)', '(as Zaharat Ara)', '(as Le Gallo)",
+                "%r%",
+                "quotes",
+                "rating",
+                "sawed-off-shotgun', 'swimwear', 'turbocharged', 'part-of-trilogy', 'capri",
+                "John Blake: I just can''t take it. I mean, nobody will ever know who it was who saved an entire city.::Jim Gordon: They know who it was; it was the Batman.', 'Japan:13 June 2013', 'USA:8 May 2001', '984,912 (Spain)', 'USA:31 July 1977",
+                "m"
+            ],
+            [
+                "(location assistant)', '(as Kai Remlov)', '(as R.L. Malhotra)', '(as Sondra Kerr)', '(as D.C. Hendricks)",
+                "%t%",
+                "tech info",
+                "votes",
+                "tragic-villain', 'electrical-engineer', 'work-shift-change', 'bug-rape', 'teepee",
+                "CAM:Arriflex 235, Panavision C-, E-Series and Super High Speed Lenses', '- February 2002', 'ELV 1855', 'MET:3978.54 m', 'OFM:DnxHD 444",
+                "m"
+            ],
+            [
+                "(public relations: McDonald & Rutter)', '(as Lauren P)', '(as Se-yeon Choi)', '(as Erika Lane)', '(as Kristian)",
+                "%s%",
+                "weekend gross",
+                "votes",
+                "cocaine', 'planned-parenthood', 'red-tails', 'blue-comedy', 'false-scare",
+                "$58,507 (USA) (11 July 2004) (39 screens)', 'UK:13 August 1954', 'MET:2,118.35 m', 'Poland:14', 'Brazil:1945",
+                "f"
+            ],
+            [
+                "(uncredited)', '(as Farida Siddiqi)', '(as Steven Lee)', '(as Corbett Morris)', '(as Ken McNeal)",
+                "%r%",
+                "release dates",
+                "votes",
+                "secret-door', 'reference-to-buddha', 'data-processing', 'separatist', 'money",
+                "France:25 July 2012', 'USA:5 January 1950', 'Show #5600', 'UK:8 July 2006', 'Do harm.",
+                "f"
+            ],
+            [
+                "(as Alon Moni Aboutboul)', '(as Tali Halter)', '(as Sylvia L.)', '(as Lana Person)', '(as Rex Dexter)",
+                "%e%",
+                "release dates",
+                "votes distribution",
+                "swat', 'methane-snow', 'hollow-point-bullet', 'electric-eye', 'back-to-the-land",
+                "Finland:20 July 2012', 'MET:3557.5 m', 'Kids', 'MET:707 m', 'Serbia:5 June 2007",
+                "m"
+            ],
+            [
+                "(as Alon Moni Aboutboul)', '(1996-1997) (1999)', '(as Mario Castello)', '(as Sean Grisson)', '(as Galder Perez)",
+                "%t%",
+                "certificates",
+                "votes",
+                "title-at-the-end', 'battle-of-actium', 'secret-exit', 'tokyo''s-sky-city', 'deuces",
+                "Switzerland:14', 'UK:July 1971', 'UK:22 January 1985', 'Spain:1981', '$10,769,960 (USA)",
+                "m"
+            ],
+            [
+                "(as Alon Moni Aboutboul)', '(as Jae Choung)', '(episode 108)', '(as Philip Levine)', '(as Carlos Romeu)",
+                "%e%",
+                "certificates",
+                "votes",
+                "shotgun', 'child-surgeon', 'common-crane', 'pentagon-building', 'asian-store-keeper",
+                "Switzerland:14', 'Canada:10:30', 'USA:6 July 1964', 'Iceland:June 2010', 'UK:22 August 1967",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Mirko Zlataar)', '(as Glenn Boyle)', '(as Mark Lynch)', '(as Rafa Izuzquiza)",
+                "%i%",
+                "release dates",
+                "votes",
+                "sniper-rifle', 'triquetra-tattoo', 'uv-lighting', 'scum', 'nocturnal",
+                "Iceland:25 July 2012', 'USA:7 March 2005', 'Italy:11 March 1965', 'Jon Kim', 'Spain:28 May 1973",
+                "m"
+            ],
+            [
+                "(craft service)', '(as Bernice Dee)', '(as John Cox)', '(corporate manager)', '(as Amber Dixon)",
+                "%(%",
+                "taglines",
+                "votes",
+                "defibrillator', 'poisonous-monster', 'steel-foundry', 'jury-trial', 'bikini",
+                "Meet the superhero everybody loves to hate.', 'Kenya:14 June 2009', 'This is my story.', 'China:21 June 2008', '8340",
+                "f"
+            ],
+            [
+                "(uncredited)', '(as Enrico Forti)', '(production office)', '(as Maureen Silva)', '(McCoy segments)",
+                "%L%",
+                "goofs",
+                "votes distribution",
+                "orphan', 'monitor-lizard', 'submissive-wife', 'sadness', 'sleeplessness",
+                "PLOT: SPOILER: Daggett''s plan for hijacking Wayne''s company could not have happened. Not only would it be fairly evident that Wayne was not on the trading floor that day, the fact that a terrorist had seized control of the Stock Exchange and hacked into their network would have cancelled all trading that occurred that day and called any trades that went through into question.', 'Japan:83', 'USA:7 March 1934', 'Pretty in gore.', 'Finland:25 May 1977",
+                "m"
+            ],
+            [
+                "(behind the scenes producer) (uncredited)', '(as Peter Roehsler)', '(as David Orrick)', '(as Marty Martulis)', '(as Patrick Zard'')",
+                "%O%",
+                "tech info",
+                "rating",
+                "pole-dancing', 'willow-tree', 'gila-bend-arizona', 'bathing-in-blood', 'computer-security",
+                "MET:2.669 m', 'MET:2223.82 m', 'Broken', 'Spain:5 August 1996', 'UK:3 March 1980",
+                "m"
+            ],
+            [
+                "(production controller)', '(as Sylva Simon)', '(as Diana Kim)', '(as Carlos Muzquiz)', '(as Two Ton Tessie)",
+                "%n%",
+                "tech info",
+                "votes distribution",
+                "woman-on-top', 'bra-removing', 'stolen-manuscript', 'three-women', 'spanish-lord",
+                "LAB:Cineworks, New Orleans (LA), USA', '2,326,604 (Spain)', 'UK:18 November 1972', '11 May 1967 -', 'UK:5 August 1980",
+                "m"
+            ],
+            [
+                "(location assistant) (as Alex Martin)', '(studio runner)', '(as Kellie Price)', '(as Pooja S.)', '(as Pau Guillamet)",
+                "%a%",
+                "release dates",
+                "rating",
+                "title-at-the-end', 'bird-feeding', 'mine-sweeping', 'reference-to-balzac', 'boarding-party",
+                "Morocco:25 July 2012', 'Argentina:187', 'Canada:12 May 1982', 'Denmark:2 July 1952', 'UK:2 November 1999",
+                "m"
+            ],
+            [
+                "(production assistant)', '(segment \"Pick Up\")', '(as Hal Smith)', '(as Avery Sebes)', '(as Lucas Reily)",
+                "%L%",
+                "quotes",
+                "votes distribution",
+                "sniper-rifle', 'roll-cage', 'football-movie', 'faking-it', '47-ronin",
+                "Alfred: [to Bruce] Remember when you left Gotham? Before all this, before Batman? You were gone seven years. Seven years I waited, hoping that you wouldn''t come back. Every year, I took a holiday. I went to Florence, there''s this cafe, on the banks of the Arno. Every fine evening, I''d sit there and order a Fernet Branca. I had this fantasy, that I would look across the tables and I''d see you there, with a wife and maybe a couple of kids. You wouldn''t say anything to me, nor me to you. But we''d both know that you''d made it, that you were happy. I never wanted you to come back to Gotham. I always knew there was nothing here for you, except pain and tragedy. And I wanted something more for you than that. I still do.', 'Canada:10 June 2007', 'Spain:21 March 1911', '8015', 'UK:14 April 2009",
+                "m"
+            ],
+            [
+                "(location assistant) (as Alex Martin)', '(as Perc Pembroke)', '(as L\u00c3\u00a9o Klary)', '(as Sermin Sen)', '(publicity artist)",
+                "%i%",
+                "certificates",
+                "votes",
+                "theft', 'arizona-e-weekly', 'cannibal-movie', 'penthouse-magazine', 'suburbian-life",
+                "Chile:Y7', 'MET:2382.95 m', 'UK:21 March 1960', 'MET:3686 m', 'Norway:18 June 1988",
+                "m"
+            ],
+            [
+                "(uncredited)', '(medic: Hawaii)', '(as Jimmy Clifford)', '(Okon)', '(as Tetzuro Tamba)",
+                "%r%",
+                "quotes",
+                "votes distribution",
+                "pistol-whip', 'mourning-one''s-baby', 'horatio-alger-myth', 'crash-into-building', 'essex-wife",
+                "Lucius Fox: It has a long uninteresting name. I just took to calling it... The Bat, and yes, Mr. Wayne, it does come in black.', 'USA:16 April 1945', '1,233,223 (Spain)', 'Hearts of the West', '94,219 (Spain)",
+                "f"
+            ],
+            [
+                "(set production assistant)', '(as A. Maslennikov)', '(news team)', '(weds Rainier)', '(as Malte Berlin)",
+                "%y%",
+                "quotes",
+                "rating",
+                "sniper-rifle', 'gang-related', 'sumerian', 'gang-banger', 'grand-opening",
+                "John Blake: Not a lot of people know what it feels like to be angry, in your bones. I mean, they understand, foster parents, everybody understands, for awhile. Then they want the angry little kid to do something he knows he can''t do, move on. So after awhile they stop understanding. They send the angry kid to a boys home. I figured it out too late. You gotta learn to hide the anger, practice smiling in the mirror. It''s like putting on a mask.', 'Hexagon Productions', 'USA:October 2005', 'USA:2 February 1953', '1,100 (Spain)",
+                "m"
+            ],
+            [
+                "(additional location assistant)', '(as Joee Mejias)', '(as Michaela Barth)', '(trailer writer)', '(as Koal Minah)",
+                "%g%",
+                "certificates",
+                "votes distribution",
+                "stabbed-in-the-chest', 'molten-lava', 'egyptian-army', 'oggi', 'butoh-dance",
+                "Hong Kong:IIA', 'Finland:K-12', 'Sweden:18 June 1982', '$611,722', 'UK:12 April 1939",
+                "m"
+            ],
+            [
+                "(location assistant) (as Alex Martin)', '(as A. Panova)', '(piano/organ)', '(as Ant Neate)', '(as Mariel Supka)",
+                "%c%",
+                "release dates",
+                "rating",
+                "snow', 'general-strike', 'blue-dress', 'kurdish-language', 'floating-city",
+                "Ireland:20 July 2012', 'USA:21 April 1996', 'Canada:16:06', 'China:12 March 2002', 'Piece of Cake, LLC",
+                "m"
+            ],
+            [
+                "(location assistant) (as Alex Martin)', '(as Leena Rousek)', '(as Max von Ryt)', '(as Shaun Smith)', '(as N. Bozhikova)",
+                "%d%",
+                "quotes",
+                "votes",
+                "pistol-whip', 'cleaning-out-desk', 'year-1964', 'woman-jogging', 'cold-sun",
+                "Bane: We take Gotham from the corrupt! The rich! The oppressors of generations who have kept you down with myths of opportunity, and we give it back to you... the people. Gotham is yours. None shall interfere. Do as you please. Start by storming Blackgate, and freeing the oppressed! Step forward those who would serve. For and army will be raised. The powerful will be ripped from their decadent nests, and cast out into the cold world that we know and endure. Courts will be convened. Spoils will be enjoyed. Blood will be shed. The police will survive, as they learn to serve true justice. This great city... it will endure. Gotham will survive!', 'UK:22 August 1958', 'China:19 June 2012', '612,995 (Germany)', 'Egypt:9 March 2011",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Norm Fredric)', '(as Doug Stone)', '(2001-2013)', '(as N. Kapitanov)",
+                "%e%",
+                "quotes",
+                "votes distribution",
+                "murder', 'cigarette-holder', 'high-fantasy', 'cursed-princess', 'tax-audit",
+                "Bruce Wayne: Why didn''t you just... kill me?::Bane: You don''t fear death... You welcome it. Your punishment must be more severe.::Bruce Wayne: Torture?::Bane: Yes. But not of your body... Of your soul.::Bruce Wayne: Where am I?::Bane: Home, where I learned the truth about despair, as will you. There''s a reason why this prison is the worst hell on earth... Hope. Every man who has ventured here over the centuries has looked up to the light and imagined climbing to freedom. So easy... So simple... And like shipwrecked men turning to sea water from uncontrollable thirst, many have died trying. I learned here that there can be no true despair without hope. So, as I terrorize Gotham, I will feed its people hope to poison their souls. I will let them believe they can survive so that you can watch them clamoring over each other to \"stay in the sun.\" You can watch me torture an entire city and when you have truly understood the depth of your failure, we will fulfill Ra''s al Ghul''s destiny... We will destroy Gotham and then, when it is done and Gotham is ashes, then you have my permission to die', '\u00e2\u0082\u00ac 27,000', '$125', 'MET:80.00 m', 'Japan:19 March 1962",
+                "m"
+            ],
+            [
+                "(location assistant) (as Alex Martin)', '(as Dagmar O''Neil)', '(as Macie Taylor)', '(as Carlton Lynx)', '(segment \"Top Dog\")",
+                "%a%",
+                "quotes",
+                "votes distribution",
+                "warlord', 'interpretation', 'may-4-1970', 'injustice', 'oil-dependency",
+                "John Daggett: Can we get some ladies in here?::Catwoman: Careful what you wish for.::[Catwoman attacks Daggett and pins him up against the wall]::Catwoman: What''s the matter, Cat got your tongue?::John Daggett: You dumb bitch.::Catwoman: Nobody ever accused me of being dumb!::John Daggett: You''re dumb; for coming here.::Catwoman: I want what you owe me!', 'Greece:30 May 2003', 'UK:7 April 2005', 'India:21 July 2007', 'UK:20 June 1985",
+                "m"
+            ],
+            [
+                "(assistant football coordinator)', '(as Dave Henderson)', '(as George Mack)', '(as Dani McCall)', '(as Shaady Sror)",
+                "%e%",
+                "release dates",
+                "rating",
+                "police-officer-killed', 'eucharist', 'bamboo-flute', 'gloucestershire', 'chess-club",
+                "UK:20 July 2012', 'G128F0083', 'SF058-1708', 'USA:2 July 1962', 'Will they make it!",
+                "f"
+            ],
+            [
+                "(set production assistant)', '(as Maria Reniu)', '(timing consultant)', '(as Raymond Persi)', '(1998-2000, 2002)",
+                "%s%",
+                "goofs",
+                "votes",
+                "night-cityscape', 'female-driven', 'suicide-net', 'turned-into-water', 'desert-bloom",
+                "CHAR: When Bruce Wayne is at the ball with Selina Kyle, he corrects her pronunciation of Ibiza to \"Eye-beeth-a\". Although it''s pronounced that way by many English speakers, strictly it''s pronounced \"Ee-beeth-a\".', 'May 1998 -', 'USA:24 October 1935', 'Chile:14 March 2005', '417,457 (Sweden)",
+                "m"
+            ],
+            [
+                "(as Alon Moni Aboutboul)', '(as Dara Engeneer)', '(as Ishaa Kopikar)', '(segment \"Firenze\")', '(as Robert Wood)",
+                "%c%",
+                "release dates",
+                "votes distribution",
+                "returning-character-killed-off', 'jeans-shop', 'para-sailing', 'redial', 'made-up-language",
+                "Argentina:24 July 2012', 'qv##nm0931949##', 'USA:16 January 1938', 'USA:54:00', 'USA:10 June 1922",
+                "m"
+            ],
+            [
+                "(as Alon Moni Aboutboul)', '(as Everlcear)', '(webbing assistant)', '(as Kay''s Pets)', '(as Daljeet Kaur)",
+                "%s%",
+                "quotes",
+                "votes",
+                "returning-character-killed-off', 'one-man-gang', 'space-communication', 'richard-linklater', 'crown-prosecutor",
+                "[from trailer]::Alfred: You are as precious to me as you were to your own mother and father. I swore to them that I would protect you, and I haven''t.', 'UK:January 1966', 'Poland:2 March 2010', '2003 - 2011', 'PCS:Be Here i-Video",
+                "m"
+            ],
+            [
+                "(assistant football coordinator)', '(chief designer)', '(Bike Thief)', '(henchman #1)', '(as Derek Farmer)",
+                "%P%",
+                "release dates",
+                "rating",
+                "secret-door', 'oil-platform', 'curved-blade', 'concrete', 'suicide-watch",
+                "Taiwan:19 July 2012', 'Midian Films', 'Sat.1 \u00c2\u00a91996', 'USA:21 August 2007', 'G.I. Jane",
+                "f"
+            ],
+            [
+                "(as Alon Moni Aboutboul)', '(as Don Catarino)', '(as Colleen Karney)', '(as Brendon Walsh)', '(as Florence Stone)",
+                "%u%",
+                "quotes",
+                "rating",
+                "warlord', 'fashion-sense', 'barn-raising', 'lazy-spouse', 'redefine",
+                "Bane: We take Gotham from the corrupt! The rich! The oppressors of generations who have kept you down with myths of opportunity, and we give it back to you... the people. Gotham is yours. None shall interfere. Do as you please. Start by storming Blackgate, and freeing the oppressed! Step forward those who would serve. For and army will be raised. The powerful will be ripped from their decadent nests, and cast out into the cold world that we know and endure. Courts will be convened. Spoils will be enjoyed. Blood will be shed. The police will survive, as they learn to serve true justice. This great city... it will endure. Gotham will survive!', 'Jamie Steedman', '1114', 'Feel The Impact', 'Mi vida loca",
+                "m"
+            ],
+            [
+                "(production assistant)', '(as Stacey Dorning)', '(as Loretto)', '(as Andr\u00c3\u00a9 Jacobs)', '(as Carlo Koch)",
+                "%r%",
+                "release dates",
+                "votes",
+                "swat', 'woman-shaves-a-man', 'interrupted-sleep', 'knee-cap', 'dvd-feature",
+                "Spain:20 July 2012', 'USA:17 January 1982', 'Greece:25 July 2007', 'SGD 3,000', '3061",
+                "m"
+            ],
+            [
+                "(production executive)', '(\"Full House\" by)', '(as Jay A. Howe)', '(as Oscar S. Tevez)', '(inferno)",
+                "%D%",
+                "tech info",
+                "votes distribution",
+                "prostitute', 'volstead-act', 'backyard-epic-spoof', 'norman-corwin', 'frozen-pizza",
+                "MET:2,550 m', 'UK:26 February 2011', '\u00e2\u0082\u00ac 1,032,584', 'France:14 June 1982', 'Red Ink Films",
+                "m"
+            ],
+            [
+                "(uncredited)', '(as Gaby Kosik)', '(as Sasha Delibash)', '(as Jose L. Moreno)', '(as Mike Dennis)",
+                "%u%",
+                "goofs",
+                "votes",
+                "night-cityscape', 'organ-rejection', 'motorcyclist', 'almond', 'black-goo",
+                "FAKE: During the stadium scene in Gotham City, at one point a logo reading \"UPMC\" (University of Pittsburgh Medical Center) is clearly visible next to Bane''s head.', '6128', 'Delle, Utah, USA', 'MET:4310 m', 'NZD 900",
+                "f"
+            ],
+            [
+                "(medic)', '(as Eden Pourchot)', '(Violinist)', '(as Richard Colla)', '(as Edmund Davys)",
+                "%L%",
+                "quotes",
+                "votes distribution",
+                "swat', 'deposition', 'airplane-seat', 'almond', 'home-rule",
+                "Alfred: I''ll get this to Mr. Fox, but no more. I''ve sewn you up, I''ve set your bones, but I won''t bury you. I''ve buried enough members of the Wayne family.::Bruce Wayne: You''ll leave me?::Alfred: You see only one end to your journey. Leaving is all I have to make you understand, you''re not Batman anymore. You have to find another way. You used to talk about finishing a life beyond that awful cape.::Bruce Wayne: Rachel died believing that we would be together; that was my life beyond the cape. I can''t just move on. She didn''t, she couldn''t.::Alfred: What if she had? What if, before she died, she wrote a letter saying she chose Harvey Dent over you? And what if, to spare your pain, I burnt that letter?::Bruce Wayne: How dare you use Rachel to try to stop me?::Alfred: I am using the truth, Master Wayne. Maybe it''s time we all stop trying to outsmart the truth and let it have its day. I''m sorry.::Bruce Wayne: You''re sorry? You expect to destroy my world and then think we''re going to shake hands?::Alfred: No... no, I know what this means.::Bruce Wayne: What does it mean?::Alfred: It means your hatred... and it also means losing someone that I have cared for since I first heard his cries echo through this house. But it might also mean saving your life. And that is more important.::Bruce Wayne: Goodbye, Alfred.', 'France:22 May 1987', '- 2 July 2003', 'UK:5 March 1959', '4102985",
+                "m"
+            ]
+        ]
+    }
+}

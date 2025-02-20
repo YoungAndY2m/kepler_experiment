@@ -1,0 +1,2513 @@
+{
+  "9-0": {
+    "query": "SELECT MIN(an.name) AS alternative_name, MIN(chn.name) AS character_name, MIN(t.title) AS movie\nFROM aka_name AS an,\n char_name AS chn,\n cast_info AS ci,\n company_name AS cn,\n movie_companies AS mc,\n name AS n,\n role_type AS rt,\n title AS t\nWHERE ci.movie_id = t.id\n AND t.id = mc.movie_id\n AND ci.movie_id = mc.movie_id\n AND mc.company_id = cn.id\n AND ci.role_id = rt.id\n AND n.id = ci.person_id\n AND chn.id = ci.person_role_id\n AND an.person_id = n.id\n AND an.person_id = ci.person_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND mc.note IS NOT NULL \nAND (mc.note LIKE '@param2' OR mc.note LIKE '@param3')\nAND n.gender = '@param4'\nAND n.name LIKE '@param5'\nAND rt.role = '@param6'\nAND t.production_year BETWEEN @param7 AND @param8;",
+    "predicates": [
+      {
+        "alias": "ci",
+        "column": "note",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "cast_info",
+        "join_tables_alias": [
+          "t",
+          "mc",
+          "rt",
+          "n",
+          "chn",
+          "an"
+        ],
+        "join_tables": [
+          "title",
+          "movie_companies",
+          "role_type",
+          "name",
+          "char_name",
+          "aka_name"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "ci.movie_id = mc.movie_id",
+          "ci.role_id = rt.id",
+          "n.id = ci.person_id",
+          "chn.id = ci.person_role_id",
+          "an.person_id = ci.person_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both",
+          "both",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "role"
+          ],
+          [
+            "gender",
+            "name"
+          ],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "movie_companies",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "cn"
+        ],
+        "join_tables": [
+          "title",
+          "cast_info",
+          "company_name"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "ci.movie_id = mc.movie_id",
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "mc",
+        "column": "note",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "movie_companies",
+        "join_tables_alias": [
+          "t",
+          "ci",
+          "cn"
+        ],
+        "join_tables": [
+          "title",
+          "cast_info",
+          "company_name"
+        ],
+        "join_conditions": [
+          "t.id = mc.movie_id",
+          "ci.movie_id = mc.movie_id",
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "note"
+          ],
+          [
+            "country_code"
+          ]
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "gender",
+        "operator": "=",
+        "data_type": "text",
+        "table": "name",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "cast_info",
+          "aka_name"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "an.person_id = n.id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "n",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "name",
+        "join_tables_alias": [
+          "ci",
+          "an"
+        ],
+        "join_tables": [
+          "cast_info",
+          "aka_name"
+        ],
+        "join_conditions": [
+          "n.id = ci.person_id",
+          "an.person_id = n.id"
+        ],
+        "left_or_right": [
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "rt",
+        "column": "role",
+        "operator": "=",
+        "data_type": "text",
+        "table": "role_type",
+        "join_tables_alias": [
+          "ci"
+        ],
+        "join_tables": [
+          "cast_info"
+        ],
+        "join_conditions": [
+          "ci.role_id = rt.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ci",
+          "mc"
+        ],
+        "join_tables": [
+          "cast_info",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ci",
+          "mc"
+        ],
+        "join_tables": [
+          "cast_info",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "ci.movie_id = t.id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "note"
+          ],
+          [
+            "note"
+          ]
+        ]
+      }
+    ],
+    "params": [
+      [
+        "(voice)', '(producer)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%USA%",
+        "%1969%",
+        "m",
+        "%Frank%",
+        "actor",
+        1945,
+        2004
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%p%",
+        "%DVD%",
+        "m",
+        "%Frank%",
+        "actor",
+        1970,
+        2008
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%o%",
+        "%association%",
+        "m",
+        "%Ho%",
+        "actor",
+        1991,
+        2002
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%USA%",
+        "%DVD%",
+        "m",
+        "%Jung%",
+        "actor",
+        1988,
+        2008
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%i%",
+        "%worldwide%",
+        "m",
+        "%Armand%",
+        "actor",
+        2005,
+        2012
+      ],
+      [
+        "(uncredited)', '(production assistant)', '(production assistant)', '(uncredited)', '(production assistant)",
+        "[us]",
+        "%USA%",
+        "%TV%",
+        "m",
+        "%Brown%",
+        "actor",
+        1992,
+        2005
+      ],
+      [
+        "(uncredited)', '(voice)', '(supervising producer)', '(associate producer)', '(voice)",
+        "[jp]",
+        "%USA%",
+        "%Japan%",
+        "m",
+        "%Adam%",
+        "actor",
+        2000,
+        2012
+      ],
+      [
+        "(producer)', '(producer)', '(uncredited)', '(producer)', '(uncredited)",
+        "[us]",
+        "%2007%",
+        "%1912%",
+        "m",
+        "%Edward%",
+        "actor",
+        1920,
+        2012
+      ],
+      [
+        "(production coordinator)', '(script supervisor)', '(production coordinator)', '(uncredited)', '(script supervisor)",
+        "[us]",
+        "%2006%",
+        "%co%",
+        "f",
+        "%Roger%",
+        "actress",
+        1951,
+        1993
+      ],
+      [
+        "(voice)', '(producer)', '(voice)', '(producer)', '(producer)",
+        "[us]",
+        "%VHS%",
+        "%USA%",
+        "f",
+        "%Keith%",
+        "actress",
+        1967,
+        1993
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%s%",
+        "%with%",
+        "m",
+        "%D%",
+        "actress",
+        1952,
+        2013
+      ],
+      [
+        "(voice: English version)', '(voice: English version)', '(voice: English version)', '(credit only)', '(voice: English version)",
+        "[us]",
+        "%USA%",
+        "%original%",
+        "m",
+        "%Joey%",
+        "actor",
+        1998,
+        2010
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%p%",
+        "%VHS%",
+        "m",
+        "%Herschel%",
+        "actor",
+        1997,
+        2007
+      ],
+      [
+        "(voice)', '(voice)', '(executive producer)', '(voice)', '(voice)",
+        "[us]",
+        "%DVD%",
+        "%1988%",
+        "m",
+        "%Ho%",
+        "actor",
+        1999,
+        2008
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%DVD%",
+        "%e%",
+        "m",
+        "%Dan%",
+        "actor",
+        1923,
+        2004
+      ],
+      [
+        "(executive producer)', '(writer)', '(voice)', '(actors director)', '(executive producer)",
+        "[us]",
+        "%DVD%",
+        "%USA%",
+        "m",
+        "%Armand%",
+        "actor",
+        1999,
+        2004
+      ],
+      [
+        "(credit only)', '(voice: English version)', '(voice: English version)', '(voice: English version)', '(voice: English version)",
+        "[us]",
+        "%association%",
+        "%DVD%",
+        "m",
+        "%Jim%",
+        "actor",
+        1945,
+        2007
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%association%",
+        "%TV%",
+        "m",
+        "%Herschel%",
+        "actor",
+        1959,
+        2011
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%1958%",
+        "%2007%",
+        "m",
+        "%Bobby%",
+        "actor",
+        1981,
+        2012
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%Japan%",
+        "%USA%",
+        "m",
+        "%D%",
+        "actor",
+        2006,
+        2011
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%d%",
+        "%2009%",
+        "m",
+        "%Michaud%",
+        "actor",
+        1973,
+        1996
+      ],
+      [
+        "(voice)', '(executive producer)', '(executive producer)', '(executive producer)', '(original idea)",
+        "[us]",
+        "%USA%",
+        "%Grave%",
+        "m",
+        "%Welker%",
+        "actor",
+        1998,
+        2009
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%1957%",
+        "%media%",
+        "f",
+        "%Roger%",
+        "actress",
+        1994,
+        2011
+      ],
+      [
+        "(executive producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(production assistant)",
+        "[us]",
+        "%t%",
+        "%TV%",
+        "m",
+        "%Savage%",
+        "actor",
+        2008,
+        2011
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(uncredited)', '(uncredited)', '(executive producer)",
+        "[us]",
+        "%La%",
+        "%Hungary%",
+        "m",
+        "%Ho%",
+        "actor",
+        1945,
+        2008
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%in%",
+        "%2012%",
+        "m",
+        "%Silvera%",
+        "actor",
+        1936,
+        2013
+      ],
+      [
+        "(voice: English version)', '(written by)', '(creator)', '(production assistant)', '(production assistant)",
+        "[us]",
+        "%DVD%",
+        "%worldwide%",
+        "m",
+        "%Eddie%",
+        "actor",
+        1962,
+        2010
+      ],
+      [
+        "(voice)', '(uncredited)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%e%",
+        "%association%",
+        "f",
+        "%Soucie%",
+        "actress",
+        2005,
+        2007
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%USA%",
+        "%2011%",
+        "f",
+        "%Arnold%",
+        "actress",
+        2006,
+        2010
+      ],
+      [
+        "(uncredited)', '(production assistant)', '(uncredited)', '(producer)', '(production assistant)",
+        "[us]",
+        "%USA%",
+        "%2007%",
+        "m",
+        "%Costello%",
+        "actor",
+        1998,
+        2012
+      ],
+      [
+        "(executive producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2009%",
+        "%USA%",
+        "m",
+        "%Leno%",
+        "actor",
+        1983,
+        2011
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%DVD%",
+        "m",
+        "%Tom%",
+        "actor",
+        1958,
+        2010
+      ],
+      [
+        "(uncredited)', '(producer)', '(producer)', '(co-producer)', '(executive producer)",
+        "[us]",
+        "%TV%",
+        "%1958%",
+        "m",
+        "%Thomas%",
+        "actor",
+        1982,
+        2006
+      ],
+      [
+        "(as Jean-Fran\u00c3\u00a7ois Porry)', '(script editor)', '(writer)', '(voice)', '(writer)",
+        "[fr]",
+        "%with%",
+        "%media%",
+        "m",
+        "%Robert%",
+        "actor",
+        1952,
+        2005
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2010%",
+        "%USA%",
+        "f",
+        "%Stack%",
+        "actress",
+        1956,
+        1990
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(voice)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%DVD%",
+        "%USA%",
+        "f",
+        "%Baker%",
+        "actress",
+        1997,
+        2010
+      ],
+      [
+        "(executive producer)', '(voice)', '(executive producer)', '(executive producer)', '(executive producer)",
+        "[us]",
+        "%2007%",
+        "%DVD%",
+        "f",
+        "%Kristin%",
+        "actress",
+        1916,
+        2002
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%e%",
+        "%TV%",
+        "m",
+        "%Ken%",
+        "actor",
+        2001,
+        2012
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%DVD%",
+        "m",
+        "%Dobson%",
+        "actor",
+        1987,
+        2010
+      ],
+      [
+        "(voice: English version)', '(written by)', '(written by)', '(voice: English version)', '(production assistant)",
+        "[gb]",
+        "%in%",
+        "%USA%",
+        "m",
+        "%Tom%",
+        "actor",
+        1997,
+        2011
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%worldwide%",
+        "%USA%",
+        "m",
+        "%David%",
+        "actor",
+        2006,
+        2013
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%Leonard%",
+        "%USA%",
+        "m",
+        "%Godfrey%",
+        "actor",
+        1952,
+        2014
+      ],
+      [
+        "(archive footage)', '(writer)', '(as Daniel Porret)', '(vice president of research and development)', '(written by)",
+        "[us]",
+        "%TV%",
+        "%DVD%",
+        "m",
+        "%Evans%",
+        "actor",
+        2004,
+        2011
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%USA%",
+        "%2011%",
+        "m",
+        "%Judge%",
+        "actor",
+        2008,
+        2011
+      ],
+      [
+        "(uncredited)', '(producer)', '(production assistant)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%1911%",
+        "%USA%",
+        "m",
+        "%Medeiros%",
+        "actor",
+        1988,
+        2011
+      ],
+      [
+        "(writer)', '(executive producer)', '(voice)', '(voice)', '(writer)",
+        "[us]",
+        "%2006%",
+        "%theatrical%",
+        "m",
+        "%Chris%",
+        "actor",
+        1996,
+        2007
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(executive producer)', '(uncredited)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%USA%",
+        "f",
+        "%Roger%",
+        "actress",
+        1974,
+        1978
+      ],
+      [
+        "(as Adriaan van Dis)', '(executive producer)', '(uncredited)', '(creator)', '(credit only)",
+        "[us]",
+        "%USA%",
+        "%with%",
+        "m",
+        "%Harry%",
+        "actor",
+        1960,
+        2014
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%2009%",
+        "%DVD%",
+        "m",
+        "%Jerry%",
+        "actor",
+        2010,
+        2013
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%u%",
+        "%VHS%",
+        "m",
+        "%Bob%",
+        "actor",
+        1947,
+        1990
+      ],
+      [
+        "(uncredited)', '(producer)', '(executive producer)', '(voice)', '(executive producer)",
+        "[us]",
+        "%n%",
+        "%USA%",
+        "m",
+        "%Yin%",
+        "actor",
+        1940,
+        2011
+      ],
+      [
+        "(voice)', '(production assistant)', '(production assistant)', '(production assistant)', '(production assistant)",
+        "[us]",
+        "%DVD%",
+        "%Bulgaria%",
+        "m",
+        "%Trey%",
+        "actor",
+        1983,
+        2000
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%with%",
+        "%co%",
+        "m",
+        "%Joey%",
+        "actor",
+        1996,
+        2009
+      ],
+      [
+        "(writer)', '(executive producer)', '(voice)', '(executive producer)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%2006%",
+        "f",
+        "%D%",
+        "actress",
+        2003,
+        2010
+      ],
+      [
+        "(co-producer)', '(uncredited)', '(script supervisor)', '(creator)', '(written by)",
+        "[us]",
+        "%USA%",
+        "%r%",
+        "m",
+        "%Savage%",
+        "actor",
+        1946,
+        1994
+      ],
+      [
+        "(credit only)', '(voice)', '(voice)', '(uncredited)', '(unspecified crew member)",
+        "[us]",
+        "%credit%",
+        "%DVD%",
+        "m",
+        "%Frank%",
+        "actor",
+        1949,
+        1979
+      ],
+      [
+        "(executive producer)', '(voice)', '(voice)', '(writer)', '(voice)",
+        "[us]",
+        "%t%",
+        "%TV%",
+        "f",
+        "%Lee%",
+        "actress",
+        1942,
+        1984
+      ],
+      [
+        "(voice)', '(executive producer)', '(voice)', '(writer)', '(writer)",
+        "[us]",
+        "%Production%",
+        "%USA%",
+        "m",
+        "%Godfrey%",
+        "actor",
+        1969,
+        2012
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(voice)', '(voice)', '(uncredited)",
+        "[us]",
+        "%theatrical%",
+        "%USA%",
+        "f",
+        "%Barker%",
+        "actress",
+        2005,
+        2013
+      ],
+      [
+        "(voice)', '(voice)', '(uncredited)', '(voice)', '(voice)",
+        "[us]",
+        "%DVD%",
+        "%co%",
+        "m",
+        "%Grey%",
+        "actor",
+        1987,
+        1995
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(voice)', '(voice)', '(production assistant)",
+        "[us]",
+        "%association%",
+        "%theatrical%",
+        "m",
+        "%Bradley%",
+        "actor",
+        1926,
+        1981
+      ],
+      [
+        "(credit only)', '(voice: English version)', '(credit only)', '(credit only)', '(voice: English version)",
+        "[us]",
+        "%worldwide%",
+        "%DVD%",
+        "f",
+        "%Debbie%",
+        "actress",
+        1979,
+        1999
+      ],
+      [
+        "(associate producer)', '(executive producer)', '(archive footage)', '(archive footage)', '(production assistant)",
+        "[us]",
+        "%s%",
+        "%with%",
+        "f",
+        "%a%",
+        "actress",
+        1993,
+        2010
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(voice)', '(voice)', '(executive producer)",
+        "[us]",
+        "%TV%",
+        "%all%",
+        "m",
+        "%Lee%",
+        "actor",
+        2001,
+        2008
+      ],
+      [
+        "(uncredited)', '(voice)', '(uncredited)', '(voice)', '(voice)",
+        "[gb]",
+        "%in%",
+        "%TV%",
+        "m",
+        "%Frank%",
+        "actor",
+        1957,
+        1995
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%USA%",
+        "%worldwide%",
+        "m",
+        "%Bradley%",
+        "actor",
+        1958,
+        2009
+      ],
+      [
+        "(creator)', '(uncredited)', '(supervising producer)', '(co-producer)', '(co-executive producer)",
+        "[us]",
+        "%with%",
+        "%in%",
+        "f",
+        "%Wayne%",
+        "actress",
+        2004,
+        2013
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(producer)', '(producer)",
+        "[us]",
+        "%co%",
+        "%USA%",
+        "m",
+        "%Welker%",
+        "actor",
+        1964,
+        2002
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%1914%",
+        "%USA%",
+        "m",
+        "%Franco%",
+        "actor",
+        2002,
+        2009
+      ],
+      [
+        "(rumored)', '(uncredited)', '(1985)', '(associate producer: THQ)', '(as Nada Gacesic-Livadic)",
+        "[us]",
+        "%in%",
+        "%with%",
+        "m",
+        "%Fox%",
+        "actor",
+        2004,
+        2009
+      ],
+      [
+        "(archive footage)', '(writer)', '(writer)', '(writer)', '(writer)",
+        "[us]",
+        "%2011%",
+        "%VHS%",
+        "m",
+        "%Robert%",
+        "actor",
+        2005,
+        2012
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(producer)', '(producer)', '(production assistant)",
+        "[us]",
+        "%s%",
+        "%t%",
+        "f",
+        "%Thomas%",
+        "actress",
+        2009,
+        2013
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%n%",
+        "%i%",
+        "m",
+        "%Jon%",
+        "actor",
+        2009,
+        2012
+      ],
+      [
+        "(voice)', '(writer)', '(producer)', '(writer)', '(uncredited)",
+        "[us]",
+        "%s%",
+        "%n%",
+        "m",
+        "%Herschel%",
+        "actor",
+        1909,
+        1994
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%DVD%",
+        "%2008%",
+        "f",
+        "%Andrea%",
+        "actress",
+        1988,
+        2013
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(executive producer)', '(executive producer)', '(uncredited)",
+        "[us]",
+        "%DVD%",
+        "%TV%",
+        "f",
+        "%Ron%",
+        "actress",
+        1995,
+        2010
+      ],
+      [
+        "(writer)', '(writer)', '(voice)', '(voice)', '(producer)",
+        "[us]",
+        "%2012%",
+        "%association%",
+        "m",
+        "%Paul%",
+        "actor",
+        2006,
+        2009
+      ],
+      [
+        "(producer)', '(producer)', '(voice)', '(voice)', '(writer)",
+        "[us]",
+        "%s%",
+        "%2010%",
+        "m",
+        "%Michael%",
+        "actor",
+        1956,
+        2001
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[hu]",
+        "%association%",
+        "%i%",
+        "m",
+        "%Martin%",
+        "actor",
+        2006,
+        2012
+      ],
+      [
+        "(producer)', '(voice)', '(executive producer)', '(uncredited)', '(voice)",
+        "[us]",
+        "%in%",
+        "%2013%",
+        "m",
+        "%Griffin%",
+        "actor",
+        1969,
+        2010
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2011%",
+        "%DVD%",
+        "m",
+        "%Tony%",
+        "actor",
+        1999,
+        2004
+      ],
+      [
+        "(voice: English version)', '(voice: English version)', '(written by)', '(voice: English version)', '(creator)",
+        "[gb]",
+        "%1995%",
+        "%TV%",
+        "m",
+        "%Joe%",
+        "actor",
+        1987,
+        2014
+      ],
+      [
+        "(writer)', '(voice)', '(voice)', '(executive producer)', '(writer)",
+        "[us]",
+        "%USA%",
+        "%1915%",
+        "m",
+        "%Merv%",
+        "actor",
+        1980,
+        1991
+      ],
+      [
+        "(voice)', '(voice)', '(uncredited)', '(voice)', '(uncredited)",
+        "[us]",
+        "%NTSC%",
+        "%2008%",
+        "m",
+        "%Greg%",
+        "actor",
+        1994,
+        2012
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%a%",
+        "%DVD%",
+        "m",
+        "%John%",
+        "actor",
+        2009,
+        2014
+      ],
+      [
+        "(uncredited)', '(production assistant)', '(production assistant)', '(voice)', '(production assistant)",
+        "[us]",
+        "%TV%",
+        "%in%",
+        "m",
+        "%Armand%",
+        "actor",
+        1957,
+        2007
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(executive producer)', '(executive producer)",
+        "[us]",
+        "%2001%",
+        "%as%",
+        "m",
+        "%Ho%",
+        "actor",
+        1952,
+        1996
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%n%",
+        "%USA%",
+        "f",
+        "%Bennett%",
+        "actress",
+        1999,
+        2007
+      ],
+      [
+        "(producer)', '(producer)', '(producer)', '(producer)', '(producer)",
+        "[us]",
+        "%A%",
+        "%2008%",
+        "m",
+        "%D%",
+        "actor",
+        2000,
+        2004
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%DVD%",
+        "%association%",
+        "m",
+        "%Bell%",
+        "actor",
+        2005,
+        2011
+      ],
+      [
+        "(producer)', '(uncredited)', '(uncredited)', '(producer)', '(uncredited)",
+        "[us]",
+        "%e%",
+        "%DVD%",
+        "m",
+        "%Mike%",
+        "actor",
+        1986,
+        2004
+      ],
+      [
+        "(executive producer)', '(producer)', '(voice)', '(producer)', '(voice)",
+        "[us]",
+        "%media%",
+        "%TV%",
+        "m",
+        "%Ho%",
+        "actor",
+        1997,
+        2005
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2006%",
+        "%2001%",
+        "m",
+        "%Merv%",
+        "actor",
+        2003,
+        2012
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%p%",
+        "%USA%",
+        "m",
+        "%Vanessa%",
+        "actor",
+        1932,
+        2011
+      ],
+      [
+        "(executive producer)', '(uncredited)', '(archive footage)', '(production coordinator)', '(executive producer)",
+        "[jp]",
+        "%with%",
+        "%2007%",
+        "m",
+        "%Dick%",
+        "actor",
+        1916,
+        2005
+      ],
+      [
+        "(voice)', '(voice)', '(uncredited)', '(voice)', '(voice)",
+        "[us]",
+        "%i%",
+        "%media%",
+        "m",
+        "%Herrmann%",
+        "actor",
+        1948,
+        2000
+      ],
+      [
+        "(producer)', '(producer)', '(uncredited)', '(producer)', '(uncredited)",
+        "[us]",
+        "%theatrical%",
+        "%media%",
+        "m",
+        "%Joseph%",
+        "actor",
+        2004,
+        2008
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(executive producer)', '(uncredited)', '(executive producer)",
+        "[us]",
+        "%with%",
+        "%TV%",
+        "m",
+        "%Avila%",
+        "actor",
+        1936,
+        2007
+      ],
+      [
+        "(archive footage)', '(writer)', '(archive footage)', '(writer)', '(archive footage)",
+        "[us]",
+        "%USA%",
+        "%with%",
+        "m",
+        "%Matt%",
+        "actor",
+        1927,
+        1995
+      ],
+      [
+        "(uncredited)', '(voice)', '(uncredited)', '(uncredited)', '(voice)",
+        "[us]",
+        "%USA%",
+        "%Canada%",
+        "m",
+        "%Roger%",
+        "actor",
+        1992,
+        2001
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(production assistant)', '(uncredited)', '(production assistant)",
+        "[fr]",
+        "%2005%",
+        "%Germany%",
+        "m",
+        "%Chan%",
+        "actor",
+        1937,
+        1969
+      ],
+      [
+        "(uncredited)', '(production coordinator)', '(uncredited)', '(executive producer)', '(production coordinator)",
+        "[us]",
+        "%e%",
+        "%USA%",
+        "m",
+        "%Rory%",
+        "actor",
+        1996,
+        2008
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%USA%",
+        "%2003%",
+        "m",
+        "%Ross%",
+        "actor",
+        1944,
+        1991
+      ],
+      [
+        "(voice)', '(writer)', '(executive producer)', '(voice)', '(executive producer)",
+        "[us]",
+        "%p%",
+        "%theatrical%",
+        "m",
+        "%Wylie%",
+        "actor",
+        1995,
+        2013
+      ],
+      [
+        "(creator)', '(voice: English version)', '(written by)', '(voice: English version)', '(written by)",
+        "[us]",
+        "%TV%",
+        "%2007%",
+        "m",
+        "%W%",
+        "actor",
+        1939,
+        2007
+      ],
+      [
+        "(voice)', '(voice)', '(executive producer)', '(executive producer)', '(voice)",
+        "[us]",
+        "%1912%",
+        "%2005%",
+        "f",
+        "%Nancy%",
+        "actress",
+        1976,
+        2008
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(executive producer)', '(voice)', '(executive producer)",
+        "[gb]",
+        "%1948%",
+        "%TV%",
+        "m",
+        "%Charles%",
+        "actor",
+        1986,
+        1997
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2006%",
+        "%2007%",
+        "m",
+        "%y%",
+        "actor",
+        1942,
+        2012
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[de]",
+        "%DVD%",
+        "%TV%",
+        "m",
+        "%R%",
+        "actor",
+        2010,
+        2013
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2004%",
+        "%theatrical%",
+        "m",
+        "%Joey%",
+        "actor",
+        1949,
+        1995
+      ],
+      [
+        "(producer)', '(producer)', '(producer)', '(executive producer)', '(production assistant)",
+        "[us]",
+        "%2005%",
+        "%all%",
+        "m",
+        "%Michael%",
+        "actor",
+        1998,
+        2005
+      ],
+      [
+        "(voice)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%DVD%",
+        "%USA%",
+        "m",
+        "%Roger%",
+        "actor",
+        2008,
+        2011
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%with%",
+        "%2000%",
+        "m",
+        "%Frank%",
+        "actor",
+        1935,
+        1986
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(producer)', '(uncredited)', '(production coordinator)",
+        "[au]",
+        "%2007%",
+        "%DVD%",
+        "m",
+        "%Oliver%",
+        "actor",
+        2008,
+        2012
+      ],
+      [
+        "(producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2007%",
+        "%with%",
+        "m",
+        "%R%",
+        "actor",
+        1899,
+        2009
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%media%",
+        "%USA%",
+        "f",
+        "%Dina%",
+        "actress",
+        1960,
+        1975
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%in%",
+        "%1978%",
+        "m",
+        "%Dan%",
+        "actor",
+        1963,
+        2013
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%with%",
+        "%USA%",
+        "m",
+        "%lien%",
+        "actor",
+        2007,
+        2014
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%USA%",
+        "%association%",
+        "m",
+        "%Rob%",
+        "actor",
+        1975,
+        1997
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%TV%",
+        "%2008%",
+        "m",
+        "%Sam%",
+        "actor",
+        2000,
+        2003
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(executive producer)', '(executive producer)', '(uncredited)",
+        "[us]",
+        "%co%",
+        "%DVD%",
+        "m",
+        "%Bradley%",
+        "actor",
+        2002,
+        2013
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%in%",
+        "%2010%",
+        "m",
+        "%Michael%",
+        "actor",
+        1991,
+        1993
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%p%",
+        "%USA%",
+        "f",
+        "%Ho%",
+        "actress",
+        2007,
+        2011
+      ],
+      [
+        "(uncredited)', '(production assistant)', '(uncredited)', '(uncredited)', '(executive producer)",
+        "[us]",
+        "%USA%",
+        "%p%",
+        "m",
+        "%Ronald%",
+        "actor",
+        1995,
+        2014
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(voice)', '(uncredited)",
+        "[us]",
+        "%1970%",
+        "%TV%",
+        "m",
+        "%Friedman%",
+        "actor",
+        2005,
+        2009
+      ],
+      [
+        "(producer)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[gb]",
+        "%i%",
+        "%2009%",
+        "m",
+        "%Jes\u00c3\u00bas%",
+        "actor",
+        1918,
+        2010
+      ],
+      [
+        "(voice)', '(executive producer)', '(voice)', '(writer)', '(producer)",
+        "[us]",
+        "%Japan%",
+        "%TV%",
+        "m",
+        "%Ho%",
+        "actor",
+        1912,
+        2007
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%VHS%",
+        "%TV%",
+        "m",
+        "%Silvera%",
+        "actor",
+        2007,
+        2012
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%media%",
+        "%1915%",
+        "m",
+        "%Ross%",
+        "actor",
+        2002,
+        2013
+      ],
+      [
+        "(archive footage)', '(writer)', '(archive footage)', '(archive footage)', '(writer)",
+        "[us]",
+        "%1958%",
+        "%TV%",
+        "m",
+        "%Tom%",
+        "actor",
+        2007,
+        2011
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[gb]",
+        "%USA%",
+        "%DVD%",
+        "f",
+        "%Jenny%",
+        "actress",
+        2005,
+        2013
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2002%",
+        "%2008%",
+        "m",
+        "%Joe%",
+        "actor",
+        1911,
+        2010
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%TV%",
+        "%p%",
+        "m",
+        "%Joey%",
+        "actor",
+        1974,
+        1991
+      ],
+      [
+        "(executive producer)', '(production accountant)', '(production accountant)', '(executive producer)', '(voice)",
+        "[us]",
+        "%association%",
+        "%USA%",
+        "m",
+        "%Roger%",
+        "actor",
+        2005,
+        2012
+      ],
+      [
+        "(as Lenka Danoff)', '(segment \"Huawei\")', '(characters created by) (as Sir Arthur Conan Doyle)', '(uncredited)', '(co-producer)",
+        "[us]",
+        "%worldwide%",
+        "%t%",
+        "m",
+        "%Herschel%",
+        "actor",
+        1983,
+        2007
+      ],
+      [
+        "(voice: English version)', '(written by)', '(production assistant)', '(creator)', '(creator)",
+        "[us]",
+        "%TV%",
+        "%USA%",
+        "m",
+        "%Joe%",
+        "actor",
+        1932,
+        1990
+      ],
+      [
+        "(writer)', '(writer)', '(writer)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%DVD%",
+        "%USA%",
+        "m",
+        "%D%",
+        "actor",
+        1927,
+        2013
+      ],
+      [
+        "(uncredited)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%production%",
+        "%in%",
+        "m",
+        "%Beckwith%",
+        "actor",
+        1960,
+        2015
+      ],
+      [
+        "(credit only)', '(voice: English version)', '(voice: English version)', '(voice: English version)', '(voice: English version)",
+        "[us]",
+        "%DVD%",
+        "%S%",
+        "m",
+        "%Joey%",
+        "actor",
+        2001,
+        2008
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%TV%",
+        "%worldwide%",
+        "m",
+        "%Armand%",
+        "actor",
+        2007,
+        2010
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%n%",
+        "%TV%",
+        "m",
+        "%J%",
+        "actor",
+        1997,
+        2006
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%association%",
+        "m",
+        "%Lane%",
+        "actor",
+        1965,
+        1982
+      ],
+      [
+        "(co-producer)', '(production coordinator)', '(voice)', '(script supervisor)', '(supervising producer)",
+        "[us]",
+        "%DVD%",
+        "%theatrical%",
+        "m",
+        "%Smith%",
+        "actor",
+        2009,
+        2011
+      ],
+      [
+        "(head writer)', '(executive producer)', '(head writer)', '(voice)', '(executive producer)",
+        "[us]",
+        "%2008%",
+        "%TV%",
+        "m",
+        "%D%",
+        "actor",
+        1973,
+        2010
+      ],
+      [
+        "(credit only)', '(voice: English version)', '(credit only)', '(credit only)', '(credit only)",
+        "[us]",
+        "%USA%",
+        "%2006%",
+        "m",
+        "%Young%",
+        "actor",
+        1991,
+        2011
+      ],
+      [
+        "(writer)', '(executive producer)', '(voice)', '(voice)', '(writer)",
+        "[us]",
+        "%2011%",
+        "%e%",
+        "f",
+        "%Ho%",
+        "actress",
+        1992,
+        2012
+      ],
+      [
+        "(prior screenplay)', '(consultant)', '(written by)', '(uncredited)', '(segment \"Comma Usage\")",
+        "[us]",
+        "%VHS%",
+        "%DVD%",
+        "m",
+        "%Tom%",
+        "actor",
+        1981,
+        2011
+      ],
+      [
+        "(head writer)', '(voice: English version)', '(voice)', '(voice)', '(coordinating producer)",
+        "[us]",
+        "%2012%",
+        "%2007%",
+        "m",
+        "%Flynn%",
+        "actor",
+        1982,
+        2008
+      ],
+      [
+        "(executive producer)', '(voice)', '(uncredited)', '(associate producer)', '(associate producer)",
+        "[us]",
+        "%USA%",
+        "%all%",
+        "m",
+        "%Brooks%",
+        "actor",
+        1985,
+        2010
+      ],
+      [
+        "(uncredited)', '(producer)', '(executive producer)', '(uncredited)', '(executive producer)",
+        "[us]",
+        "%TV%",
+        "%DVD%",
+        "m",
+        "%Albert%",
+        "actor",
+        1994,
+        2011
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(executive producer)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%1954%",
+        "%USA%",
+        "m",
+        "%Herschel%",
+        "actor",
+        1978,
+        2003
+      ],
+      [
+        "(executive producer)', '(uncredited)', '(voice)', '(associate producer)', '(executive producer)",
+        "[us]",
+        "%co%",
+        "%1914%",
+        "m",
+        "%a%",
+        "actor",
+        2007,
+        2013
+      ],
+      [
+        "(credit only)', '(voice: English version)', '(voice: English version)', '(credit only)', '(credit only)",
+        "[us]",
+        "%2007%",
+        "%association%",
+        "m",
+        "%Roger%",
+        "actor",
+        1988,
+        2012
+      ],
+      [
+        "(voice: English version)', '(voice: English version)', '(voice: English version)', '(credit only)', '(voice: English version)",
+        "[us]",
+        "%USA%",
+        "%2011%",
+        "m",
+        "%Roger%",
+        "actor",
+        1954,
+        2013
+      ],
+      [
+        "(production coordinator)', '(voice)', '(uncredited)', '(voice)', '(creator)",
+        "[us]",
+        "%s%",
+        "%DVD%",
+        "m",
+        "%Jes\u00c3\u00bas%",
+        "actor",
+        1987,
+        2007
+      ],
+      [
+        "(voice)', '(voice)', '(creator)', '(voice)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%2006%",
+        "m",
+        "%Costello%",
+        "actor",
+        1943,
+        2007
+      ],
+      [
+        "(written by)', '(creator)', '(voice)', '(creator)', '(co-executive producer)",
+        "[us]",
+        "%theatrical%",
+        "%Fremantlemedia%",
+        "m",
+        "%Sergey%",
+        "actor",
+        1974,
+        2008
+      ],
+      [
+        "(uncredited)', '(executive producer)', '(uncredited)', '(written by)', '(written by)",
+        "[us]",
+        "%C%",
+        "%worldwide%",
+        "m",
+        "%Joey%",
+        "actor",
+        2006,
+        2013
+      ],
+      [
+        "(uncredited)', '(producer)', '(uncredited)', '(producer)', '(uncredited)",
+        "[us]",
+        "%Brazil%",
+        "%USA%",
+        "m",
+        "%Griffin%",
+        "actor",
+        1999,
+        2009
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2007%",
+        "%s%",
+        "m",
+        "%Paulsen%",
+        "actor",
+        1922,
+        2012
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[de]",
+        "%1914%",
+        "%2010%",
+        "m",
+        "%Roger%",
+        "actor",
+        1926,
+        2007
+      ],
+      [
+        "(voice)', '(uncredited)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%2008%",
+        "%through%",
+        "f",
+        "%D%",
+        "actress",
+        2005,
+        2010
+      ],
+      [
+        "(supervising producer)', '(supervising producer)', '(uncredited)', '(creator)', '(script supervisor)",
+        "[us]",
+        "%Agent%",
+        "%USA%",
+        "f",
+        "%Singh%",
+        "actress",
+        1916,
+        2009
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%1912%",
+        "%USA%",
+        "m",
+        "%Wallice%",
+        "actor",
+        1944,
+        2007
+      ],
+      [
+        "(executive producer)', '(uncredited)', '(uncredited)', '(executive producer)', '(production assistant)",
+        "[us]",
+        "%in%",
+        "%DVD%",
+        "m",
+        "%Silvera%",
+        "actor",
+        1917,
+        2005
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%USA%",
+        "f",
+        "%D%",
+        "actress",
+        1942,
+        2013
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(executive producer)', '(executive producer)",
+        "[gb]",
+        "%2005%",
+        "%2001%",
+        "m",
+        "%Robert%",
+        "actor",
+        1982,
+        2011
+      ],
+      [
+        "(uncredited)', '(script supervisor)', '(supervising producer)', '(production assistant)', '(uncredited)",
+        "[us]",
+        "%TV%",
+        "%DVD%",
+        "m",
+        "%Ken%",
+        "actor",
+        1996,
+        2006
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%2008%",
+        "%DVD%",
+        "m",
+        "%Mu\u00c3\u00b1oz%",
+        "actor",
+        1962,
+        2001
+      ],
+      [
+        "(voice)', '(uncredited)', '(uncredited)', '(voice)', '(voice)",
+        "[us]",
+        "%e%",
+        "%o%",
+        "f",
+        "%Cynthia%",
+        "actress",
+        1966,
+        2006
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%in%",
+        "%USA%",
+        "m",
+        "%Roger%",
+        "actor",
+        1999,
+        2003
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[de]",
+        "%2009%",
+        "%1956%",
+        "m",
+        "%b%",
+        "actor",
+        1968,
+        2008
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(writer)', '(voice)', '(voice)",
+        "[us]",
+        "%theatrical%",
+        "%t%",
+        "m",
+        "%Welker%",
+        "actor",
+        2000,
+        2009
+      ],
+      [
+        "(executive producer)', '(executive producer)', '(producer)', '(producer)', '(uncredited)",
+        "[de]",
+        "%r%",
+        "%USA%",
+        "m",
+        "%Briggs%",
+        "actor",
+        1981,
+        2013
+      ],
+      [
+        "(written by)', '(uncredited)', '(co-executive producer)', '(production coordinator)', '(voice)",
+        "[us]",
+        "%theatrical%",
+        "%2001%",
+        "m",
+        "%Welker%",
+        "actor",
+        1988,
+        2013
+      ],
+      [
+        "(credit only)', '(voice)', '(producer)', '(uncredited)', '(associate producer)",
+        "[us]",
+        "%USA%",
+        "%t%",
+        "m",
+        "%Herschel%",
+        "actor",
+        1961,
+        2003
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(voice)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%2010%",
+        "f",
+        "%Smith%",
+        "actress",
+        2005,
+        2009
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2005%",
+        "%with%",
+        "m",
+        "%Armand%",
+        "actor",
+        2003,
+        2011
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%2011%",
+        "%DVD%",
+        "m",
+        "%Roger%",
+        "actor",
+        1950,
+        2013
+      ],
+      [
+        "(voice)', '(animal coordinator)', '(voice)', '(voice)', '(actors director)",
+        "[us]",
+        "%t%",
+        "%USA%",
+        "f",
+        "%Albert%",
+        "actress",
+        1981,
+        2012
+      ],
+      [
+        "(executive producer)', '(voice)', '(as Tony Audenshaw)', '(voice)', '(executive producer)",
+        "[us]",
+        "%i%",
+        "%DVD%",
+        "m",
+        "%Miller%",
+        "actor",
+        1981,
+        2003
+      ],
+      [
+        "(writer)', '(executive producer)', '(executive producer)', '(voice)', '(executive producer)",
+        "[us]",
+        "%2012%",
+        "%USA%",
+        "m",
+        "%West%",
+        "actor",
+        2007,
+        2013
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%Geneon%",
+        "%USA%",
+        "f",
+        "%Ho%",
+        "actress",
+        1978,
+        2009
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(executive producer)', '(executive producer)', '(uncredited)",
+        "[us]",
+        "%1958%",
+        "%USA%",
+        "m",
+        "%Merv%",
+        "actor",
+        1986,
+        2011
+      ],
+      [
+        "(voice)', '(voice)', '(voice)', '(uncredited)', '(production assistant)",
+        "[us]",
+        "%USA%",
+        "%Japan%",
+        "f",
+        "%Joey%",
+        "actress",
+        1993,
+        2008
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2012%",
+        "%s%",
+        "m",
+        "%Singh%",
+        "actor",
+        1963,
+        2011
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%DVD%",
+        "%association%",
+        "m",
+        "%William%",
+        "actor",
+        1942,
+        1985
+      ],
+      [
+        "(voice)', '(voice)', '(uncredited)', '(uncredited)', '(voice)",
+        "[us]",
+        "%2005%",
+        "%o%",
+        "m",
+        "%Friedman%",
+        "actor",
+        1966,
+        2010
+      ],
+      [
+        "(production assistant)', '(uncredited)', '(production assistant)', '(voice)', '(uncredited)",
+        "[us]",
+        "%co%",
+        "%all%",
+        "f",
+        "%Eve%",
+        "actress",
+        2002,
+        2010
+      ],
+      [
+        "(uncredited)', '(voice)', '(uncredited)', '(voice)', '(uncredited)",
+        "[us]",
+        "%n%",
+        "%with%",
+        "m",
+        "%Seki%",
+        "actor",
+        1963,
+        2006
+      ],
+      [
+        "(archive footage)', '(as Gritte Agatha)', '(uncredited)', '(trailer)', '(puppeteer)",
+        "[us]",
+        "%2010%",
+        "%with%",
+        "m",
+        "%Amato%",
+        "actor",
+        1929,
+        1997
+      ],
+      [
+        "(creator)', '(voice: English version)', '(written by)', '(voice: English version)', '(written by)",
+        "[us]",
+        "%2006%",
+        "%o%",
+        "m",
+        "%Bradley%",
+        "actor",
+        2001,
+        2008
+      ],
+      [
+        "(voice)', '(archive footage)', '(uncredited)', '(voice)', '(production coordinator)",
+        "[us]",
+        "%Germany%",
+        "%USA%",
+        "m",
+        "%Armand%",
+        "actor",
+        2005,
+        2011
+      ],
+      [
+        "(uncredited)', '(voice)', '(uncredited)', '(voice)', '(voice)",
+        "[pt]",
+        "%f%",
+        "%USA%",
+        "m",
+        "%Paul%",
+        "actor",
+        1936,
+        2012
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%TV%",
+        "%2008%",
+        "f",
+        "%Donald%",
+        "actress",
+        2007,
+        2010
+      ],
+      [
+        "(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)', '(archive footage)",
+        "[us]",
+        "%USA%",
+        "%1961%",
+        "m",
+        "%Ho%",
+        "actor",
+        2006,
+        2011
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[fr]",
+        "%2006%",
+        "%2002%",
+        "m",
+        "%Levin%",
+        "actor",
+        1998,
+        2008
+      ],
+      [
+        "(writer)', '(archive footage)', '(writer)', '(writer)', '(archive footage)",
+        "[us]",
+        "%co%",
+        "%in%",
+        "m",
+        "%W%",
+        "actor",
+        2002,
+        2012
+      ],
+      [
+        "(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)', '(uncredited)",
+        "[us]",
+        "%2012%",
+        "%association%",
+        "f",
+        "%Bob%",
+        "actress",
+        2002,
+        2009
+      ],
+      [
+        "(executive producer)', '(writer)', '(voice)', '(executive producer)', '(voice)",
+        "[us]",
+        "%TV%",
+        "%2003%",
+        "m",
+        "%Simon%",
+        "actor",
+        1974,
+        2001
+      ]
+    ]
+  }
+}

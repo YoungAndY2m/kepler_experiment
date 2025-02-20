@@ -1,0 +1,595 @@
+{
+    "25-0": {
+        "query": "SELECT MIN(mi.info) AS movie_budget, MIN(mi_idx.info) AS movie_votes, MIN(n.name) AS male_writer, MIN(t.title) AS violent_movie_title\nFROM cast_info AS ci,\n   info_type AS it1,\n   info_type AS it2,\n   keyword AS k,\n   movie_info AS mi,\n   movie_info_idx AS mi_idx,\n   movie_keyword AS mk,\n   name AS n,\n   title AS t\nWHERE t.id = mi.movie_id\nAND t.id = mi_idx.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND ci.movie_id = mi.movie_id\nAND ci.movie_id = mi_idx.movie_id\nAND ci.movie_id = mk.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND mi.movie_id = mk.movie_id\nAND mi_idx.movie_id = mk.movie_id\nAND n.id = ci.person_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info = '@param4'\nAND n.gender = '@param5';",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cast_info",
+                "join_tables_alias": [
+                    "t",
+                    "mi",
+                    "mi_idx",
+                    "mk",
+                    "n"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_info",
+                    "movie_info_idx",
+                    "movie_keyword",
+                    "name"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "ci.movie_id = mi_idx.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [],
+                    [
+                        "gender"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "movie_info"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "ci",
+                    "mi_idx",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "cast_info",
+                    "movie_info_idx",
+                    "movie_keyword",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "ci.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "both",
+                    "l",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "sequel', 'revenge', 'based-on-novel",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "votes",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "sequel', 'revenge', 'based-on-novel",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "sequel', 'revenge', 'based-on-novel",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Horror",
+                "f"
+            ],
+            [
+                "(producer)', '(executive producer)",
+                "genres",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'fight",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Horror",
+                "f"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "sequel', 'revenge', 'based-on-novel",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "sequel', 'revenge', 'based-on-novel",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Horror",
+                "f"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "votes",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "votes",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "hero', 'martial-arts', 'hand-to-hand-combat",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "nerd', 'loner', 'alienation', 'dignity",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "superhero', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence', 'magnet', 'web', 'claw', 'laser",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "sequel', 'revenge', 'based-on-novel",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Horror",
+                "f"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "superhero', 'sequel', 'second-part', 'marvel-comics', 'based-on-comic', 'tv-special', 'fight', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "rating",
+                "murder', 'violence', 'blood', 'gore', 'death', 'female-nudity', 'hospital",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'blood', 'gore', 'death', 'female-nudity",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(writer)', '(head writer)', '(written by)', '(story)', '(story editor)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "votes",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ],
+            [
+                "(voice)', '(voice: Japanese version)', '(voice) (uncredited)', '(voice: English version)",
+                "genres",
+                "rating",
+                "murder', 'murder-in-title', 'blood', 'violence",
+                "Horror",
+                "m"
+            ]
+        ]
+    }
+}

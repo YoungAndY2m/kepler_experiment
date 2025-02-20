@@ -1,0 +1,686 @@
+{
+    "14-0": {
+        "query": "SELECT MIN(mi_idx.info) AS rating, MIN(t.title) AS northern_dark_movie\nFROM info_type AS it1,\n   info_type AS it2,\n   keyword AS k,\n   kind_type AS kt,\n   movie_info AS mi,\n   movie_info_idx AS mi_idx,\n   movie_keyword AS mk,\n   title AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND it1.info = '@param0'\nAND it2.info = '@param1'\nAND k.keyword IN ('@param2')\nAND kt.kind = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info < '@param5'\nAND t.production_year > @param6;",
+        "predicates": [
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "movie_info"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "kind_type",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "title"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "movie_info_idx",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "movie_info_idx",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "movie_info",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "kind_type",
+                    "movie_info",
+                    "movie_keyword",
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "countries",
+                "rating",
+                "student', 'fat-tuesday', 'dog-hater', 'hosiery', 'sirhan",
+                "movie",
+                "Japan', 'UK:16 December 2010', 'Estonia:18 May 2011', 'Nothing Dies', 'Thailand:107",
+                "8.2",
+                1952
+            ],
+            [
+                "languages",
+                "votes",
+                "performer-name-in-title', 'sin-of-intent', 'black-pepper', 'woman''s-hat', 'space-colony",
+                "tv movie",
+                "English', 'Spain:30 April 1930', 'God, Give Me a Sign', 'USA:7 November 1933', 'UK:15 October 1951",
+                "18",
+                1990
+            ],
+            [
+                "color info",
+                "votes distribution",
+                "1890s', 'kiddie-pool', 'sword-fight', 'rover', 'minister-to-france",
+                "movie",
+                "Black and White', 'UK:24 December 1954', 'USA:3 July 1986', 'Japan:1906', '15625",
+                "0000112200",
+                1940
+            ],
+            [
+                "genres",
+                "votes",
+                "campaign', 'ghallywood', 'doco', 'townes-van-zandt', 'sex-with-object",
+                "movie",
+                "Romance', 'UK:8 April 2013', '4585', 'USA:31 October 1980', 'Germany:25 May 1994",
+                "6739",
+                1983
+            ],
+            [
+                "tech info",
+                "rating",
+                "incense', 'schnitzler-play', 'class-distinction', 'parvenu', 'mistaken",
+                "movie",
+                "PFM:35 mm', 'MET:2911.45 m', 'France:164', 'Andrew Campbell', 'Spain:27 May 1974",
+                "8.2",
+                1952
+            ],
+            [
+                "tech info",
+                "rating",
+                "drug-use', 'lighting-equipment', 'police-show-parody', 'hyper-focus', 'homemade-drugs",
+                "movie",
+                "RAT:1.37 : 1', 'France:289', 'ALL 1,000,000', 'MET:800 m', '\u00e2\u0082\u00ac 272,000",
+                "7.1",
+                1976
+            ],
+            [
+                "certificates",
+                "votes",
+                "female-vampire', 'jefferson-davis', 'genetics-experiment', 'punch-the-drink', 'german-hip-hop",
+                "movie",
+                "UK:18', '5734', 'Ireland:June 2010', 'Netherlands:1921', 'France:19 May 2015",
+                "62",
+                1999
+            ],
+            [
+                "color info",
+                "rating",
+                "vanity', 'reading-lamp', 'angelino', 'sex-scandal', 'huffing",
+                "episode",
+                "Color', 'UK:30 March 2000', 'USA:26 June 2003', 'France:2 March 1981', 'India:19 April 1962",
+                "7.5",
+                1965
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "incense', 'waste', 'hydrogen-crystal', 'banana-cue', 'theatre-life",
+                "movie",
+                "Japan', 'USA:13 June 1936', 'Hong Kong:9', '10495 AS', 'MET:1623 m",
+                "0000001223",
+                1952
+            ],
+            [
+                "color info",
+                "votes",
+                "1890s', 'lasso-of-truth', 'marquis-cut-diamond', 'evil-fairy', 'mirror-lined-box",
+                "movie",
+                "Black and White', 'USA:14 January 1968', 'Taiwan:3 July 2009', 'Punkaharju, Finland', 'Japan:9 May 1992",
+                "311",
+                1940
+            ],
+            [
+                "languages",
+                "rating",
+                "train', 'junk-collector', 'cut-to-pieces', 'inner-voice', 'choke-hold",
+                "movie",
+                "Italian', 'Poland:22 June 2006', 'MET:5221.83 m', 'Beethoven''s 2nd', 'UK:3 July 1987",
+                "6.4",
+                2004
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "title-spoken-by-character', 'pain-spray', 'electrocardiogram', 'teleporter', 'exploring-a-house",
+                "movie",
+                "Crime', 'USA:1 February 1914', 'Prepare to be moved', 'Israel:28 July 2011', 'Brazil:7 April 1963",
+                "0000122100",
+                1981
+            ],
+            [
+                "languages",
+                "votes distribution",
+                "champion', 'date-auction', 'jungle-war', 'overweight-slur', 'deadly-force",
+                "video movie",
+                "English', '244,030 (Sweden)', '- 15 August 2001', 'Japan:12 March 1966', 'UK:21 October 1961",
+                "00.0121102",
+                2000
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "honor', 'stencil', 'dead-fly', 'musclemen', 'blues-music",
+                "movie",
+                "PCS:Spherical', 'France:January 1915', '$49,851,591 (USA)', '$17,020 (Bulgaria)', 'India:3 July 2003",
+                "0000001223",
+                1952
+            ],
+            [
+                "countries",
+                "rating",
+                "sashimi', 'fried-egg-jellyfish', 'spanish-australian', 'asphalt', 'bail-bond",
+                "movie",
+                "Japan', 'Mexico:9 July 1993', 'Spain:16 April 1992', 'UK:17 March 1986', 'USA:7 July 1981",
+                "8.2",
+                1952
+            ],
+            [
+                "color info",
+                "votes distribution",
+                "redhead', 'medical-assistance', 'animal-psychic', 'kept-man', 'bridge-demolition",
+                "movie",
+                "Color', 'Ukraine:19 May 2005', 'Italy:6 May 1994', 'Denmark:April 1995', 'USA:23 August 1910",
+                "0001211000",
+                1994
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "gun', 'southeast-asia', 'garden-rake', 'figure-drawing', 'word-of-honor",
+                "movie",
+                "PFM:35 mm', 'Peru:8 June 2006', 'India:20 May 1986', 'Japan:20 March 2004', 'MET:1723.95 m",
+                "0000023100",
+                2010
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "shotgun', 'circus-school', 'sliding-door', 'exhumed-body', 'crap-game",
+                "movie",
+                "OFM:16 mm', 'UK:3 July 1972', 'CAD 1,200', 'UK:21 July 1997', 'MET:1977.25 m",
+                "0000012210",
+                2007
+            ],
+            [
+                "languages",
+                "votes",
+                "happiness', 'cave-crash', 'spokane-washington', 'last-reunion', 'clogged-toilet",
+                "movie",
+                "Japanese', 'Jenseits von Afrika', 'MET:3996.10 m', 'Little Nikita', '$47,742,000 (USA)",
+                "15575",
+                1952
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "bat', 'goat-show', 'veterans-memorial', 'movement-therapy', 'graduation-night",
+                "movie",
+                "RAT:1.85 : 1', 'UK:October 1984', 'MET:2736 m', 'UK:14 February 1992', 'Mexico:18 July 2011",
+                "0000122100",
+                1971
+            ],
+            [
+                "sound mix",
+                "rating",
+                "dancer', 'french-colonial', 'body-cast', 'old-herder', 'wall-clock",
+                "movie",
+                "Mono', '$43,307,000 (USA)', 'Peru:January 1989', '- 18 March 2012', 'Highpockets, Inc.",
+                "3.0",
+                1952
+            ],
+            [
+                "certificates",
+                "votes distribution",
+                "defecation', 'terrorist', 'caregiver', 'hard-rock', 'id-bracelet",
+                "movie",
+                "Singapore:R21', 'Spain:6 June 2008', 'LV 12653', '$1,945,552 (USA)', 'Sweden:13 June 2008",
+                "0000012210",
+                2007
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "abandoned-by-husband', 'supply', 'robbie-robertson', 'going-native', 'winning-ticket",
+                "movie",
+                "PFM:35 mm', 'UK:19 June 1951', 'Kuwait:104', '17 October 1951 -', 'La Mancha Media",
+                "0001211000",
+                1999
+            ],
+            [
+                "languages",
+                "votes distribution",
+                "british-military', 'stage-door', '12-chapters', 'tithe', 'piss-sheet",
+                "movie",
+                "English', '13:58', 'Blazing Action!', 'Italy:17 April 2008', '124,887 (Sweden)",
+                "0000001321",
+                1964
+            ],
+            [
+                "languages",
+                "votes distribution",
+                "train', 'female-crying', 'gum-machine', 'fireplace-shovel', 'quasimoto",
+                "movie",
+                "Italian', 'Croatia:3 May 2009', 'YUM 150', 'UK:1972', 'UK:16 October 1975",
+                "0000122100",
+                2004
+            ],
+            [
+                "runtimes",
+                "rating",
+                "song', 'pakistani-immigrant', 'medicine', 'papokot', 'death-bed-vigil",
+                "movie",
+                "USA:20', 'Japan:9 April 1984', '19 October 1899 -', '2242', 'Canada:259",
+                "7.3",
+                1935
+            ],
+            [
+                "languages",
+                "votes distribution",
+                "homelessness', 'circus-fire', 'christian-history', 'pie', 'chartres-france",
+                "movie",
+                "English', '5853', 'MET:2000 m', 'UK:28 December 2004', 'Poland:7 July 2012",
+                "0000001223",
+                1952
+            ],
+            [
+                "tech info",
+                "rating",
+                "film-director', 'greek-folk-dance', 'fickle-woman', 'bushwhacked', 'california-governor",
+                "movie",
+                "RAT:2.35 : 1', '- 18 November 2001', 'Japan:29 June 1983', 'Peru:2010', '1342-80",
+                "6.9",
+                1972
+            ],
+            [
+                "runtimes",
+                "votes distribution",
+                "campaign', 'staring-at-breast', 'artichoke', 'digital-recorder', 'eating-nails",
+                "movie",
+                "87', 'MET:115.8 m', 'Debrecen, Hungary', 'UK:27 October 1982', 'Brazil:8 July 2005",
+                "0001221000",
+                1983
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "silent-movie-sequence', 'fight-in-restaurant', 'navajo', 'scribbage', 'dented-fender",
+                "movie",
+                "Short', '2863', 'Italy:27 May 1981', 'MET:3760 m', 'Japan:23 June 1950",
+                "...21.41..",
+                1933
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "film-producer', 'selby', 'hubcap', 'audio-tape-playback', 'cream-of-wheat",
+                "movie",
+                "LAB:Consolidated Film Industries (CFI), Hollywood (CA), USA', 'CAM:Sony a99', 'MET:2823 m', 'Ilya Batuev', 'UK:7 November 1990",
+                "0000012111",
+                1972
+            ],
+            [
+                "countries",
+                "votes",
+                "two-parts', 'washer-woman', 'broken-refrigerator', 'commando', 'pontiac-the-car",
+                "movie",
+                "Japan', 'USA:October 2008', 'France:October 1966', 'Mexico:1946', 'UK:19 July 1981",
+                "36",
+                2010
+            ],
+            [
+                "tech info",
+                "rating",
+                "interrupted-hanging', 'nicotine', 'mixed-identity', 'lederman', 'bed-of-flowers",
+                "movie",
+                "OFM:35 mm', 'Denmark:19 May 1947', 'Thailand:178', 'LolaBek', 'Hungary:3 May 2004",
+                "3.7",
+                1995
+            ],
+            [
+                "genres",
+                "rating",
+                "campaign', 'lisbon-university', 'beagle-dog', 'windmill', 'evil-monster",
+                "movie",
+                "Comedy', 'Germany:5 May 2011', 'UK:10 March 1975', 'Robin: Holy bikini!', 'Singapore:45",
+                "5.6",
+                1983
+            ],
+            [
+                "languages",
+                "votes",
+                "toilet', 'election-campaign', 'hand-burn', 'africa-ceremony', 'viral",
+                "movie",
+                "English', '2599', 'Japan:August 1973', '3058', 'Spain:November 1911",
+                "42",
+                2003
+            ],
+            [
+                "tech info",
+                "rating",
+                "happiness', 'rope-broke', 'ming-dynasty', 'grove-of-venus', 'monumentalism",
+                "movie",
+                "RAT:1.37 : 1', 'USA:22 April 1930', 'He learned to read.', 'Germany:6 May 2002', 'USA:7 March 1962",
+                "7.3",
+                1935
+            ],
+            [
+                "languages",
+                "rating",
+                "train', 'cribbage', 'technocracy', 'imitating-a-gorilla', 'scopolamine",
+                "movie",
+                "English', 'Canada:19 July 2001', 'USA:28 January 1935', '$11,489,982 (USA)', 'Spain:3 March 1975",
+                "7.4",
+                1935
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "ambition', 'wife-meets-mistress', 'thames-river', 'visiting-a-grave', 'chopping-off-dick",
+                "movie",
+                "PCS:Spherical', '\u00c2\u00a310,456', '? - 23 March 2008', 'UK:29 December 1992', 'Love is courage.",
+                "0000001223",
+                1952
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "bus-station', 'taciturnity', 'rare-animal', 'slap-on-the-back', 'body-in-pool",
+                "movie",
+                "PFM:35 mm', 'UK:26 December 2009', 'UK:9 August 1995', 'Delancy Press Ltd', 'Mexico:7 July 1960",
+                "0110100002",
+                1995
+            ],
+            [
+                "genres",
+                "votes",
+                "military', 'commercial-plane', 'teen-rebel', 'brinksmanship', 'tatra-mountains",
+                "movie",
+                "Biography', 'MET:307.8 m', 'Croatia:25 May 2007', 'CAM:Arriflex SR I', 'Finland:19 May 2004",
+                "7",
+                1967
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "dancer', 'under-a-spell', 'strato-volcano', 'bandolero', 'stephen-glass",
+                "movie",
+                "Drama', 'Spain:14 March 2003', 'Czechoslovakia:223', 'Denmark:31 May 1995', 'Germany:8 June 2004",
+                "0000001212",
+                1963
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "gun', 'pizza-delivery', 'scourge', 'editor-in-chief', 'm-45-quadmount",
+                "movie",
+                "Mystery', 'You''re Next!', 'Austria:12 May 1971', 'Germany:1 July 2000', 'France:15 May 1978",
+                "...1010102",
+                1947
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "expectation', 'dutch-parliament', 'bet-hatikva-israel', 'milking-a-snail', 'anarchism",
+                "movie",
+                "OFM:35 mm', 'UK:23 January 1987', 'Michael Wiese', 'Croatia:57', 'Japan:28 April 1938",
+                "0000001223",
+                1952
+            ],
+            [
+                "countries",
+                "votes",
+                "death-of-mother', 'quilting', 'liver-disease', 'encopa', 'tanker",
+                "movie",
+                "Japan', 'ID 6710 RC', 'Japan:March 2003', 'Serbia:10 June 2009', 'MET:2830",
+                "15575",
+                1952
+            ],
+            [
+                "tech info",
+                "rating",
+                "robbery', 'soccer-field', 'whinny', 'butchering-a-human', 'essay-writer",
+                "movie",
+                "OFM:35 mm', 'Italy:17 June 1973', 'Cluj, Romania', 'Denmark:50', 'USA:13 April 2013",
+                "3.0",
+                1952
+            ],
+            [
+                "countries",
+                "rating",
+                "monster-abducts-woman', 'suburbian-life', 'fitness-training', 'car-driving', 'euro-animation",
+                "movie",
+                "USA', 'UK:15 June 1982', 'MET:1121 m', 'Show #1459', 'FIM 1,213,716",
+                "7.1",
+                2010
+            ],
+            [
+                "languages",
+                "votes distribution",
+                "nature', 'lights-shut-off', 'third-world', '16mm-film', 'mother-nature",
+                "movie",
+                "Italian', 'DardAllone Pictures', 'Stupid!', 'USA:3 July 1908', 'MET:1,277.42 m",
+                "0000122100",
+                2004
+            ],
+            [
+                "sound mix",
+                "votes",
+                "stagecoach', 'floating-toy', 'bathroom-graffiti', 'hidden-truth', 'egg-beating",
+                "movie",
+                "Mono', 'Italy:26 March 2011', 'France:6 April 1986', 'MET:2494.50 m', 'PCS:Betamax",
+                "24",
+                1952
+            ],
+            [
+                "tech info",
+                "votes distribution",
+                "gang-member', 'exploding-tank', 'incest', 'pakistani-immigrant', 'demerol",
+                "movie",
+                "PCS:Spherical', 'Spain:1 July 1970', 'USA:24 June 1909', 'France:4 June 1920', 'India:3 July 2002",
+                "11100.1120",
+                1952
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "based-on-novel', 'renoir-painting', 'electric-railway', 'murder-on-ship', 'wetting-one''s-self",
+                "tv series",
+                "Brazil', 'MET:167.65 m', '2,457,000 (Germany)', 'Inle Lake, Burma', 'Igor Bauersima (qv)",
+                "3....1...5",
+                1994
+            ]
+        ]
+    }
+}

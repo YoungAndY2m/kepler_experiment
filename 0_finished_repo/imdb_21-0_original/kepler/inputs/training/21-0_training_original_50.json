@@ -1,0 +1,812 @@
+{
+  "21-0": {
+    "query": "SELECT MIN(cn.name) AS company_name, MIN(lt.link) AS link_type, MIN(t.title) AS western_follow_up\nFROM company_name AS cn,\n   company_type AS ct,\n   keyword AS k,\n   link_type AS lt,\n   movie_companies AS mc,\n   movie_info AS mi,\n   movie_keyword AS mk,\n   movie_link AS ml,\n   title AS t\nWHERE lt.id = ml.link_type_id\nAND ml.movie_id = t.id\nAND t.id = mk.movie_id\nAND mk.keyword_id = k.id\nAND t.id = mc.movie_id\nAND mc.company_type_id = ct.id\nAND mc.company_id = cn.id\nAND mi.movie_id = t.id\nAND ml.movie_id = mk.movie_id\nAND ml.movie_id = mc.movie_id\nAND mk.movie_id = mc.movie_id\nAND ml.movie_id = mi.movie_id\nAND mk.movie_id = mi.movie_id\nAND mc.movie_id = mi.movie_id\nAND cn.country_code != '@param0'\nAND (cn.name LIKE '@param1' OR cn.name LIKE '@param2')\nAND ct.kind = '@param3'\nAND k.keyword = '@param4'\nAND lt.link LIKE '@param5'\nAND mc.note IS NULL\nAND mi.info IN ('@param6')\nAND t.production_year BETWEEN @param7 AND @param8;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "!=",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_type",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_type_id = ct.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "k",
+        "column": "keyword",
+        "operator": "=",
+        "data_type": "text",
+        "table": "keyword",
+        "join_tables_alias": [
+          "mk"
+        ],
+        "join_tables": [
+          "movie_keyword"
+        ],
+        "join_conditions": [
+          "mk.keyword_id = k.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "lt",
+        "column": "link",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "link_type",
+        "join_tables_alias": [
+          "ml"
+        ],
+        "join_tables": [
+          "movie_link"
+        ],
+        "join_conditions": [
+          "lt.id = ml.link_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "movie_info",
+        "join_tables_alias": [
+          "t",
+          "ml",
+          "mk",
+          "mc"
+        ],
+        "join_tables": [
+          "title",
+          "movie_link",
+          "movie_keyword",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mi.movie_id = t.id",
+          "ml.movie_id = mi.movie_id",
+          "mk.movie_id = mi.movie_id",
+          "mc.movie_id = mi.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "l",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "ml",
+          "mk",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "movie_link",
+          "movie_keyword",
+          "movie_companies",
+          "movie_info"
+        ],
+        "join_conditions": [
+          "ml.movie_id = t.id",
+          "t.id = mk.movie_id",
+          "t.id = mc.movie_id",
+          "mi.movie_id = t.id"
+        ],
+        "left_or_right": [
+          "l",
+          "l",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [],
+          [],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1879,
+        "max": 2020,
+        "join_tables_alias": [
+          "ml",
+          "mk",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "movie_link",
+          "movie_keyword",
+          "movie_companies",
+          "movie_info"
+        ],
+        "join_conditions": [
+          "ml.movie_id = t.id",
+          "t.id = mk.movie_id",
+          "t.id = mc.movie_id",
+          "mi.movie_id = t.id"
+        ],
+        "left_or_right": [
+          "l",
+          "l",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [],
+          [],
+          [],
+          [
+            "info"
+          ]
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[gb]",
+        "%a%",
+        "%s%",
+        "production companies",
+        "sarcasm",
+        "%u%",
+        "English', 'Germany:4 June 2013', '\u00c2\u00a3960,000', '23,157 (France)', 'UK:2 May 1988",
+        1939,
+        2002
+      ],
+      [
+        "[us]",
+        "%l%",
+        "%e%",
+        "production companies",
+        "performance",
+        "%c%",
+        "Taiwan:25 August 2012', 'USA:19 April 1967', 'Egypt:1 June 2009', 'Russia:June 2004', 'MET:1611.78 m",
+        1945,
+        2017
+      ],
+      [
+        "[us]",
+        "%i%",
+        "%T%",
+        "production companies",
+        "performance",
+        "%t%",
+        "Music', 'Denmark:2 July 1954', '30 January 1956 - ?', 'Sweden:1 May 1951', 'Canada:23 May 2013",
+        1995,
+        2012
+      ],
+      [
+        "[jp]",
+        "%m%",
+        "%t%",
+        "production companies",
+        "internet",
+        "%r%",
+        "The opening sequence for .hack//GIFT is similar to that of .hack//SIGN, but with several differences: - Ucchi and Emy, two characters exclusive to //GIFT, appear in the \"mouse click\" scene. - Many times in the opening, Subaru, Bear, Mimiru, and BT flash between their //SIGN and //GIFT designs. Aura also does this in her floating scene. - During the scene in which Subaru, Bear, Mimiru, and BT wave their respective weapons and split in half, the //SIGN - version characters walk across, are briefly shown in their //GIFT forms as their bodies split, and immediately change back. - The \"disintegrating clothes\" scenes are replaced by ones of the //GIFT versions of Subaru, Bear, Mimiru, and BT floating against the tunnel of 1s and 0s. - Instead of the //SIGN Tsukasa being wrapped by the Guardian''s tentacles, a //GIFT Tsukasa is shown being Data Drained. - When the dancing girl hits the water, she changes into the topless Helba shown in //GIFT, and the //SIGN Aura is replaced by her //GIFT counterpart.', 'Written in 2003.', 'SEK 9,840 (Sweden)', 'USA:27 July 1978', 'India:10 June 2006",
+        1956,
+        2005
+      ],
+      [
+        "[us]",
+        "%o%",
+        "%o%",
+        "production companies",
+        "non-fiction",
+        "%c%",
+        "USA', 'UK:23 February 1940', 'Denmark:1 June 1996', '\u00c2\u00a9 2004 ZDF', 'USA:3 May 1917",
+        1879,
+        2009
+      ],
+      [
+        "[gb]",
+        "%B%",
+        "%o%",
+        "production companies",
+        "royalty",
+        "%r%",
+        "Australia:PG', 'Japan:9 April 1975', 'Heaven Help Us', 'Hungary:May 2006', 'South Africa:46",
+        1950,
+        2000
+      ],
+      [
+        "[us]",
+        "%i%",
+        "%i%",
+        "production companies",
+        "folk-rock",
+        "%n%",
+        "208', 'New Zealand:72', 'East Germany:103', 'FIM 2,858,917', 'Korea:24",
+        1961,
+        2010
+      ],
+      [
+        "[jp]",
+        "%e%",
+        "%d%",
+        "production companies",
+        "internet",
+        "%i%",
+        "The character of Bear is inspired by Mel Gibson (I)'' ''s character in _Braveheart (1995)_ (qv).', 'USA:4 October 1957', '$2,962,465 (USA)', 'Denmark:6 May 1998', 'Contestant: Pass.",
+        1903,
+        2020
+      ],
+      [
+        "[us]",
+        "%o%",
+        "%s%",
+        "distributors",
+        "non-fiction",
+        "%d%",
+        "English', 'Japan:19 March 1967', 'Mae Sot, Thailand', 'Black stoner comedy', 'Spain:28 May 1979",
+        1956,
+        2010
+      ],
+      [
+        "[us]",
+        "%S%",
+        "%i%",
+        "distributors",
+        "based-on-cult-film",
+        "%l%",
+        "USA', 'UK:3 September 1911', 'Spain:23 June 2007', '368,482 (Sweden)', 'Evil has come home",
+        1941,
+        2011
+      ],
+      [
+        "[us]",
+        "%i%",
+        "%e%",
+        "production companies",
+        "music-industry",
+        "%o%",
+        "FACT: In the Megadeth episode, it is stated that Metaliica''s Black Album and Megadeth''s Countdown To Extinction were released at the same time. Countdown To Extinction wasn''t released until nearly a year after the Black Album.', 'USA:28 October 1930', 'NOK 6,500', 'Japan:6 May 1991', 'The Stellar Cast",
+        1971,
+        2002
+      ],
+      [
+        "[jp]",
+        "%d%",
+        "%i%",
+        "production companies",
+        "voice-of-god",
+        "%e%",
+        "Tsukasa: I''m no longer afraid of you, or my father.', '8,469 (Finland)', 'MET:1362.15 m', 'Portugal:7 May 2006', '$95,011,339 (USA)",
+        1998,
+        2004
+      ],
+      [
+        "[us]",
+        "%/%",
+        "%e%",
+        "production companies",
+        "musician",
+        "%n%",
+        "English', 'USA:1 March 1962', 'Murder Is The Game', 'UK:30 June 1975', 'Show #5169",
+        2002,
+        2012
+      ],
+      [
+        "[gb]",
+        "%h%",
+        "%B%",
+        "production companies",
+        "number-in-title",
+        "%f%",
+        "Australia:PG', 'MET:2104 m', 'Alana: Smog it!', 'UK:22 June 1992', 'UK:April 1940",
+        1970,
+        2000
+      ],
+      [
+        "[gb]",
+        "%s%",
+        "%u%",
+        "production companies",
+        "interview",
+        "%e%",
+        "Poland:30 May 2006', 'Japan:11 March 1987', 'USA:28 January 1985', 'November 1976 -', 'Japan:26 April 1988",
+        2002,
+        2009
+      ],
+      [
+        "[us]",
+        "%e%",
+        "%t%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        "Color', 'Egypt:22 June 1992', 'Italy:22 April 1978', 'Triluna Film AG', 'Italy:15 July 1958",
+        1960,
+        1999
+      ],
+      [
+        "[us]",
+        "%c%",
+        "%B%",
+        "production companies",
+        "interview",
+        "%r%",
+        "Columbia/SME Records, Sony Music, and ''Bob Dylan'' (qv)''s management gave ''Martin Scorsese'' (qv) access to its vaults, something Dylan has never given to any documentary filmmaker.', '$4,743,119 (USA)', '59:30 BBC Version', '2 January 2007 -', 'Estonia:28 May 1999",
+        1910,
+        2006
+      ],
+      [
+        "[gb]",
+        "%s%",
+        "%r%",
+        "production companies",
+        "musician",
+        "%u%",
+        "Poland:22 May 2006', 'UK:30 November 1954', 'Mexico:19 May 1997', 'Poland:28 May 2005', 'Spain:7 March 1997",
+        1971,
+        2017
+      ],
+      [
+        "[gb]",
+        "%i%",
+        "%e%",
+        "production companies",
+        "folk-rock",
+        "%e%",
+        "USA:27 September 2005', 'Japan:31 July 1983', 'Israel:24 May 2010', 'Norway:25 May 2008', 'USA:11 January 1966",
+        2000,
+        2008
+      ],
+      [
+        "[us]",
+        "%e%",
+        "%v%",
+        "production companies",
+        "interview",
+        "%t%",
+        "Taiwan:25 August 2012', 'UK:28 January 1960', 'Brazil:11 June 1936', 'Finland:29 May 1974', 'Japan:23 June 1967",
+        1955,
+        2009
+      ],
+      [
+        "[gb]",
+        "%t%",
+        "%r%",
+        "production companies",
+        "royalty",
+        "%w%",
+        "English', 'CHF 60,000', 'OFM:Pro 8mm', 'France:31 July 1974', 'UK:26 December 1987",
+        1890,
+        1995
+      ],
+      [
+        "[us]",
+        "%r%",
+        "%r%",
+        "production companies",
+        "interview",
+        "%e%",
+        "Finland:K-3', 'MET:264 m', 'Besom Productions', 'Austria:11 May 2007', 'Rosi Burguete",
+        1997,
+        2011
+      ],
+      [
+        "[gb]",
+        "%e%",
+        "%s%",
+        "production companies",
+        "musician",
+        "%e%",
+        "Canada:201', '$647,000', 'East Germany:46', 'Australia:121', 'USA:10 August 2013",
+        1972,
+        2008
+      ],
+      [
+        "[gb]",
+        "%i%",
+        "%r%",
+        "production companies",
+        "non-fiction",
+        "%i%",
+        "English', 'Topkapi', '3 April 2007 - ?', 'UK:28 May 1965', 'USA:12 July 1960",
+        1954,
+        1966
+      ],
+      [
+        "[jp]",
+        "%t%",
+        "%o%",
+        "production companies",
+        ".hack",
+        "%w%",
+        "Morganna: I need you as much as you need me. As long as we walk together, I will protect you.', 'Finland:8 May 1938', 'Italy:21 May 2011', 'France:16 June 1993', 'Norway:June 2006",
+        1978,
+        2020
+      ],
+      [
+        "[us]",
+        "%W%",
+        "%e%",
+        "production companies",
+        "folk-rock",
+        "%e%",
+        "Spain:T', 'Finland:3 June 2011', 'France:24 July 1974', '41329', 'Japan:17 April 1952",
+        1903,
+        2007
+      ],
+      [
+        "[us]",
+        "%e%",
+        "%r%",
+        "production companies",
+        "folk-rock",
+        "%n%",
+        "Argentina:Atp', 'UK:19 April 1986', '7016', '30 November 2009 -', 'Jurmala, Lithuania",
+        1891,
+        2013
+      ],
+      [
+        "[us]",
+        "%T%",
+        "%t%",
+        "production companies",
+        "folk-rock",
+        "%e%",
+        "Argentina:Atp', 'Chile:96', '14 May 1904 -', 'USA:21 April 1995', 'Japan:8 April 1947",
+        1905,
+        2015
+      ],
+      [
+        "[jp]",
+        "%i%",
+        "%i%",
+        "production companies",
+        "cyberculture",
+        "%i%",
+        "The ending sequence for .hack//GIFT features the //GIFT versions of the characters from //SIGN and the games in place of Subaru and Tsukasa walking across, respectively. At the end of the sequence, //GIFT versions of Subaru and Silver Knight are also shown.', 'Italy:1959', '324,300 (Spain)', 'Japan:7 August 1924', '$22,119,000 (USA)",
+        1936,
+        2016
+      ],
+      [
+        "[gb]",
+        "%P%",
+        "%t%",
+        "production companies",
+        "singer",
+        "%e%",
+        "UK:26 September 2005', 'Justice has a name.', 'God Has A Rock Band', 'MET:2148.23 m', 'musical journey",
+        1894,
+        2006
+      ],
+      [
+        "[us]",
+        "%u%",
+        "%o%",
+        "production companies",
+        "beach",
+        "%e%",
+        "English', 'UK:21 June 1986', 'MET:12.5 m', 'Iran:12 March 1963', 'China:27 April 2001",
+        1975,
+        2019
+      ],
+      [
+        "[gb]",
+        "%i%",
+        "%i%",
+        "production companies",
+        "interview",
+        "%r%",
+        "Singapore:PG', 'Taiwan:3 July 2005', 'UK:11 April 2003', 'Finland:13 May 2005', 'USA:26 July 1920",
+        1917,
+        2013
+      ],
+      [
+        "[us]",
+        "%u%",
+        "%d%",
+        "production companies",
+        "folk-rock",
+        "%f%",
+        "Poland:22 May 2006', '- April 1997', 'Iran:9 July 1958', '? - 5 November 1995', 'USA:8 May 2000",
+        1943,
+        2008
+      ],
+      [
+        "[us]",
+        "%T%",
+        "%e%",
+        "production companies",
+        "folk-rock",
+        "%e%",
+        "Poland:22 May 2006', 'UK:18 February 1971', 'Andrew Perta', 'Kearns, Linda', 'ESP 21,392 (Spain)",
+        1893,
+        2012
+      ],
+      [
+        "[us]",
+        "%T%",
+        "%l%",
+        "production companies",
+        "surrealism",
+        "%f%",
+        "Perceptor: [after seeing the Bandroids in action] Before I wondered why we needed them, now I wonder why they need us.', 'Sweden:30 June 1984', 'Spain:30 June 1971', 'UK:12 July 1987', 'UK:189",
+        1961,
+        2013
+      ],
+      [
+        "[jp]",
+        "%m%",
+        "%r%",
+        "production companies",
+        "crippled-child",
+        "%l%",
+        "Action', 'Cuba:December 1982', 'Denmark:8 July 1985', 'USA:23 May 1991', 'USA:6 March 2006",
+        1951,
+        2014
+      ],
+      [
+        "[gb]",
+        "%t%",
+        "%S%",
+        "production companies",
+        "performance",
+        "%n%",
+        "Sweden:8 October 2005', 'Lionsgate', 'Portugal:3 May 1957', 'Georgia:95', 'Some days...",
+        1946,
+        2015
+      ],
+      [
+        "[gb]",
+        "%i%",
+        "%i%",
+        "production companies",
+        "musician",
+        "%i%",
+        "Argentina:23 November 2005', '8302', 'UK:31 July 1978', 'MET:1298 m', 'MET:1554.48 m",
+        1935,
+        2007
+      ],
+      [
+        "[gb]",
+        "%t%",
+        "%i%",
+        "production companies",
+        "performance",
+        "%e%",
+        "''Martin Scorsese'' (qv) never met or discussed the film with ''Bob Dylan'' (qv) during filming. However he worked extensively with him during the filming of _The Last Waltz (1978)_ (qv).', 'Denmark:4 June 1948', 'USA:12 April 1960', 'India:8 August 2008', 'USA:29 July 1998",
+        1954,
+        2015
+      ],
+      [
+        "[us]",
+        "%r%",
+        "%e%",
+        "production companies",
+        "singer",
+        "%e%",
+        "Italy:November 2005', 'USA:23 July 2011', 'Ireland:May 2004', 'Poland:9 May 1997', 'UK:9 June 1961",
+        1960,
+        2006
+      ],
+      [
+        "[gb]",
+        "%c%",
+        "%i%",
+        "production companies",
+        "performance",
+        "%i%",
+        "Singapore:PG', 'ESP 10,772 (Spain)', 'Norway:10 June 1998', 'Sweden:10 May 2011', '\u00c2\u00a9 2004 NRK",
+        1987,
+        2012
+      ],
+      [
+        "[jp]",
+        "%m%",
+        "%e%",
+        "production companies",
+        ".hack",
+        "%f%",
+        "The opening sequence for .hack//GIFT is similar to that of .hack//SIGN, but with several differences: - Ucchi and Emy, two characters exclusive to //GIFT, appear in the \"mouse click\" scene. - Many times in the opening, Subaru, Bear, Mimiru, and BT flash between their //SIGN and //GIFT designs. Aura also does this in her floating scene. - During the scene in which Subaru, Bear, Mimiru, and BT wave their respective weapons and split in half, the //SIGN - version characters walk across, are briefly shown in their //GIFT forms as their bodies split, and immediately change back. - The \"disintegrating clothes\" scenes are replaced by ones of the //GIFT versions of Subaru, Bear, Mimiru, and BT floating against the tunnel of 1s and 0s. - Instead of the //SIGN Tsukasa being wrapped by the Guardian''s tentacles, a //GIFT Tsukasa is shown being Data Drained. - When the dancing girl hits the water, she changes into the topless Helba shown in //GIFT, and the //SIGN Aura is replaced by her //GIFT counterpart.', 'To better days', 'USA:7 December 1930', '11269', 'USA:6 December 1912",
+        1992,
+        2009
+      ],
+      [
+        "[us]",
+        "%a%",
+        "%o%",
+        "production companies",
+        "shot-in-the-forehead",
+        "%e%",
+        "Sci-Fi', 'CAM:Sony BVP-30', 'UK:28 March 2007', 'NZD 350,000', 'Canada:20 June 2005",
+        1964,
+        2015
+      ],
+      [
+        "[us]",
+        "%o%",
+        "%t%",
+        "production companies",
+        "musician",
+        "%r%",
+        "Finland:K-3', 'Japan:26 June 2004', 'USA:11 July 1971', '642 (Spain)', 'Soviet Union:308",
+        1950,
+        2016
+      ],
+      [
+        "[jp]",
+        "%i%",
+        "%i%",
+        "production companies",
+        "silent-movie-sequence",
+        "%l%",
+        "Action', 'Italy:1 June 1957', 'Brazil:11 June 2010', 'Norway:1 March 2013', 'God is now here...",
+        1910,
+        2013
+      ],
+      [
+        "[us]",
+        "%E%",
+        "%r%",
+        "production companies",
+        "interview",
+        "%e%",
+        "UK:26 September 2005', '1954 - 1956', 'UK:15 January 1977', 'Japan:25 April 1924', 'An Enduring Love.",
+        1908,
+        2012
+      ],
+      [
+        "[gb]",
+        "%f%",
+        "%s%",
+        "production companies",
+        "singer",
+        "%n%",
+        "Finland:16 November 2005', 'CAM:Sony CCD-TRV6', 'Sweden:18 May 1961', 'Japan:6 March 1990', 'Brazil:2 March 1959",
+        1910,
+        2019
+      ],
+      [
+        "[us]",
+        "%r%",
+        "%o%",
+        "production companies",
+        "supernatural",
+        "%f%",
+        "Horror', '\u00e2\u0082\u00ac 900', 'MET:1783.69 m', 'India:25 May 2009', 'USA:13 January 1989",
+        1899,
+        2020
+      ],
+      [
+        "[jp]",
+        "%e%",
+        "%t%",
+        "production companies",
+        "multiplayer",
+        "%p%",
+        "Silver Knight: It is not easy, to act in the name of justice.', 'Netherlands:1980', '5843', 'USA:9 May 2010', 'UK:6 August 2003",
+        1967,
+        2017
+      ],
+      [
+        "[us]",
+        "%g%",
+        "%S%",
+        "production companies",
+        "musician",
+        "%s%",
+        "USA:27 September 2005', 'UK:19 May 1995', 'UK:18 March 2000', 'ESP 145,873 (Spain)', 'He''s got a dream.",
+        1939,
+        2019
+      ]
+    ]
+  }
+}

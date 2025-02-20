@@ -1,0 +1,127 @@
+{
+    "16-0": {
+        "query": "SELECT MIN(an.name) AS cool_actor_pseudonym, MIN(t.title) AS series_named_after_char\nFROM aka_name AS an,\n   cast_info AS ci,\n   company_name AS cn,\n   keyword AS k,\n   movie_companies AS mc,\n   movie_keyword AS mk,\n   name AS n,\n   title AS t\nWHERE an.person_id = n.id\nAND n.id = ci.person_id\nAND ci.movie_id = t.id\nAND t.id = mk.movie_id\nAND mk.keyword_id = k.id\nAND t.id = mc.movie_id\nAND mc.company_id = cn.id\nAND an.person_id = ci.person_id\nAND ci.movie_id = mc.movie_id\nAND ci.movie_id = mk.movie_id\nAND mc.movie_id = mk.movie_id\nAND cn.country_code = '@param0'\nAND k.keyword = '@param1'\nAND t.episode_nr >= @param2\nAND t.episode_nr < @param3;",
+        "predicates": [
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "mc.company_id = cn.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "=",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "mk.keyword_id = k.id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "episode_nr",
+                "operator": ">=",
+                "data_type": "int",
+                "table": "title",
+                "min": 1,
+                "max": 91821,
+                "join_tables_alias": [
+                    "ci",
+                    "mk",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "movie_keyword",
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mk.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "episode_nr",
+                "operator": "<",
+                "data_type": "int",
+                "table": "title",
+                "min": 1,
+                "max": 91821,
+                "join_tables_alias": [
+                    "ci",
+                    "mk",
+                    "mc"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "movie_keyword",
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "ci.movie_id = t.id",
+                    "t.id = mk.movie_id",
+                    "t.id = mc.movie_id"
+                ],
+                "left_or_right": [
+                    "l",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [],
+                    [],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "[us]",
+                "computer-animation",
+                "5",
+                "100"
+            ]
+        ]
+    }
+}

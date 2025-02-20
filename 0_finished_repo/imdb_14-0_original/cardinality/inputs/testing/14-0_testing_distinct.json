@@ -1,0 +1,2036 @@
+{
+    "14-0": {
+        "query": "SELECT MIN(mi_idx.info) AS rating, MIN(t.title) AS northern_dark_movie\nFROM info_type AS it1,\n   info_type AS it2,\n   keyword AS k,\n   kind_type AS kt,\n   movie_info AS mi,\n   movie_info_idx AS mi_idx,\n   movie_keyword AS mk,\n   title AS t\nWHERE kt.id = t.kind_id\nAND t.id = mi.movie_id\nAND t.id = mk.movie_id\nAND t.id = mi_idx.movie_id\nAND mk.movie_id = mi.movie_id\nAND mk.movie_id = mi_idx.movie_id\nAND mi.movie_id = mi_idx.movie_id\nAND k.id = mk.keyword_id\nAND it1.id = mi.info_type_id\nAND it2.id = mi_idx.info_type_id\nAND it1.info = '@param0'\nAND it2.info = '@param1'\nAND k.keyword IN ('@param2')\nAND kt.kind = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info < '@param5'\nAND t.production_year > @param6;",
+        "predicates": [
+            {
+                "alias": "it",
+                "original_alias": "it1",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "movie_info"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "it",
+                "original_alias": "it2",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "kt",
+                "column": "kind",
+                "operator": "=",
+                "data_type": "text",
+                "table": "kind_type",
+                "join_tables_alias": [
+                    "t"
+                ],
+                "join_tables": [
+                    "title"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi_idx",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "movie_info_idx",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mk.movie_id = mi.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi_idx",
+                "column": "info",
+                "operator": "<",
+                "data_type": "text",
+                "table": "movie_info_idx",
+                "join_tables_alias": [
+                    "t",
+                    "mk",
+                    "mi",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_keyword",
+                    "movie_info",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi_idx.movie_id",
+                    "mk.movie_id = mi_idx.movie_id",
+                    "mi.movie_id = mi_idx.movie_id",
+                    "it.id = mi_idx.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1880,
+                "max": 2019,
+                "join_tables_alias": [
+                    "kt",
+                    "mi",
+                    "mk",
+                    "mi_idx"
+                ],
+                "join_tables": [
+                    "kind_type",
+                    "movie_info",
+                    "movie_keyword",
+                    "movie_info_idx"
+                ],
+                "join_conditions": [
+                    "kt.id = t.kind_id",
+                    "t.id = mi.movie_id",
+                    "t.id = mk.movie_id",
+                    "t.id = mi_idx.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "kind"
+                    ],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            }
+        ],
+        "params": [
+            [
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "movie",
+                "RAT:1.33 : 1', 'Documentary', 'RAT:1.33 : 1', 'Silent', 'Color",
+                "5.6",
+                2002
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "Color', 'Short', 'Color', 'Color', 'English",
+                "6",
+                1975
+            ],
+            [
+                "countries",
+                "rating",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "USA', 'Color', 'Color', 'Short', 'Color",
+                "5.3",
+                1976
+            ],
+            [
+                "genres",
+                "rating",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "tv series",
+                "Comedy', 'PCS:Spherical', 'PCS:Spherical', 'Comedy', 'Black and White",
+                "7",
+                1996
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "independent-film', 'independent-film', 'independent-film', 'based-on-novel', 'independent-film",
+                "episode",
+                "USA', 'USA', 'USA', 'Color', 'English",
+                "9",
+                1996
+            ],
+            [
+                "genres",
+                "votes",
+                "police', 'police', 'police', 'father-son-relationship', 'male-nudity",
+                "episode",
+                "Film', 'Australia:M', 'RAT:1.37 : 1', 'Thriller', 'Movie",
+                "5.5",
+                1975
+            ],
+            [
+                "countries",
+                "rating",
+                "murder', 'female-nudity', 'murder', 'murder', 'murder",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                1988
+            ],
+            [
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "movie",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "8",
+                2004
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'murder', 'murder",
+                "episode",
+                "Short', 'Drama', 'Color', 'Short', 'English",
+                "6.1",
+                2006
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'murder', 'murder",
+                "episode",
+                "Color', 'Black and White', 'USA', 'Color', 'Comedy",
+                "4.2",
+                1995
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'murder', 'murder",
+                "movie",
+                "Mono', 'Short', 'Mono', 'Color', 'Short",
+                "15",
+                2010
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "Drama', 'Color', 'Color', 'USA', 'Color",
+                "7.0",
+                1927
+            ],
+            [
+                "genres",
+                "votes",
+                "bare-chested-male', 'blood', 'number-in-title', 'one-word-title', 'father-daughter-relationship",
+                "episode",
+                "Drama', 'Black and White', 'Color', 'OFM:35 mm', 'Documentary",
+                "6.3",
+                2005
+            ],
+            [
+                "countries",
+                "votes",
+                "independent-film', 'independent-film', 'based-on-novel', 'independent-film', 'independent-film",
+                "episode",
+                "Black and White', 'Color', 'USA', 'Black and White', 'PFM:35 mm",
+                "5.7",
+                1994
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "tv movie",
+                "Comedy', 'Comedy', 'PCS:Spherical', 'Comedy', 'PCS:Spherical",
+                "5.7",
+                1986
+            ],
+            [
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Silent', 'Silent', 'PCS:Spherical', 'Comedy', 'UK",
+                "5",
+                1938
+            ],
+            [
+                "countries",
+                "votes",
+                "dog', 'blood', 'family-relationships', 'friendship', 'death",
+                "episode",
+                "Mono', 'USA', 'Mono', 'USA', 'Color",
+                "7.0",
+                1950
+            ],
+            [
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Documentary', 'Black and White', 'USA', 'Color', 'Drama",
+                "8",
+                1917
+            ],
+            [
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "5.0",
+                1949
+            ],
+            [
+                "genres",
+                "rating",
+                "death', 'family-relationships', 'non-fiction', 'one-word-title', 'husband-wife-relationship",
+                "episode",
+                "Comedy', 'Documentary', 'PCS:Spherical', 'Comedy', 'PCS:Spherical",
+                "5.5",
+                1938
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "NTSC', 'Australia:M', 'Short', 'NTSC', 'Action",
+                "7",
+                2009
+            ],
+            [
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "UK', 'Silent', 'Documentary', 'Documentary', 'Silent",
+                "10",
+                1975
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "oral-sex', 'death', 'friendship', 'oral-sex', 'male-nudity",
+                "episode",
+                "Comedy', 'UK', 'Documentary', 'PCS:Spherical', 'Silent",
+                "5.7",
+                1944
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "English', 'English', 'Color', 'USA', 'Color",
+                "6.6",
+                2001
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'murder', 'murder', 'female-nudity', 'murder",
+                "movie",
+                "Manhattan, New York City, New York, USA', 'Thriller', 'USA:25 June 2008', 'Canada:20 November 2012', 'Australia:3 March 2007",
+                "8",
+                1991
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'independent-film', 'based-on-novel",
+                "movie",
+                "Color', 'Color', 'English', 'Short', 'Color",
+                "31",
+                2009
+            ],
+            [
+                "genres",
+                "votes",
+                "father-son-relationship', 'husband-wife-relationship', 'surrealism', 'friendship', 'dog",
+                "tv series",
+                "Comedy', 'Silent', 'Comedy', 'Silent', 'UK",
+                "7.1",
+                1987
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'based-on-novel', 'independent-film",
+                "episode",
+                "Silent', 'Documentary', 'UK', 'Silent', 'Documentary",
+                "9",
+                1997
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'murder', 'murder', 'female-nudity', 'female-nudity",
+                "episode",
+                "UK', 'PCS:Spherical', 'PCS:Spherical', 'Silent', 'Documentary",
+                "6.9",
+                1989
+            ],
+            [
+                "genres",
+                "votes",
+                "anal-sex', 'number-in-title', 'husband-wife-relationship', 'death', 'father-son-relationship",
+                "tv movie",
+                "USA:Approved', 'Dolby Digital', 'RAT:2.35 : 1', 'Film', 'Thriller",
+                "5.9",
+                1959
+            ],
+            [
+                "countries",
+                "rating",
+                "female-nudity', 'murder', 'murder', 'murder', 'female-nudity",
+                "tv movie",
+                "USA', 'English', 'Short', 'Short', 'Short",
+                "7.0",
+                2008
+            ],
+            [
+                "countries",
+                "votes",
+                "nudity', 'one-word-title', 'love', 'based-on-play', 'based-on-play",
+                "tv movie",
+                "PCS:Spherical', 'Documentary', 'PCS:Spherical', 'PCS:Spherical', 'UK",
+                "6.5",
+                2006
+            ],
+            [
+                "countries",
+                "votes",
+                "husband-wife-relationship', 'dog', 'number-in-title', 'police', 'male-nudity",
+                "episode",
+                "Color', 'USA', 'USA', 'USA', 'English",
+                "6.6",
+                1909
+            ],
+            [
+                "genres",
+                "votes",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "OFM:35 mm', 'OFM:35 mm', 'OFM:35 mm', 'Drama', 'OFM:35 mm",
+                "6.1",
+                1976
+            ],
+            [
+                "genres",
+                "rating",
+                "revenge', 'male-nudity', 'father-son-relationship', 'bare-chested-male', 'father-daughter-relationship",
+                "episode",
+                "USA', 'Short', 'USA', 'USA', 'English",
+                "5.6",
+                1946
+            ],
+            [
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "Comedy', 'Comedy', 'Black and White', 'Comedy', 'Comedy",
+                "7",
+                1982
+            ],
+            [
+                "countries",
+                "votes",
+                "husband-wife-relationship', 'blood', 'love', 'non-fiction', 'sequel",
+                "episode",
+                "USA:Approved', 'Sweden:15', 'RAT:2.35 : 1', 'UK', 'NTSC",
+                "5.9",
+                1998
+            ],
+            [
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "Sweden:15', 'Movie', 'Crime', 'UK', 'Dolby Surround",
+                "6.1",
+                2004
+            ],
+            [
+                "countries",
+                "rating",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'independent-film",
+                "episode",
+                "English', 'USA', 'English', 'Color', 'English",
+                "8",
+                1987
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Color', 'Color', 'USA', 'English', 'Color",
+                "7.2",
+                1974
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Mono', 'Drama', 'PFM:35 mm', 'Black and White', 'RAT:1.33 : 1",
+                "6.8",
+                2000
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'murder', 'female-nudity', 'murder', 'murder",
+                "episode",
+                "USA', 'Color', 'Color', 'USA', 'Color",
+                "6.8",
+                2006
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "video game",
+                "USA', 'Color', 'USA', 'English', 'USA",
+                "8.5",
+                1966
+            ],
+            [
+                "genres",
+                "votes",
+                "one-word-title', 'family-relationships', 'death', 'tv-mini-series', 'nudity",
+                "episode",
+                "Comedy', 'Comedy', 'Silent', 'Documentary', 'UK",
+                "6",
+                2008
+            ],
+            [
+                "countries",
+                "votes",
+                "nudity', 'bare-chested-male', 'based-on-play', 'family-relationships', 'sequel",
+                "episode",
+                "USA', 'English', 'English', 'USA', 'USA",
+                "8.5",
+                1983
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Mono', 'Color', 'USA', 'Mono', 'Color",
+                "19",
+                2009
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "movie",
+                "English', 'English', 'Color', 'Short', 'Short",
+                "5",
+                2008
+            ],
+            [
+                "genres",
+                "rating",
+                "sequel', 'blood', 'dog', 'based-on-play', 'nudity",
+                "episode",
+                "Comedy', 'Mono', 'Black and White', 'English', 'Color",
+                "7.5",
+                2004
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'female-nudity', 'murder', 'murder', 'murder",
+                "episode",
+                "UK', 'Comedy', 'Documentary', 'Silent', 'Comedy",
+                "6.3",
+                1960
+            ],
+            [
+                "countries",
+                "votes",
+                "blood', 'dog', 'family-relationships', 'bare-chested-male', 'non-fiction",
+                "episode",
+                "Australia:M', 'Sweden:15', 'UK', 'UK:15', 'Dolby Surround",
+                "4.5",
+                1981
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "English', 'USA', 'USA', 'English', 'Color",
+                "7",
+                1995
+            ],
+            [
+                "genres",
+                "rating",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "Documentary', 'Comedy', 'Silent', 'Comedy', 'Silent",
+                "6.2",
+                1971
+            ],
+            [
+                "countries",
+                "rating",
+                "nudity', 'violence', 'police', 'surrealism', 'one-word-title",
+                "episode",
+                "Color', 'USA', 'Short', 'USA', 'Comedy",
+                "5.9",
+                2010
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Short', 'Color', 'English', 'Color', 'English",
+                "5.8",
+                1958
+            ],
+            [
+                "countries",
+                "votes",
+                "murder', 'murder', 'female-nudity', 'murder', 'female-nudity",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6",
+                2011
+            ],
+            [
+                "countries",
+                "votes",
+                "based-on-novel', 'independent-film', 'independent-film', 'independent-film', 'based-on-novel",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "13",
+                1953
+            ],
+            [
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "video movie",
+                "Color', 'USA', 'Short', 'Color', 'English",
+                "10",
+                1983
+            ],
+            [
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "4.5",
+                1995
+            ],
+            [
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                1973
+            ],
+            [
+                "countries",
+                "rating",
+                "female-nudity', 'female-nudity', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "Color', 'USA', 'Color', 'Short', 'USA",
+                "6.0",
+                2009
+            ],
+            [
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Drama', 'Comedy', 'Drama', 'Black and White', '-",
+                "6.5",
+                1920
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "PCS:Spherical', 'Silent', 'UK', 'Documentary', 'Comedy",
+                "7.5",
+                1990
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "Drama', 'Drama', '-', 'Drama', 'Drama",
+                "8",
+                2000
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Black and White', 'Comedy', 'Black and White', 'PCS:Spherical', 'Black and White",
+                "7",
+                1975
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "father-daughter-relationship', 'revenge', 'husband-wife-relationship', 'sequel', 'nudity",
+                "episode",
+                "PCS:Spherical', 'Comedy', 'Silent', 'Silent', 'PCS:Spherical",
+                "7.8",
+                1976
+            ],
+            [
+                "countries",
+                "rating",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "8",
+                2006
+            ],
+            [
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "video movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "14",
+                2007
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'English",
+                "6.7",
+                2001
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Drama', 'Mono', 'RAT:1.33 : 1', 'OFM:35 mm', 'English",
+                "12",
+                2000
+            ],
+            [
+                "countries",
+                "rating",
+                "fix', 'chelsea-girls', 'training-rifle', 'year-1122', 'shish-kebab",
+                "movie",
+                "Color', 'USA', 'Black and White', 'OFM:35 mm', 'Color",
+                "5.3",
+                2005
+            ],
+            [
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'OFM:35 mm', 'PFM:35 mm', 'Black and White', 'Color",
+                "9",
+                2002
+            ],
+            [
+                "genres",
+                "votes",
+                "police', 'death', 'husband-wife-relationship', 'death', 'police",
+                "episode",
+                "Comedy', 'PCS:Spherical', 'Comedy', 'PCS:Spherical', 'Black and White",
+                "6.0",
+                2008
+            ],
+            [
+                "genres",
+                "rating",
+                "love', 'one-word-title', 'surrealism', 'revenge', 'sequel",
+                "tv movie",
+                "Black and White', 'Black and White', 'Drama', 'OFM:35 mm', 'Black and White",
+                "8",
+                1992
+            ],
+            [
+                "genres",
+                "rating",
+                "murder', 'murder', 'murder', 'female-nudity', 'female-nudity",
+                "movie",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "5.7",
+                1999
+            ],
+            [
+                "genres",
+                "votes",
+                "revenge', 'bare-breasts', 'surrealism', 'revenge', 'revenge",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "5.7",
+                1983
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.4",
+                2006
+            ],
+            [
+                "countries",
+                "votes",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'independent-film",
+                "episode",
+                "English', 'USA', 'Color', 'English', 'English",
+                "9",
+                2007
+            ],
+            [
+                "countries",
+                "votes",
+                "murder', 'murder', 'female-nudity', 'female-nudity', 'murder",
+                "tv movie",
+                "USA', 'Color', 'English', 'English', 'USA",
+                "8",
+                1955
+            ],
+            [
+                "genres",
+                "rating",
+                "death', 'oral-sex', 'death', 'bare-chested-male', 'sequel",
+                "episode",
+                "Action', 'Action', 'Crime', 'UK', 'USA:Approved",
+                "7.6",
+                1993
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "female-nudity', 'female-nudity', 'murder', 'murder', 'murder",
+                "episode",
+                "Color', 'Short', 'USA', 'Short', 'Comedy",
+                "7",
+                2000
+            ],
+            [
+                "countries",
+                "votes",
+                "murder', 'female-nudity', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "26",
+                2009
+            ],
+            [
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Short', 'Color', 'Color', 'USA', 'Color",
+                "8",
+                1962
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Color', 'Color', 'Comedy', 'USA', 'Short",
+                "6.9",
+                2001
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "Documentary', 'Silent', 'Black and White', 'Documentary', 'Color",
+                "6.2",
+                1962
+            ],
+            [
+                "countries",
+                "rating",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'independent-film', 'based-on-novel",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7",
+                2000
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'murder', 'murder",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "7.5",
+                1976
+            ],
+            [
+                "genres",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "7",
+                1983
+            ],
+            [
+                "countries",
+                "votes",
+                "revenge', 'surrealism', 'one-word-title', 'revenge', 'revenge",
+                "episode",
+                "UK', 'PCS:Spherical', 'Silent', 'Comedy', 'Comedy",
+                "7",
+                1995
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "Color', 'USA', 'Short', 'Color', 'English",
+                "00.0001222",
+                2000
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'female-nudity', 'murder', 'female-nudity', 'murder",
+                "episode",
+                "Silent', 'Documentary', 'PCS:Spherical', 'Comedy', 'Comedy",
+                "7.1",
+                1999
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'based-on-novel",
+                "tv movie",
+                "Crime', 'UK:15', 'USA:R', 'USA:R', 'Romance",
+                "8",
+                1939
+            ],
+            [
+                "genres",
+                "votes",
+                "number-in-title', 'father-son-relationship', 'dog', 'bare-breasts', 'tv-mini-series",
+                "movie",
+                "Dolby Digital', 'Movie', 'USA:Approved', 'Sweden:15', 'Crime",
+                "6.6",
+                1996
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "28",
+                1998
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Comedy', 'PCS:Spherical', 'Comedy', 'PCS:Spherical', 'PCS:Spherical",
+                "3.9",
+                1916
+            ],
+            [
+                "genres",
+                "votes",
+                "police', 'based-on-play', 'bare-breasts', 'father-son-relationship', 'death",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "9",
+                1955
+            ],
+            [
+                "countries",
+                "rating",
+                "police', 'friendship', 'tv-mini-series', 'revenge', 'bare-breasts",
+                "movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "4.7",
+                2000
+            ],
+            [
+                "countries",
+                "votes",
+                "einiosaurus', 'city-of-lights', 'airplane-accident', 'salve', 'napoleonic-era",
+                "episode",
+                "USA', 'USA', 'English', 'English', 'English",
+                "6.8",
+                1903
+            ],
+            [
+                "countries",
+                "votes",
+                "bare-breasts', 'male-nudity', 'revenge', 'oral-sex', 'male-nudity",
+                "video movie",
+                "OFM:35 mm', 'USA', 'Color', 'Short', 'Drama",
+                "6",
+                1999
+            ],
+            [
+                "countries",
+                "rating",
+                "polish-man', 'sprayed-by-soda', 'zeus', 'girl-genius', 'blue-racer",
+                "episode",
+                "Silent', 'USA', 'Comedy', 'Black and White', 'USA",
+                "8",
+                2008
+            ],
+            [
+                "genres",
+                "rating",
+                "love', 'anal-sex', 'father-son-relationship', 'love', 'based-on-play",
+                "tv movie",
+                "Drama', '-', 'OFM:35 mm', 'OFM:35 mm', 'OFM:35 mm",
+                "9",
+                1997
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'Color', 'English', 'Drama', 'Mono",
+                "5.8",
+                1964
+            ],
+            [
+                "genres",
+                "votes",
+                "based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "8",
+                1983
+            ],
+            [
+                "countries",
+                "votes",
+                "violence', 'based-on-play', 'love', 'death', 'based-on-play",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "9",
+                1991
+            ],
+            [
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "PCS:Spherical', 'UK', 'PCS:Spherical', 'Silent', 'PCS:Spherical",
+                "9",
+                1992
+            ],
+            [
+                "countries",
+                "votes",
+                "father-daughter-relationship', 'anal-sex', 'father-son-relationship', 'dog', 'revenge",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "18",
+                2010
+            ],
+            [
+                "countries",
+                "rating",
+                "independent-film', 'based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "8",
+                1996
+            ],
+            [
+                "countries",
+                "votes",
+                "murder', 'female-nudity', 'female-nudity', 'murder', 'murder",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                2012
+            ],
+            [
+                "genres",
+                "votes",
+                "based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel', 'independent-film",
+                "movie",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "6.3",
+                2005
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'murder', 'female-nudity', 'murder', 'female-nudity",
+                "episode",
+                "Documentary', 'Color', 'Color', 'Color', 'Comedy",
+                "5",
+                1984
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Color', 'Color', 'USA', 'Color', 'USA",
+                "5.1",
+                1983
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "video game",
+                "English', 'Short', 'Color', 'Short', 'USA",
+                "8",
+                2008
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "murder', 'murder', 'female-nudity', 'female-nudity', 'murder",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.7",
+                2006
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "UK', 'Film', 'Australia:M', 'Short', 'Sweden:15",
+                "24",
+                1923
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Short', '12', 'RAT:2.35 : 1', 'Romance', 'Dolby Surround",
+                "9",
+                1989
+            ],
+            [
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "OFM:35 mm', 'Drama', 'USA', 'English', 'Drama",
+                "7",
+                1988
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Short', 'Drama', 'USA', 'English', 'Color",
+                "4.1",
+                1996
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "air-horn', 'wishing-someone-dead', 'pneumatic-tool', 'pecos-new-mexico', 'protoplasm",
+                "episode",
+                "USA', 'USA', 'USA', 'Color', 'USA",
+                "6.0",
+                2005
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Color', 'Mono', 'Drama', 'OFM:35 mm', 'PFM:35 mm",
+                "6",
+                2009
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "15",
+                1983
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "UK', 'Comedy', 'Comedy', 'Documentary', 'PCS:Spherical",
+                "8",
+                1996
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "murder', 'female-nudity', 'murder', 'female-nudity', 'female-nudity",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "0000122100",
+                1999
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "9",
+                2002
+            ],
+            [
+                "countries",
+                "rating",
+                "number-in-title', 'male-nudity', 'tv-mini-series', 'blood', 'police",
+                "episode",
+                "English', 'USA', 'Color', 'Short', 'Color",
+                "8",
+                2011
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'Drama', 'English', 'Color', 'English",
+                "6",
+                2007
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "Color', 'PCS:Spherical', 'UK', 'Short', 'Documentary",
+                "7",
+                1961
+            ],
+            [
+                "release dates",
+                "votes distribution",
+                "bare-breasts', 'bare-breasts', 'love', 'one-word-title', 'bare-chested-male",
+                "episode",
+                "American version \u00c2\u00a91963 Universal Studios', 'GEOG: At the beginning of the movie they show Altell Stadium, home of the Jacksonville Jaguars, but in the filming locations, Jacksonville is not listed.', 'Bernard: What other grown man cuts soldiers for his runny egg and then divides them into rank?::Manny Bianco: Just a bit of fun.::Bernard: You won''t mind if I eat this one?::Manny Bianco: Don''t touch the colonel... It''ll upset the rest of the men.', 'Marine Stadium, Long Beach, California, USA', 'Japan:1 March 2009",
+                "7.8",
+                1936
+            ],
+            [
+                "countries",
+                "votes",
+                "based-on-novel', 'based-on-novel', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "UK', 'PCS:Spherical', 'PCS:Spherical', 'UK', 'Silent",
+                "5.2",
+                2006
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Documentary', 'Comedy', 'Comedy', 'UK', 'UK",
+                "7",
+                2010
+            ],
+            [
+                "countries",
+                "votes",
+                "father-daughter-relationship', 'surrealism', 'violence', 'police', 'father-daughter-relationship",
+                "episode",
+                "English', 'USA', 'English', 'Color', 'Color",
+                "6.2",
+                1997
+            ],
+            [
+                "countries",
+                "rating",
+                "oral-sex', 'tv-mini-series', 'surrealism', 'death', 'police",
+                "video game",
+                "Color', 'English', 'English', 'Color', 'USA",
+                "7",
+                1982
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "based-on-play', 'bare-chested-male', 'non-fiction', 'violence', 'father-son-relationship",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "24",
+                1935
+            ],
+            [
+                "countries",
+                "rating",
+                "murder', 'female-nudity', 'female-nudity', 'murder', 'female-nudity",
+                "tv series",
+                "UK', 'PCS:Spherical', 'Documentary', 'Silent', 'Silent",
+                "9",
+                1960
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "UK', 'UK', 'PCS:Spherical', 'Documentary', 'PCS:Spherical",
+                "5.7",
+                2009
+            ],
+            [
+                "countries",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Short', 'Color', 'USA', 'USA', 'Color",
+                "9",
+                1989
+            ],
+            [
+                "release dates",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "tv movie",
+                "USA:16 November 2002', 'The wealthy Mr. Clyde is found dead, shot to death in his home. Inspector Carr suspects a conspiracy between the victim''s young wife and her lover, Capt. Rugg. But Doctor Crabtree the criminologist never so quick to jump to conclusions as Inspector Carr.', 'USA:16 February 1940', '$887,880 (USA) (29 July 1984) (551 screens)', '''Michael Palin'' (qv) plays the most characters (12).",
+                "7",
+                1988
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Color', 'Color', 'Short', 'English', 'English",
+                "7.5",
+                1980
+            ],
+            [
+                "countries",
+                "rating",
+                "independent-film', 'independent-film', 'based-on-novel', 'independent-film', 'independent-film",
+                "episode",
+                "USA', 'USA', 'Color', 'Color', 'USA",
+                "5",
+                1965
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'murder', 'female-nudity', 'female-nudity', 'murder",
+                "episode",
+                "Short', 'Short', 'English', 'USA', 'English",
+                "6",
+                1987
+            ],
+            [
+                "countries",
+                "rating",
+                "female-nudity', 'murder', 'female-nudity', 'female-nudity', 'female-nudity",
+                "episode",
+                "Color', 'USA', 'PFM:35 mm', 'USA', 'PFM:35 mm",
+                "5.0",
+                2007
+            ],
+            [
+                "genres",
+                "rating",
+                "surrealism', 'father-daughter-relationship', 'male-nudity', 'police', 'based-on-play",
+                "episode",
+                "-', 'Drama', '-', 'Drama', 'Drama",
+                "7",
+                1988
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'murder', 'murder",
+                "episode",
+                "Comedy', 'UK', 'Documentary', 'UK', 'Comedy",
+                "6",
+                1992
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'murder', 'murder', 'female-nudity', 'female-nudity",
+                "episode",
+                "CLV', 'CLV', 'NTSC', 'Dolby Digital', 'UK",
+                "8",
+                2011
+            ],
+            [
+                "countries",
+                "votes",
+                "bare-breasts', 'blood', 'male-nudity', 'number-in-title', 'sequel",
+                "movie",
+                "USA', 'Color', 'English', 'Color', 'English",
+                "6.7",
+                2005
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'independent-film",
+                "episode",
+                "OFM:35 mm', '-', '-', 'Drama', 'OFM:35 mm",
+                "5.8",
+                2000
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "7.5",
+                1895
+            ],
+            [
+                "countries",
+                "votes",
+                "female-nudity', 'female-nudity', 'female-nudity', 'female-nudity', 'murder",
+                "episode",
+                "Short', 'USA', 'USA', 'Short', 'English",
+                "6.0",
+                1994
+            ],
+            [
+                "genres",
+                "votes",
+                "based-on-play', 'number-in-title', 'love', 'bare-breasts', 'sequel",
+                "episode",
+                "Black and White', 'Comedy', 'Black and White', 'Black and White', 'Comedy",
+                "6.1",
+                2001
+            ],
+            [
+                "genres",
+                "votes",
+                "father-son-relationship', 'anal-sex', 'death', 'love', 'sequel",
+                "episode",
+                "Color', 'USA', 'Drama', 'English', 'English",
+                "6.8",
+                2006
+            ],
+            [
+                "genres",
+                "rating",
+                "female-nudity', 'female-nudity', 'murder', 'murder', 'female-nudity",
+                "movie",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "5.3",
+                2005
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "6.6",
+                1993
+            ],
+            [
+                "genres",
+                "rating",
+                "based-on-novel', 'independent-film', 'independent-film', 'based-on-novel', 'based-on-novel",
+                "movie",
+                "Color', 'PFM:35 mm', 'Mono', 'Drama', 'Color",
+                "7.4",
+                1991
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'based-on-novel', 'independent-film', 'independent-film', 'independent-film",
+                "episode",
+                "Mono', 'RAT:1.33 : 1', 'Drama', 'Mono', 'Mono",
+                "7",
+                1908
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7",
+                1990
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Comedy', 'PCS:Spherical', 'Black and White', 'Black and White', 'Comedy",
+                "9",
+                1997
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "Color', 'USA', 'English', 'Color', 'Color",
+                "8",
+                1972
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "PFM:35 mm', 'USA', 'USA', 'Short', 'USA",
+                "6.8",
+                1965
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "movie",
+                "Color', 'English', 'USA', 'Color', 'Color",
+                "5.9",
+                1975
+            ],
+            [
+                "countries",
+                "rating",
+                "murder', 'female-nudity', 'female-nudity', 'murder', 'murder",
+                "video movie",
+                "English', 'USA', 'English', 'USA', 'USA",
+                "7.8",
+                1963
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "USA', 'Short', 'English', 'OFM:35 mm', 'Black and White",
+                "6.1",
+                1922
+            ],
+            [
+                "countries",
+                "rating",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "9",
+                1996
+            ],
+            [
+                "genres",
+                "rating",
+                "based-on-novel', 'independent-film', 'based-on-novel', 'independent-film', 'independent-film",
+                "movie",
+                "Drama', 'Drama', 'Drama', 'USA', 'English",
+                "2..02..0.2",
+                1987
+            ],
+            [
+                "countries",
+                "votes",
+                "anal-sex', 'husband-wife-relationship', 'blood', 'one-word-title', 'based-on-play",
+                "episode",
+                "USA', 'English', 'USA', 'English', 'USA",
+                "8",
+                1988
+            ],
+            [
+                "genres",
+                "rating",
+                "murder', 'female-nudity', 'female-nudity', 'female-nudity', 'murder",
+                "episode",
+                "Mono', 'Drama', 'Black and White', 'RAT:1.33 : 1', 'Drama",
+                "6.1",
+                1992
+            ],
+            [
+                "genres",
+                "votes",
+                "female-nudity', 'female-nudity', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "UK:15', 'Film', 'Crime', 'NTSC', 'RAT:1.37 : 1",
+                "5",
+                1989
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "7",
+                1994
+            ],
+            [
+                "countries",
+                "rating",
+                "female-nudity', 'female-nudity', 'female-nudity', 'murder', 'murder",
+                "tv movie",
+                "Color', 'English', 'Color', 'USA', 'Color",
+                "4.5",
+                2010
+            ],
+            [
+                "genres",
+                "votes",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'independent-film",
+                "episode",
+                "Color', 'Short', 'English', 'Short', 'Short",
+                "8",
+                1903
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "OFM:35 mm', 'Drama', '-', '-', '-",
+                "4.2",
+                1950
+            ],
+            [
+                "genres",
+                "votes",
+                "family-relationships', 'blood', 'revenge', 'oral-sex', 'non-fiction",
+                "tv series",
+                "Color', 'RAT:1.33 : 1', 'Drama', 'Mono', 'USA",
+                "6.1",
+                1995
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "bloody-nose', 'carbonation', 'tropic\u00c3\u00a1lia', 'persia', 'dinosaur-as-dog",
+                "video movie",
+                "Color', 'Short', 'Documentary', 'USA', 'USA",
+                "10",
+                1990
+            ],
+            [
+                "genres",
+                "rating",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Movie', '12', 'Thriller', 'RAT:1.33 : 1', 'RAT:2.35 : 1",
+                "6.9",
+                2001
+            ],
+            [
+                "genres",
+                "votes",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "Short', 'Short', 'Short', 'Short', 'Short",
+                "14",
+                1945
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "UK', 'PCS:Spherical', 'Silent', 'Comedy', 'PCS:Spherical",
+                "13",
+                1930
+            ],
+            [
+                "countries",
+                "votes",
+                "sequel', 'death', 'based-on-play', 'police', 'one-word-title",
+                "episode",
+                "Documentary', 'UK', 'PCS:Spherical', 'Documentary', 'Documentary",
+                "5.8",
+                1991
+            ],
+            [
+                "genres",
+                "votes",
+                "los-feliz', 'reference-to-coldplay', 'lost-father', 'dropouts', 'pretending-to-use-a-banana-as-a-telephone",
+                "episode",
+                "Drama', '-', 'Drama', '-', '-",
+                "8",
+                1965
+            ],
+            [
+                "countries",
+                "votes",
+                "hardcore', 'hardcore', 'hardcore', 'hardcore', 'hardcore",
+                "movie",
+                "Color', 'English', 'Short', 'Color', 'USA",
+                "32",
+                2008
+            ],
+            [
+                "countries",
+                "rating",
+                "surrealism', 'friendship', 'violence', 'bare-chested-male', 'violence",
+                "episode",
+                "English', 'USA', 'USA', 'USA', 'Color",
+                "6",
+                1970
+            ],
+            [
+                "release dates",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "France:19 September 1970', 'CONT: When Paula is climbing out of Richard''s window and talking back to Richard her wristwatch is missing and her hair is longer than in the previous scenes.', 'USA:20 May 1998', 'Screenwriters ''Coby Recht'' (qv) and ''Iris Recht'' (qv) set their screenplay in 1984 because of the Orwellian themes in the story. Director ''Menahem Golan'' (qv) decided the year was too close to the era in which they were living, so he pushed back the setting to 1994.', 'Netherlands:27 August 2010",
+                "7.4",
+                1990
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "movie",
+                "Color', 'Short', 'Short', 'Color', 'Color",
+                "12",
+                1982
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "tv series",
+                "Drama', 'Color', 'PFM:35 mm', 'PFM:35 mm', 'English",
+                "9",
+                1987
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "tv movie",
+                "Color', 'English', 'USA', 'USA', 'USA",
+                "5.5",
+                1912
+            ],
+            [
+                "genres",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "OFM:35 mm', 'OFM:35 mm', '-', 'Drama', '-",
+                "724",
+                1995
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "salt-desert', 'sunken-ship', 'corrupt-officer', 'carrying-chair', 'alienist",
+                "episode",
+                "USA', 'USA', 'Color', 'USA', 'Color",
+                "6",
+                1992
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "movie",
+                "Documentary', 'PCS:Spherical', 'UK', 'Silent', 'Comedy",
+                "7.3",
+                1960
+            ],
+            [
+                "countries",
+                "votes",
+                "bare-breasts', 'male-nudity', 'based-on-play', 'sequel', 'bare-chested-male",
+                "tv movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.6",
+                2001
+            ],
+            [
+                "genres",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Color', 'English', 'Drama', 'Color', 'English",
+                "7",
+                2006
+            ],
+            [
+                "genres",
+                "votes",
+                "murder', 'murder', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "Short', 'Drama', 'Drama', 'English', 'PFM:35 mm",
+                "6",
+                1994
+            ],
+            [
+                "countries",
+                "votes",
+                "murder', 'murder', 'murder', 'female-nudity', 'murder",
+                "movie",
+                "English', 'Drama', 'Color', 'USA', 'USA",
+                "7.9",
+                2007
+            ],
+            [
+                "countries",
+                "votes",
+                "death', 'sequel', 'male-nudity', 'death', 'surrealism",
+                "movie",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6",
+                1998
+            ],
+            [
+                "countries",
+                "rating",
+                "tv-mini-series', 'oral-sex', 'friendship', 'based-on-play', 'bare-breasts",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "5",
+                1994
+            ],
+            [
+                "genres",
+                "votes",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel",
+                "episode",
+                "PCS:Spherical', 'UK', 'PCS:Spherical', 'Documentary', 'Comedy",
+                "6",
+                2004
+            ],
+            [
+                "countries",
+                "votes distribution",
+                "non-fiction', 'nudity', 'one-word-title', 'bare-chested-male', 'tv-mini-series",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6",
+                1954
+            ],
+            [
+                "genres",
+                "votes distribution",
+                "violence', 'one-word-title', 'dog', 'love', 'revenge",
+                "episode",
+                "-', 'OFM:35 mm', 'OFM:35 mm', 'Drama', 'OFM:35 mm",
+                "0.0.011111",
+                2009
+            ],
+            [
+                "countries",
+                "votes",
+                "sex', 'sex', 'sex', 'sex', 'sex",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "7.0",
+                2007
+            ],
+            [
+                "genres",
+                "rating",
+                "independent-film', 'independent-film', 'independent-film', 'independent-film', 'based-on-novel",
+                "video movie",
+                "PFM:35 mm', 'Mono', 'OFM:35 mm', 'Mono', 'Drama",
+                "9",
+                2008
+            ],
+            [
+                "genres",
+                "votes",
+                "based-on-novel', 'based-on-novel', 'based-on-novel', 'based-on-novel', 'independent-film",
+                "episode",
+                "USA', 'Color', 'Drama', 'Color', 'Drama",
+                "7.0",
+                2006
+            ],
+            [
+                "genres",
+                "rating",
+                "bare-chested-male', 'father-daughter-relationship', 'violence', 'husband-wife-relationship', 'nudity",
+                "movie",
+                "Short', 'USA', 'Color', 'USA', 'English",
+                "5",
+                1998
+            ],
+            [
+                "countries",
+                "votes",
+                "murder', 'female-nudity', 'murder', 'murder', 'female-nudity",
+                "episode",
+                "USA', 'USA', 'USA', 'USA', 'USA",
+                "6.9",
+                2011
+            ],
+            [
+                "countries",
+                "votes",
+                "independent-film', 'based-on-novel', 'based-on-novel', 'independent-film', 'based-on-novel",
+                "episode",
+                "USA', 'Color', 'English', 'Color', 'English",
+                "8",
+                1942
+            ],
+            [
+                "countries",
+                "votes",
+                "character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title', 'character-name-in-title",
+                "episode",
+                "Silent', 'Silent', 'Comedy', 'Silent', 'UK",
+                "6.9",
+                1973
+            ]
+        ]
+    }
+}

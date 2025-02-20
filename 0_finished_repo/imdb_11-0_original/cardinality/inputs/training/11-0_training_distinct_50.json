@@ -1,0 +1,709 @@
+{
+  "11-0": {
+    "query": "SELECT MIN(cn.name) AS from_company, MIN(lt.link) AS movie_link_type, MIN(t.title) AS non_polish_sequel_movie\nFROM company_name AS cn,\n company_type AS ct,\n keyword AS k,\n link_type AS lt,\n movie_companies AS mc,\n movie_keyword AS mk,\n movie_link AS ml,\n title AS t\nWHERE lt.id = ml.link_type_id\n AND ml.movie_id = t.id\n AND t.id = mk.movie_id\n AND mk.keyword_id = k.id\n AND t.id = mc.movie_id\n AND mc.company_type_id = ct.id\n AND mc.company_id = cn.id\n AND ml.movie_id = mk.movie_id\n AND ml.movie_id = mc.movie_id\n AND mk.movie_id = mc.movie_id\nAND cn.country_code != '@param0'\nAND (cn.name LIKE '@param1' OR cn.name LIKE '@param2')\nAND ct.kind = '@param3'\nAND k.keyword = '@param4'\nAND lt.link LIKE '@param5'\nAND mc.note IS NULL\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "!=",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "cn",
+        "column": "name",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_id = cn.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_type",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "mc.company_type_id = ct.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "k",
+        "column": "keyword",
+        "operator": "=",
+        "data_type": "text",
+        "table": "keyword",
+        "join_tables_alias": [
+          "mk"
+        ],
+        "join_tables": [
+          "movie_keyword"
+        ],
+        "join_conditions": [
+          "mk.keyword_id = k.id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "lt",
+        "column": "link",
+        "operator": "LIKE",
+        "data_type": "text",
+        "table": "link_type",
+        "join_tables_alias": [
+          "ml"
+        ],
+        "join_tables": [
+          "movie_link"
+        ],
+        "join_conditions": [
+          "lt.id = ml.link_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ml",
+          "mk",
+          "mc"
+        ],
+        "join_tables": [
+          "movie_link",
+          "movie_keyword",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "ml.movie_id = t.id",
+          "t.id = mk.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "l",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [],
+          [],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "ml",
+          "mk",
+          "mc"
+        ],
+        "join_tables": [
+          "movie_link",
+          "movie_keyword",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "ml.movie_id = t.id",
+          "t.id = mk.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "l",
+          "l",
+          "l"
+        ],
+        "join_tables_column": [
+          [],
+          [],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[de]",
+        "%Universal%",
+        "%Broadcasting%",
+        "distributors",
+        "friendship",
+        "%of%",
+        1981,
+        1997
+      ],
+      [
+        "[us]",
+        "%Corporation%",
+        "%American%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        1988,
+        1991
+      ],
+      [
+        "[gg]",
+        "%General%",
+        "%w%",
+        "production companies",
+        "number-in-title",
+        "%e%",
+        2006,
+        2010
+      ],
+      [
+        "[hu]",
+        "%Home%",
+        "%a%",
+        "production companies",
+        "sex",
+        "%of%",
+        1951,
+        2001
+      ],
+      [
+        "[gb]",
+        "%Broadcasting%",
+        "%General%",
+        "production companies",
+        "based-on-play",
+        "%in%",
+        1980,
+        2003
+      ],
+      [
+        "[tg]",
+        "%Broadcasting%",
+        "%Video%",
+        "distributors",
+        "independent-film",
+        "%of%",
+        1972,
+        1986
+      ],
+      [
+        "[us]",
+        "%Television%",
+        "%National%",
+        "distributors",
+        "character-name-in-title",
+        "%in%",
+        2001,
+        2005
+      ],
+      [
+        "[fr]",
+        "%Mayer%",
+        "%Video%",
+        "production companies",
+        "character-name-in-title",
+        "%o%",
+        2003,
+        2011
+      ],
+      [
+        "[us]",
+        "%Company%",
+        "%Pictures%",
+        "production companies",
+        "father-son-relationship",
+        "%in%",
+        1942,
+        2017
+      ],
+      [
+        "[yucs]",
+        "%Bull%",
+        "%Television%",
+        "production companies",
+        "murder",
+        "%f%",
+        1968,
+        1976
+      ],
+      [
+        "[rw]",
+        "%Pictures%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%referenced%",
+        2010,
+        2011
+      ],
+      [
+        "[la]",
+        "%Company%",
+        "%Broadcasting%",
+        "production companies",
+        "murder",
+        "%in%",
+        1950,
+        1997
+      ],
+      [
+        "[lk]",
+        "%Home%",
+        "%Broadcasting%",
+        "distributors",
+        "based-on-novel",
+        "%s%",
+        1938,
+        2004
+      ],
+      [
+        "[fr]",
+        "%Video%",
+        "%m%",
+        "distributors",
+        "character-name-in-title",
+        "%l%",
+        1995,
+        2010
+      ],
+      [
+        "[gi]",
+        "%Corporation%",
+        "%Television%",
+        "distributors",
+        "based-on-novel",
+        "%of%",
+        1891,
+        1999
+      ],
+      [
+        "[mn]",
+        "%r%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%e%",
+        2002,
+        2007
+      ],
+      [
+        "[de]",
+        "%CBS%",
+        "%Company%",
+        "production companies",
+        "sex",
+        "%e%",
+        1997,
+        2010
+      ],
+      [
+        "[mg]",
+        "%Broadcasting%",
+        "%Columbia%",
+        "production companies",
+        "character-name-in-title",
+        "%featured%",
+        1975,
+        1987
+      ],
+      [
+        "[gn]",
+        "%Film%",
+        "%CBS%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        1925,
+        2007
+      ],
+      [
+        "[ky]",
+        "%Broadcasting%",
+        "%NBC%",
+        "production companies",
+        "murder",
+        "%o%",
+        1997,
+        2004
+      ],
+      [
+        "[fr]",
+        "%Company%",
+        "%Broadcasting%",
+        "distributors",
+        "murder",
+        "%o%",
+        1956,
+        2008
+      ],
+      [
+        "[us]",
+        "%Company%",
+        "%Pictures%",
+        "production companies",
+        "character-name-in-title",
+        "%r%",
+        2004,
+        2010
+      ],
+      [
+        "[tl]",
+        "%Film%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%from%",
+        1988,
+        2007
+      ],
+      [
+        "[ma]",
+        "%ABC%",
+        "%British%",
+        "production companies",
+        "sex",
+        "%r%",
+        1969,
+        1999
+      ],
+      [
+        "[pg]",
+        "%Warner%",
+        "%Broadcasting%",
+        "production companies",
+        "female-nudity",
+        "%r%",
+        1982,
+        2007
+      ],
+      [
+        "[fr]",
+        "%i%",
+        "%Home%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        1985,
+        2010
+      ],
+      [
+        "[us]",
+        "%e%",
+        "%NBC%",
+        "production companies",
+        "sex",
+        "%in%",
+        2007,
+        2014
+      ],
+      [
+        "[de]",
+        "%Broadcasting%",
+        "%Company%",
+        "production companies",
+        "character-name-in-title",
+        "%version%",
+        1962,
+        1985
+      ],
+      [
+        "[de]",
+        "%National%",
+        "%Warner%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        1956,
+        2011
+      ],
+      [
+        "[ht]",
+        "%General%",
+        "%o%",
+        "production companies",
+        "family-relationships",
+        "%in%",
+        1965,
+        2010
+      ],
+      [
+        "[th]",
+        "%BBC%",
+        "%Warner%",
+        "production companies",
+        "sex",
+        "%referenced%",
+        2003,
+        2011
+      ],
+      [
+        "[de]",
+        "%Metro%",
+        "%Company%",
+        "distributors",
+        "character-name-in-title",
+        "%e%",
+        1964,
+        2005
+      ],
+      [
+        "[bb]",
+        "%National%",
+        "%British%",
+        "production companies",
+        "murder",
+        "%e%",
+        1998,
+        2010
+      ],
+      [
+        "[de]",
+        "%Fernsehen%",
+        "%Broadcasting%",
+        "production companies",
+        "friendship",
+        "%of%",
+        1936,
+        2007
+      ],
+      [
+        "[us]",
+        "%Columbia%",
+        "%Broadcasting%",
+        "production companies",
+        "sex",
+        "%s%",
+        1977,
+        2001
+      ],
+      [
+        "[de]",
+        "%Path\u00c3\u00a9%",
+        "%British%",
+        "distributors",
+        "sex",
+        "%referenced%",
+        1969,
+        2007
+      ],
+      [
+        "[gb]",
+        "%Television%",
+        "%Broadcasting%",
+        "distributors",
+        "female-nudity",
+        "%o%",
+        1982,
+        2007
+      ],
+      [
+        "[fr]",
+        "%British%",
+        "%Program%",
+        "production companies",
+        "murder",
+        "%r%",
+        1919,
+        2002
+      ],
+      [
+        "[gg]",
+        "%General%",
+        "%Century%",
+        "production companies",
+        "based-on-novel",
+        "%f%",
+        1977,
+        2014
+      ],
+      [
+        "[de]",
+        "%ABC%",
+        "%NBC%",
+        "distributors",
+        "character-name-in-title",
+        "%referenced%",
+        1990,
+        2000
+      ],
+      [
+        "[ht]",
+        "%System%",
+        "%Broadcasting%",
+        "production companies",
+        "character-name-in-title",
+        "%l%",
+        1995,
+        2006
+      ],
+      [
+        "[fr]",
+        "%Broadcasting%",
+        "%CBS%",
+        "production companies",
+        "sex",
+        "%referenced%",
+        1961,
+        2004
+      ],
+      [
+        "[hk]",
+        "%Video%",
+        "%Film%",
+        "production companies",
+        "sex",
+        "%t%",
+        1927,
+        1997
+      ],
+      [
+        "[fr]",
+        "%NBC%",
+        "%Entertainment%",
+        "production companies",
+        "sex",
+        "%f%",
+        2002,
+        2011
+      ],
+      [
+        "[fr]",
+        "%Film%",
+        "%Columbia%",
+        "production companies",
+        "based-on-novel",
+        "%e%",
+        1890,
+        2006
+      ],
+      [
+        "[de]",
+        "%Broadcasting%",
+        "%Video%",
+        "production companies",
+        "based-on-novel",
+        "%s%",
+        1926,
+        1994
+      ],
+      [
+        "[ad]",
+        "%American%",
+        "%o%",
+        "production companies",
+        "sex",
+        "%a%",
+        1998,
+        2006
+      ],
+      [
+        "[al]",
+        "%Home%",
+        "%Broadcasting%",
+        "distributors",
+        "character-name-in-title",
+        "%in%",
+        1984,
+        2016
+      ],
+      [
+        "[us]",
+        "%Home%",
+        "%Broadcasting%",
+        "production companies",
+        "sex",
+        "%a%",
+        1953,
+        1993
+      ],
+      [
+        "[lb]",
+        "%Pictures%",
+        "%Corporation%",
+        "production companies",
+        "character-name-in-title",
+        "%featured%",
+        1962,
+        2007
+      ]
+    ]
+  }
+}

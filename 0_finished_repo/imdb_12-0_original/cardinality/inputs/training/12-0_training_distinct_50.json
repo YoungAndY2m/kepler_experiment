@@ -1,0 +1,765 @@
+{
+  "12-0": {
+    "query": "SELECT MIN(cn.name) AS movie_company, MIN(mi_idx.info) AS rating, MIN(t.title) AS drama_horror_movie\nFROM company_name AS cn,\n company_type AS ct,\n info_type AS it1,\n info_type AS it2,\n movie_companies AS mc,\n movie_info AS mi,\n movie_info_idx AS mi_idx,\n title AS t\nWHERE t.id = mi.movie_id\n AND t.id = mi_idx.movie_id\n AND mi.info_type_id = it1.id\n AND mi_idx.info_type_id = it2.id\n AND t.id = mc.movie_id\n AND ct.id = mc.company_type_id\n AND cn.id = mc.company_id\n AND mc.movie_id = mi.movie_id\n AND mc.movie_id = mi_idx.movie_id\n AND mi.movie_id = mi_idx.movie_id\nAND cn.country_code = '@param0'\nAND ct.kind = '@param1'\nAND it1.info = '@param2'\nAND it2.info = '@param3'\nAND mi.info IN ('@param4')\nAND mi_idx.info > '@param5'\nAND t.production_year BETWEEN @param6 AND @param7;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "ct",
+        "column": "kind",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_type",
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "ct.id = mc.company_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ],
+        "join_tables_column": [
+          []
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "info_type",
+        "join_tables_alias": [
+          "mi"
+        ],
+        "join_tables": [
+          "movie_info"
+        ],
+        "join_conditions": [
+          "mi.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "info_type",
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables": [
+          "movie_info_idx"
+        ],
+        "join_conditions": [
+          "mi_idx.info_type_id = it.id"
+        ],
+        "left_or_right": [
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi",
+        "column": "info",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "movie_info",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi_idx"
+        ],
+        "join_tables": [
+          "title",
+          "info_type",
+          "movie_companies",
+          "movie_info_idx"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "mi.info_type_id = it.id",
+          "mc.movie_id = mi.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "column": "info",
+        "operator": ">",
+        "data_type": "text",
+        "table": "movie_info_idx",
+        "join_tables_alias": [
+          "t",
+          "it",
+          "mc",
+          "mi"
+        ],
+        "join_tables": [
+          "title",
+          "info_type",
+          "movie_companies",
+          "movie_info"
+        ],
+        "join_conditions": [
+          "t.id = mi_idx.movie_id",
+          "mi_idx.info_type_id = it.id",
+          "mc.movie_id = mi_idx.movie_id",
+          "mi.movie_id = mi_idx.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "both"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ],
+          [
+            "info"
+          ],
+          [],
+          [
+            "info"
+          ]
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "movie_info",
+          "movie_info_idx",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      },
+      {
+        "alias": "t",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables_alias": [
+          "mi",
+          "mi_idx",
+          "mc"
+        ],
+        "join_tables": [
+          "movie_info",
+          "movie_info_idx",
+          "movie_companies"
+        ],
+        "join_conditions": [
+          "t.id = mi.movie_id",
+          "t.id = mi_idx.movie_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "info"
+          ],
+          []
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[de]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "5.6",
+        2001,
+        2013
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "genres",
+        "votes distribution",
+        "Color', 'USA', 'Short', 'USA', 'English",
+        "5",
+        1988,
+        2005
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Short', 'Short', '-', '-', 'RAT:1.33 : 1",
+        "6.5",
+        1992,
+        2010
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "release dates",
+        "votes",
+        "$28,571 (USA) (26 February 2006)', 'Japan:3 November 2012', 'Netherlands:January 1994', 'Music', 'Gaspare: Birds of a feather get fucked together, Johnny.",
+        "32",
+        1978,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "PFM:35 mm', 'Drama', 'Black and White', 'RAT:1.33 : 1', 'Black and White",
+        "7.0",
+        1991,
+        2013
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'Color', 'Color', 'English', 'USA",
+        "5",
+        1920,
+        1970
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes distribution",
+        "Dolby Digital', 'UK', 'Silent', 'Silent', 'UK",
+        "9",
+        1897,
+        2009
+      ],
+      [
+        "[eg]",
+        "production companies",
+        "genres",
+        "votes",
+        "Comedy', 'Silent', 'PCS:Spherical', 'PCS:Spherical', 'UK",
+        "6.8",
+        1977,
+        2015
+      ],
+      [
+        "[fr]",
+        "production companies",
+        "genres",
+        "votes",
+        "Color', 'USA', 'USA', 'English', 'Drama",
+        "...1.11..4",
+        1971,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Comedy', 'UK', 'PCS:Spherical', 'UK', 'Comedy",
+        "9",
+        1972,
+        2006
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "votes",
+        "RAT:1.85 : 1', 'RAT:1.85 : 1', 'UK', 'UK', 'RAT:1.85 : 1",
+        "8.5",
+        2002,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "6.7",
+        1954,
+        2008
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Comedy', 'Comedy', 'Silent', 'Comedy', 'UK",
+        "12",
+        2004,
+        2006
+      ],
+      [
+        "[cr]",
+        "distributors",
+        "genres",
+        "rating",
+        "PCS:Spherical', 'Documentary', 'PCS:Spherical', 'PCS:Spherical', 'PCS:Spherical",
+        "10",
+        1995,
+        2011
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "votes",
+        "Color', 'USA', 'Color', 'Color', 'English",
+        "20",
+        1964,
+        2008
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "votes",
+        "Drama', 'Black and White', 'Black and White', 'Black and White', 'Drama",
+        "16",
+        1905,
+        1977
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "USA', 'USA', 'English', 'USA', 'Color",
+        "7",
+        2009,
+        2012
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "Color', 'Color', 'Color', 'Color', 'USA",
+        "11",
+        1987,
+        2009
+      ],
+      [
+        "[de]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "10",
+        1982,
+        2000
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Black and White', 'Mono', 'Drama', 'Black and White', 'Drama",
+        "7.6",
+        1935,
+        2009
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "Drama', 'USA', 'Drama', 'Color', 'English",
+        "0000002311",
+        1996,
+        2012
+      ],
+      [
+        "[de]",
+        "distributors",
+        "genres",
+        "votes",
+        "Drama', 'English', 'USA', 'Black and White', 'RAT:1.33 : 1",
+        "6",
+        1966,
+        2015
+      ],
+      [
+        "[sn]",
+        "production companies",
+        "genres",
+        "rating",
+        "Drama', 'Black and White', 'Mono', 'Drama', 'Mono",
+        "5",
+        1978,
+        2011
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "UK', 'Color', 'Color', 'Color', 'Drama",
+        "0000001211",
+        1952,
+        1998
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "photographers, multiple. \"Emmy Awards: The Parties!\". In: \"TV Guide\" (USA), Vol. 57, Iss. 40, 5 October 2009, Pg. 22-23, (MG)', 'CONT: When Amy is showing Zack her ears, she pulls her bangs to the back. She then covers them up again. In the next shot, we see her hair behind her ears, and in the next shot her hair is back in the front.', 'USA', 'Sister Alma: No! I''m not like you. I don''t feel like you. I''m Sister Alma, I''m just here to help you. I''m not Elisabet Vogler. You are Elisabet Vogler.', 'William ''Will'' Smith: If you don''t let me use your phone, I''ll start singing Paula Abdul''s greatest hits.",
+        "12",
+        1959,
+        2003
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'Color', 'USA', 'USA', 'English",
+        "8.0",
+        2000,
+        2002
+      ],
+      [
+        "[sg]",
+        "production companies",
+        "countries",
+        "rating",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "11",
+        1968,
+        1996
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "Documentary', 'UK', 'Silent', 'Dolby Digital', 'UK",
+        "6",
+        1989,
+        2007
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "votes",
+        "Documentary', 'Silent', 'UK', 'UK', 'UK",
+        "5.2",
+        1988,
+        1992
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Drama', 'Drama', 'PFM:35 mm', 'PFM:35 mm', 'RAT:1.33 : 1",
+        "6.1",
+        1941,
+        2003
+      ],
+      [
+        "[fr]",
+        "production companies",
+        "genres",
+        "votes",
+        "Comedy', 'Comedy', 'Comedy', 'UK', 'UK",
+        "6.6",
+        1997,
+        2002
+      ],
+      [
+        "[us]",
+        "distributors",
+        "countries",
+        "rating",
+        "English', 'Color', 'USA', 'English', 'USA",
+        "5.8",
+        1997,
+        2006
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Black and White', 'Drama', 'PFM:35 mm', 'PFM:35 mm', 'RAT:1.33 : 1",
+        "0001001013",
+        1900,
+        2000
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "Documentary', 'UK', 'Comedy', 'UK', 'Silent",
+        "6.9",
+        2009,
+        2011
+      ],
+      [
+        "[rs]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA', 'English', 'English', 'USA",
+        "15",
+        1979,
+        2011
+      ],
+      [
+        "[fr]",
+        "production companies",
+        "genres",
+        "votes",
+        "Color', 'Short', 'Short', 'English', 'Short",
+        "8",
+        2001,
+        2009
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "votes",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "....032100",
+        1951,
+        1975
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'USA', 'English', 'English', 'USA",
+        "0....00205",
+        1982,
+        2010
+      ],
+      [
+        "[us]",
+        "production companies",
+        "countries",
+        "votes",
+        "USA', 'English', 'English', 'USA', 'Color",
+        "0111200.0.",
+        1959,
+        2002
+      ],
+      [
+        "[fr]",
+        "distributors",
+        "genres",
+        "votes",
+        "Drama', 'Silent', 'Color', 'OFM:35 mm', 'English",
+        "7",
+        2012,
+        2019
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "rating",
+        "USA', 'USA', 'English', 'Color', 'English",
+        "7.8",
+        1915,
+        2007
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "rating",
+        "Short', 'Short', '-', 'Short', 'Comedy",
+        "6.3",
+        1998,
+        2011
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "countries",
+        "votes distribution",
+        "USA', 'USA', 'USA', 'USA', 'USA",
+        "7.8",
+        1997,
+        2009
+      ],
+      [
+        "[us]",
+        "distributors",
+        "genres",
+        "votes",
+        "Drama', 'Drama', 'Short', 'Drama', 'USA",
+        "7.8",
+        2002,
+        2013
+      ],
+      [
+        "[tw]",
+        "production companies",
+        "countries",
+        "rating",
+        "Short', 'Short', 'Short', 'USA', 'USA",
+        "4.8",
+        2007,
+        2012
+      ],
+      [
+        "[gb]",
+        "distributors",
+        "genres",
+        "votes distribution",
+        "Documentary', 'Short', 'Documentary', 'Color', 'USA",
+        "5.0",
+        1994,
+        1998
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Short', 'Short', 'Short', 'Short",
+        "6.7",
+        2003,
+        2009
+      ],
+      [
+        "[de]",
+        "distributors",
+        "genres",
+        "rating",
+        "Short', 'PCS:Spherical', 'Comedy', 'Comedy', '-",
+        "8",
+        1966,
+        2007
+      ],
+      [
+        "[us]",
+        "production companies",
+        "genres",
+        "votes",
+        "Short', 'Drama', 'English', 'Short', 'Color",
+        "..10221..0",
+        1952,
+        1966
+      ],
+      [
+        "[gb]",
+        "production companies",
+        "countries",
+        "rating",
+        "English', 'English', 'Color', 'USA', 'English",
+        "7.3",
+        2003,
+        2011
+      ]
+    ]
+  }
+}

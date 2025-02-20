@@ -1,0 +1,2764 @@
+{
+    "24-0": {
+        "query": "SELECT MIN(chn.name) AS voiced_char_name, MIN(n.name) AS voicing_actress_name, MIN(t.title) AS voiced_action_movie_jap_eng\nFROM aka_name AS an,\n   char_name AS chn,\n   cast_info AS ci,\n   company_name AS cn,\n   info_type AS it,\n   keyword AS k,\n   movie_companies AS mc,\n   movie_info AS mi,\n   movie_keyword AS mk,\n   name AS n,\n   role_type AS rt,\n   title AS t\nWHERE t.id = mi.movie_id\nAND t.id = mc.movie_id\nAND t.id = ci.movie_id\nAND t.id = mk.movie_id\nAND mc.movie_id = ci.movie_id\nAND mc.movie_id = mi.movie_id\nAND mc.movie_id = mk.movie_id\nAND mi.movie_id = ci.movie_id\nAND mi.movie_id = mk.movie_id\nAND ci.movie_id = mk.movie_id\nAND cn.id = mc.company_id\nAND it.id = mi.info_type_id\nAND n.id = ci.person_id\nAND rt.id = ci.role_id\nAND n.id = an.person_id\nAND ci.person_id = an.person_id\nAND chn.id = ci.person_role_id\nAND k.id = mk.keyword_id\nAND ci.note IN ('@param0')\nAND cn.country_code = '@param1'\nAND it.info = '@param2'\nAND k.keyword IN ('@param3')\nAND mi.info IS NOT NULL\nAND (mi.info LIKE '@param4' OR mi.info LIKE '@param5')\nAND n.gender = '@param6'\nAND n.name LIKE '@param7'\nAND rt.role = '@param8'\nAND t.production_year > @param9;",
+        "predicates": [
+            {
+                "alias": "ci",
+                "column": "note",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "cast_info",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "mi",
+                    "mk",
+                    "n",
+                    "rt",
+                    "an",
+                    "chn"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_companies",
+                    "movie_info",
+                    "movie_keyword",
+                    "name",
+                    "role_type",
+                    "aka_name",
+                    "char_name"
+                ],
+                "join_conditions": [
+                    "t.id = ci.movie_id",
+                    "mc.movie_id = ci.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "ci.movie_id = mk.movie_id",
+                    "n.id = ci.person_id",
+                    "rt.id = ci.role_id",
+                    "ci.person_id = an.person_id",
+                    "chn.id = ci.person_role_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both",
+                    "both",
+                    "l",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "gender",
+                        "name"
+                    ],
+                    [
+                        "role"
+                    ],
+                    [],
+                    []
+                ]
+            },
+            {
+                "alias": "cn",
+                "column": "country_code",
+                "operator": "=",
+                "data_type": "text",
+                "table": "company_name",
+                "join_tables_alias": [
+                    "mc"
+                ],
+                "join_tables": [
+                    "movie_companies"
+                ],
+                "join_conditions": [
+                    "cn.id = mc.company_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "it",
+                "column": "info",
+                "operator": "=",
+                "data_type": "text",
+                "table": "info_type",
+                "join_tables_alias": [
+                    "mi"
+                ],
+                "join_tables": [
+                    "movie_info"
+                ],
+                "join_conditions": [
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "k",
+                "column": "keyword",
+                "operator": "IN",
+                "data_type": "text",
+                "table": "keyword",
+                "join_tables_alias": [
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "k.id = mk.keyword_id"
+                ],
+                "left_or_right": [
+                    "l"
+                ],
+                "join_tables_column": [
+                    []
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_companies",
+                    "cast_info",
+                    "movie_keyword",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "mi",
+                "column": "info",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "movie_info",
+                "join_tables_alias": [
+                    "t",
+                    "mc",
+                    "ci",
+                    "mk",
+                    "it"
+                ],
+                "join_tables": [
+                    "title",
+                    "movie_companies",
+                    "cast_info",
+                    "movie_keyword",
+                    "info_type"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "mc.movie_id = mi.movie_id",
+                    "mi.movie_id = ci.movie_id",
+                    "mi.movie_id = mk.movie_id",
+                    "it.id = mi.info_type_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l",
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "production_year"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    [],
+                    [
+                        "info"
+                    ]
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "gender",
+                "operator": "=",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "aka_name"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "n",
+                "column": "name",
+                "operator": "LIKE",
+                "data_type": "text",
+                "table": "name",
+                "join_tables_alias": [
+                    "ci",
+                    "an"
+                ],
+                "join_tables": [
+                    "cast_info",
+                    "aka_name"
+                ],
+                "join_conditions": [
+                    "n.id = ci.person_id",
+                    "n.id = an.person_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            },
+            {
+                "alias": "rt",
+                "column": "role",
+                "operator": "=",
+                "data_type": "text",
+                "table": "role_type",
+                "join_tables_alias": [
+                    "ci"
+                ],
+                "join_tables": [
+                    "cast_info"
+                ],
+                "join_conditions": [
+                    "rt.id = ci.role_id"
+                ],
+                "left_or_right": [
+                    "both"
+                ],
+                "join_tables_column": [
+                    [
+                        "note"
+                    ]
+                ]
+            },
+            {
+                "alias": "t",
+                "column": "production_year",
+                "operator": ">",
+                "data_type": "int",
+                "table": "title",
+                "min": 1879,
+                "max": 2020,
+                "join_tables_alias": [
+                    "mi",
+                    "mc",
+                    "ci",
+                    "mk"
+                ],
+                "join_tables": [
+                    "movie_info",
+                    "movie_companies",
+                    "cast_info",
+                    "movie_keyword"
+                ],
+                "join_conditions": [
+                    "t.id = mi.movie_id",
+                    "t.id = mc.movie_id",
+                    "t.id = ci.movie_id",
+                    "t.id = mk.movie_id"
+                ],
+                "left_or_right": [
+                    "both",
+                    "l",
+                    "both",
+                    "l"
+                ],
+                "join_tables_column": [
+                    [
+                        "info"
+                    ],
+                    [],
+                    [
+                        "note"
+                    ],
+                    []
+                ]
+            }
+        ],
+        "params": [
+            [
+                "(as Charles Tamburro)', '(as Kenneth Sprunt)', '(as Lian Amado)', '(as Ignacio Rocha)', '(as Iftakhar)",
+                "[gb]",
+                "weekend gross",
+                "2020s', 'alien-soldiers', 'street-girl', 'whip-fight', 'space-age",
+                "%1%",
+                "%4%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(producer) (1982-)', '(as Henri Darbrey)', '(as Charna)', '(open-faced dane)",
+                "[gb]",
+                "adaption",
+                "battle', 'combat-team', 'airmail', 'ramraiding', 'atomic-weapons",
+                "%J%",
+                "%0%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Rowan Floyd)', '(as Frank Devol)', '(interim producer)', '(as Rolf Wouters)",
+                "[gb]",
+                "filming dates",
+                "weapons-research', 'piano-poetry', 'football-quiz', 'portuguese-theatre', 'new-jack",
+                "%8%",
+                "%r%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Stan Fraser)', '(as Lisa Hellwig)', '(as Marjut)', '(as Iron Cobra)",
+                "[br]",
+                "tech info",
+                "android', 'buck-rogers', 'tools', 'burning-poem', 'kamalahasan",
+                "%C%",
+                "%)%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Asiya)', '(as VIA Mirazh)', '(as T.S. Clark)', '(as Jesus G\u00c3\u00b3mez)",
+                "[br]",
+                "weekend gross",
+                "weapons-research', 'reference-to-rastus', 'bubble-bath', 'mash-unit', 'looking-pale",
+                "%y%",
+                "%5%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Provokateur)', '(as James Mallora)', '(as Roberto Luke)', '(as Dipika)",
+                "[us]",
+                "budget",
+                "2020s', 'reciprocity', 'men''s-restroom', 'female-victims', 'john-cage",
+                "%$%",
+                "%0%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Muska Babitzin)', '(as Tich Saunders)', '(Celo)', '(as Miller Scott)",
+                "[nl]",
+                "weekend gross",
+                "action-hero', 'phytoplankton', 'home-life', 'family-in-a-car', 'cargo-ship",
+                "%)%",
+                "%4%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Freddy Pompeii)', '(as Kandee Licks)', '(outreach producer)', '(as Martin Rackham)",
+                "[us]",
+                "countries",
+                "church', 'brass-band', 'leopard-skin', 'garden-rake', 'torino",
+                "%A%",
+                "%A%",
+                "m",
+                "%e%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Gene LaMotte)', '(as H. Ruzickov\u00c3\u00a1)', '(as Maddie Johnson)', '(as Jodee Tochi)",
+                "[es]",
+                "tech info",
+                "voice-sampling', 'samba-dance', 'self-defense-force', 'tv-signal', 'secret-ingredient",
+                "%2%",
+                "%T%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(wicker worker)', '(as Rami Hauberger)', '(as Naji Gabbai)', '(as Anthony Greepy)",
+                "[nl]",
+                "tech info",
+                "voice-sampling', 'saffron', 'electric-switch', 'iron-triangle', 'bobbed-hair",
+                "%i%",
+                "%r%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Stephen Solar)', '(as Lemon)', '(as Frank Telfer)', '(as K. Irani)",
+                "[fr]",
+                "opening weekend",
+                "2020s', 'rise-and-fall', 'house-construction', 'comanche-tribe', 'bathing-in-lake",
+                "%,%",
+                "%9%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Cha Son Wu)', '(as Ed Jupp)', '(Q&A video)', '(as Zhang Jingchu)",
+                "[se]",
+                "weekend gross",
+                "voice-sampling', 'dalarna-sweden', 'based-on-folk-tale', 'lamb-of-god', 'buzz-droid",
+                "%(%",
+                "%)%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(data logger)', '(as Luis Navarro)', '(as Scot Irish)', '(M16A4)",
+                "[gb]",
+                "opening weekend",
+                "2020s', 'unnecessary-surgery', 'rebuilding-team', 'barrel-racing', 'sequence-shot",
+                "%)%",
+                "%,%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as V. Dukler)', '(1959-1967)', '(as Tim Mitchell)', '(as James M.Brady)",
+                "[fr]",
+                "printed media reviews",
+                "battle', 'wishes', 'byzantine-empire', 'stolen-artwork', 'lack-of-oxygen",
+                "%e%",
+                "%M%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Bev Wowchuk)', '(as Julien Hussey)', '(femme)', '(as Reuben Rose)",
+                "[fr]",
+                "other literature",
+                "android', 'icefall', 'sperbowl-xli', 'anaphrodisiac', 'golan-heights",
+                "%i%",
+                "%i%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Kr\u00c3\u00bcmelchen)', '(as Neffe)', '(as James Sezchuan)', '(as Michele Marian)",
+                "[fr]",
+                "adaption",
+                "action-hero', 'female-cook', 'chemical-pollution', 'panzer', 'child-criminal",
+                "%i%",
+                "%3%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Co-Star)', '(as Joann Pankow)', '(as Dr. Alan Lane)', '(as Gianbarta)",
+                "[es]",
+                "printed media reviews",
+                "android', 'weber-and-fields', 'beguinage', 'unexpected-kiss', 'land-registry",
+                "%\"%",
+                "%d%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Daniel Mart\u00c3\u00adn)', '(as Law San)', '(as Doug Moxon)', '(as Tasha Joseph)",
+                "[br]",
+                "adaption",
+                "weapons-research', 'fiction-magazine', 'female-taxi-driver', 'stagedoor-man', 'craftsman",
+                "%r%",
+                "%a%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Nick Heaney)', '(as Kathleen Paulo)', '(as Sean Cooper)', '(Auteur)",
+                "[se]",
+                "book",
+                "battle', 'beaujolais-wine', 'persian-tradition', 'year-802,701', 'brennan",
+                "%Y%",
+                "%S%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as George Arthur)', '(as San Pestonji)', '(as Koel)', '(as April Chapple)",
+                "[fr]",
+                "other literature",
+                "battle', 'behind-the-line', 'loss-of-reality', 'movie-investor', 'pretend-yarmulke",
+                "%9%",
+                "%F%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Henri Thanos)', '(play \"Guilty\")', '(character: Max)', '(Attendant)",
+                "[fr]",
+                "screenplay-teleplay",
+                "voice-sampling', 'punched-in-the-back', 'sports-coach', 'murder-for-hire', 'personal-growth",
+                "%r%",
+                "%f%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Jim Frawley)', '(as Sandra Grose)', '(1999-2003)', '(as Preston Pratt)",
+                "[us]",
+                "certificates",
+                "gun-shot', 'ironworker', 'mazda', 'playing-with-a-dog', 'stick-figure",
+                "%r%",
+                "%8%",
+                "m",
+                "%R%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Ralph Gonzales)', '(as Queen Kong)', '(epk provider)', '(as Jerry Lively)",
+                "[us]",
+                "tech info",
+                "action-hero', 'turned-into-baby', 'livestock-car', 'taiji-japan', 'lethal-injection",
+                "%:%",
+                "%1%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(aged 16)', '(as Stephan Fung)', '(as P. Belair)', '(as Corinne Reboud)",
+                "[gb]",
+                "printed media reviews",
+                "voice-sampling', 'male-heir', 'bag', 'cold-water-flat', 'rotozip",
+                "%e%",
+                "%a%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Yura Yelin)', '(as Sumi Nelson)', '(as Shoffi Jikan)', '(as Michael Ratner)",
+                "[gb]",
+                "book",
+                "action-hero', 'computer-chatroom', 'plastic-toy', 'prostitution', 'dumb-asian",
+                "%)%",
+                "%l%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Mother of Mike)', '(as Ezio Cristiani)', '(as Hugh Arden)', '(as Ned Vukovich)",
+                "[us]",
+                "rentals",
+                "battle', 'tunnel-builder', 'community-media', 'disco-bar', 'weapon-collection",
+                "%9%",
+                "%0%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(Naive Actor)', '(Benjamin Roux)', '(publicist: Spain)', '(2-nd episode)",
+                "[us]",
+                "quotes",
+                "general-store', 'evening-class', 'health-fanaticism', 'male-slaps-female', 'giant-moth",
+                "%n%",
+                "%g%",
+                "m",
+                "%t%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Jeffrey Levine)', '(as John Eldrege)', '(co-designer)', '(as Pun Chi-Wai)",
+                "[fr]",
+                "trivia",
+                "battle', 'year-1356', 'polar-cap', 'boy-frontal-nudity', 'langenberg-germany",
+                "%r%",
+                "%n%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Budd Stout)', '(fence master)', '(as Ben Salisbury)', '(as Ben Gordon)",
+                "[fr]",
+                "novel",
+                "2020s', 'hokianga', 'flip-phone', 'sandpoint', 'polka-dot-dress",
+                "%k%",
+                "%R%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(legal: UK)', '(as Altan)', '(1982-88)', '(clipster)",
+                "[es]",
+                "rentals",
+                "weapons-research', 'pow-wow', 'well-of-abraham', 'calcium', 'lew-wasserman",
+                "%4%",
+                "%9%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Melinda Ramos)', '(accounting runner)', '(as Jaume Mallofre)', '(as Kwai Yuen)",
+                "[fr]",
+                "tech info",
+                "battle', 'georges-moustaki', 'reference-to-enron', 'eindhoven', 'book-publisher",
+                "%M%",
+                "%3%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Butch Cavel)', '(Wade''s Son)', '(as p.herrmann)', '(as Global.Kryner)",
+                "[se]",
+                "budget",
+                "voice-sampling', 'spurned-lover', 'djinn', 'repeated-event', 'face-cream",
+                "%0%",
+                "%0%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as R. Gaylor)', '(as David MacMahon)', '(Sakura''s father)', '(as Fred Ongleo)",
+                "[fr]",
+                "screenplay-teleplay",
+                "weapons-research', 'interdisciplinary', 'michoacan', 'no-story', 'bobo-the-elephant",
+                "%y%",
+                "%y%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Mike Badalucco)', '(as Doug Stewart)', '(as Saundarya)', '(as \u00c3\u0081gnes Zsiros)",
+                "[nl]",
+                "adaption",
+                "battle', 'grand-prize', 'female-porn', 'shohreh-aghdashloo', 'laughing-mask",
+                "%i%",
+                "%8%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Vic Gabijon)', '(as Taffarel)', '(as Chris ''SWAT'')', '(as Carla M. Roley)",
+                "[fr]",
+                "tech info",
+                "battle', 'retail-business', 'hidden-meaning', 'oriental-woman', 'revolt",
+                "%o%",
+                "%n%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Donnal Ward)', '(as A.C. De Guia)', '(segment \"Pearl\")', '(Soda Shop Girl)",
+                "[se]",
+                "tech info",
+                "action-hero', 'atoll', 'calotropis', 'mace-spray', 'key-impression",
+                "%3%",
+                "%5%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Rubbie Tuesday)', '(as Dr. Joe)', '(as Gerald Boyle)', '(band director)",
+                "[br]",
+                "admissions",
+                "2020s', 'circus-performer', 'robot-doll', 'dividend-checks', 'philosophy-student",
+                "%,%",
+                "%,%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Larry Fesendon)', '(as Preeti Gangoly)', '(as Joes Omoruyi)', '(as Jhonmyon Pe)",
+                "[us]",
+                "certificates",
+                "gold-rush', 'failing', 'capsule-toy', 'man-from-the-future', 'yuma-arizona",
+                "%S%",
+                "%a%",
+                "m",
+                "%,%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Charlie Barnes)', '(remix)', '(as Kandaswami)', '(as Mark Labett)",
+                "[fr]",
+                "printed media reviews",
+                "android', 'bleacher-seat', 'sit-on-cactus', 'dance-performance', 'virtual-fantasy",
+                "%3%",
+                "%d%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Khurshed Khan)', '(as Eva Zora)', '(screenplay) (1972)', '(as Manuel Matos)",
+                "[fr]",
+                "printed media reviews",
+                "android', 'child-crime', 'tasmania', 'skinny', 'rio-grande",
+                "%4%",
+                "%w%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Kalani Lei)', '(Security)', '(as Yael Tzalka)', '(as Dr. Vera Rubin)",
+                "[se]",
+                "tech info",
+                "battle', 'atomic-weed', 'mass-spectrometer', 'licking-a-wall', 'armenian-terrorism",
+                "%A%",
+                "%l%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(counsel: USA)', '(as Giselle Grimm)', '(as Mike Prosser)', '(as V.Redko)",
+                "[se]",
+                "weekend gross",
+                "voice-sampling', 'fire-insurance', 'building-bomb', 'furry', 'dying-child",
+                "%1%",
+                "%1%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Tom Gunderson)', '(script recorder)', '(as Alex II)', '(talent searcher)",
+                "[fr]",
+                "admissions",
+                "battle', 'rag-picker', 'latter-day', 'scared-people', 'chocolate-icing",
+                "%7%",
+                "%0%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Villen Novak)', '(Foreigner)', '(as Syd van Rood)', '(as Zoltan Szakal)",
+                "[se]",
+                "production process protocol",
+                "battle', 'muslim-brotherhood', 'damp-child', 'trapeze', 'sicilian-parliament",
+                "%a%",
+                "%)%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Baby Griffin)', '(as Helen McKellar)', '(as Nora Morgan)', '(owner''s wife)",
+                "[es]",
+                "screenplay-teleplay",
+                "2020s', 'prequel-and-sequel', 'school-killing', 'tornado', 'extradition-law",
+                "%e%",
+                "%B%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Buddy Sims)', '(1924)', '(as Annete Montana)', '(Emory)",
+                "[nl]",
+                "novel",
+                "action-hero', 'weight-training', 'monster-truck', 'laughing-gas', 'strife",
+                "%:%",
+                "%1%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Ignacio Bru\u00c3\u00b1a)', '(as Cindy McCain)', '(bear double)', '(as Winfried Klaus)",
+                "[se]",
+                "printed media reviews",
+                "android', 'poster-art', 'christmas-episode', 'covered-in-tar', 'lactate-threshold",
+                "%u%",
+                "%.%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Gelin Vicente)', '(as Mike Luckras)', '(as Linda Vroom)', '(as Dhawan)",
+                "[us]",
+                "countries",
+                "prairie', 'boy-driving-a-car', 'merrill-lynch', 'mexico-city', 'back",
+                "%K%",
+                "%K%",
+                "m",
+                "%R%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Sarah S. Lopez)', '(as Lui Mananzala)', '(as F\u00c3\u00bcs\u00c3\u00bcn U\u00c3\u00a7ar)', '(as Yuk-wan Wong)",
+                "[se]",
+                "tech info",
+                "2020s', 'nature-photography', 'anti-war', 'island-empire', 'sex-in-hospital",
+                "%m%",
+                "%m%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Gerald Okuneff)', '(as Marcia I. Wolf)', '(as Dagmar Sowa)', '(as Ito Rebane)",
+                "[fr]",
+                "book",
+                "weapons-research', 'space-program', 'magnetism', 'ball-of-wool', 'enemy-occupation",
+                "%o%",
+                "%.%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Sreehari Nanu)', '(as J. Krejcikov\u00c3\u00a1)', '(unit nurse: Italy)', '(as Graham Blicq)",
+                "[es]",
+                "novel",
+                "weapons-research', 'fallen-idol', 'pork-sausage', 'pulp-fiction', 'gnome",
+                "%m%",
+                "%1%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Dave Hadder)', '(as Tibi)', '(as Fred Epaux)', '(as Deo Directo)",
+                "[nl]",
+                "budget",
+                "2020s', 'face-in-plate', 'coffee-drinker', 'head-shaving', 'ethics-department",
+                "%4%",
+                "%0%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Joey Boy)', '(as Spencer Logan)', '(as Lalo Noriega)', '(as Jovine)",
+                "[nl]",
+                "adaption",
+                "battle', 'dominance', 'oil-reserves', 'regent-university', 'sodomy",
+                "%o%",
+                "%u%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Leo Lenoir)', '(as Ivan De Landa)', '(as Vijay Chander)', '(as David Parker)",
+                "[fr]",
+                "novel",
+                "action-hero', 'broadway-dancer', 'women''s-washroom', 'singing-girl', 'vat-of-acid",
+                "%\"%",
+                "%a%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Mike Biase)', '(as Jeff Ramos)', '(as Hamatar\u00c3\u00b4 Oda)', '(as Marty Bolger)",
+                "[se]",
+                "production process protocol",
+                "weapons-research', 'book-festival', 'impossible', 'tag-artist', 'hoof-dancing",
+                "%J%",
+                "%P%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Gilbert Ferro)', '(as L. Garnitsa)', '(as Gani Nofiu)', '(as Rhet Romero)",
+                "[se]",
+                "weekend gross",
+                "weapons-research', 'traffic-warden', 'working-wife', 'rolling-stones', 'fake-penis",
+                "%U%",
+                "%(%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Kenneth Gamble)', '(as Kay Hartrey)', '(help movies)', '(as Donald Hebb)",
+                "[us]",
+                "printed media reviews",
+                "action-hero', 'peace-symbol', 'island-fortress', 'sacristan', 'thrown-out-naked",
+                "%1%",
+                "%i%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Sergio Torrigo)', '(file transfer)', '(as Junior Balia)', '(as Glen Ralston)",
+                "[fr]",
+                "tech info",
+                "voice-sampling', 'self-destruct', 'appropriation', 'grand-national-race', 'winning-smile",
+                "%7%",
+                "%m%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Tiffany Miles)', '(as Dave Hemstead)', '(as Surendra)', '(as Mark Jeffries)",
+                "[fr]",
+                "trivia",
+                "action-hero', 'emotional-healing', 'traffic-jam', 'pete-billac', 'roman-koenig",
+                "%r%",
+                "%e%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Anthony Neate)', '(as Yvette Harper)', '(play \"Nice Girl\")', '(as Gene Cernan)",
+                "[se]",
+                "taglines",
+                "voice-sampling', 'offensiveness', 'crude-humour', 'beanstalk', 'the-inspector",
+                "%I%",
+                "%s%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Persia)', '(as Albert Garrat)', '(segment \"Revenge\")', '(as Lenka Erdos)",
+                "[fr]",
+                "other literature",
+                "2020s', 'turned-into-a-wolf', 'pagan-subtext', 'english-opera', 'power-cosmic",
+                "%u%",
+                "%c%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Charytin Goico)', '(intro music)', '(Young Father)', '(as Joy Yang)",
+                "[br]",
+                "printed media reviews",
+                "weapons-research', 'walking-tree', 'patrice-lumumba', 'bowl-game', 'pesto",
+                "%e%",
+                "%(%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Shadia Amen)', '(as Julia Schuler)', '(Gandhi''s P.A.)', '(during Boer War)",
+                "[nl]",
+                "weekend gross",
+                "battle', 'recklessness', 'oasis', 'making-of', 'woodcut",
+                "%l%",
+                "%A%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Joanna Park)', '(as Halda Alice)', '(as V. Doronin)', '(as Shelly Kudrov)",
+                "[us]",
+                "tech info",
+                "action-hero', 'horse-drawn-cart', 'distance-running', 'khmer-rouge', 'sci-fi-convention",
+                "%m%",
+                "%F%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Karl Lenox)', '(as Luc Gentile)', '(as P.B. Sahani)', '(1992-1995))",
+                "[fr]",
+                "printed media reviews",
+                "2020s', 'alternative-school', 'jesuit-priest', 'radiation-victims', 'visitors-room",
+                "%p%",
+                "%d%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Wang Cheng Li)', '(as Baba Ram Dass)', '(general)', '(as Tracey M. Bass)",
+                "[br]",
+                "trivia",
+                "battle', 'giant-chicken', 'consulate', 'lantern-fishing', 'spurious-lawsuit",
+                "%h%",
+                "%m%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Nivia Davis)', '(as Medin)', '(Newspaper Thief)', '(segment \"Wet\")",
+                "[us]",
+                "admissions",
+                "voice-sampling', 'frat-boy', 'cochin-india', 'holed-up-in-shack', 'topographical-map",
+                "%3%",
+                "%S%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Rafael Puello)', '(as Bonnie)', '(runner) (2000)', '(as Lana Semil)",
+                "[us]",
+                "printed media reviews",
+                "voice-sampling', 'cyma-zarghami', 'lucky-pen', 'male-bathing-female', 'converts",
+                "%i%",
+                "%M%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(legal liaison)', '(as Joan Gelpi)', '(as Danae West)', '(as Fai Ko)",
+                "[es]",
+                "tech info",
+                "weapons-research', 'acing-a-test', 'winslow', 'tripping-up-stairs', 'popcorn-making",
+                "%e%",
+                "%u%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Charles Wilson)', '(as August Warwick)', '(as Dr Peter Guest)', '(as Alain Frerot)",
+                "[br]",
+                "admissions",
+                "action-hero', 'carrot', 'white-feather', 'suicide-pill', 'zoning-regulations",
+                "%i%",
+                "%7%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as S. Sokolovic)', '(clothes: Menudo)', '(as Mancow Muller)', '(as Mel Zwyer)",
+                "[nl]",
+                "tech info",
+                "weapons-research', 'scratched-inside', 'blood-legion', 'political-club', 'miniature-oscar",
+                "%s%",
+                "%n%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(segment \"Blaze\")', '(team Jay-Z)', '(as Shamar Drew)', '(as Jonathan Quan)",
+                "[nl]",
+                "production process protocol",
+                "android', 'ecstasy', 'hexagon', 'former-outlaw', 'hair-growth-tonic",
+                "%a%",
+                "%e%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(book \"Aszantka\")', '(as George Karan)', '(as Mike Nichols)', '(as Rhida Jebali)",
+                "[us]",
+                "opening weekend",
+                "voice-sampling', 'fantasy-episode', 'asian-history', 'mountain-king', 'outsider-artist",
+                "%7%",
+                "%1%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Aase Engstr\u00c3\u00b8m)', '(as Brane Zavrsan)', '(as Andy Simpkins)', '(as Joerg Ellmer)",
+                "[es]",
+                "printed media reviews",
+                "weapons-research', 'theologian', 'gas-station', 'hiding-in-crate', 'macintosh",
+                "%J%",
+                "%\"%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(stand-in: Lori)', '(hmi operator: 5K)', '(as Inge Silonik)', '(as Ven\u00c3\u00a9 Arcoraci)",
+                "[fr]",
+                "screenplay-teleplay",
+                "android', 'obliquity', 'loss-of-army-buddy', 'talking-rock', 'paraguay",
+                "%t%",
+                "%d%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Chillin'' Dude)', '(as \u00c3\u0098)', '(as Mark Vincent)', '(as Stuart Noone)",
+                "[fr]",
+                "admissions",
+                "battle', 'ragman', 'chilean-australian', 'bar-fire', 'purple-purse",
+                "%c%",
+                "%)%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Shi Ma Shan)', '(as Shane Haworth)', '(as Valeria Rosini)', '(as Nancy Nelson)",
+                "[se]",
+                "book",
+                "weapons-research', 'gun-licking', 'babylon', 'two-cylinder-pump', 'trumpet",
+                "%k%",
+                "%T%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Art Stewart)', '(as Soluna)', '(as Maggie Li)', '(as Luanne Ponce)",
+                "[se]",
+                "novel",
+                "android', 'raising-money', 'british-colonial', 'trust-company', 'killed-with-a-bomb",
+                "%9%",
+                "%r%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Vincent Voss)', '(as Bob Saenz)', '(as Oleg Widow)', '(as Rusty Bolin)",
+                "[es]",
+                "book",
+                "2020s', 'debris', 'legal-strategy', 'beslan', 'helix",
+                "%\"%",
+                "%t%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Betty Waldron)', '(as Max Maxwell)', '(as Margo Reymundo)', '(as Nicole Dudalia)",
+                "[us]",
+                "tech info",
+                "battle', 'linoleum', 'kurds', 'monsey-new-york', 'cuddling",
+                "%M%",
+                "%m%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(drummer 1989-)', '(as Alex Bogas)', '(as William Sorrel)', '(as Tamie Logan)",
+                "[us]",
+                "countries",
+                "buffalo-hunter', 'cheetah', 'billfold', 'carcassone-france', 'tarzana-california",
+                "%S%",
+                "%A%",
+                "m",
+                "%f%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Eddie Zamonte)', '(as Sasha Adler)', '(Number One!)', '(as Victor Koppen)",
+                "[gb]",
+                "adaption",
+                "action-hero', 'rainforest', 'goshen-egypt', 'pastry-chef', 'drinking-blood",
+                "%s%",
+                "%d%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Norma Nelson)', '(as Hermann Marc)', '(as Bryan Hayes)', '(as J. Semotan)",
+                "[nl]",
+                "tech info",
+                "action-hero', 'bird-migration', 'hospital-bed', 'glass-repair-truck', 'time-twin",
+                "%M%",
+                "%M%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(1990-2004)', '(as Piti Espanyol)', '(as Thomas Jackson)', '(as Kolya Valeyev)",
+                "[es]",
+                "adaption",
+                "android', 'maupassant', 'chevalin', 'tattoo-artist', 'final-episode",
+                "%,%",
+                "%r%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Mitsu Kurokawa)', '(enemy planner)', '(world designer)', '(as Doug Jenson)",
+                "[se]",
+                "admissions",
+                "2020s', 'american-gangster', 'strega-italy', 'arrow-in-leg', 'fire-tower",
+                "%0%",
+                "%)%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(press: Argentina)', '(the robot)', '(Master)', '(as Jay Peterson)",
+                "[fr]",
+                "taglines",
+                "weapons-research', 'illegal-fundraising', 'turtle-wax', 'house-of-mirrors', 'forestry",
+                "%h%",
+                "%e%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Curtis Scott)', '(as Lem Pelayo)', '(theme song)', '(Patsy''s Sister)",
+                "[es]",
+                "trivia",
+                "weapons-research', 'boy', 'eisner-award', 'jewish-studies', 'alone-in-house",
+                "%i%",
+                "%.%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Menessier)', '(as Raam: Laxman)', '(as Lilliana)', '(as Selecter)",
+                "[br]",
+                "adaption",
+                "weapons-research', 'soul-transmigration', 'pop-stars', 'pay-cut', 'pierced-lip",
+                "%4%",
+                "%0%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as D. Korzh)', '(on-set builder)', '(as Selena Walters)', '(as Kavi)",
+                "[es]",
+                "novel",
+                "android', 'tchaikovsky', 'game-boy', 'granite-tablet', 'butterfly-wings",
+                "%R%",
+                "%r%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Gene Maras)', '(as Neelan Bakashi)', '(as Scot Irish)', '(Munna)",
+                "[br]",
+                "opening weekend",
+                "battle', 'disguised-man', 'sailor-suit', 'reference-to-nazis', 'gonzaga",
+                "%b%",
+                "%A%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Neil Almebor)', '(as Rika Schwarz)', '(rider)', '(as Jemma)",
+                "[nl]",
+                "weekend gross",
+                "action-hero', 'high-dynamic-range', 'oriental-music', 'food-basket', 'western-norway",
+                "%O%",
+                "%c%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Bela Aapa)', '(as Monicka Jaymes)', '(as Todd Roberts)', '(as Pam Jones)",
+                "[br]",
+                "weekend gross",
+                "battle', 'tooth', 'tire-track', 'southern-gothic', 'lost-keys",
+                "%1%",
+                "%$%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as A. Tatarskiy)', '(14 episodes 1997-)', '(as Roger Alford)', '(as Ben Weldon)",
+                "[nl]",
+                "rentals",
+                "battle', 'guide-animal', 'long-running-tv', 'christian-theme', 'pulsating-image",
+                "%0%",
+                "%0%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Chin Pey)', '(as Vlado Perkovic)', '(as James Hutton)', '(as Georges Peclet)",
+                "[es]",
+                "adaption",
+                "battle', 'bonfire-night', 'napoleonic-conquest', 'dennis-the-menace', 'monocle",
+                "%m%",
+                "%r%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as John Contardo)', '(as Merc\u00c3\u00a8 Camins)', '(as Zarah McKenzie)', '(as Billy Benedict)",
+                "[gb]",
+                "tech info",
+                "voice-sampling', 'appartment-mailbox', 'false-advertisement', 'marked-deck', 'peaceful-revolution",
+                "%P%",
+                "%3%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Samuel Dobbins)', '(3-D designer)', '(film by)', '(as Lajos Dobak)",
+                "[us]",
+                "book",
+                "battle', 'precious-metal', 'thrift-shop', 'malmedy', 'based-on-photobook",
+                "%e%",
+                "%o%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(chef: TV Dinners)', '(as G. Peradze)', '(as Mc. Mohan)', '(as Carolyn Graig)",
+                "[us]",
+                "production process protocol",
+                "android', 'z\u00c3\u00b3calo-mexico-city', 'colt-revolver', 'drunk-during-dinner', 'long-title",
+                "%y%",
+                "%.%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Bill Thourlby)', '(as Jenny Le Gon)', '(as Tom Drake)', '(tour historian)",
+                "[fr]",
+                "adaption",
+                "android', 'obsidian', 'cleansing-ritual', 'tokyo-university', 'exclusive-story",
+                "%0%",
+                "%8%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Rar\u00c3\u00ae F\u00c3\u00b4setto)', '(as George Bange)', '(as Bob Balhatchet)', '(as The 2 Marks)",
+                "[nl]",
+                "trivia",
+                "action-hero', 'commercial-trade', 'sepoy-rebellion', 'new-york-accent', 'beachwear",
+                "%m%",
+                "%n%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(1985 production)', '(as Phill Carey)', '(as Vica Borg)', '(Organ)",
+                "[us]",
+                "countries",
+                "gold-rush', 'ten-cents-a-dance', 'segment-block', 'roman-salute', 'committee-hearing",
+                "%U%",
+                "%K%",
+                "m",
+                "%h%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Tony Ling)', '(as Crystal Ashley)', '(as Becky Bowles)', '(as Maja Hendrickx)",
+                "[nl]",
+                "printed media reviews",
+                "weapons-research', 'third-person', 'separated-brothers', 'limb-in-traction', 'temporary-visa",
+                "%\u00a5%",
+                "%1%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Karla Olivares)', '(computer imaging)', '(as Manfred Bradke)', '(as Louis LeRay)",
+                "[se]",
+                "printed media reviews",
+                "action-hero', 'post-communism', 'kazakhstan', 'platte-city-iowa', 'neighbour",
+                "%a%",
+                "%9%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Blaine Fairman)', '(as Mio)', '(as Marcy Blasgen)', '(as Dawn Billings)",
+                "[us]",
+                "weekend gross",
+                "action-hero', 'black-lion-hospital', 'shirt-tag', 'show-trial', 'year-1901",
+                "%t%",
+                "%)%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Bob Birnbaum)', '(as Angel LaMonica)', '(as Jeremy Killick)', '(play \"Tamten\")",
+                "[es]",
+                "printed media reviews",
+                "android', 'schizo', 'cranston-auditorium', 'cheap-hiroshi', 'bubble-wrap",
+                "%m%",
+                "%6%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Misty Lynn)', '(as Jasmyne)', '(file transfer)', '(as Charles Stine)",
+                "[us]",
+                "countries",
+                "church', 'fictional-quiz-show', 'hyderabad-india', 'mutineer', 'yacht-racing",
+                "%K%",
+                "%U%",
+                "m",
+                "%R%",
+                "actor",
+                2009
+            ],
+            [
+                "(voice)', '(as Ghazi Twist)', '(as L. Chase)', '(as Yvonne Romaine)', '(as Simon R. Baker)",
+                "[us]",
+                "certificates",
+                "shooting-a-woman', 'mute-witness', 'witness-to-sex', 'locked-in-jail', 'condom-express",
+                "%1%",
+                "%:%",
+                "m",
+                "%e%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as A. Trotsenko)', '(as Manikandan)', '(as Hilton Allen)', '(as Brian Koch)",
+                "[fr]",
+                "rentals",
+                "voice-sampling', 'aclu', 'asking-for-a-job', 'tooth-gap', 'french-navy",
+                "%K%",
+                "%U%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Stephen Chong)', '(as Nikita Rykunov)', '(as Sidney Lassick)', '(as Carl Foster)",
+                "[us]",
+                "printed media reviews",
+                "battle', 'want-ad', 'classroom', 'mullein', 'execution-date",
+                "%M%",
+                "%t%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Keej Mullen)', '(assistant curator)', '(as Daniel McGrew)', '(as Erol Emerle)",
+                "[us]",
+                "certificates",
+                "paddock', 'melting-genitalia', 'abstinence', 'late-for-work', 'hypo",
+                "%1%",
+                "%1%",
+                "m",
+                "%f%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Agnetha)', '(as Lucerito)', '(as Eli Avivi)', '(as Susan Kay)",
+                "[nl]",
+                "book",
+                "weapons-research', 'skinny-dipping', 'gnu-software', 'sanctimony', 'rudy-rooster",
+                "%9%",
+                "%t%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as A. Poddubinsky)', '(as Chris Watts)', '(as Kate McClaine)', '(menu producer)",
+                "[se]",
+                "adaption",
+                "weapons-research', 'saatchi-and-saatchi', 'spiked-hair', 'alma-tunnel', 'undersea-monster",
+                "%o%",
+                "%,%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Umy Raho)', '(as Jose Juando)', '(website backend)', '(as Ronnie Tavel)",
+                "[br]",
+                "adaption",
+                "action-hero', 'locked-in-a-pantry', 'sportscope-series', 'motion', 'five-star-hotel",
+                "%k%",
+                "%\"%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Ann C. Johnson)', '(dancer)', '(as Helene Mahieu)', '(stand-in: Cody)",
+                "[br]",
+                "trivia",
+                "voice-sampling', 'whiskey-runner', 'gang-summit', 'print-services', 'tarkovsky",
+                "%i%",
+                "%n%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Mark Gibbons)', '(as Pete Atasanoff)', '(as Diogo Dias)', '(as One Man Army)",
+                "[gb]",
+                "opening weekend",
+                "voice-sampling', 'serving-god', 'boiler', 'first-time-actor', 'olympic-games-2008",
+                "%,%",
+                "%r%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Ling Jie)', '(ballet: teacher)', '(as Miss Donovan)', '(as Barbara Multer)",
+                "[us]",
+                "book",
+                "weapons-research', 'gold-plate', 'ex-boyfriend', 'racial-epithet', 'judicial-error",
+                "%e%",
+                "%a%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Erol Cantali)', '(as Master Bibhu)', '(as Reyna Brito)', '(press attache)",
+                "[fr]",
+                "trivia",
+                "weapons-research', 'babylonia', 'chinook', 'eating-soap', 'harvester",
+                "%s%",
+                "%)%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Lachelle)', '(as Francis M)', '(as Donna Dare)', '(as Natalia Harris)",
+                "[us]",
+                "budget",
+                "weapons-research', 'female-stalker', 'world-trade', 'free-agency', 'alfred-wainwright",
+                "%,%",
+                "%0%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Ninalyn)', '(????-2004)', '(as Donna Aubert)', '(as Philly Howell)",
+                "[se]",
+                "printed media reviews",
+                "weapons-research', '1-year-old', 'hammock', 'the-flintstones', 'rain-slicker",
+                "%w%",
+                "%s%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Tony Amirati)', '(Mandira Salon)', '(as Trey Farely)', '(as Geoff Landis)",
+                "[gb]",
+                "tech info",
+                "android', 'postman', 'spitting-into-soup', 'older-woman', 'devon-england",
+                "%d%",
+                "%w%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Kylie Richman)', '(as Ke\u00c3\u00a9ry Panni)', '(as L. Obrazumova)', '(Rasta)",
+                "[us]",
+                "certificates",
+                "liar''s-dice', 'plane-construction', 'driving', 'charity-work', 'chuquicamata-chile",
+                "%K%",
+                "%8%",
+                "m",
+                "%R%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Bruno Bossio)', '(as Kris D. Lofton)', '(as Bill Aylward)', '(Japanese liaison)",
+                "[es]",
+                "trivia",
+                "weapons-research', 'vietnamese-woman', 'search-for-son', 'flyswatter', 'sandpiper",
+                "%e%",
+                "%J%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Dave Boneywell)', '(as Ron Walden)', '(as Kay Hartrey)', '(as Gordon Lam)",
+                "[us]",
+                "quotes",
+                "murder', 'blood-on-back', 'norwegian-accent', 'kim-coles', 'canned-pineapple",
+                "%.%",
+                "%m%",
+                "m",
+                "%R%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Danny Majzlik)', '(self)', '(as Dean Gary)', '(as Eric A. Payne)",
+                "[nl]",
+                "trivia",
+                "battle', 'nfl', 'loss-of-powers', 'magnetic-mine', 'nerve-damage",
+                "%R%",
+                "%''%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(May 19, 1983)', '(im 2. Teil)', '(day 1)', '(as Gene Anton Jr.)",
+                "[us]",
+                "weekend gross",
+                "2020s', 'chemical-lab', 'drunken-indian', 'redone', 'hypnotic-stare",
+                "%9%",
+                "%p%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Abigail)', '(novel \"High Cage\")', '(chef) (2002-)', '(as Jay Downs)",
+                "[gb]",
+                "printed media reviews",
+                "2020s', 'pass', 'ankle-splint', 'mortgage-payment', 'contemporary-music",
+                "%d%",
+                "%e%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as E. von Jordan)', '(as Housin Yassin)', '(as Themba Teinton)', '(as Jan Schade)",
+                "[es]",
+                "tech info",
+                "voice-sampling', 'theatrical-investor', 'hip-waders', 'planning-funeral', 'elizabeth-short",
+                "%5%",
+                "%M%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Victor Clavijo)', '(as Kim Casey)', '(as P.H. Vazak)', '(as Kamel Bouakkaz)",
+                "[fr]",
+                "printed media reviews",
+                "weapons-research', 'cloud-seeding', 'mark-of-the-beast', 'cheltenham-england', 'strange-happening",
+                "%.%",
+                "%9%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Dominic Young)', '(as I Yu)', '(as J.M. Henry)', '(as Boris)",
+                "[fr]",
+                "trivia",
+                "2020s', 'viral-video', 'everglades', 'uno-floag', 'drift-nets",
+                "%i%",
+                "%v%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Andre Georget)', '(as Buboy Tan)', '(as Vega)', '(as Amanda Dickson)",
+                "[fr]",
+                "novel",
+                "voice-sampling', 'blind-father', 'spit-in-eye', 'broadway-producer', 'night-rocket-launch",
+                "%k%",
+                "%r%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as ADG)', '(as James LeGros)', '(as Lanny A. Horn)', '(as June Nardsley)",
+                "[fr]",
+                "rentals",
+                "battle', 'peter-the-great', 'anniversary-card', 'debt-of-gratitude', 'blow-up-doll",
+                "%8%",
+                "%8%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Karan Grover)', '(as Paula Geerts)', '(as Oleg Stefan)', '(as Greg Stone)",
+                "[br]",
+                "adaption",
+                "2020s', 'outback', 'return-from-dead', 'posing-pouch', 'self-help-group",
+                "%0%",
+                "%:%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Mike Lopez)', '(as Erik Hahn)', '(as Billy Dinkle)', '(as Sasa Castura)",
+                "[fr]",
+                "taglines",
+                "voice-sampling', 'copping-a-feel', 'hitchhike', 'fiorinal', 'seismograph",
+                "%n%",
+                "%t%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Beth O.)', '(producer: YLE FST)', '(as S. Kharitonova)', '(as Bill Roudi)",
+                "[nl]",
+                "screenplay-teleplay",
+                "2020s', 'young-alien', 'pipa', 'crafting-table', 'paralyzed",
+                "%a%",
+                "%e%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(segment \"Marilyn\")', '(as Lawrence Cole)', '(as Mirabai)', '(as Thomas Jordan)",
+                "[gb]",
+                "printed media reviews",
+                "action-hero', 'mail-theft', 'gray-hair', 'search-for-love', 'rome-georgia",
+                "%r%",
+                "%9%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(dramatist)', '(technical adviser)', '(guest artiste)', '(as V. Makarov)",
+                "[nl]",
+                "printed media reviews",
+                "battle', 'stearn''s-wharf', 'brazilian', 'rock-palace', 'wire-service",
+                "%\u00c3%",
+                "%\"%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Saturna Barrio)', '(assistant support)', '(as Susane)', '(boomerang thrower)",
+                "[nl]",
+                "opening weekend",
+                "battle', 'yokel', 'land-grab', 'rescue-squad', 'sex-in-hallway",
+                "%(%",
+                "%1%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(producer) (197?-?)', '(as Tina Argiro)', '(as Jason Finney)', '(as Clara G. Nieto)",
+                "[br]",
+                "production process protocol",
+                "2020s', 'wireless', 'foggy-window', 'bloody-knife', 'year-428",
+                "%o%",
+                "%4%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(accounting intern)', '(as Sarah Lubell)', '(as Katrena Starr)', '(Yes, Minister)",
+                "[se]",
+                "admissions",
+                "battle', 'multiplicity', 'angry-dog', 'suggesting-suicide', 'worry-wart",
+                "%8%",
+                "%n%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(stone mason)', '(creator) (2009-)', '(as Al Edmundson)', '(as Paul Boivert)",
+                "[se]",
+                "book",
+                "2020s', 'glenn-miller', 'field-of-wheat', 'foosball-table', 'friday-night",
+                "%a%",
+                "%J%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Logan Aria)', '(H\u00c3\u00a9rodiade)', '(as Miss Elizabeth)', '(as Kenneth Mok)",
+                "[fr]",
+                "printed media reviews",
+                "action-hero', 'threshold', 'christmas-food', 'pre-adolescent', 'condoning-suicide",
+                "%9%",
+                "%n%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Marin Abram)', '(as Martin Circus)', '(as Jim Richards)', '(barrister)",
+                "[us]",
+                "tech info",
+                "action-hero', 'cinecitt\u00c3\u00a0', 'chariot-battle', 'spiritual-power', 'acute-insomnia",
+                "%3%",
+                "%3%",
+                "m",
+                "%l%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Tacho Riera)', '(barricade)', '(as Loucious Louis)', '(as Cock''d Gunns)",
+                "[gb]",
+                "admissions",
+                "2020s', 'snot', 'mustard-plaster', 'mgm-studios', 'champ-de-mars-paris",
+                "%c%",
+                "%r%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as S. Vrbick\u00c3\u00a1)', '(as Allan Selwyn)', '(as Mercedes)', '(research staff)",
+                "[es]",
+                "printed media reviews",
+                "voice-sampling', 'costa-del-sol-spain', 'compte', 'methane', 'chanel-no.-5",
+                "%,%",
+                "%r%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Guylaine P\u00c3\u00a9an)', '(as PO2 Rodel Puno)', '(as Greg Finn)', '(as Rodrigo Ricio)",
+                "[fr]",
+                "weekend gross",
+                "weapons-research', 'ground-crew', 'barmaid-costume', 'son-kisses-father', 'granite-block",
+                "%(%",
+                "%2%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Picard)', '(Ch\u00c3\u00bb Isomura)', '(La jeune baronne)', '(as Abel Asencio)",
+                "[fr]",
+                "trivia",
+                "weapons-research', 'pulling-a-finger', 'operetta-singer', 'dying-from-aids', 'hatred-against-gays",
+                "%n%",
+                "%e%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Neva J. Howell)', '(Landlord''s Wife)', '(as John Kostrey)', '(Pigi)",
+                "[gb]",
+                "other literature",
+                "battle', 'violent-man', 'radio-store', 'abandoned-bunker', 'cybersting",
+                "%M%",
+                "%l%",
+                "m",
+                "%b%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as M. Snajdr)', '(as Yanine Bertoli)', '(as Harry LaMont)', '(caterer: Oregon)",
+                "[gb]",
+                "weekend gross",
+                "action-hero', 'gang', 'gay-pornography', 'field-glasses', 'threatening-call",
+                "%e%",
+                "%7%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Vera Delaisse)', '(as Gwen Wilkens)', '(as Massimo Volume)', '(as Talla Moret)",
+                "[nl]",
+                "weekend gross",
+                "android', 'animated-wolf', 'quality', 'conservationist', 'thompsons-gazelle",
+                "%(%",
+                "%,%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Harry Refn)', '(as Swaroop Dutt)', '(In Audience)', '(as M\u00c3\u00bcfid Kiper)",
+                "[us]",
+                "certificates",
+                "injury', 'farm-aid-2', 'lamb-skin', 'exercising', 'hajji",
+                "%1%",
+                "%:%",
+                "m",
+                "%i%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Lesa Donai)', '(as Kirsti Bourne)', '(as Bob Cosci)', '(as Luis Noguiera)",
+                "[es]",
+                "trivia",
+                "android', 'brewery-worker', 'tb-test', 'hydrotherapy', 'carp",
+                "%t%",
+                "%d%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(jewelry by)', '(as Rabbi Ian Pear)', '(as Vanessa Moore)', '(as Emylou Lunar)",
+                "[us]",
+                "printed media reviews",
+                "battle', 'plate-in-the-head', 'meat-tricks', 'meat-chopper', 'israeli-embassy",
+                "%s%",
+                "%t%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(voice) (as Penn)', '(as Richard Duran)', '(as Hans Deponte)', '(as Caprice Fisher)",
+                "[es]",
+                "tech info",
+                "action-hero', 'food-politics', 'detour', 'spectres', 'colored-tuxedo",
+                "%3%",
+                "%A%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Agustin Contel)', '(eQ assistant)', '(as Riccardo Tarci)', '(as Elena Buhaci)",
+                "[nl]",
+                "adaption",
+                "action-hero', 'sea-wall', 'airplane-engine', 'selling-tv', 'gay-action-hero",
+                "%f%",
+                "%y%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Zdena Hajdov\u00c3\u00a1)', '(as Dexter Young)', '(as Todd Schultz)', '(as Mack Reynolds)",
+                "[fr]",
+                "tech info",
+                "android', 'affair-with-a-maid', 'red-star', 'hand-cranked', 'sorting-mail",
+                "%P%",
+                "%m%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Special Features)', '(as Vakila Maan)', '(as Rita Tobin)', '(as Vadim Tsalatti)",
+                "[se]",
+                "tech info",
+                "battle', 'texarkana-arkansas', 'roman-10th-legion', 'plastic-pool', 'bloody-sunday",
+                "%s%",
+                "%r%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(truck shacker)', '(as D. Andreyev)', '(Andrade)', '(as Georgij Miljar)",
+                "[se]",
+                "book",
+                "action-hero', 'cobwebs', 'the-iron-wall', 'tango-singer', 'seducing-a-minor",
+                "%D%",
+                "%m%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(support: Usen)', '(as Jos\u00c3\u00a9 Sanchiz)', '(as Lerry Brashear)', '(episodes 1-10)",
+                "[es]",
+                "screenplay-teleplay",
+                "voice-sampling', 'contestant', 'grill', 'punch-clock', 'fishing-tackle",
+                "%D%",
+                "%d%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Pinky''s dad)', '(as Bill Brown)', '(as Lalette Reder)', '(as Chiu Tsang Hei)",
+                "[us]",
+                "printed media reviews",
+                "2020s', 'male-feet-in-socks', 'lang', 'burnt-tongue', 'bisexuality",
+                "%r%",
+                "%M%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Fernando)', '(as Jesse Dunn)', '(as Daniel Brucker)', '(as Wolf)",
+                "[nl]",
+                "opening weekend",
+                "action-hero', 'girl-nudity', 'glass-painting', 'green-tights', 'midnight-launch",
+                "%)%",
+                "%)%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Anton Herbert)', '(as Zach Ruben)', '(as V. Chiglyaev)', '(as Annie Schon)",
+                "[fr]",
+                "weekend gross",
+                "weapons-research', 'middle-age-couple', '8th-british-army', 'sumgait', 'microfiche",
+                "%9%",
+                "%J%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Anthony De Lan)', '(as W. Ackva)', '(as Betti Segal)', '(character: Robin)",
+                "[es]",
+                "adaption",
+                "battle', 'father-thomas', 'life-long-dream', 'distance-in-title', 'sentenced-to-hang",
+                "%f%",
+                "%s%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Qadir Farookh)', '(as Shwetha Menon)', '(as Adam Bauman)', '(as Vita Mavri\u00c3\u00a8)",
+                "[fr]",
+                "book",
+                "weapons-research', 'teenage-alienation', 'breadline', 'tooth-decay', 'jaws-of-life",
+                "%n%",
+                "%d%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Jennifer S)', '(as Britney Jade)', '(as editor)', '(as Cris Calvente)",
+                "[us]",
+                "opening weekend",
+                "action-hero', 'post-communism', 'summer-home', 'single-guy', 'royal-jelly",
+                "%0%",
+                "%S%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Edmund Ho)', '(as Rebeka Jordan)', '(as Jo Kern)', '(as \u00c3\u0087un Laj\u00c3\u00a7i)",
+                "[nl]",
+                "production process protocol",
+                "battle', 'nude-with-glasses', 'hauling-business', 'vaulted-roof', 'stalactites",
+                "%,%",
+                "%,%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(credit only)', '(as G\u00c3\u00bcnter Burger)', '(as Wu Dajiang)', '(as Tom Gulliver)', '(as Jade East)",
+                "[nl]",
+                "certificates",
+                "explosion', 'cuban-politics', 'burst-water-pipe', 'common-sense', 'solophobia",
+                "%1%",
+                "%h%",
+                "m",
+                "%s%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Jhon Huston)', '(accountant) (1998)', '(as Leelamisra)', '(helmsman)",
+                "[nl]",
+                "taglines",
+                "action-hero', 'open-casket', 'fight-on-train-roof', 'sexy-woman', 'cartier-watch",
+                "%h%",
+                "%s%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Eian)', '(as Ren\u00c3\u00a9 Gui)', '(Animal Tamer)', '(Nigerian Version)",
+                "[us]",
+                "taglines",
+                "android', 'sex-joke', 'defying-gravity', 'ravenna-italy', 'polar-ice-cap",
+                "%T%",
+                "%r%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Alesha Joy)', '(story \"Stadium\")', '(Lab Technician)', '(as Maurie Annesse)",
+                "[us]",
+                "admissions",
+                "android', 'nova-japan', 'ruan', 'chicago-piano', 'gun-show",
+                "%8%",
+                "%8%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Joe-B)', '(as Noel Torren)', '(as Dr Ross Stein)', '(as Wendy Slick)",
+                "[us]",
+                "countries",
+                "hanging', '1911-38-super', 'ex-nobleman', 'self-search', 'genetic-code",
+                "%K%",
+                "%U%",
+                "m",
+                "%R%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Karin Tepper)', '(as Cristal Clear)', '(as E. Solyakov)', '(as Pat\u00c3\u00a9 de Fu\u00c3\u00a1)",
+                "[es]",
+                "admissions",
+                "action-hero', 'neighborhood-party', 'u-haul-trailier', 'western-union', 'lovers-lane",
+                "%7%",
+                "%3%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as J.R.Larrath)', '(as G.Gotovchits)', '(as Robert Blood)', '(as DJ August)",
+                "[es]",
+                "weekend gross",
+                "2020s', 'workbook', 'school-integration', 'safety-catch', 'bunny-costume",
+                "%4%",
+                "%9%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as h.kraemmer)', '(as Rose Han)', '(as Leopold Nowak)', '(as Ashley Nelson)",
+                "[br]",
+                "trivia",
+                "weapons-research', 'ripped-earlobe', 'pro-surfer', 'eye-socket', 'forced-vomiting",
+                "%W%",
+                "%n%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Cl\u00c3\u00a1udia Leite)', '(as T. Rossi)', '(as Nick Dawnay)', '(as Andre Charise)",
+                "[gb]",
+                "book",
+                "action-hero', 'flaming-lips', 'money-in-mail', 'cartoon-cheetah', 'based-on-journal",
+                "%a%",
+                "%u%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(\"Voltaire\")', '(as Nicoli Lemeni)', '(as Kolya Pogodin)', '(as Peter Colburn)",
+                "[gb]",
+                "trivia",
+                "voice-sampling', 'scaffidi', 'ancient-battle', '2500s', 'clanger",
+                "%t%",
+                "%t%",
+                "m",
+                "%s%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Majken Wex\u00c3\u00b8)', '(as Michael Morse)', '(as Paul Lousteau)', '(as Cindy McKay)",
+                "[br]",
+                "weekend gross",
+                "android', 'rings-swing', 'plethora', 'saddle-shop', 'plastic-roll",
+                "%5%",
+                "%s%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Maggi Yule)', '(as Ibnu Djamil)', '(as Kelly Horwich)', '(as Dalcourt)",
+                "[gb]",
+                "taglines",
+                "weapons-research', 'vertical-sports', 'standing-on-toilet', 'dragon-lady', 'judicial-error",
+                "%n%",
+                "%s%",
+                "m",
+                "%.%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Lev Grossman)', '(as Tamara Jackson)', '(as Buddy Windrush)', '(as T. Klotz)",
+                "[fr]",
+                "tech info",
+                "battle', 'in-flight-magazine', 'sajuaro-cactus', 'invisible-children', 'shadow-on-wall",
+                "%C%",
+                "%P%",
+                "m",
+                "%a%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as MA3)', '(as Erik Tesch)', '(as Tsung-Hwa Liu)', '(as Mervin Curag)",
+                "[gb]",
+                "tech info",
+                "weapons-research', 'seaside-california', 'four-aces', 'homerun', 'war-satire",
+                "%7%",
+                "%F%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as I. Olesha)', '(as Imtiaz Bagwan)', '(as Gamaston)', '(as Dorit Lev Ari)",
+                "[gb]",
+                "other literature",
+                "weapons-research', 'gumshoe', 'headshop', 'gulzar', 'enthusiast",
+                "%5%",
+                "%i%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Inma Cuevas)', '(as Lobo Carrasco)', '(D-vision operator)', '(as @blaudiablogan)",
+                "[us]",
+                "opening weekend",
+                "battle', 'ship-sinking', 'loriot', 'neptune-the-planet', 'belleville",
+                "%(%",
+                "%S%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Andy Warren)', '(as Victor Flynn)', '(as Raidar M\u00c3\u00bcller)', '(as Shabona Hunter)",
+                "[br]",
+                "printed media reviews",
+                "2020s', 'lumber-baron', 'secret-from-fianc\u00c3\u00a9', 'shotgun-guard', 'struggling-actress",
+                "%t%",
+                "%i%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as K.S.T.)', '(as Joey D. Viera)', '(as Z. Zoricic)', '(as Cactus Hogle)",
+                "[br]",
+                "adaption",
+                "android', 'middletown-ohio', 'missile-launch', 'part-of-tetralogy', 'cheryl-crawford",
+                "%0%",
+                "%1%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Manel Huerga)', '(as Shawn Hlookoff)', '(as Risal)', '(as Iris Schmit)",
+                "[es]",
+                "printed media reviews",
+                "weapons-research', 'hunting-ground', 'simulcast', 'indian-girl', 'magic-apple",
+                "%i%",
+                "%6%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Franco Cuppini)', '(as Sara Wine)', '(as Edward Norton)', '(as Jerry Harden)",
+                "[br]",
+                "printed media reviews",
+                "android', 'dixie', 'teotihuacan', 'gupta-blood', 'hikikomori",
+                "%x%",
+                "%e%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Andrea Moore)', '(as Marissa Davis)', '(as Olga Marceau)', '(as Stanislav)",
+                "[fr]",
+                "tech info",
+                "android', 'finger-puppet', 'brega', 'leather-queen', 'year-1600",
+                "%T%",
+                "%T%",
+                "m",
+                "%C%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(screen data)', '(as Aastha)', '(as Bajrus Mijaku)', '(as Jack Reilly)",
+                "[fr]",
+                "opening weekend",
+                "2020s', 'fast-and-furious', 'ramayana', 'sousaphome', 'buttered-butt",
+                "%$%",
+                "%6%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Lotta Leggs)', '(as Coleen Winton)', '(as D. Knalb)', '(as Sir John Smith)",
+                "[us]",
+                "adaption",
+                "action-hero', 'funky-music', 'polynesian-music', 'lost-mine', 'muslim-social",
+                "%.%",
+                "%r%",
+                "m",
+                "%h%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(as Dr. Gary Cohan)', '(as Spence Wil Dee)', '(as Darth Shiavo)', '(as Desi DeAngelo)",
+                "[us]",
+                "certificates",
+                "injury', 'atonement', 'spork', 'eastern-canada', 'mouth-spray",
+                "%e%",
+                "%m%",
+                "m",
+                "%,%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Sonik Omi)', '(promo animator)', '(football intern)', '(as Teyyub Axundov)",
+                "[br]",
+                "weekend gross",
+                "action-hero', 'soprano-saxophone', 'alien-infection', 'high-action-combat', 'no-soliciting-sign",
+                "%1%",
+                "%t%",
+                "m",
+                "%,%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Tanya Larivier)', '(as Bob Clampett)', '(as M\u00c3\u00a2ku N\u00c3\u00aeruson)', '(certified angel)",
+                "[br]",
+                "opening weekend",
+                "weapons-research', 'emotional-breakdown', 'frog-imitation', 'organism', 'list-making",
+                "%$%",
+                "%7%",
+                "m",
+                "%r%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Mike Wise)', '(as Al Morgenstern)', '(as J.J. Clark)', '(as Nico Papatakis)",
+                "[br]",
+                "filming dates",
+                "android', 'simple-life', 'hyrophobia', 'islamic-mythology', 'talking-pigs-head",
+                "%c%",
+                "%c%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(voice)', '(ages 10-13)', '(as Charlie Cork)', '(as Jonny Soster)', '(as Rajoo)",
+                "[us]",
+                "certificates",
+                "river', 'judo-class', 'm1117-guardian-asv', 'big-bend-texas', 'ice",
+                "%d%",
+                "%1%",
+                "m",
+                "%f%",
+                "actor",
+                2009
+            ],
+            [
+                "(as Charles Tamburro)', '(as Perle Walter)', '(8 a\u00c3\u00b1os)', '(as Judyh)', '(as Eric Yang)",
+                "[br]",
+                "novel",
+                "battle', 'adding-machine', 'self-kidnap', 'gun-telescope', 'moonshine",
+                "%9%",
+                "%B%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Mac Williams)', '(as Rene Dupeyron)', '(as Tom Lane)', '(as Victor Stone)",
+                "[br]",
+                "printed media reviews",
+                "action-hero', 'coeds', 'quiche', 'ratman', 'huge-celebration",
+                "%n%",
+                "%r%",
+                "m",
+                "%u%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Drug mailer)', '(as Lu\u00c3\u00ads Carrondo)', '(as Carlton Crane)', '(as Dr Tracy Hall)",
+                "[es]",
+                "tech info",
+                "voice-sampling', 'moisture', 'shared-secret', 'breaking-down-gate', 'brooklyn-navy-yard",
+                "%O%",
+                "%5%",
+                "m",
+                "%m%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Behroz)', '(as La Tyia Benson)', '(as Sun Tin Ha)', '(as Frank McCloud)",
+                "[us]",
+                "other literature",
+                "action-hero', 'twenty-something', 'saugerties-new-york', 'self-transcendence', 'poor-painter",
+                "%e%",
+                "%i%",
+                "m",
+                "%o%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Richard Doyon)', '(as V. Ananina)', '(as Mehandi Raza)', '(as G\u00c3\u00bcnter Pohl)",
+                "[es]",
+                "screenplay-teleplay",
+                "weapons-research', 'moat', 'mining-village', 'ejaculation-on-face', 'soissons-france",
+                "%i%",
+                "%.%",
+                "m",
+                "%A%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(Cowhand)', '(\"What Where\")', '(story \"Cocaine\")', '(as Bin Seung Poon)",
+                "[es]",
+                "production process protocol",
+                "android', 'melon', 'fuzzy-navel', 'concert-preparation', 'robert-capa",
+                "%e%",
+                "%J%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Emma Sj\u00c3\u00b6berg)', '(as Murray Saffron)', '(as Philip Selway)', '(as Josefin Nyberg)",
+                "[gb]",
+                "weekend gross",
+                "android', 'free-trade', 'skink', 'distrust', 'patent-rights",
+                "%n%",
+                "%1%",
+                "m",
+                "%e%",
+                "actor",
+                1990
+            ],
+            [
+                "(as Charles Tamburro)', '(as Andrew Cheng)', '(as Carter Dickson)', '(as Dash Nastos)', '(as Paru Silios)",
+                "[gb]",
+                "opening weekend",
+                "2020s', 'smoking-in-a-car', 'toupet', 'jamaican-culture', 'alien-intelligence",
+                "%,%",
+                "%b%",
+                "m",
+                "%T%",
+                "actor",
+                1990
+            ]
+        ]
+    }
+}

@@ -1,0 +1,2480 @@
+{
+  "33-0": {
+    "query": "SELECT MIN(cn1.name) AS first_company, MIN(cn2.name) AS second_company, MIN(mi_idx1.info) AS first_rating, MIN(mi_idx2.info) AS second_rating, MIN(t1.title) AS first_movie, MIN(t2.title) AS second_movie\n FROM company_name AS cn1,\n company_name AS cn2,\n info_type AS it1,\n info_type AS it2,\n kind_type AS kt1,\n kind_type AS kt2,\n link_type AS lt,\n movie_companies AS mc1,\n movie_companies AS mc2,\n movie_info_idx AS mi_idx1,\n movie_info_idx AS mi_idx2,\n movie_link AS ml,\n title AS t1,\n title AS t2\n WHERE lt.id = ml.link_type_id \nAND t1.id = ml.movie_id \nAND t2.id = ml.linked_movie_id \nAND it1.id = mi_idx1.info_type_id \nAND t1.id = mi_idx1.movie_id\nAND kt1.id = t1.kind_id\nAND cn1.id = mc1.company_id\nAND t1.id = mc1.movie_id\nAND ml.movie_id = mi_idx1.movie_id\nAND ml.movie_id = mc1.movie_id\nAND mi_idx1.movie_id = mc1.movie_id\nAND it2.id = mi_idx2.info_type_id\nAND t2.id = mi_idx2.movie_id\nAND kt2.id = t2.kind_id\nAND cn2.id = mc2.company_id\nAND t2.id = mc2.movie_id\nAND ml.linked_movie_id = mi_idx2.movie_id\nAND ml.linked_movie_id = mc2.movie_id\nAND mi_idx2.movie_id = mc2.movie_id\nAND cn1.country_code = '@param0'\nAND it1.info = '@param1'\nAND it2.info = '@param2'\nAND kt1.kind IN ('@param3')\nAND kt2.kind IN ('@param4')\nAND lt.link IN ('@param5')\nAND mi_idx2.info < '@param6'\nAND t2.production_year BETWEEN @param7 AND @param8;",
+    "predicates": [
+      {
+        "alias": "cn",
+        "original_alias": "cn1",
+        "column": "country_code",
+        "operator": "=",
+        "data_type": "text",
+        "table": "company_name",
+        "join_tables": [
+          "movie_companies"
+        ],
+        "join_tables_alias": [
+          "mc"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "cn.id = mc.company_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it1",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "info_type",
+        "join_tables": [
+          "movie_info_idx"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "it",
+        "original_alias": "it2",
+        "column": "info",
+        "operator": "=",
+        "data_type": "text",
+        "table": "info_type",
+        "join_tables": [
+          "movie_info_idx"
+        ],
+        "join_tables_alias": [
+          "mi_idx"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ]
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt1",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "kind_type",
+        "join_tables": [
+          "title"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "kt",
+        "original_alias": "kt2",
+        "column": "kind",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "kind_type",
+        "join_tables": [
+          "title"
+        ],
+        "join_tables_alias": [
+          "t"
+        ],
+        "join_tables_column": [
+          [
+            "production_year"
+          ]
+        ],
+        "join_conditions": [
+          "kt.id = t.kind_id"
+        ],
+        "left_or_right": [
+          "both"
+        ]
+      },
+      {
+        "alias": "lt",
+        "column": "link",
+        "operator": "IN",
+        "data_type": "text",
+        "table": "link_type",
+        "join_tables": [
+          "movie_link"
+        ],
+        "join_tables_alias": [
+          "ml"
+        ],
+        "join_tables_column": [
+          []
+        ],
+        "join_conditions": [
+          "lt.id = ml.link_type_id"
+        ],
+        "left_or_right": [
+          "l"
+        ]
+      },
+      {
+        "alias": "mi_idx",
+        "original_alias": "mi_idx2",
+        "column": "info",
+        "operator": "<",
+        "data_type": "text",
+        "table": "movie_info_idx",
+        "join_tables": [
+          "info_type",
+          "title",
+          "movie_link",
+          "movie_companies"
+        ],
+        "join_tables_alias": [
+          "it",
+          "t",
+          "ml",
+          "mc"
+        ],
+        "join_tables_column": [
+          [
+            "info"
+          ],
+          [
+            "production_year"
+          ],
+          [],
+          []
+        ],
+        "join_conditions": [
+          "it.id = mi_idx.info_type_id",
+          "t.id = mi_idx.movie_id",
+          "ml.linked_movie_id = mi_idx.movie_id",
+          "mi_idx.movie_id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "both",
+          "both",
+          "l",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": ">=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "movie_link",
+          "movie_info_idx",
+          "kind_type",
+          "movie_companies"
+        ],
+        "join_tables_alias": [
+          "ml",
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [],
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = ml.linked_movie_id",
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "l",
+          "both",
+          "both",
+          "l"
+        ]
+      },
+      {
+        "alias": "t",
+        "original_alias": "t2",
+        "column": "production_year",
+        "operator": "<=",
+        "data_type": "int",
+        "table": "title",
+        "min": 1880,
+        "max": 2019,
+        "join_tables": [
+          "movie_link",
+          "movie_info_idx",
+          "kind_type",
+          "movie_companies"
+        ],
+        "join_tables_alias": [
+          "ml",
+          "mi_idx",
+          "kt",
+          "mc"
+        ],
+        "join_tables_column": [
+          [],
+          [
+            "info"
+          ],
+          [
+            "kind"
+          ],
+          []
+        ],
+        "join_conditions": [
+          "t.id = ml.linked_movie_id",
+          "t.id = mi_idx.movie_id",
+          "kt.id = t.kind_id",
+          "t.id = mc.movie_id"
+        ],
+        "left_or_right": [
+          "l",
+          "both",
+          "both",
+          "l"
+        ]
+      }
+    ],
+    "params": [
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "1990",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[ru]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "3.5",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "3.5",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[jp]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1990",
+        "2008"
+      ],
+      [
+        "[nl]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2000",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "3.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series','episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1950",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "1950",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "bottom 10 rank",
+        "tv series",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[jp]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series','episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "1990",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "1990",
+        "1995"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2010",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1950",
+        "2010"
+      ],
+      [
+        "[jp]",
+        "rating",
+        "top 250 rank",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "3.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "votes",
+        "top 250 rank",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2009",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2009",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "3.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1950",
+        "1984"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2000",
+        "2014"
+      ],
+      [
+        "[ru]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2010",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2005"
+      ],
+      [
+        "[jp]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[nl]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "3.5",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[jp]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[jp]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1950",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[de]",
+        "votes",
+        "rating",
+        "tv series",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "1950",
+        "1995"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1950",
+        "2010"
+      ],
+      [
+        "[ru]",
+        "rating",
+        "votes",
+        "tv series",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2010",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[de]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "2000",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie', 'tv movie', 'video movie', 'video game",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2010",
+        "2014"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "bottom 10 rank",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.5",
+        "1950",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "1990",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2005"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "top 250 rank",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2014"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "3.0",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2014"
+      ],
+      [
+        "[us]",
+        "rating",
+        "top 250 rank",
+        "tv series','episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2015"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2007"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "1990",
+        "2000"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2015"
+      ],
+      [
+        "[de]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "tv series",
+        "references', 'referenced in', 'features', 'featured in",
+        "7.0",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "3.5",
+        "1950",
+        "2000"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "tv series",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1990",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "movie",
+        "sequel', 'follows', 'followed by",
+        "3.0",
+        "2000",
+        "2010"
+      ],
+      [
+        "[us]",
+        "votes",
+        "rating",
+        "tv series",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2010"
+      ],
+      [
+        "[nl]",
+        "rating",
+        "votes",
+        "tv series','episode",
+        "movie', 'episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2005",
+        "2010"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "2000",
+        "2008"
+      ],
+      [
+        "[jp]",
+        "votes",
+        "rating",
+        "tv series",
+        "tv series','episode",
+        "references', 'referenced in', 'features', 'featured in",
+        "8.5",
+        "1990",
+        "2008"
+      ],
+      [
+        "[de]",
+        "rating",
+        "votes",
+        "tv series",
+        "movie', 'episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "1950",
+        "2008"
+      ],
+      [
+        "[us]",
+        "rating",
+        "votes",
+        "movie', 'episode",
+        "tv series','episode",
+        "sequel', 'follows', 'followed by",
+        "8.5",
+        "2000",
+        "2005"
+      ]
+    ]
+  }
+}
