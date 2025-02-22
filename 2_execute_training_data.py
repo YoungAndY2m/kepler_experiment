@@ -5,8 +5,8 @@ import json
 query_ids = ['19-0']
 training_sizes = [50]
 methods = ['cardinality', 'csv', 'kepler']
-robustness_choices = ["category", "random"] # "sliding" - 4
-ranging = [1]
+robustness_choices = ["sliding"] # "category", "random"
+ranging = [4]
 
 # command template
 template_command = (

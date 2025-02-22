@@ -1,56 +1,56 @@
 import os
 import json
 
-# # robustness db
-# query_ids = ['30-0']
-# training_sizes = [50]
-# methods = ['cardinality', 'csv', 'kepler']
-# robustness_choices = ["category", "random", "sliding"]
-# ranging = [1, 4]
-# confidence_thresholds = [0]
+# robustness db
+query_ids = ['19-0']
+training_sizes = [50]
+methods = ['cardinality', 'csv', 'kepler']
+robustness_choices = ["category", "random", "sliding"]
+ranging = [1, 4]
+confidence_thresholds = [0]
 
 
-# # command template
-# template_command = (
-#     "python3 -m kepler.examples.active_learning_for_training_data_collection_main "
-#     "--query_metadata 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/testing/{query_id}_testing_original.json "
-#     "--vocab_data_dir imdb_input/training_metadata "
-#     "--execution_metadata 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}_metadata.json "
-#     "--execution_data 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}.json "
-#     "--query_id {query_id} "
-#     "--testing_parameter_values 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/testing/{query_id}_testing_original.json "
-#     "--plan_hints_file 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/hints/{query_id}/training_{training_size}/imdbloadbase/imdb_plans.json "
-#     "--num_initial_query_instances {num_initial} "
-#     "--num_next_query_instances_per_iteration {num_per_iteration} "
-#     "--output_dir 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/evaluation/{query_id}/training_{training_size}/confidence_{confidence_threshold} "
-#     "--frequency_file 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/frequency/{query_id}_train_{training_size}_freq.json "
-#     "--confidence_threshold {confidence_threshold}"
-# )
+# command template
+template_command = (
+    "python3 -m kepler.examples.active_learning_for_training_data_collection_main "
+    "--query_metadata 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/testing/{query_id}_testing_original.json "
+    "--vocab_data_dir imdb_input/training_metadata "
+    "--execution_metadata 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}_metadata.json "
+    "--execution_data 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}.json "
+    "--query_id {query_id} "
+    "--testing_parameter_values 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/testing/{query_id}_testing_original.json "
+    "--plan_hints_file 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/hints/{query_id}/training_{training_size}/imdbloadbase/imdb_plans.json "
+    "--num_initial_query_instances {num_initial} "
+    "--num_next_query_instances_per_iteration {num_per_iteration} "
+    "--output_dir 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/outputs/evaluation/{query_id}/training_{training_size}/confidence_{confidence_threshold} "
+    "--frequency_file 0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/frequency/{query_id}_train_{training_size}_freq.json "
+    "--confidence_threshold {confidence_threshold}"
+)
 
-# for query_id in query_ids:
-#     for training_size in training_sizes:
-#         for method in methods:
-#             for confidence_threshold in confidence_thresholds:
-#                 for robustness in robustness_choices:
-#                     for i in ranging:
-#                         if robustness == "category" and i in [0, 5, 8]:
-#                             continue
+for query_id in query_ids:
+    for training_size in training_sizes:
+        for method in methods:
+            for confidence_threshold in confidence_thresholds:
+                for robustness in robustness_choices:
+                    for i in ranging:
+                        if robustness == "category" and i in [0, 5, 8]:
+                            continue
                         
-#                         training_param_file = f"0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/training/{query_id}_training_distinct_{training_size}.json"
-#                         print(training_param_file)
+                        training_param_file = f"0_sample_repo/imdb_{query_id}_sample/{robustness}/db_instance_{i}/{method}/inputs/training/{query_id}_training_distinct_{training_size}.json"
+                        print(training_param_file)
                         
-#                         with open(training_param_file, 'r') as file:
-#                             data = json.load(file)
+                        with open(training_param_file, 'r') as file:
+                            data = json.load(file)
                             
-#                         param_length = len(data[query_id]["params"]) - 1
-#                         num_initial = param_length
-#                         num_per_iteration = 0
+                        param_length = len(data[query_id]["params"]) - 1
+                        num_initial = param_length
+                        num_per_iteration = 0
 
-#                         # Format the command with the calculated sizes
-#                         command = template_command.format(query_id=query_id, method=method, training_size=training_size, confidence_threshold=confidence_threshold, num_initial=num_initial, num_per_iteration=num_per_iteration, robustness=robustness, i=i)
+                        # Format the command with the calculated sizes
+                        command = template_command.format(query_id=query_id, method=method, training_size=training_size, confidence_threshold=confidence_threshold, num_initial=num_initial, num_per_iteration=num_per_iteration, robustness=robustness, i=i)
                         
-#                         print(command)
-#                         os.system(command)
+                        print(command)
+                        os.system(command)
 
 
 # Original db
@@ -71,49 +71,49 @@ import json
 #     "--confidence_threshold {confidence_threshold}"
 # )
 
-# python 3_model_test.py 2>imdb_input/{query_id}/model_test.log
-methods = ['cardinality']
-query_ids = ['4-0']
-training_sizes = [400]
+# # python 3_model_test.py 2>imdb_input/{query_id}/model_test.log
+# methods = ['cardinality']
+# query_ids = ['4-0']
+# training_sizes = [400]
 
-# ONLY need one, modify based on the given threshold
-confidence_thresholds = [0]
+# # ONLY need one, modify based on the given threshold
+# confidence_thresholds = [0]
 
-template_command = (
-    "python3 -m kepler.examples.active_learning_for_training_data_collection_main "
-    "--query_metadata 0_finished_repo/imdb_{query_id}_original/{method}/inputs/testing/{query_id}_testing_original.json "
-    "--vocab_data_dir imdb_input/training_metadata "
-    "--execution_metadata 0_finished_repo/imdb_{query_id}_original/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}_metadata.json "
-    "--execution_data 0_finished_repo/imdb_{query_id}_original/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}.json "
-    "--query_id {query_id} "
-    "--testing_parameter_values 0_finished_repo/imdb_{query_id}_original/{method}/inputs/testing/{query_id}_testing_original.json "
-    "--plan_hints_file 0_finished_repo/imdb_{query_id}_original/{method}/outputs/hints/{query_id}/training_{training_size}/imdbloadbase/imdb_plans.json "
-    "--num_initial_query_instances {num_initial} "
-    "--num_next_query_instances_per_iteration {num_per_iteration} "
-    "--output_dir 0_finished_repo/imdb_{query_id}_original/{method}/outputs/evaluation/{query_id}/training_{training_size}/confidence_{confidence_threshold} "
-    "--frequency_file 0_finished_repo/imdb_{query_id}_original/{method}/inputs/frequency/{query_id}_train_{training_size}_freq.json "
-    "--confidence_threshold {confidence_threshold}"
-)
+# template_command = (
+#     "python3 -m kepler.examples.active_learning_for_training_data_collection_main "
+#     "--query_metadata 0_finished_repo/imdb_{query_id}_original/{method}/inputs/testing/{query_id}_testing_original.json "
+#     "--vocab_data_dir imdb_input/training_metadata "
+#     "--execution_metadata 0_finished_repo/imdb_{query_id}_original/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}_metadata.json "
+#     "--execution_data 0_finished_repo/imdb_{query_id}_original/{method}/outputs/results/{query_id}/training_{training_size}/execution_output/imdbloadbase_{query_id}.json "
+#     "--query_id {query_id} "
+#     "--testing_parameter_values 0_finished_repo/imdb_{query_id}_original/{method}/inputs/testing/{query_id}_testing_original.json "
+#     "--plan_hints_file 0_finished_repo/imdb_{query_id}_original/{method}/outputs/hints/{query_id}/training_{training_size}/imdbloadbase/imdb_plans.json "
+#     "--num_initial_query_instances {num_initial} "
+#     "--num_next_query_instances_per_iteration {num_per_iteration} "
+#     "--output_dir 0_finished_repo/imdb_{query_id}_original/{method}/outputs/evaluation/{query_id}/training_{training_size}/confidence_{confidence_threshold} "
+#     "--frequency_file 0_finished_repo/imdb_{query_id}_original/{method}/inputs/frequency/{query_id}_train_{training_size}_freq.json "
+#     "--confidence_threshold {confidence_threshold}"
+# )
 
-for query_id in query_ids:
-    for method in methods:
-        for training_size in training_sizes:
-            for confidence_threshold in confidence_thresholds:
-                training_param_file = f"0_finished_repo/imdb_{query_id}_original/{method}/inputs/training/{query_id}_training_distinct_{training_size}.json"
+# for query_id in query_ids:
+#     for method in methods:
+#         for training_size in training_sizes:
+#             for confidence_threshold in confidence_thresholds:
+#                 training_param_file = f"0_finished_repo/imdb_{query_id}_original/{method}/inputs/training/{query_id}_training_distinct_{training_size}.json"
                 
-                with open(training_param_file, 'r') as file:
-                    data = json.load(file)
+#                 with open(training_param_file, 'r') as file:
+#                     data = json.load(file)
                     
-                param_length = len(data[query_id]["params"]) - 1
+#                 param_length = len(data[query_id]["params"]) - 1
 
-                num_initial = param_length
-                num_per_iteration = 0
+#                 num_initial = param_length
+#                 num_per_iteration = 0
 
-                # Format the command with the calculated sizes
-                command = template_command.format(query_id=query_id, method=method, training_size=training_size, confidence_threshold=confidence_threshold, num_initial=num_initial, num_per_iteration=num_per_iteration)
+#                 # Format the command with the calculated sizes
+#                 command = template_command.format(query_id=query_id, method=method, training_size=training_size, confidence_threshold=confidence_threshold, num_initial=num_initial, num_per_iteration=num_per_iteration)
                 
-                print(command)
-                os.system(command)
+#                 print(command)
+#                 os.system(command)
 
 
 # import json
