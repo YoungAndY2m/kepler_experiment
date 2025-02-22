@@ -1,0 +1,9 @@
+
+i_category IN ('Children', 'Electronics', 'Men') and i_manager_id IN (25, 28, 97)
+ca_state in ('CO', 'OR', 'PA')
+d1.d_year = 1999
+ws_wholesale_cost BETWEEN 80 AND 100
+
+;
+
+

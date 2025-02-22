@@ -1,0 +1,11 @@
+
+cd_gender = 'F' and cd_education_status = 'Primary'
+d_year = 2002
+c_birth_month = 11
+ca_state in ('OK', 'SC', 'WV')
+cs_wholesale_cost BETWEEN 11 AND 16
+i_category = 'Women' 
+
+;
+
+

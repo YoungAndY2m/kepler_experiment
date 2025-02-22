@@ -1,0 +1,11 @@
+
+cd_gender = 'F' and cd_education_status = 'Advanced Degree'
+d_year = 2001
+c_birth_month = 12
+ca_state in ('NC', 'ND', 'NE')
+cs_wholesale_cost BETWEEN 19 AND 24
+i_category = 'Jewelry' 
+
+;
+
+

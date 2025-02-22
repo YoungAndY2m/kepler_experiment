@@ -1,0 +1,10 @@
+
+d_year between 1998 and 1998 + 1
+item1.i_category in ('Children', 'Electronics', 'Men')
+item2.i_manager_id between 46 and 65
+cd_marital_status = 'U' and cd_education_status = 'College'
+s1.ss_list_price between 81 and 95
+s2.ss_list_price between 81 and 95
+;
+
+

@@ -1,0 +1,11 @@
+
+cd_gender = 'F' and cd_education_status = 'Advanced Degree'
+d_year = 1999
+c_birth_month = 2
+ca_state in ('MT', 'OR', 'WY')
+cs_wholesale_cost BETWEEN 53 AND 58
+i_category = 'Electronics' 
+
+;
+
+

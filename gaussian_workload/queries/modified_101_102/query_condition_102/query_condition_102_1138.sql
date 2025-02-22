@@ -1,0 +1,9 @@
+
+i_category IN ('Children', 'Jewelry', 'Women') and i_manager_id IN (14, 47, 93)
+ca_state in ('NE', 'TX', 'WI')
+d1.d_year = 2001
+ws_wholesale_cost BETWEEN 56 AND 76
+
+;
+
+

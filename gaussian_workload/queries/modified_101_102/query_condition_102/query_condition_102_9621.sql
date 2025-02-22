@@ -1,0 +1,9 @@
+
+i_category IN ('Books', 'Children', 'Home') and i_manager_id IN (35, 73, 83)
+ca_state in ('IL', 'LA', 'MN')
+d1.d_year = 2001
+ws_wholesale_cost BETWEEN 67 AND 87
+
+;
+
+

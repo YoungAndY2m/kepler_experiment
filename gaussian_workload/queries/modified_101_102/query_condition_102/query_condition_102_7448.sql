@@ -1,0 +1,9 @@
+
+i_category IN ('Home', 'Jewelry', 'Women') and i_manager_id IN (42, 78, 92)
+ca_state in ('CA', 'MS', 'OH')
+d1.d_year = 2002
+ws_wholesale_cost BETWEEN 7 AND 27
+
+;
+
+

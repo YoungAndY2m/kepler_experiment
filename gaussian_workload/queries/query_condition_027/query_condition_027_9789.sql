@@ -1,0 +1,8 @@
+
+cd_gender = 'F' AND cd_marital_status = 'D' AND cd_education_status = '2 yr Degree'
+d_year = 2000
+s_state = 'VT'
+i_category = 'Books' 
+;
+
+

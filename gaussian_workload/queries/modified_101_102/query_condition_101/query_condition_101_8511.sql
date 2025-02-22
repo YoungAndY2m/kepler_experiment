@@ -1,0 +1,10 @@
+
+i_category IN ('Jewelry', 'Men', 'Women')
+ca_state in ('AL', 'CA', 'SC')
+d1.d_year = 1999
+hd_income_band_sk BETWEEN 13 AND 19 AND hd_buy_potential = '0-500'
+ss_sales_price / ss_list_price BETWEEN 75 * 0.01 AND 95 * 0.01
+
+;
+
+

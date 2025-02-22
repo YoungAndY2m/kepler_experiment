@@ -1,0 +1,9 @@
+
+i_category IN ('Children', 'Electronics', 'Home') and i_manager_id IN (30, 38, 48)
+ca_state in ('FL', 'MI', 'OK')
+d1.d_year = 1999
+ws_wholesale_cost BETWEEN 79 AND 99
+
+;
+
+

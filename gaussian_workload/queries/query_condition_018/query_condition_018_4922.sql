@@ -1,0 +1,11 @@
+
+cd_gender = 'F' and cd_education_status = 'College'
+d_year = 2001
+c_birth_month = 6
+ca_state in ('KS', 'MS', 'UT')
+cs_wholesale_cost BETWEEN 12 AND 17
+i_category = 'Children' 
+
+;
+
+
