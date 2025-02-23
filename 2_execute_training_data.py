@@ -46,8 +46,8 @@ import json
 #                     os.system(command)
 
 # original db
-methods = ['kepler']
-query_ids = ['4-0']
+methods = ['cardinality']
+query_ids = ['10-0']
 training_sizes = [400]
 
 # command template

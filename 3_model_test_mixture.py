@@ -71,7 +71,7 @@ import json
 # )
 
 # python 3_model_test.py 2>imdb_input/{query_id}/model_test.log
-methods = ['cardinality']
+methods = ['kepler']
 query_ids = ['4-0']
 training_sizes = [400]
 
