@@ -6,11 +6,9 @@ import collections
 import json
 import logging
 import os
-from itertools import product
 import numpy as np
 import psycopg2
-from sklearn.model_selection import train_test_split
-from utility import modify_query, get_count
+from utility import modify_query
 
 from absl import app
 from absl import flags
@@ -20,7 +18,9 @@ import re
 
 
 # Define general flags
-_SELECTION = flags.DEFINE_string("selection", None, "Cardinality, kepler, or csv.")
+_SELECTION = flags.DEFINE_string(
+    "selection", None, 
+    "Cardinality, cardinality_full, kepler, or csv.")
 flags.mark_flag_as_required("selection")
 _RANDOM_SEED = flags.DEFINE_integer(
     "random_seed", 2024,
@@ -28,25 +28,44 @@ _RANDOM_SEED = flags.DEFINE_integer(
 _OUTPUT_DIR = flags.DEFINE_string(
     "output_dir", None,
     "Directory to store parameter values per query.")
-_ROBUSTNESS = flags.DEFINE_string("robustness", None, "sliding, random, or category.")
+flags.mark_flag_as_required("output_dir")
+_ROBUSTNESS = flags.DEFINE_string(
+    "robustness", None, 
+    "sliding, random, or category.")
 
 # query related
-_TEMPLATE_FILE = flags.DEFINE_string("template_file", None, "Parameterized query template file.")
+_TEMPLATE_FILE = flags.DEFINE_string(
+    "template_file", None, 
+    "Parameterized query template file.")
 flags.mark_flag_as_required("template_file")
-flags.mark_flag_as_required("output_dir")
-_QUERY_ID = flags.DEFINE_string("query_id", None, "Name of query to train on")
+_QUERY_ID = flags.DEFINE_string(
+    "query_id", None, 
+    "Name of query to train on")
 flags.mark_flag_as_required("query_id")
 # csv related flags - required for csv
-_METADATA_FILE = flags.DEFINE_string("metadata_file", None, "Template's metadata: params with frequency.")
+_METADATA_FILE = flags.DEFINE_string(
+    "metadata_file", None, 
+    "Template's metadata: params with frequency.")
 
 # training & testing related
 _COUNT = flags.DEFINE_integer(
-    "count", 2200, "The max number of parameters to generate per query.")
+    "count", 2200, 
+    "The max number of parameters to generate per query.")
 _TEST_SIZE = flags.DEFINE_integer(
-    "test_size", 200, "Number of test queries.")
+    "test_size", 200, 
+    "Number of test queries.")
 
+# csv related flags - special table case it
 EXTRA_TABLE = ['it_miidx', 'it_mi', 'it_pi']
 
+available_it_for_mi = ['genres'] * 13 + ['budget'] * 2 + ['release dates'] * 20 + ['countries'] * 10
+available_it_for_pi = ['mini biography'] * 3 + ['trivia'] * 2 + ['height'] * 1
+available_it_for_miidx = ['top 250 rank'] * 2 + ['bottom 10 rank'] * 2 + ['rating'] * 16 + ['votes'] * 11
+
+cct_for_cc_subject_id = ["IN ('cast', 'crew')"] * 4 + ["= 'cast'"] * 12 + ["!= 'complete+verified'"] * 2 
+cct_for_cc_status_id = ["= 'complete'"] * 3 + ["LIKE '%complete%'"] * 7 + [" = 'complete+verified'"] * 9
+
+# kepler template format additional information
 INT_TABLE_DICT = {
     "t": {
         "production_year": {
@@ -60,16 +79,10 @@ INT_TABLE_DICT = {
     }
 }
 
-available_it_for_mi = ['genres'] * 13 + ['budget'] * 2 + ['release dates'] * 20 + ['countries'] * 10
-available_it_for_pi = ['mini biography'] * 3 + ['trivia'] * 2 + ['height'] * 1
-available_it_for_miidx = ['top 250 rank'] * 2 + ['bottom 10 rank'] * 2 + ['rating'] * 16 + ['votes'] * 11
 
-cct_for_cc_subject_id = ["IN ('cast', 'crew')"] * 4 + ["= 'cast'"] * 12 + ["!= 'complete+verified'"] * 2 
-cct_for_cc_status_id = ["= 'complete'"] * 3 + ["LIKE '%complete%'"] * 7 + [" = 'complete+verified'"] * 9
-
-
-
+###################
 # helper methods
+# csv related, check if the param-frequency file is provided
 def check_required_values(metadata_file):
     """
     Check if the required variables have values. If any of them is missing, raise an error.
@@ -86,20 +99,51 @@ def check_required_values(metadata_file):
     
     print("All required values are provided.")
 
+
 def escape_single_quotes(param):
+    """
+    Escapes single quotes in a string parameter by replacing each single quote with two single quotes.
+    
+    Args:
+        param: The parameter to escape. Can be any type, but only strings will be modified.
+        
+    Returns:
+        If param is a string, returns a new string with all single quotes doubled.
+        Otherwise, returns the original param unchanged.
+        
+    Examples:
+        >>> escape_single_quotes("O'Reilly")
+        "O''Reilly"
+        >>> escape_single_quotes(123)
+        123
+    """
     # If param is a string and contains single quotes, replace them with two single quotes
     if isinstance(param, str):
         return param.replace("'", "''")
     return param
 
+
 def save_metadata_to_csv(output_dir, metadata, query_id):
     """
-    Saves the metadata to a CSV file in the output directory.
+    Saves the metadata to a CSV file in the output directory with the query_id as filename.
+    
+    This function creates a two-column CSV file (Key, Value) where each row represents
+    a key-value pair from the metadata dictionary.
     
     Args:
-    - output_dir: The directory where the metadata.csv will be saved.
-    - metadata: A dictionary containing the metadata information to save.
+        output_dir (str): The directory path where the metadata CSV file will be saved.
+        metadata (dict): A dictionary containing the metadata information to save.
+        query_id (str): Identifier used to name the output CSV file.
+    
+    Returns:
+        None: The function doesn't return a value but prints confirmation message.
+    
+    Example:
+        >>> metadata = {"timestamp": "2023-04-01", "status": "complete"}
+        >>> save_metadata_to_csv("/path/to/output", metadata, "query123")
+        Metadata saved to /path/to/output/query123.csv
     """
+    # Create the full path for the metadata file using the query_id
     metadata_file = os.path.join(output_dir, f"{query_id}.csv")
     
     # Write the metadata to CSV
