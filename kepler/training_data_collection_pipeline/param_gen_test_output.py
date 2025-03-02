@@ -100,6 +100,7 @@ def check_required_values(metadata_file):
     print("All required values are provided.")
 
 
+
 def escape_single_quotes(param):
     """
     Escapes single quotes in a string parameter by replacing each single quote with two single quotes.    
@@ -120,6 +121,7 @@ def escape_single_quotes(param):
     if isinstance(param, str):
         return param.replace("'", "''")
     return param
+
 
 
 def save_metadata_to_csv(output_dir, metadata, query_id):
@@ -156,6 +158,8 @@ def save_metadata_to_csv(output_dir, metadata, query_id):
             writer.writerow([key, value])
 
     print(f"Metadata saved to {metadata_file}")
+
+
 
 ###################
 # Cardinality related
@@ -324,7 +328,7 @@ def get_param_and_cardinality(db_name, single_select_table, single_select_column
             tokens = [token for token in tokens if token] # remove empty token
             # print(f"current token length: {len(tokens)}")
             
-            # TODO: If length of tokens is 1, split the token into individual characters
+            # If length of tokens is 1, split the token into individual characters
             if len(tokens) == 1:
                 tokens = [random.choice(tokens[0])] # randomly choose one of the character
             
@@ -1113,7 +1117,7 @@ def get_matching_elements(metadata, template_predicates):
                 join_tables_alias = predicate.get("join_tables_alias")
                 if join_tables_alias:
                     join_table = join_tables_alias[0].replace("_", "")
-                    alias_with_join = f"{alias}_{join_table}" # TODO: fix here, extra table list for it (e.g. it_pi, it_miidx, etc)
+                    alias_with_join = f"{alias}_{join_table}" # extra table list for it (e.g. it_pi, it_miidx, etc)
                     current_metadata = metadata.get(alias_with_join, [])
                 else:
                     current_metadata = []
@@ -1802,6 +1806,33 @@ def process_train_and_test_data(output_dir, query_id, query, predicates, train_d
 ###################
 # generation based on selection
 def gen_full_cardinality(db_config, output_dir, template_file, query_id, param_choice_list, seed_value, count, train_size_list=[50, 400], test_size=200, method="cardinality", shuffle=False):
+    """
+    Generates and processes cardinality data for query optimization by testing parameter combinations,
+    filtering those that return results, and preparing training and testing datasets.
+    
+    This function takes a SQL query template and a list of potential parameter values, tests various
+    parameter combinations to find those that return results from the database, and then splits these
+    successful combinations into training and testing sets. It handles the complete workflow from
+    loading templates, testing parameter combinations, filtering valid ones, shuffling if needed,
+    and splitting data into appropriate training and testing sets with different sizes. The resulting
+    data is processed and saved for use in query optimization tasks.
+    
+    Args:
+        db_config (dict): Database connection configuration
+        output_dir (str): Base directory for output files
+        template_file (str): Path to the SQL query template file
+        query_id (str): Identifier for the query being processed
+        param_choice_list (list): List of lists, where each inner list contains possible values for a parameter
+        seed_value (int): Random seed for reproducibility
+        count (int): Maximum number of successful parameter combinations to collect
+        train_size_list (list, optional): List of different training set sizes. Defaults to [50, 400].
+        test_size (int, optional): Size of the testing set. Defaults to 200.
+        method (str, optional): Method identifier for tracking purposes. Defaults to "cardinality".
+        shuffle (bool, optional): Whether to shuffle parameter combinations before testing. Defaults to False.
+        
+    Returns:
+        None: Results are saved to files in the specified output directories
+    """
     # preparation
     dirs = prepare_directories(output_dir)
     query, predicates, _ = load_template(template_file, query_id)
@@ -1813,15 +1844,14 @@ def gen_full_cardinality(db_config, output_dir, template_file, query_id, param_c
     # One-on-One
     param_list = list(zip(*param_choice_list))
     param_list = [list(params) for params in param_list] # Convert tuples to lists
-    # param_list = filter_invalid_combinations(param_list, predicates)
+    param_list = filter_invalid_combinations(param_list, predicates)
     if shuffle:
         random.shuffle(param_list)
     print('filter_out card', len(param_list))
     
-    # TODO: execute
+    # execute
     param_list = test_query_returns(query, param_list, db_config, query_id, method=method)
     random.shuffle(param_list)
-    # print(len(param_list))
     
     # Process train and testing files
     train_dict_dict, test_dict = split_literals_and_store_with_frequency(query_id, param_list, seed_value, output_dir, train_size_list, test_size)
@@ -1830,10 +1860,26 @@ def gen_full_cardinality(db_config, output_dir, template_file, query_id, param_c
 
 
 def gen_full_csv(output_dir, template_file, query_id, train_dict_dict, test_dict):
+    """
+    Generates CSV files for query optimization by processing existing parameter dictionaries 
+    
+    It loads a query template, prepares the necessary directories, and then processes the 
+    provided training and testing parameter dictionaries to generate template files and 
+    query optimization artifacts. 
+    
+    Args:
+        output_dir (str): Base directory for output files
+        template_file (str): Path to the SQL query template file
+        query_id (str): Identifier for the query being processed
+        train_dict_dict (dict): Nested dictionary mapping training sizes to parameter dictionaries
+        test_dict (dict): Dictionary containing parameter values for testing
+        
+    Returns:
+        None: Results are saved to files in the specified output directories
+    """
     # preparation
     dirs = prepare_directories(output_dir)
     query, predicates, _ = load_template(template_file, query_id)
-    # print(test_dict)
 
     # Generate params for training and testing
     process_train_and_test_data(dirs, query_id, query, predicates, train_dict_dict, test_dict)
@@ -1841,11 +1887,34 @@ def gen_full_csv(output_dir, template_file, query_id, train_dict_dict, test_dict
 
 
 def gen_full_kepler(output_dir, original_file, query_id, seed_value, db_config, train_size_list=[50, 400], test_size=200):
+    """
+    Generates and processes data for Kepler-based query optimization by loading parameters from templates,
+    adjusting numeric values, handling special operators, and preparing training and testing datasets.
+    
+    This function is specialized for Kepler's query optimization requirements. It loads query templates 
+    and parameter lists, performs necessary adjustments to numeric ranges, handles 'IN' operators 
+    differently from other operators, escapes single quotes in parameter values where appropriate, 
+    tests parameter combinations against the database, and splits successful combinations into 
+    training and testing sets. Special care is taken to adjust numeric predicate boundaries and to 
+    handle parameters used with 'IN' operators differently from other parameters.
+    
+    Args:
+        output_dir (str): Base directory for output files
+        original_file (str): Path to the original template file containing query and parameters
+        query_id (str): Identifier for the query being processed
+        seed_value (int): Random seed for reproducibility
+        db_config (dict): Database connection configuration
+        train_size_list (list, optional): List of different training set sizes. Defaults to [50, 400].
+        test_size (int, optional): Size of the testing set. Defaults to 200.
+        
+    Returns:
+        None: Results are saved to files in the specified output directories
+    """
     # preparation
     dirs = prepare_directories(output_dir)
     query, predicates, original_param_list = load_template(original_file, query_id)
         
-    # TODO: match param_generator _get_numeric_operator_adjustment
+    # match param_generator _get_numeric_operator_adjustment
     def adjust_predicates(predicates):
         for predicate in predicates:
             if predicate.get("data_type") == "int":
@@ -1857,7 +1926,7 @@ def gen_full_kepler(output_dir, original_file, query_id, seed_value, db_config, 
         return predicates
     predicates = adjust_predicates(predicates)
     
-    # TODO: find in operator indices, no need for escape_single_quotes for that specific param
+    # find in operator indices, no need for escape_single_quotes for that specific param
     def find_in_operator_indices(predicates):
         """Find indices of predicates where operator is 'in'."""
         return [index for index, predicate in enumerate(predicates) 
@@ -1900,7 +1969,7 @@ def main(unused_argv):
     np.random.seed(seed_value)
     
     db_config = {
-        'dbname': db_name, # change to dsb, originally imdbloadbase
+        'dbname': db_name,
         'user': 'kepler',
         'password': 'kepler',
         'host': 'localhost',
@@ -1954,7 +2023,7 @@ def main(unused_argv):
         # sampled_literals = filter_invalid_combinations(sampled_literals, template_predicates)
         print(len(sampled_literals), len(sampled_literals[0]))
         
-        # TODO: execute
+        # execute
         query, _, _ = load_template(template_file, query_id)
         sampled_literals = test_query_returns(query, sampled_literals, db_config, query_id, method="csv")
                 
