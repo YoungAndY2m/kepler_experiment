@@ -477,6 +477,7 @@ def get_range_param_and_cardinality(data, operator):
     return param_cardinality
 
 
+
 def create_buckets(data, num_buckets):
     # Extract the second values from the pairs
     second_values = [d[-1] for d in data]
@@ -504,6 +505,7 @@ def create_buckets(data, num_buckets):
             buckets[bucket_index].append(item)
     
     return buckets
+
 
 
 def sample_from_buckets(buckets, total_samples): # Changed by haibo - now sample with replacement    
@@ -539,6 +541,7 @@ def sample_from_buckets(buckets, total_samples): # Changed by haibo - now sample
     
     # Ensure the result is exactly total_samples in case of rounding issues
     return sampled_data[:total_samples]
+
 
 
 def sample_in_operator(buckets, total_samples, num_samples_per_bucket=5, shuffle=True): # Changed by yang: imdbloadbase use 5, dsb use 3  
@@ -602,6 +605,7 @@ def format_in_clause_data(in_clause_data):
     
     # print(formatted_list[:5])
     return formatted_list
+
 
 
 def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True):
@@ -734,6 +738,7 @@ def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True)
         #     for i, final_params_list in enumerate(all_param_lists):
         #         print(f"params {i}: {final_params_list}\n")
         return all_param_lists
+
 
 
 def gen_param_by_cardinality_full(db_name, template_file, N = 10, K = 50, debug=True):
@@ -972,6 +977,8 @@ def gen_param_by_cardinality_full(db_name, template_file, N = 10, K = 50, debug=
         return all_param_lists
 
 
+
+###################
 # Kepler related
 def run_kepler_pipeline(db_name, template_file, count):
     output_dir = os.path.join(f"imdb_{_QUERY_ID.value}_original", "kepler", "inputs")

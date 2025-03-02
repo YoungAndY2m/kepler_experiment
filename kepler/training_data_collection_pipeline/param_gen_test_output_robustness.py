@@ -317,6 +317,8 @@ def get_param_and_cardinality(single_select_column, select_column, table, not_nu
 
         return tokenized_result
 
+
+
 # MARK: add CDF implementation
 def get_range_param_and_cardinality(data, operator):
     """
@@ -384,6 +386,7 @@ def get_range_param_and_cardinality(data, operator):
     return param_cardinality
 
 
+
 def create_buckets(data, num_buckets):
     # Extract the second values from the pairs
     second_values = [d[-1] for d in data]
@@ -449,6 +452,7 @@ def sample_from_buckets(buckets, total_samples): # Changed by haibo - now sample
     return sampled_data[:total_samples]
 
 
+
 def sample_in_operator(buckets, total_samples, num_samples_per_bucket=5): # Changed by yang  
     # Sample based on non-empty bucket
     non_empty_buckets = [bucket for bucket in buckets if bucket]
@@ -509,6 +513,7 @@ def format_in_clause_data(in_clause_data):
     
     # print(formatted_list[:5])
     return formatted_list
+
 
 
 def gen_param_by_cardinality(template_file, N = 10, K = 50, debug=True):
@@ -635,6 +640,9 @@ def gen_param_by_cardinality(template_file, N = 10, K = 50, debug=True):
         #         print(f"params {i}: {final_params_list}\n")
         return all_param_lists
 
+
+
+###################
 # Kepler related
 def run_kepler_pipeline(output_dir, template_file, count):
     counts_output_file = os.path.join(output_dir, "output_counts.json")
