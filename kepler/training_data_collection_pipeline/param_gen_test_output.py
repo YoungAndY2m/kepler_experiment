@@ -161,7 +161,7 @@ def save_metadata_to_csv(output_dir, metadata, query_id):
 # Cardinality related
 def get_param_and_cardinality(db_name, single_select_table, single_select_column, select_column, table, not_null_column, join_condition, value_type="count"):
     """
-    Retrieves parameters and their cardinality from a database using SQL queries.
+    Step 1: Retrieves parameters and their cardinality from a database using SQL queries.
     
     This function executes SQL queries to fetch column values and their counts from database tables.
     It handles different join conditions, provides fallback query execution, and can return either
@@ -410,6 +410,90 @@ def get_param_and_cardinality_full(db_name, base_predicate_column, from_clause, 
 
 
 
+def create_buckets(data, num_buckets):
+    """
+    Step 2: Divides data points into a specified number of buckets based on the second value of each data point.
+    
+    This function distributes data items into buckets by value range. If all values are identical,
+    it distributes items evenly across buckets. Otherwise, it creates buckets of equal value ranges
+    and assigns items to the appropriate bucket based on their value.
+    
+    Args:
+        data (list): List of tuples where each tuple's last element is the value used for bucketing.
+        num_buckets (int): Number of buckets to create.
+        
+    Returns:
+        list: A list of bucket lists, where each bucket contains data points assigned to it.
+    """
+    # Extract the second values from the pairs
+    second_values = [d[-1] for d in data]
+    
+    # Find the minimum and maximum of the second values
+    min_value = min(second_values)
+    max_value = max(second_values)
+    print(f"!!! Cardinality range of current column [{min_value}, {max_value}]")
+    
+    # Calculate the interval width
+    interval_width = (max_value - min_value) / num_buckets
+    
+    # Initialize the buckets
+    buckets = [[] for _ in range(num_buckets)]
+    
+    if interval_width == 0:
+        # When all values are the same, distribute items evenly across buckets
+        for i, item in enumerate(data):
+            buckets[i % num_buckets].append(item)
+    else:
+        # Assign each item to the appropriate bucket based on interval width
+        for item in data:
+            _, value = item
+            bucket_index = min(int((value - min_value) / interval_width), num_buckets - 1)
+            buckets[bucket_index].append(item)
+    
+    return buckets
+
+
+
+def sample_from_buckets(buckets, total_samples):
+    """
+    Step 3: Samples data points from multiple buckets with replacement to create a representative dataset.
+    
+    This function distributes the total number of samples evenly across non-empty buckets and 
+    randomly selects items from each bucket with replacement. It ensures the final sample size
+    matches the requested total by distributing any remainder samples across buckets and 
+    truncating if necessary.
+    
+    Args:
+        buckets (list): List of bucket lists, where each bucket contains data points.
+        total_samples (int): Total number of samples to collect across all buckets.
+        
+    Returns:
+        list: A combined list of sampled data points from all buckets, with exactly
+                total_samples number of items.
+    """
+    # Sample based on non-empty bucket
+    non_empty_buckets = [bucket for bucket in buckets if bucket]
+    num_non_empty_buckets = len(non_empty_buckets)
+    samples_per_bucket = total_samples // num_non_empty_buckets
+    remainder_samples = total_samples % num_non_empty_buckets
+    
+    sampled_data = []
+    
+    # Sample from each bucket
+    for i, bucket in enumerate(buckets):
+        if not bucket:
+            continue  # Skip empty bucket
+        
+        num_samples = samples_per_bucket + (1 if i < remainder_samples else 0)
+        
+        # with place back - change: use random.choices instead of choice
+        sampled_data.extend(random.choices(bucket, k=num_samples))
+    
+    # Ensure the result is exactly total_samples in case of rounding issues
+    return sampled_data[:total_samples]
+
+
+
 # MARK: add CDF implementation
 def get_range_param_and_cardinality(data, operator):
     """
@@ -478,73 +562,26 @@ def get_range_param_and_cardinality(data, operator):
 
 
 
-def create_buckets(data, num_buckets):
-    # Extract the second values from the pairs
-    second_values = [d[-1] for d in data]
+def sample_in_operator(buckets, total_samples, num_samples_per_bucket=5, shuffle=True):
+    """
+    Creates IN operator combinations by sampling multiple items from each bucket.
     
-    # Find the minimum and maximum of the second values
-    min_value = min(second_values)
-    max_value = max(second_values)
-    print(f"!!! Cardinality range of current column [{min_value}, {max_value}]")
+    This function generates combinations for SQL IN operators by sampling multiple items
+    from each non-empty bucket. It creates multiple rounds of sampling to reach the desired
+    total number of combinations. Each combination contains num_samples_per_bucket items
+    from a single bucket, using controlled random selection with seeds for reproducibility.
     
-    # Calculate the interval width
-    interval_width = (max_value - min_value) / num_buckets
-    
-    # Initialize the buckets
-    buckets = [[] for _ in range(num_buckets)]
-    
-    if interval_width == 0:
-        # TODO: changed by yang - When all values are the same, distribute items evenly across buckets
-        for i, item in enumerate(data):
-            buckets[i % num_buckets].append(item)
-    else:
-        # Assign each item to the appropriate bucket based on interval width
-        for item in data:
-            _, value = item
-            bucket_index = min(int((value - min_value) / interval_width), num_buckets - 1)
-            buckets[bucket_index].append(item)
-    
-    return buckets
-
-
-
-def sample_from_buckets(buckets, total_samples): # Changed by haibo - now sample with replacement    
-    # Sample based on non-empty bucket
-    non_empty_buckets = [bucket for bucket in buckets if bucket]
-    num_non_empty_buckets = len(non_empty_buckets)
-    samples_per_bucket = total_samples // num_non_empty_buckets
-    remainder_samples = total_samples % num_non_empty_buckets
-    
-    sampled_data = []
-    
-    # Sample from each bucket
-    for i, bucket in enumerate(buckets):
-        if not bucket:
-            continue  # Skip empty bucket
+    Args:
+        buckets (list): List of bucket lists, where each bucket contains data points.
+        total_samples (int): Total number of IN operator combinations to generate.
+        num_samples_per_bucket (int, optional): Number of items to include in each IN operator.
+                                                Defaults to 5. DSB's default use 3
+        shuffle (bool, optional): Whether to shuffle the final result. Defaults to True.
         
-        num_samples = samples_per_bucket + (1 if i < remainder_samples else 0)
-        
-        # with place back - change: use random.choices instead of choice
-        sampled_data.extend(random.choices(bucket, k=num_samples))
-        
-        # if len(bucket) > num_samples:
-        #     sampled_data.extend(random.sample(bucket, num_samples))
-        # else:
-        #     sampled_data.extend(bucket)  # If fewer than num_samples, take all
-    
-    # Check if we have enough samples; if not, sample randomly from all buckets
-    # if len(sampled_data) < total_samples:
-    #     remaining_samples = total_samples - len(sampled_data)
-    #     all_items = [item for bucket in buckets for item in bucket]
-    #     additional_samples = random.sample(all_items, remaining_samples)
-    #     sampled_data.extend(additional_samples)
-    
-    # Ensure the result is exactly total_samples in case of rounding issues
-    return sampled_data[:total_samples]
-
-
-
-def sample_in_operator(buckets, total_samples, num_samples_per_bucket=5, shuffle=True): # Changed by yang: imdbloadbase use 5, dsb use 3  
+    Returns:
+        list: A list of IN operator combinations, where each combination is a list of
+                values to be used in an IN clause. Returns exactly total_samples combinations.
+    """
     # Sample based on non-empty bucket
     non_empty_buckets = [bucket for bucket in buckets if bucket]
     num_non_empty_buckets = len(non_empty_buckets)
@@ -608,14 +645,26 @@ def format_in_clause_data(in_clause_data):
 
 
 
-def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True):
+def gen_param_by_cardinality(db_name, template_file, N=10, K=50, debug=True):
     """
-    Input:
-    N: number of buckets to split the cardinality range, default is 10
-    K: number of total samples
+    Generates parameter values for database query templates based on column cardinality.
     
-    Output:
-    A list of param list: [[@param1_1, @param1_2, ..., @param1_N], [@param2_1, ..., @param2_N]]
+    This function processes query templates and creates parameter lists by analyzing 
+    column value distributions in the database. It divides values into buckets based on 
+    cardinality and samples from these buckets to ensure a representative parameter set.
+    The function handles various operators (=, LIKE, IN, etc.) and joins differently.
+    
+    Args:
+        db_name (str): Database name to connect to.
+        template_file (str): Path to the JSON file containing query templates.
+        N (int, optional): Number of buckets to split the cardinality range. Defaults to 10.
+        K (int, optional): Total number of samples to generate per parameter. Defaults to 50.
+        debug (bool, optional): Whether to print debug information. Defaults to True.
+        
+    Returns:
+        list: A list of parameter lists, where each parameter list corresponds to a predicate
+                in the query templates. Format: [[@param1_1, @param1_2, ..., @param1_K], 
+                [@param2_1, ..., @param2_K], ...].
     """
     with open(template_file) as f:
         all_param_lists = []
@@ -634,7 +683,7 @@ def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True)
                     left_or_right = predicate['left_or_right'][i]
                     join_condition = predicate['join_conditions'][i]
                     
-                    # TODO: change - possibly no alias
+                    # possibly no alias
                     select_table_stmt = predicate['table'] + " AS " + select_table_alias + ", " if select_table_alias else predicate['table'] + ", "
                     join_table_stmt = predicate['join_tables'][i] + " AS " + join_table_alias if join_table_alias else predicate['join_tables'][i]
                     from_table = select_table_stmt + join_table_stmt
@@ -646,7 +695,6 @@ def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True)
                     # we don't have left_or_right == "r"
                     # Since based on the setup, no matter what join_conditions, we always take the predicate as input
                     # which means always l or both
-                    # TODO: change - add alias logic
                     if left_or_right == 'both':
                         select_column = f"{select_table_alias}.{predicate['column']}" if select_table_alias else predicate['column']
                         not_null_column = f"{select_table_alias}.{predicate['column']} IS NOT NULL AND " if select_table_alias else f"{predicate['column']} IS NOT NULL AND "
@@ -670,7 +718,7 @@ def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True)
                         
                     print(f"current value_type is {value_type}")
 
-                    # TODO: 'it' is a special joining table that requires specific predicates (imdbloadbase)
+                    # MARK: 'it' is a special joining table that requires specific predicates (imdbloadbase)
                     if select_table_alias == 'it' and join_table_alias in ['mi', 'miidx', 'pi'] and select_operator == '=':
                         print("special table it")
                         if join_table_alias == 'pi':
@@ -683,31 +731,21 @@ def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True)
                             for _ in range(K):
                                 temp_params_list_mix.append(random.choice(available_it_for_miidx))
                     else:
-                        # Step 1: Create buckets and sample from them
+                        # Step 1: get param and their cardinality
                         ranking_result = get_param_and_cardinality(db_name, single_select_table, single_select_column, select_column, from_table, not_null_column, join_condition, value_type)
 
-                        # TODO: range CDF - currently only accept int
+                        # range CDF - currently only accept int
                         if select_operator in [">", ">=", "<", "<=", "="] and select_data_type == "int":
-                            # print(f"Before range-based: {ranking_result}")
-                            with open('pg_test.json', 'w') as f:
-                                ranking_result = sorted(ranking_result)
-                                json.dump(ranking_result, f)
                             ranking_result = get_range_param_and_cardinality(ranking_result, select_operator)
-                            # print(f"After range-based: {ranking_result}")
-                            with open('pg_test_output.json', 'w') as f:
-                                ranking_result = sorted(ranking_result)
-                                json.dump(ranking_result, f)
                         
-                        # Create bucket                        
+                        # Step 2: Create bucket                        
                         buckets = create_buckets(ranking_result, N)
                         
-                        # TODO: Step 2: If IN operator, sample K // bucket_num for each bucket, each with 5 params
-                        # else sample from bucket
+                        # Step 3: Sample from bucket
+                        # If IN operator, sample K // bucket_num for each bucket, each with 5 params
                         if select_operator == "IN":
                             sampled_data = sample_in_operator(buckets, K)
-                            # print(f"before escaping single quote - in clause data: {sampled_data[:5]}")
                             sampled_data = format_in_clause_data(sampled_data)
-                            # print(f"after escaping single quote - in clause data: {sampled_data[:5]}")
                             print("get sampled", len(sampled_data))
                             temp_params_list = sampled_data
                         else:
@@ -734,21 +772,32 @@ def gen_param_by_cardinality(db_name, template_file, N = 10, K = 50, debug=True)
                 random.shuffle(temp_params_list_mix)
                 all_param_lists.append(temp_params_list_mix[:K])
 
-        # if debug:
-        #     for i, final_params_list in enumerate(all_param_lists):
-        #         print(f"params {i}: {final_params_list}\n")
         return all_param_lists
 
 
 
-def gen_param_by_cardinality_full(db_name, template_file, N = 10, K = 50, debug=True):
+def gen_param_by_cardinality_full(db_name, template_file, N=10, K=50, debug=True):
     """
-    Input:
-    N: number of buckets to split the cardinality range, default is 10
-    K: number of total samples
+    Generates parameter values for database query templates based on column cardinality.
+    This time, we have all tables joined together and then calculate the cardinality.
+    Instead of (single value, cardinality), we now have (row value, cardinality)
     
-    Output:
-    A list of param list: [[@param1_1, @param1_2, ..., @param1_N], [@param2_1, ..., @param2_N]]
+    This function processes query templates and creates parameter lists by analyzing 
+    column value distributions in the database. It divides values into buckets based on 
+    cardinality and samples from these buckets to ensure a representative parameter set.
+    The function handles various operators (=, LIKE, IN, etc.) and joins differently.
+    
+    Args:
+        db_name (str): Database name to connect to.
+        template_file (str): Path to the JSON file containing query templates.
+        N (int, optional): Number of buckets to split the cardinality range. Defaults to 10.
+        K (int, optional): Total number of samples to generate per parameter. Defaults to 50.
+        debug (bool, optional): Whether to print debug information. Defaults to True.
+        
+    Returns:
+        list: A list of parameter lists, where each parameter list corresponds to a predicate
+                in the query templates. Format: [[@param1_1, @param1_2, ..., @param1_K], 
+                [@param2_1, ..., @param2_K], ...].
     """
     with open(template_file) as f:
         all_param_lists = []
@@ -802,11 +851,9 @@ def gen_param_by_cardinality_full(db_name, template_file, N = 10, K = 50, debug=
             # Combine columns for SELECT and NOT NULL conditions
             base_predicate_column = ', '.join(base_predicate_column_elements)
             not_null_conditions = ' AND '.join(f"{element} IS NOT NULL" for element in base_predicate_column_elements)
-            # print('base_predicate_column', base_predicate_column, '\n')
-            # print('not_null_conditions', not_null_conditions, '\n')
             full_where_conditions = join_condition + ' AND ' + not_null_conditions
-            # print('full_where_conditions', full_where_conditions, '\n')
             
+            # get from tables, add tablesample statement
             def extract_and_modify_from_clause(query, tablesample_percentage, seed):
                 """
                 Extract the FROM clause from a SQL query and modify it to include TABLESAMPLE
@@ -857,9 +904,9 @@ def gen_param_by_cardinality_full(db_name, template_file, N = 10, K = 50, debug=
                 # Combine all clauses
                 return "FROM " + ",\n    ".join(new_from_clauses)
             
-            # TODO: change table sample percentage and seed (10, 2024)
-            tablesample_percentage = 30
-            seed = 2029
+            # change table sample percentage and seed, originally (10, 2024)
+            tablesample_percentage = 10
+            seed = 2024
             
             while tablesample_percentage <= 100:
                 # Try up to 10 different seeds for each percentage
@@ -905,7 +952,7 @@ def gen_param_by_cardinality_full(db_name, template_file, N = 10, K = 50, debug=
                 select_operator = template['predicates'][idx]["operator"]
                 select_data_type = template['predicates'][idx]["data_type"]
             
-                # TODO: range CDF - currently only accept int
+                # range CDF - currently only accept int
                 if select_operator in [">", ">=", "<", "<=", "="] and select_data_type == "int":
                     print(f"Before range-based: {param_ranking[:5]}")
                     with open('pg_test.json', 'w') as f:
@@ -940,22 +987,21 @@ def gen_param_by_cardinality_full(db_name, template_file, N = 10, K = 50, debug=
                     param_ranking = new_param_ranking
                     print("LIKE operator modified", param_ranking[:5])
                 
-                # Create bucket                        
+                # Step 2: Create bucket                        
                 buckets = create_buckets(param_ranking, N)
                 
-                # TODO: Step 2: If IN operator, sample K // bucket_num for each bucket, each with 5 params
+                # Step 3: Sample from bucket
+                # If IN operator, sample K // bucket_num for each bucket, each with 5 params
                 # else sample from bucket
                 if select_operator == "IN":
                     sampled_data = sample_in_operator(buckets, K, shuffle=False) # NO shuffle here!!
-                    # print(f"before escaping single quote - in clause data: {sampled_data[:5]}")
                     sampled_data = format_in_clause_data(sampled_data)
-                    # print(f"after escaping single quote - in clause data: {sampled_data[:5]}")
                     print("IN sampled", len(sampled_data))
                     temp_params_list = sampled_data
                 else:
                     sampled_data = sample_from_buckets(buckets, K)
                     temp_params_list = [i[0] for i in sampled_data]
-                    # random.shuffle(temp_params_list) # NO shuffle here!! large-large, small-small, shuffle after one-on-one
+                    # NO shuffle here!! large-large, small-small, shuffle after one-on-one
                     temp_params_list = [escape_single_quotes(param) for param in temp_params_list]
                 
                 # Debug output - show ranges of each bucket and the first 10 item
@@ -1734,40 +1780,6 @@ def main(unused_argv):
         new_template = os.path.join(output_dir, f"{query_id}-{count}.json")
         print(new_template)
         gen_full_kepler(output_dir, new_template, query_id, seed_value, db_config, train_size_list=[50, 400], test_size=200)
-   
-    
-    ########################
-    # # Test range cardinality
-    # data = [(1, 10), (2, 20), (3, 30), (4, 40)]
-    # operator = "<="
-    # result = get_range_param_and_cardinality(data, operator)
-    # expected = [(1, 10), (2, 30), (3, 60), (4, 100)]
-    # print(result)
-    # print(result == expected)
-    
-    # operator = ">="
-    # result = get_range_param_and_cardinality(data, operator)
-    # expected = [(1, 100), (2, 90), (3, 70), (4, 40)]
-    # print(result)
-    # print(result == expected)
-    
-    # operator = "="
-    # result = get_range_param_and_cardinality(data, operator)
-    # expected = [(1, 10), (2, 20), (3, 30), (4, 40)]
-    # print(result)
-    # print(result == expected)
-    
-    # operator = "<"
-    # result = get_range_param_and_cardinality(data, operator)
-    # expected = [(1, 0), (2, 10), (3, 30), (4, 60)]
-    # print(result)
-    # print(result == expected)
-    
-    # operator = ">"
-    # result = get_range_param_and_cardinality(data, operator)
-    # expected = [(1, 90), (2, 70), (3, 40), (4, 0)]
-    # print(result)
-    # print(result == expected)
         
 
 
