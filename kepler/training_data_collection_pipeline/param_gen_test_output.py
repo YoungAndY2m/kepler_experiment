@@ -1271,6 +1271,23 @@ def split_literals_and_store_with_frequency(query_id, sampled_literals, seed_val
 ###################
 # PQO input related
 def save_pqo_files(query_id, data, output_dir, description): # description = {train_size}_training / testing
+    """
+    Saves parameterized query files for Parametric Query Optimization (PQO) testing.
+    
+    This function takes a query template and parameter combinations, substitutes 
+    the parameters into the template, and saves the resulting queries to a JSON file.
+    Each query is assigned a unique key based on the query ID, description, and index.
+    The function avoids overwriting existing files with the same name.
+    
+    Args:
+        query_id (str): Identifier for the query template.
+        data (dict): Dictionary containing query templates and parameter combinations.
+        output_dir (str): Directory to save the output JSON file.
+        description (str): Description string (typically includes training size or "testing").
+        
+    Returns:
+        None: The function doesn't return a value but saves the generated queries to a file.
+    """
     os.makedirs(output_dir, exist_ok=True)
     output_json = {}
 
@@ -1283,7 +1300,6 @@ def save_pqo_files(query_id, data, output_dir, description): # description = {tr
             param = str(param).strip()
             pattern = re.compile(rf"@param{i}\b")
             query_str = pattern.sub(param, query_str)
-            # query_str = query_str.replace(f"@param{i}", str(param))
         
         key = f"{query_id}_{description}_{index}"
         output_json[key] = query_str
@@ -1299,7 +1315,26 @@ def save_pqo_files(query_id, data, output_dir, description): # description = {tr
         json.dump(output_json, json_file, indent=4)
 
 
+
 def save_pqo_predicates(query_id, training_data, testing_data, output_dir, train_size):
+    """
+    Saves query predicates in a formatted text file for Parametric Query Optimization (PQO).
+    
+    This function extracts predicate combinations from both training and testing data
+    and saves them in a formatted text file. Each predicate is formatted according to
+    its data type and operator, with proper quoting for text values and parentheses for
+    IN operators. The function creates separate files for training and testing data.
+    
+    Args:
+        query_id (str): Identifier for the query.
+        training_data (dict): Dictionary containing training query parameters and predicates.
+        testing_data (dict): Dictionary containing testing query parameters and predicates.
+        output_dir (str): Directory to save the output text files.
+        train_size (int): Size of the training dataset, used in output filename.
+        
+    Returns:
+        None: The function doesn't return a value but saves the formatted predicates to files.
+    """
     os.makedirs(output_dir, exist_ok=True)
 
     def save_combinations(data, file_name):
@@ -1373,13 +1408,15 @@ def prepare_directories(output_dir):
 
     return dirs
    
-    
+
+
 def load_template(template_file, query_id):
     """
     Load the query and predicates from a JSON template file.
     
     Args:
     template_file (str): Path to the JSON file containing the query templates.
+    query_id (str): query id related to the template
     
     Returns:
     tuple: query_id, query, and predicates from the first template.
@@ -1397,6 +1434,7 @@ def load_template(template_file, query_id):
     original_param_list = template.get('params', None)
     
     return query, predicates, original_param_list
+
 
 
 def save_templates_and_pqo(query_id, query, predicates, training_params, testing_params, dirs, train_size, mode="original"):
@@ -1451,9 +1489,27 @@ def save_templates_and_pqo(query_id, query, predicates, training_params, testing
         save_pqo_files(query_id, testing_template, pqo_query_dir, f'testing')
         save_pqo_predicates(query_id, training_template, testing_template, pqo_predicates_dir, train_size)
 
-    
+
+
 # generate training & testing set
 def generate_param_list_from_dict(data_dict, mode):
+    """
+    Generates a parameter list from a dictionary of parameter combinations with frequencies.
+    
+    This function converts a dictionary of parameter combinations (stored as JSON strings) 
+    into a list based on the specified mode. In 'distinct' mode, each unique combination 
+    appears exactly once. In 'original' mode, combinations are replicated according to 
+    their frequency count, preserving the original distribution.
+    
+    Args:
+        data_dict (dict): Dictionary with parameter combinations as keys (JSON strings) 
+                            and frequencies as values.
+        mode (str): Generation mode - either 'distinct' (unique combinations) or 
+                    'original' (frequency-weighted combinations).
+        
+    Returns:
+        list: A shuffled list of parameter combinations based on the specified mode.
+    """
     param_list = []
     if mode == 'distinct':
         # In 'distinct' mode, use keys (unique literals) only once
@@ -1466,7 +1522,7 @@ def generate_param_list_from_dict(data_dict, mode):
     return param_list
 
 
-# TODO: filter the param list
+# filter the param list
 def filter_invalid_combinations(param_list, predicates):
     """
     Filters out invalid parameter combinations where the same column in the same table 
@@ -1549,9 +1605,11 @@ def filter_invalid_combinations(param_list, predicates):
     
     return filtered_params
 
+
+
 def execute_query(cursor, query):
     try:
-        # TODO: change by yang - just to make sure it return result
+        # make sure it return result
         def modify_query(query: str) -> str:
             """
             Modify the query by splitting on FROM and replacing the SELECT clause with SELECT *
@@ -1589,7 +1647,31 @@ def execute_query(cursor, query):
         return []
     
 
+
 def test_query_returns(query, param_list, db_config, query_id, method="cardinality", count=251):
+    """
+    Tests a SQL query with different parameter combinations and collects those that return results.
+    
+    This function connects to a database using the provided configuration, then iterates through
+    a list of parameter sets, substituting them into the query template. For each parameter set,
+    it executes the query and checks if it returns any rows. Parameter sets that produce results
+    are collected and counted. The function stops after finding a specified number of successful
+    parameter sets (default 251) or after testing all provided parameter sets.
+    
+    The function tracks progress by printing parameter information during execution and saves
+    statistical data about the test run to a CSV file in the '0_original_analysis' directory.
+    
+    Args:
+        query (str): The SQL query template with placeholders for parameters (@param0, @param1, etc.)
+        param_list (list): A list of parameter sets, where each set is a list of values to substitute
+        db_config (dict): Database connection configuration with keys: dbname, user, password, host, port
+        query_id (str): Identifier for the query, used in the output CSV file
+        method (str, optional): Method identifier, used in the output CSV file. Defaults to "cardinality".
+        count (int, optional): Maximum number of successful parameter sets to collect. Defaults to 251.
+    
+    Returns:
+        list: A list of parameter sets that successfully returned results when used with the query
+    """
     # connect to db
     conn = psycopg2.connect(
         dbname=db_config['dbname'],
@@ -1669,8 +1751,32 @@ def test_query_returns(query, param_list, db_config, query_id, method="cardinali
     return clean_param_list
 
 
+
 # generation based on selection
 def process_train_and_test_data(output_dir, query_id, query, predicates, train_dict_dict, test_dict):
+    """
+    Process training and testing data for query optimization by generating parameter lists,
+    saving templates, and creating Parametric Query Optimization (PQO) artifacts.
+    
+    This function iterates through different modes ("original" and "distinct") and various 
+    training set sizes to generate parameter lists for both training and testing datasets.
+    For each combination of mode and training size, it calls helper functions to generate
+    the parameter lists, saves the query templates with these parameters, and creates PQO 
+    artifacts. The function also tracks metadata about the generated datasets, including 
+    the number of training and testing parameters for each configuration, and saves this 
+    metadata to a CSV file.
+    
+    Args:
+        output_dir (dict): Dictionary containing output directory paths for different artifacts
+        query_id (str): Identifier for the query being processed
+        query (str): The SQL query template with placeholders for parameters
+        predicates (list): List of predicate definitions used in the query
+        train_dict_dict (dict): Nested dictionary mapping training sizes to parameter dictionaries
+        test_dict (dict): Dictionary containing parameter values for testing
+        
+    Returns:
+        None: Results are saved to files in the specified output directories
+    """
     # Initialize a metadata dictionary to store relevant information
     metadata = {}
 
@@ -1691,6 +1797,7 @@ def process_train_and_test_data(output_dir, query_id, query, predicates, train_d
     # Save metadata
     save_metadata_to_csv(output_dir['metadata'], metadata, query_id)
     
+
 
 ###################
 # generation based on selection
