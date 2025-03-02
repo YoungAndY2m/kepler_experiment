@@ -1,9 +1,0 @@
-
-i_category IN ('Children', 'Electronics', 'Jewelry') and i_manager_id IN (20, 36, 39)
-ca_state in ('IN', 'LA', 'MS')
-d1.d_year = 1998
-ws_wholesale_cost BETWEEN 75 AND 95
-
-;
-
-

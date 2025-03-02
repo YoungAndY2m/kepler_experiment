@@ -1,9 +1,0 @@
-
-d_month_seq between 1209 and 1209 + 23
-cs_list_price between 7 and 36
-sm_type = 'EXPRESS'
-cc_class = 'small'
-w_gmt_offset = -5
-;
-
-
