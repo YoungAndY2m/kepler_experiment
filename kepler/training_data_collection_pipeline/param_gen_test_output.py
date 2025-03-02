@@ -1027,12 +1027,30 @@ def gen_param_by_cardinality_full(db_name, template_file, N=10, K=50, debug=True
 ###################
 # Kepler related
 def run_kepler_pipeline(db_name, template_file, count):
-    output_dir = os.path.join(f"imdb_{_QUERY_ID.value}_original", "kepler", "inputs")
+    """
+    Executes the Kepler parameter generation pipeline as a subprocess.
+    
+    This function creates the necessary output directory structure and runs the Kepler
+    training data collection pipeline to generate query parameters. It handles the 
+    configuration of the pipeline, including database connection details, input/output
+    paths, and the number of parameters to generate.
+    
+    Args:
+        db_name (str): Database name to connect to.
+        template_file (str): Path to the template file containing query structures.
+        count (int): Number of parameter sets to generate.
+        
+    Returns:
+        str: Path to the output directory containing generated parameters if successful.
+                None is implied if the pipeline execution fails.
+    """
+    output_dir = os.path.join(f"imdb_{_QUERY_ID.value}_original", "kepler", "inputs") # MARK: manually change to your desired folder name
     counts_output_file = os.path.join(output_dir, "output_counts.json")
     parameters_output_dir = output_dir
     
     os.makedirs(output_dir, exist_ok=True)
 
+    # run the kepler command
     command = [
         "python3", "-m", "kepler.training_data_collection_pipeline.parameter_generator_main",
         "--database", db_name,
@@ -1055,9 +1073,28 @@ def run_kepler_pipeline(db_name, template_file, count):
         print(f"Unexpected error: {e}")
 
 
+
+###################
 # CSV related
 # Step 0: find specific matching element (table.column operator with params) within the predicate_template_metadata
 def get_matching_elements(metadata, template_predicates):
+    """
+    Matches template predicates with their corresponding metadata elements.
+    
+    This function searches for metadata entries that match each predicate's 
+    specifications (alias, column, operator, and data type). It handles special 
+    cases for the "it" alias by looking for specific metadata keys or constructing 
+    composite keys based on join table aliases.
+    
+    Args:
+        metadata (dict): Dictionary containing metadata organized by table aliases.
+        template_predicates (list): List of predicate dictionaries from query templates.
+        
+    Returns:
+        list: A list of matching metadata elements for each predicate. Each element
+                contains details about the column, operator, and data type. None is 
+                included for predicates with no matching metadata.
+    """
     matching_elements = []
     
     for predicate in template_predicates:
@@ -1066,7 +1103,7 @@ def get_matching_elements(metadata, template_predicates):
         operator = predicate["operator"].lower()
         data_type = predicate["data_type"]
         
-        # TODO: Check if alias is "it"
+        # Check if alias is "it"
         if alias == "it":
             if "it" in metadata:
                 # Use metadata["it"] if available
@@ -1095,11 +1132,30 @@ def get_matching_elements(metadata, template_predicates):
     
     return matching_elements
 
- 
+
+
 # Step 1: generate param list by frequency
 def gen_sql_by_template(params_list, frequencies_list, K):
+    """
+    Generates SQL parameter combinations by sampling based on frequency distributions.
+    
+    This function samples parameter values from multiple parameter lists according to 
+    their frequency distributions. It creates combinations of parameters across different
+    lists, ensuring no duplicate values within each combination. The sampling is weighted
+    by the frequency of each parameter value's occurrence.
+    
+    Args:
+        params_list (list): List of parameter lists, each containing possible values.
+        frequencies_list (list): List of frequency lists corresponding to each parameter list.
+        K (int): Number of parameter combinations to generate.
+        
+    Returns:
+        list: A list of parameter combinations, where each combination contains one value
+                from each parameter list. Duplicates within combinations are filtered out.
+    """
     sampled_literals = []
 
+    # sample the param based on the frequency
     for params, frequencies in zip(params_list, frequencies_list):
         total_frequency = sum(frequencies)
         probabilities = [freq / total_frequency for freq in frequencies]
@@ -1110,6 +1166,7 @@ def gen_sql_by_template(params_list, frequencies_list, K):
 
 
     return sampled_literals 
+
 
 
 # Step 2: save param & frequency
@@ -1125,7 +1182,30 @@ def get_literal_frequencies(literals):
     return frequency_dict
 
 
+
 def split_literals_and_store_with_frequency(query_id, sampled_literals, seed_value, output_dir, train_size_list=[50, 400], test_size=200):
+    """
+    Splits sampled literals into training and testing sets and stores them with frequency information.
+    
+    This function divides the sampled literals into training and testing datasets, calculates
+    the frequency of each literal combination, and stores the results in JSON files. It supports
+    creating multiple training datasets of different sizes for incremental training experiments.
+    
+    Args:
+        query_id (str): Identifier for the query being processed.
+        sampled_literals (list): List of literal combinations to split and process.
+        seed_value (int): Random seed value for reproducibility.
+        output_dir (str): Directory to store the output files.
+        train_size_list (list, optional): List of training set sizes to generate. 
+                                            Defaults to [50, 400].
+        test_size (int, optional): Size of the test set. Defaults to 200.
+        
+    Returns:
+        tuple: A tuple containing:
+                - train_dict_dict (dict): Dictionary mapping training set sizes to dictionaries
+                    of literals with their frequencies.
+                - test_dict (dict): Dictionary of test literals with their frequencies.
+    """
     os.makedirs(output_dir, exist_ok=True)
     
     # split train & test
@@ -1185,6 +1265,7 @@ def split_literals_and_store_with_frequency(query_id, sampled_literals, seed_val
     
     
     return train_dict_dict, test_dict
+
 
 
 ###################
