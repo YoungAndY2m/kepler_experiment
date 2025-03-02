@@ -159,9 +159,31 @@ def save_metadata_to_csv(output_dir, metadata, query_id):
 
 ###################
 # Cardinality related
-# MARK: add tokenizer
 def get_param_and_cardinality(db_name, single_select_table, single_select_column, select_column, table, not_null_column, join_condition, value_type="count"):
+    """
+    Retrieves parameters and their cardinality from a database using SQL queries.
     
+    This function executes SQL queries to fetch column values and their counts from database tables.
+    It handles different join conditions, provides fallback query execution, and can return either
+    raw counts or tokenized results with wildcards for pattern matching.
+    
+    Args:
+        db_name (str): Database name to connect to.
+        single_select_table (str): Table name for simplified query fallback.
+        single_select_column (str): Column name for simplified query fallback.
+        select_column (str): Column name to select and group by in the primary query.
+        table (str): Main table name for the query.
+        not_null_column (str): WHERE condition for filtering non-null values.
+        join_condition (str): SQL join condition string.
+        value_type (str, optional): Output format - "count" for raw counts or "tokenizer" 
+                                    for tokenized results. Defaults to "count".
+    
+    Returns:
+        list: A list of tuples. For value_type="count", returns (value, count) pairs.
+              For value_type="tokenizer", returns (wildcard_token, count) pairs with
+              values tokenized and formatted with '%' wildcards.
+    """
+    # connect to database
     db_config = query_utils.DatabaseConfiguration(
       dbname=db_name, user="kepler", password="kepler", host="localhost"
     )
@@ -191,6 +213,7 @@ def get_param_and_cardinality(db_name, single_select_table, single_select_column
     addition_query = " ORDER BY COUNT(*) DESC"
     print(f"---- query: {query} {addition_query}")
     
+    # execute query and get result
     try:
         full_query = query + addition_query
         result = query_manager.execute(full_query)
@@ -218,6 +241,7 @@ def get_param_and_cardinality(db_name, single_select_table, single_select_column
     # get result
     print(f"---- Most popular sample: {result[0]}")
     
+    # tokenizer method, split everything except for text
     def tokenizer(value):
         return re.split(r'[!@#$%^&*()_\-|\?<>,.:;"\'{}\[\]~`/\s]+', value)
     
@@ -237,7 +261,7 @@ def get_param_and_cardinality(db_name, single_select_table, single_select_column
         total_length = len(result)
         print(f"result length: {total_length}")
         
-        # TODO: if the result is too large - 100 million - avoid kill/oom error
+        # MARK: if the result is too large - 100 million - avoid kill/oom error
         if total_length > 10000000:
             # re-execute, get percentiles
             quartile_results = query_manager.execute(f"""
@@ -261,7 +285,7 @@ def get_param_and_cardinality(db_name, single_select_table, single_select_column
             else:
                 raise ValueError("Expected exactly one row of quartile results")
                 
-            # TODO: stratified sampling - avoid kill/oom error
+            # stratified sampling - avoid kill/oom error
             stratified_query = f"""
                 WITH counts AS (
                     {query}
@@ -295,7 +319,7 @@ def get_param_and_cardinality(db_name, single_select_table, single_select_column
             # remove stratum & rand (last two columns)
             result = [columns[:-2] for columns in result]
         
-        for value in result: # haibo: "value" is a [string, card]; "result" is a list of unqiue [string, card]
+        for value in result: # "value" is a [string, card]; "result" is a list of unqiue [string, card]
             tokens = tokenizer(str(value[0]))  # param tokenizer
             tokens = [token for token in tokens if token] # remove empty token
             # print(f"current token length: {len(tokens)}")
@@ -313,7 +337,24 @@ def get_param_and_cardinality(db_name, single_select_table, single_select_column
 
 
 def get_param_and_cardinality_full(db_name, base_predicate_column, from_clause, full_where_conditions):
+    """
+    Retrieves column values and their occurrence counts from a database table.
     
+    This function executes SQL queries to fetch specified column values and count their occurrences,
+    grouping by the column values. It includes error handling with detailed logging and processes
+    the query results to standardize data types (converting Decimals to integers and formatting dates).
+    
+    Args:
+        db_name (str): Database name to connect to.
+        base_predicate_column (str): Column name to select and group by.
+        from_clause (str): SQL FROM clause specifying tables and joins.
+        full_where_conditions (str): SQL WHERE conditions for filtering records.
+        
+    Returns:
+        list: A list of tuples where each tuple contains (column_value, count). 
+              The column_value may be processed (e.g., Decimals converted to int, 
+              dates formatted as strings). Returns an empty list if query fails.
+    """
     db_config = query_utils.DatabaseConfiguration(
       dbname=db_name, user="kepler", password="kepler", host="localhost"
     )

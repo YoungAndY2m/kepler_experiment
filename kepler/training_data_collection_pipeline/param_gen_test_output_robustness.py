@@ -8,6 +8,7 @@ import logging
 import os
 import numpy as np
 import psycopg2
+import datetime
 from utility import modify_query
 
 from absl import app
@@ -102,8 +103,7 @@ def check_required_values(metadata_file):
 
 def escape_single_quotes(param):
     """
-    Escapes single quotes in a string parameter by replacing each single quote with two single quotes.
-    
+    Escapes single quotes in a string parameter by replacing each single quote with two single quotes.    
     Args:
         param: The parameter to escape. Can be any type, but only strings will be modified.
         
@@ -160,9 +160,30 @@ def save_metadata_to_csv(output_dir, metadata, query_id):
 
 ###################
 # Cardinality related
-# MARK: add tokenizer
 def get_param_and_cardinality(single_select_column, select_column, table, not_null_column, join_condition, value_type="count"):
+    """
+    Retrieves parameters and their cardinality from a database using SQL queries.
     
+    This function executes SQL queries to fetch column values and their counts from database tables.
+    It handles different join conditions, provides fallback query execution, and can return either
+    raw counts or tokenized results with wildcards for pattern matching.
+    
+    Args:
+        single_select_table (str): Table name for simplified query fallback.
+        single_select_column (str): Column name for simplified query fallback.
+        select_column (str): Column name to select and group by in the primary query.
+        table (str): Main table name for the query.
+        not_null_column (str): WHERE condition for filtering non-null values.
+        join_condition (str): SQL join condition string.
+        value_type (str, optional): Output format - "count" for raw counts or "tokenizer" 
+                                    for tokenized results. Defaults to "count".
+    
+    Returns:
+        list: A list of tuples. For value_type="count", returns (value, count) pairs.
+              For value_type="tokenizer", returns (wildcard_token, count) pairs with
+              values tokenized and formatted with '%' wildcards.
+    """
+    # connect to database
     db_config = query_utils.DatabaseConfiguration(
       dbname="imdbloadbase", user="kepler", password="kepler", host="localhost"
     )
@@ -173,7 +194,7 @@ def get_param_and_cardinality(single_select_column, select_column, table, not_nu
             WHERE {not_null_column}
             {join_condition}
             GROUP BY {select_column} """
-    addition_query = "ORDER BY COUNT(*) DESC"
+    addition_query = " ORDER BY COUNT(*) DESC"
     print(f"---- query: {query} {addition_query}")
     
     try:
@@ -203,17 +224,27 @@ def get_param_and_cardinality(single_select_column, select_column, table, not_nu
     # get result
     print(f"---- Most popular sample: {result[0]}")
     
+    # tokenizer method, split everything except for text
     def tokenizer(value):
         return re.split(r'[!@#$%^&*()_\-|\?<>,.:;"\'{}\[\]~`/\s]+', value)
     
+    from decimal import Decimal
     if value_type == "count":
-        return [(value[0], value[-1]) for value in result]
+        return [
+            (
+                int(value[0]) if isinstance(value[0], (Decimal, float)) and not isinstance(value[0], int)
+                else value[0].strftime('%Y-%m-%d') if isinstance(value[0], datetime.date)
+                else value[0],
+                value[-1]
+            )
+            for value in result
+        ]
     elif value_type == "tokenizer":
         tokenized_result = []
         total_length = len(result)
         print(f"result length: {total_length}")
         
-        # TODO: if the result is too large - 100 million - avoid kill/oom error
+        # MARK: if the result is too large - 100 million - avoid kill/oom error
         if total_length > 10000000:
             # re-execute, get percentiles
             quartile_results = query_manager.execute(f"""
@@ -237,7 +268,7 @@ def get_param_and_cardinality(single_select_column, select_column, table, not_nu
             else:
                 raise ValueError("Expected exactly one row of quartile results")
                 
-            # TODO: stratified sampling - avoid kill/oom error
+            # stratified sampling - avoid kill/oom error
             stratified_query = f"""
                 WITH counts AS (
                     {query}
@@ -271,7 +302,7 @@ def get_param_and_cardinality(single_select_column, select_column, table, not_nu
             # remove stratum & rand (last two columns)
             result = [columns[:-2] for columns in result]
         
-        for value in result:
+        for value in result: # "value" is a [string, card]; "result" is a list of unqiue [string, card]
             tokens = tokenizer(str(value[0]))  # param tokenizer
             tokens = [token for token in tokens if token] # remove empty token
             # print(f"current token length: {len(tokens)}")
