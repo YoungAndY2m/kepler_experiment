@@ -1387,6 +1387,7 @@ def save_pqo_predicates(query_id, training_data, testing_data, output_dir, train
     save_combinations(testing_data[query_id], f'{query_id}_testing.txt')
 
 
+
 # Save outputs
 def prepare_directories(output_dir):
     """
@@ -1524,6 +1525,7 @@ def generate_param_list_from_dict(data_dict, mode):
             param_list.extend([eval(key)] * freq)
     random.shuffle(param_list)
     return param_list
+
 
 
 # filter the param list
@@ -1861,7 +1863,7 @@ def gen_full_cardinality(db_config, output_dir, template_file, query_id, param_c
 
 def gen_full_csv(output_dir, template_file, query_id, train_dict_dict, test_dict):
     """
-    Generates CSV files for query optimization by processing existing parameter dictionaries 
+    Generates full template format for query optimization by processing existing parameter dictionaries 
     
     It loads a query template, prepares the necessary directories, and then processes the 
     provided training and testing parameter dictionaries to generate template files and 

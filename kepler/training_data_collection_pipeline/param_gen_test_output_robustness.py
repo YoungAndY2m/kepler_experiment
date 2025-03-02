@@ -1519,7 +1519,7 @@ def gen_full_cardinality(db_config, output_dir, template_file, query_id, robustn
 
 def gen_full_csv(output_dir, template_file, query_id, train_dict_dict, test_dict):
     """
-    Generates CSV files for query optimization by processing existing parameter dictionaries 
+    Generates full template format for query optimization by processing existing parameter dictionaries 
     
     It loads a query template, prepares the necessary directories, and then processes the 
     provided training and testing parameter dictionaries to generate template files and 
